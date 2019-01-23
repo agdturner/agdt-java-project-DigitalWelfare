@@ -103,7 +103,7 @@ public class DW_Data_CAB1_Handler extends DW_Object {
                     case StreamTokenizer.TT_WORD:
                         line = st.sval;
                         try {
-                            DW_Data_CAB1_Record record = new DW_Data_CAB1_Record(Env, RecordID, line, this);
+                            DW_Data_CAB1_Record record = new DW_Data_CAB1_Record(env, RecordID, line, this);
                             String clientProfileID = record.getClientProfileID();
                             if (result.containsKey(clientProfileID)) {
                                 System.out.println("Additional record for client " + clientProfileID);

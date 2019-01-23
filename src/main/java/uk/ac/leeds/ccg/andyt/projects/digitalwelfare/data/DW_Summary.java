@@ -3819,13 +3819,13 @@ public class DW_Summary extends DW_Object {
         d = AllTotalWeeklyEligibleRentAmountNonZeroCount;
         if (d > 0) {
             ave = t / d;
-            summary.put(Env.SHBE_Env.strings.sAverage_NonZero_WeeklyEligibleRentAmount,
+            summary.put(env.SHBE_Env.strings.sAverage_NonZero_WeeklyEligibleRentAmount,
                     Generic_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
         } else {
-            summary.put(Env.SHBE_Env.strings.sAverage_NonZero_WeeklyEligibleRentAmount,
+            summary.put(env.SHBE_Env.strings.sAverage_NonZero_WeeklyEligibleRentAmount,
                     s0);
         }
         t = Double.valueOf(summary.get(strings.sTotal_HBWeeklyEligibleRentAmount));
@@ -5206,7 +5206,7 @@ public class DW_Summary extends DW_Object {
             ArrayList<String> PTs, int nTT, int nEG, int nPSI, boolean hoome
     ) {
         String methodName = "getSummaryTable(...)";
-        Env.ge.log("<" + methodName + ">", true);
+        env.ge.log("<" + methodName + ">", true);
 
         // Declare variables
         // Declare result
@@ -5253,16 +5253,16 @@ public class DW_Summary extends DW_Object {
         filename1 = SHBEFilenames[i];
         //key = SHBE_Handler.getYearMonthNumber(filename1);
         YM31 = SHBE_Handler.getYM3(filename1);
-        Env.ge.log("Load " + YM31, true);
+        env.ge.log("Load " + YM31, true);
 
-        SHBE_Records1 = SHBE_Handler.getRecords(YM31, Env.HOOME);
+        SHBE_Records1 = SHBE_Handler.getRecords(YM31, env.HOOME);
 
-        ClaimIDsWithStatusOfHBAtExtractDateInPayment1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateInPayment(Env.HOOME);
-        ClaimIDsWithStatusOfHBAtExtractDateSuspended1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateSuspended(Env.HOOME);
-        ClaimIDsWithStatusOfHBAtExtractDateOther1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateOther(Env.HOOME);
-        ClaimIDsWithStatusOfCTBAtExtractDateInPayment1 = SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(Env.HOOME);
-        ClaimIDsWithStatusOfCTBAtExtractDateSuspended1 = SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(Env.HOOME);
-        ClaimIDsWithStatusOfCTBAtExtractDateOther1 = SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateOther(Env.HOOME);
+        ClaimIDsWithStatusOfHBAtExtractDateInPayment1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateInPayment(env.HOOME);
+        ClaimIDsWithStatusOfHBAtExtractDateSuspended1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateSuspended(env.HOOME);
+        ClaimIDsWithStatusOfHBAtExtractDateOther1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateOther(env.HOOME);
+        ClaimIDsWithStatusOfCTBAtExtractDateInPayment1 = SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(env.HOOME);
+        ClaimIDsWithStatusOfCTBAtExtractDateSuspended1 = SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(env.HOOME);
+        ClaimIDsWithStatusOfCTBAtExtractDateOther1 = SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateOther(env.HOOME);
 
         // Summarise first data
         doPartSummarySingleTime(SHBE_Records1,
@@ -5288,14 +5288,14 @@ public class DW_Summary extends DW_Object {
             //key = SHBE_Handler.getYearMonthNumber(filename1);
             YM31 = SHBE_Handler.getYM3(filename1);
             // Load next data
-            Env.ge.log("Load " + YM31, true);
-            SHBE_Records1 = SHBE_Handler.getRecords(YM31, Env.HOOME);
-            ClaimIDsWithStatusOfHBAtExtractDateInPayment1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateInPayment(Env.HOOME);
-            ClaimIDsWithStatusOfHBAtExtractDateSuspended1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateSuspended(Env.HOOME);
-            ClaimIDsWithStatusOfHBAtExtractDateOther1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateOther(Env.HOOME);
-            ClaimIDsWithStatusOfCTBAtExtractDateInPayment1 = SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(Env.HOOME);
-            ClaimIDsWithStatusOfCTBAtExtractDateSuspended1 = SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(Env.HOOME);
-            ClaimIDsWithStatusOfCTBAtExtractDateOther1 = SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateOther(Env.HOOME);
+            env.ge.log("Load " + YM31, true);
+            SHBE_Records1 = SHBE_Handler.getRecords(YM31, env.HOOME);
+            ClaimIDsWithStatusOfHBAtExtractDateInPayment1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateInPayment(env.HOOME);
+            ClaimIDsWithStatusOfHBAtExtractDateSuspended1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateSuspended(env.HOOME);
+            ClaimIDsWithStatusOfHBAtExtractDateOther1 = SHBE_Records1.getClaimIDsWithStatusOfHBAtExtractDateOther(env.HOOME);
+            ClaimIDsWithStatusOfCTBAtExtractDateInPayment1 = SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(env.HOOME);
+            ClaimIDsWithStatusOfCTBAtExtractDateSuspended1 = SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(env.HOOME);
+            ClaimIDsWithStatusOfCTBAtExtractDateOther1 = SHBE_Records1.getClaimIDsWithStatusOfCTBAtExtractDateOther(env.HOOME);
             // doPartSummaryCompare2Times
             doPartSummaryCompare2Times(SHBE_Records0,
                     ClaimIDsWithStatusOfHBAtExtractDateInPayment0,
@@ -5329,7 +5329,7 @@ public class DW_Summary extends DW_Object {
                 // Not used at present. incomeAndRentSummary0 = incomeAndRentSummary1;
             }
         }
-        Env.ge.log("</" + methodName + ">", true);
+        env.ge.log("</" + methodName + ">", true);
         return r;
     }
 
@@ -5369,13 +5369,13 @@ public class DW_Summary extends DW_Object {
         // Initialise variables
         key = SHBE_Handler.getYearMonthNumber(filename);
         summary = summaries.get(key);
-        LoadSummary = SHBE_Records.getLoadSummary(Env.HOOME);
+        LoadSummary = SHBE_Records.getLoadSummary(env.HOOME);
         DW_IncomeAndRentSummary tIncomeAndRentSummary;
-        tIncomeAndRentSummary = new DW_IncomeAndRentSummary(Env);
+        tIncomeAndRentSummary = new DW_IncomeAndRentSummary(env);
         IncomeAndRentSummary = tIncomeAndRentSummary.getIncomeAndRentSummary(
                 SHBE_Records, HB_CTB, PTs, YM3, null, null, false, false,
                 false, forceNewSummaries);
-        ClaimIDsOfNewSHBEClaims = SHBE_Records.getClaimIDsOfNewSHBEClaims(Env.HOOME);
+        ClaimIDsOfNewSHBEClaims = SHBE_Records.getClaimIDsOfNewSHBEClaims(env.HOOME);
         // Add load summary to summary
         addToSummary(summary, LoadSummary);
 
@@ -5383,22 +5383,22 @@ public class DW_Summary extends DW_Object {
          * Add things not quite added right from load summary
          */
         HashSet<SHBE_ID> ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore;
-        ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = SHBE_Records.getClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore(Env.HOOME);
-        summary.put(Env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore,
+        ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = SHBE_Records.getClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore(env.HOOME);
+        summary.put(env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore,
                 Integer.toString(ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore.size()));
         HashSet<SHBE_PersonID> set;
         // Add unique Partners
         set = SHBE_Handler.getUniquePersonIDs0(
-                SHBE_Records.getClaimIDToPartnerPersonIDLookup(Env.HOOME));
-        summary.put(Env.SHBE_Env.strings.sCountOfUniquePartners, "" + set.size());
+                SHBE_Records.getClaimIDToPartnerPersonIDLookup(env.HOOME));
+        summary.put(env.SHBE_Env.strings.sCountOfUniquePartners, "" + set.size());
         // Add unique Dependents
         set = SHBE_Handler.getUniquePersonIDs(
-                SHBE_Records.getClaimIDToDependentPersonIDsLookup(Env.HOOME));
-        summary.put(Env.SHBE_Env.strings.sCountOfUniqueDependents, "" + set.size());
+                SHBE_Records.getClaimIDToDependentPersonIDsLookup(env.HOOME));
+        summary.put(env.SHBE_Env.strings.sCountOfUniqueDependents, "" + set.size());
         // Add unique NonDependents
         set = SHBE_Handler.getUniquePersonIDs(
-                SHBE_Records.getClaimIDToNonDependentPersonIDsLookup(Env.HOOME));
-        summary.put(Env.SHBE_Env.strings.sCountOfUniqueNonDependents, "" + set.size());
+                SHBE_Records.getClaimIDToNonDependentPersonIDsLookup(env.HOOME));
+        summary.put(env.SHBE_Env.strings.sCountOfUniqueNonDependents, "" + set.size());
         /**
          * Counts of: ClaimsWithClaimantsThatAreClaimantsInAnotherClaim
          * ClaimsWithClaimantsThatArePartnersInAnotherClaim
@@ -5407,20 +5407,20 @@ public class DW_Summary extends DW_Object {
          * ClaimantsInMultipleClaimsInAMonth PartnersInMultipleClaimsInAMonth
          * NonDependentsInMultipleClaimsInAMonth
          */
-        summary.put(Env.SHBE_Env.strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim,
-                "" + SHBE_Records.getClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim(Env.HOOME).size());
-        summary.put(Env.SHBE_Env.strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim,
-                "" + SHBE_Records.getClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim(Env.HOOME).size());
-        summary.put(Env.SHBE_Env.strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim,
-                "" + SHBE_Records.getClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim(Env.HOOME).size());
-        summary.put(Env.SHBE_Env.strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim,
-                "" + SHBE_Records.getClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim(Env.HOOME).size());
-        summary.put(Env.SHBE_Env.strings.sCountOfClaimantsInMultipleClaimsInAMonth,
-                "" + SHBE_Records.getClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(Env.HOOME).size());
-        summary.put(Env.SHBE_Env.strings.sCountOfPartnersInMultipleClaimsInAMonth,
-                "" + SHBE_Records.getPartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(Env.HOOME).size());
-        summary.put(Env.SHBE_Env.strings.sCountOfNonDependentsInMultipleClaimsInAMonth,
-                "" + SHBE_Records.getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(Env.HOOME).size());
+        summary.put(env.SHBE_Env.strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim,
+                "" + SHBE_Records.getClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim(env.HOOME).size());
+        summary.put(env.SHBE_Env.strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim,
+                "" + SHBE_Records.getClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim(env.HOOME).size());
+        summary.put(env.SHBE_Env.strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim,
+                "" + SHBE_Records.getClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim(env.HOOME).size());
+        summary.put(env.SHBE_Env.strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim,
+                "" + SHBE_Records.getClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim(env.HOOME).size());
+        summary.put(env.SHBE_Env.strings.sCountOfClaimantsInMultipleClaimsInAMonth,
+                "" + SHBE_Records.getClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(env.HOOME).size());
+        summary.put(env.SHBE_Env.strings.sCountOfPartnersInMultipleClaimsInAMonth,
+                "" + SHBE_Records.getPartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(env.HOOME).size());
+        summary.put(env.SHBE_Env.strings.sCountOfNonDependentsInMultipleClaimsInAMonth,
+                "" + SHBE_Records.getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(env.HOOME).size());
 
         addToSummary(summary, ClaimIDsOfNewSHBEClaims, Records);
         // doSingleTimeLoopOverSet
@@ -5463,7 +5463,7 @@ public class DW_Summary extends DW_Object {
 
         doPartSummarySingleTime(
                 SHBE_Records1,
-                SHBE_Records1.getRecords(Env.HOOME),
+                SHBE_Records1.getRecords(env.HOOME),
                 YM31,
                 filename1,
                 forceNewSummaries,
@@ -5588,7 +5588,7 @@ public class DW_Summary extends DW_Object {
         SHBE_D_Record D_Record1;
 
         HashMap<SHBE_ID, SHBE_Record> Records0;
-        Records0 = SHBE_Records0.getRecords(Env.HOOME);
+        Records0 = SHBE_Records0.getRecords(env.HOOME);
         // Go through previous records
         ite = Records0.keySet().iterator();
         while (ite.hasNext()) {
@@ -5683,7 +5683,7 @@ public class DW_Summary extends DW_Object {
             }
         }
         HashMap<SHBE_ID, SHBE_Record> Records1;
-        Records1 = SHBE_Records1.getRecords(Env.HOOME);
+        Records1 = SHBE_Records1.getRecords(env.HOOME);
         // Go through current records
         ite = Records1.keySet().iterator();
         while (ite.hasNext()) {
@@ -5879,8 +5879,8 @@ public class DW_Summary extends DW_Object {
             counts[PSI] += 1;
         }
         for (int i = 1; i < nPSI; i++) {
-            summary.put(Env.SHBE_Env.strings.sCountOfNewSHBEClaimsPSI + i, "" + counts[i]);
-            //System.out.println(Env.SHBE_Env.strings.sCountOfNewSHBEClaimsPSI + "[" + i + "] " + counts[i]);
+            summary.put(env.SHBE_Env.strings.sCountOfNewSHBEClaimsPSI + i, "" + counts[i]);
+            //System.out.println(env.SHBE_Env.strings.sCountOfNewSHBEClaimsPSI + "[" + i + "] " + counts[i]);
         }
     }
 
@@ -5921,7 +5921,7 @@ public class DW_Summary extends DW_Object {
             int nEG,
             int nPSI
     ) {
-        Env.ge.log("<writeSummaryTables>", true);
+        env.ge.log("<writeSummaryTables>", true);
         writeSummaryTableCompare2TimesPaymentTypes(summaryTable, includeKey, nTT, nEG);
         writeSummaryTableCompare2TimesTT(summaryTable, includeKey, nTT, nEG);
         writeSummaryTableCompare2TimesPostcode(summaryTable, includeKey, nTT, nEG);
@@ -5933,7 +5933,7 @@ public class DW_Summary extends DW_Object {
         writeSummaryTableSingleTimeTT(                summaryTable,                includeKey,                nTT, nEG);
         writeSummaryTableSingleTimeEthnicity(                summaryTable,                includeKey,                nTT, nEG);
         writeSummaryTableSingleTimeDisability(                summaryTable,                includeKey,                nTT, nEG);
-        Env.ge.log("</writeSummaryTables>", true);
+        env.ge.log("</writeSummaryTables>", true);
     }
 
     /**
@@ -5950,7 +5950,7 @@ public class DW_Summary extends DW_Object {
             String includeKey, boolean underOccupancy) {
         PrintWriter r;
         File dirOut;
-        dirOut = Env.Files.getOutputSHBETableDir(name2, includeKey,
+        dirOut = env.files.getOutputSHBETableDir(name2, includeKey,
                 underOccupancy);
         String outFilename;
         outFilename = includeKey + strings.symbol_underscore;
@@ -5980,7 +5980,7 @@ public class DW_Summary extends DW_Object {
             int nEG
     ) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Env.SHBE_Env.oe.Files.getInputONSPDFiles();
+        ONSPDFiles = env.SHBE_Env.oe.Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesPaymentTypes";
         PrintWriter pw;
@@ -6437,7 +6437,7 @@ public class DW_Summary extends DW_Object {
             int nEG
     ) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Env.SHBE_Env.oe.Files.getInputONSPDFiles();
+        ONSPDFiles = env.SHBE_Env.oe.Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesTT";
         PrintWriter pw;
@@ -6561,7 +6561,7 @@ public class DW_Summary extends DW_Object {
             String includeKey, int nTT, int nEG
     ) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Env.SHBE_Env.oe.Files.getInputONSPDFiles();
+        ONSPDFiles = env.SHBE_Env.oe.Files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesPostcode";
         PrintWriter pw;
@@ -6600,7 +6600,7 @@ public class DW_Summary extends DW_Object {
             TreeMap<String, HashMap<String, String>> summaryTable,
             String includeKey, int nTT, int nEG, int nPSI) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Env.SHBE_Env.oe.Files.getInputONSPDFiles();
+        ONSPDFiles = env.SHBE_Env.oe.Files.getInputONSPDFiles();
         String name;
         name = "SingleTimeGenericCounts";
         PrintWriter pw;
@@ -6613,44 +6613,44 @@ public class DW_Summary extends DW_Object {
         header += getHeaderSingleTimeGeneric();
         header += "PostCodeLookupDate, ";
         header += "PostCodeLookupFile, ";
-        //header += Env.SHBE_Env.strings.sCountOfClaims + strings.special_commaSpace;
-        //header += Env.SHBE_Env.strings.sCountOfCTBAndHBClaims + strings.special_commaSpace;
-        //header += Env.SHBE_Env.strings.sCountOfCTBClaims + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfNewSHBEClaims + strings.special_commaSpace;
+        //header += env.SHBE_Env.strings.sCountOfClaims + strings.special_commaSpace;
+        //header += env.SHBE_Env.strings.sCountOfCTBAndHBClaims + strings.special_commaSpace;
+        //header += env.SHBE_Env.strings.sCountOfCTBClaims + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfNewSHBEClaims + strings.special_commaSpace;
         for (int i = 1; i < nPSI; i++) {
-            header += Env.SHBE_Env.strings.sCountOfNewSHBEClaimsPSI + i + strings.special_commaSpace;
+            header += env.SHBE_Env.strings.sCountOfNewSHBEClaimsPSI + i + strings.special_commaSpace;
         }
-        header += Env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantWasClaimantBefore + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantIsNew + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfClaimantsInMultipleClaimsInAMonth + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfPartnersInMultipleClaimsInAMonth + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfNonDependentsInMultipleClaimsInAMonth + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantWasClaimantBefore + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantIsNew + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfClaimantsInMultipleClaimsInAMonth + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfPartnersInMultipleClaimsInAMonth + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfNonDependentsInMultipleClaimsInAMonth + strings.special_commaSpace;
         header += sHBPTICount1 + strings.special_commaSpace;
         header += sHBPTSCount1 + strings.special_commaSpace;
         header += sHBPTOCount1 + strings.special_commaSpace;
         header += sCTBPTICount1 + strings.special_commaSpace;
         header += sCTBPTSCount1 + strings.special_commaSpace;
         header += sCTBPTOCount1 + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfSRecords + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfUniqueClaimants + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfClaimsWithPartners + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfUniquePartners + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfDependentsInAllClaims + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfUniqueDependents + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfNonDependentsInAllClaims + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfUniqueNonDependents + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfIndividuals + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfNewClaimantPostcodes + strings.special_commaSpace;
-        //header += Env.SHBE_Env.strings.sCountOfNewValidMappableClaimantPostcodes + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfMappableClaimantPostcodes + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sCountOfNonMappableClaimantPostcodes + strings.special_commaSpace;
-//        //header += Env.SHBE_Env.strings.sCountOfInvalidFormatClaimantPostcodes + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfSRecords + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfUniqueClaimants + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfClaimsWithPartners + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfUniquePartners + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfDependentsInAllClaims + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfUniqueDependents + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfNonDependentsInAllClaims + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfUniqueNonDependents + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfIndividuals + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfNewClaimantPostcodes + strings.special_commaSpace;
+        //header += env.SHBE_Env.strings.sCountOfNewValidMappableClaimantPostcodes + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfMappableClaimantPostcodes + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sCountOfNonMappableClaimantPostcodes + strings.special_commaSpace;
+//        //header += env.SHBE_Env.strings.sCountOfInvalidFormatClaimantPostcodes + strings.special_commaSpace;
 //        header += sTotalCount_AllPostcodeValidFormat + strings.special_commaSpace;
 //        header += sPercentageOfAllCount1_AllPostcodeValidFormat + strings.special_commaSpace;
 //        //header += sTotalCount_AllPostcodeInvalidFormat + strings.special_commaSpace;
@@ -6685,44 +6685,44 @@ public class DW_Summary extends DW_Object {
             line += filename1 + strings.special_commaSpace;
             line += getLineSingleTimeGeneric(key, summary);
             line += getPostcodeLookupDateAndFilenameLinePart(filename1, ONSPDFiles);
-            //line += summary.get(Env.SHBE_Env.strings.sCountOfClaims) + strings.special_commaSpace;
-            //line += summary.get(Env.SHBE_Env.strings.sCountOfCTBAndHBClaims) + strings.special_commaSpace;
-            //line += summary.get(Env.SHBE_Env.strings.sCountOfCTBClaims) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfNewSHBEClaims) + strings.special_commaSpace;
+            //line += summary.get(env.SHBE_Env.strings.sCountOfClaims) + strings.special_commaSpace;
+            //line += summary.get(env.SHBE_Env.strings.sCountOfCTBAndHBClaims) + strings.special_commaSpace;
+            //line += summary.get(env.SHBE_Env.strings.sCountOfCTBClaims) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfNewSHBEClaims) + strings.special_commaSpace;
             for (int i = 1; i < nPSI; i++) {
-                line += summary.get(Env.SHBE_Env.strings.sCountOfNewSHBEClaimsPSI + i) + strings.special_commaSpace;
+                line += summary.get(env.SHBE_Env.strings.sCountOfNewSHBEClaimsPSI + i) + strings.special_commaSpace;
             }
-            line += summary.get(Env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantWasClaimantBefore) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantIsNew) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfClaimantsInMultipleClaimsInAMonth) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfPartnersInMultipleClaimsInAMonth) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfNonDependentsInMultipleClaimsInAMonth) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantWasClaimantBefore) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantWasPartnerBefore) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfNewSHBEClaimsWhereClaimantIsNew) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfClaimsWithClaimantsThatArePartnersInAnotherClaim) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfClaimsWithPartnersThatArePartnersInAnotherClaim) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfClaimantsInMultipleClaimsInAMonth) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfPartnersInMultipleClaimsInAMonth) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfNonDependentsInMultipleClaimsInAMonth) + strings.special_commaSpace;
             line += summary.get(sHBPTICount1) + strings.special_commaSpace;
             line += summary.get(sHBPTSCount1) + strings.special_commaSpace;
             line += summary.get(sHBPTOCount1) + strings.special_commaSpace;
             line += summary.get(sCTBPTICount1) + strings.special_commaSpace;
             line += summary.get(sCTBPTSCount1) + strings.special_commaSpace;
             line += summary.get(sCTBPTOCount1) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfSRecords) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfUniqueClaimants) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfClaimsWithPartners) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfUniquePartners) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfDependentsInAllClaims) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfUniqueDependents) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfNonDependentsInAllClaims) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfUniqueNonDependents) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfIndividuals) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfNewClaimantPostcodes) + strings.special_commaSpace;
-            //line += summary.get(Env.SHBE_Env.strings.sCountOfNewValidMappableClaimantPostcodes) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfMappableClaimantPostcodes) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sCountOfNonMappableClaimantPostcodes) + strings.special_commaSpace;
-            //line += summary.get(Env.SHBE_Env.strings.sCountOfInvalidFormatClaimantPostcodes) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfSRecords) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfUniqueClaimants) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfClaimsWithPartners) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfUniquePartners) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfDependentsInAllClaims) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfUniqueDependents) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfNonDependentsInAllClaims) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfUniqueNonDependents) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfIndividuals) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfNewClaimantPostcodes) + strings.special_commaSpace;
+            //line += summary.get(env.SHBE_Env.strings.sCountOfNewValidMappableClaimantPostcodes) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfMappableClaimantPostcodes) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sCountOfNonMappableClaimantPostcodes) + strings.special_commaSpace;
+            //line += summary.get(env.SHBE_Env.strings.sCountOfInvalidFormatClaimantPostcodes) + strings.special_commaSpace;
 //            line += summary.get(sTotalCount_AllPostcodeValidFormat) + strings.special_commaSpace;
 //            line += summary.get(sPercentageOfAllCount1_AllPostcodeValidFormat) + strings.special_commaSpace;
 //            line += summary.get(sTotalCount_AllPostcodeInvalidFormat) + strings.special_commaSpace;
@@ -6764,7 +6764,7 @@ public class DW_Summary extends DW_Object {
             int nPSI
     ) {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Env.SHBE_Env.oe.Files.getInputONSPDFiles();
+        ONSPDFiles = env.SHBE_Env.oe.Files.getInputONSPDFiles();
         String name;
         name = "SingleTimeHouseholdSizes";
         PrintWriter pw;
@@ -6846,7 +6846,7 @@ public class DW_Summary extends DW_Object {
         header += strings.sTotal_WeeklyEligibleRentAmount + strings.special_commaSpace;
         header += strings.sTotalCount_WeeklyEligibleRentAmountNonZero + strings.special_commaSpace;
         header += strings.sTotalCount_WeeklyEligibleRentAmountZero + strings.special_commaSpace;
-        header += Env.SHBE_Env.strings.sAverage_NonZero_WeeklyEligibleRentAmount + strings.special_commaSpace;
+        header += env.SHBE_Env.strings.sAverage_NonZero_WeeklyEligibleRentAmount + strings.special_commaSpace;
         header += strings.sTotal_HBWeeklyEligibleRentAmount + strings.special_commaSpace;
         header += strings.sTotalCount_HBWeeklyEligibleRentAmountNonZero + strings.special_commaSpace;
         header += strings.sTotalCount_HBWeeklyEligibleRentAmountZero + strings.special_commaSpace;
@@ -6930,7 +6930,7 @@ public class DW_Summary extends DW_Object {
             line += summary.get(strings.sTotal_WeeklyEligibleRentAmount) + strings.special_commaSpace;
             line += summary.get(strings.sTotalCount_WeeklyEligibleRentAmountNonZero) + strings.special_commaSpace;
             line += summary.get(strings.sTotalCount_WeeklyEligibleRentAmountZero) + strings.special_commaSpace;
-            line += summary.get(Env.SHBE_Env.strings.sAverage_NonZero_WeeklyEligibleRentAmount) + strings.special_commaSpace;
+            line += summary.get(env.SHBE_Env.strings.sAverage_NonZero_WeeklyEligibleRentAmount) + strings.special_commaSpace;
             line += summary.get(strings.sTotal_HBWeeklyEligibleRentAmount) + strings.special_commaSpace;
             line += summary.get(strings.sTotalCount_HBWeeklyEligibleRentAmountNonZero) + strings.special_commaSpace;
             line += summary.get(strings.sTotalCount_HBWeeklyEligibleRentAmountZero) + strings.special_commaSpace;
@@ -7122,10 +7122,10 @@ public class DW_Summary extends DW_Object {
                 header += strings.sTotal_Income + nameSuffix + strings.special_commaSpace;
                 header += strings.sTotalCount_IncomeNonZero + nameSuffix + strings.special_commaSpace;
                 header += strings.sTotalCount_IncomeZero + nameSuffix + strings.special_commaSpace;
-                header += Env.SHBE_Env.strings.sAverage_NonZero_Income + nameSuffix + strings.special_commaSpace;
+                header += env.SHBE_Env.strings.sAverage_NonZero_Income + nameSuffix + strings.special_commaSpace;
                 header += strings.sTotal_WeeklyEligibleRentAmount + nameSuffix + strings.special_commaSpace;
                 header += strings.sTotalCount_WeeklyEligibleRentAmountNonZero + nameSuffix + strings.special_commaSpace;
-                header += Env.SHBE_Env.strings.sAverage_NonZero_WeeklyEligibleRentAmount + nameSuffix + strings.special_commaSpace;
+                header += env.SHBE_Env.strings.sAverage_NonZero_WeeklyEligibleRentAmount + nameSuffix + strings.special_commaSpace;
                 if (sHB_CTB.equalsIgnoreCase(strings.sAll)) {
                     for (int i = 1; i < nTT; i++) {
                         header += strings.sTotal_IncomeTT[i] + nameSuffix + strings.special_commaSpace;
@@ -7188,10 +7188,10 @@ public class DW_Summary extends DW_Object {
                     line += summary.get(strings.sTotal_Income + nameSuffix) + strings.special_commaSpace;
                     line += summary.get(strings.sTotalCount_IncomeNonZero + nameSuffix) + strings.special_commaSpace;
                     line += summary.get(strings.sTotalCount_IncomeZero + nameSuffix) + strings.special_commaSpace;
-                    line += summary.get(Env.SHBE_Env.strings.sAverage_NonZero_Income + nameSuffix) + strings.special_commaSpace;
+                    line += summary.get(env.SHBE_Env.strings.sAverage_NonZero_Income + nameSuffix) + strings.special_commaSpace;
                     line += summary.get(strings.sTotal_WeeklyEligibleRentAmount + nameSuffix) + strings.special_commaSpace;
                     line += summary.get(strings.sTotalCount_WeeklyEligibleRentAmountNonZero + nameSuffix) + strings.special_commaSpace;
-                    line += summary.get(Env.SHBE_Env.strings.sAverage_NonZero_WeeklyEligibleRentAmount + nameSuffix) + strings.special_commaSpace;
+                    line += summary.get(env.SHBE_Env.strings.sAverage_NonZero_WeeklyEligibleRentAmount + nameSuffix) + strings.special_commaSpace;
                     if (sHB_CTB.equalsIgnoreCase(strings.sAll)) {
                         for (int i = 1; i < nTT; i++) {
                             line += summary.get(strings.sTotal_IncomeTT[i] + nameSuffix) + strings.special_commaSpace;

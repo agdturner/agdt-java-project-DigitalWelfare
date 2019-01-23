@@ -47,7 +47,7 @@ public class DW_UO_Set extends DW_Object implements Serializable {
     public DW_UO_Set(DW_Environment env) {
         super(env);
         Map = new HashMap<>();
-        UO_Handler = Env.getUO_Handler();
+        UO_Handler = this.env.getUO_Handler();
     }
 
     /**
@@ -68,9 +68,9 @@ public class DW_UO_Set extends DW_Object implements Serializable {
         super(env);
         String methodName;
         methodName = "DW_UO_Set(...)";
-        Env.ge.log("<" + methodName + ">", true);
-        Env.ge.log("filename " + filename, true);
-        UO_Handler = Env.getUO_Handler();
+        this.env.ge.log("<" + methodName + ">", true);
+        this.env.ge.log("filename " + filename, true);
+        UO_Handler = this.env.getUO_Handler();
         File dirIn;
         dirIn = files.getInputUnderOccupiedDir();
         File dirOut;
@@ -89,7 +89,7 @@ public class DW_UO_Set extends DW_Object implements Serializable {
             Map = UO_Handler.loadInputData(dirIn, filename);
             Generic_IO.writeObject(this, fOut);
         }
-        Env.ge.log("</" + methodName + ">", true);
+        this.env.ge.log("</" + methodName + ">", true);
     }
 
     /**

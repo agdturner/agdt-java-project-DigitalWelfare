@@ -1327,8 +1327,8 @@ public class DW_TenancyChangesUO extends DW_Object {
             year = SHBE_Handler.getYear(SHBEFilenames[i]);
             month = SHBE_Handler.getMonthNumber(SHBEFilenames[i]);
             yM3 = SHBE_Handler.getYM3(SHBEFilenames[i]);
-            SHBE_Records = SHBE_Handler.getRecords(yM3, Env.HOOME);
-            records = SHBE_Records.getRecords(Env.HOOME);
+            SHBE_Records = SHBE_Handler.getRecords(yM3, env.HOOME);
+            records = SHBE_Records.getRecords(env.HOOME);
             ite = ClaimIDs.iterator();
             while (ite.hasNext()) {
                 ClaimID = ite.next();
@@ -1792,7 +1792,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             ArrayList<Integer> include,
             boolean includePreUnderOccupancyValues
     ) {
-        Env.ge.log("<getTable>", true);
+        env.ge.log("<getTable>", true);
         Object[] result;
         result = new Object[12];
         ValidPostcodes = new HashSet<>();
@@ -1963,9 +1963,9 @@ public class DW_TenancyChangesUO extends DW_Object {
         TreeMap<String, ArrayList<Integer>> includes;
         includes = SHBE_Handler.getIncludes();
         ArrayList<Integer> MonthlyUO;
-        MonthlyUO = includes.get(Env.SHBE_Env.strings.sIncludeMonthlySinceApril2013);
+        MonthlyUO = includes.get(env.SHBE_Env.strings.sIncludeMonthlySinceApril2013);
         ArrayList<Integer> All;
-        All = includes.get(Env.SHBE_Env.strings.sIncludeAll);
+        All = includes.get(env.SHBE_Env.strings.sIncludeAll);
         ArrayList<Integer> NotMonthlyUO;
         NotMonthlyUO = new ArrayList<>();
         NotMonthlyUO.addAll(All);
@@ -2011,10 +2011,10 @@ public class DW_TenancyChangesUO extends DW_Object {
         CouncilUOSet1 = CouncilUOSets.get(YM31);
         if (CouncilUOSet1 != null) {
             RSLUOSet1 = RSLUOSets.get(YM31);
-            SHBE_Records1 = SHBE_Handler.getRecords(YM31, Env.HOOME);
+            SHBE_Records1 = SHBE_Handler.getRecords(YM31, env.HOOME);
         }
         HashMap<SHBE_ID, SHBE_Record> Records1;
-        Records1 = SHBE_Records1.getRecords(Env.HOOME);
+        Records1 = SHBE_Records1.getRecords(env.HOOME);
         SHBE_Record Record1;
         CouncilUOSet1 = CouncilUOSets.get(YM31);
         HashMap<SHBE_ID, DW_UO_Record> CouncilUOSetMap1;
@@ -3058,7 +3058,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             CouncilUOSet1 = CouncilUOSets.get(YM31);
             if (CouncilUOSet1 != null) {
                 RSLUOSet1 = RSLUOSets.get(YM31);
-                SHBE_Records1 = SHBE_Handler.getRecords(YM31, Env.HOOME);
+                SHBE_Records1 = SHBE_Handler.getRecords(YM31, env.HOOME);
                 initFirst = true;
                 //arrearsDiffs.put(YM3, 0.0d);
                 //arrearsDiffCounts.put(YM3, 0.0d);
@@ -3066,7 +3066,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             header += YM31;
         }
         //TreeMap<String, SHBE_Record> aRecords;
-        Records1 = SHBE_Records1.getRecords(Env.HOOME);
+        Records1 = SHBE_Records1.getRecords(env.HOOME);
         HashMap<SHBE_ID, SHBE_Record> Records0;
         Records0 = null;
 //        HashMap<SHBE_ID, SHBE_Record> cRecords;
@@ -3084,8 +3084,8 @@ public class DW_TenancyChangesUO extends DW_Object {
 
         HashMap<SHBE_ID, SHBE_PersonID> ClaimIDToClaimantPersonIDLookup;
         HashMap<SHBE_ID, SHBE_PersonID> ClaimIDToPartnerPersonIDLookup;
-        ClaimIDToClaimantPersonIDLookup = SHBE_Records1.getClaimIDToClaimantPersonIDLookup(Env.HOOME);
-        ClaimIDToPartnerPersonIDLookup = SHBE_Records1.getClaimIDToPartnerPersonIDLookup(Env.HOOME);
+        ClaimIDToClaimantPersonIDLookup = SHBE_Records1.getClaimIDToClaimantPersonIDLookup(env.HOOME);
+        ClaimIDToPartnerPersonIDLookup = SHBE_Records1.getClaimIDToPartnerPersonIDLookup(env.HOOME);
 
         // Add TT of all ClaimRefs to result
         Object[] processResult;
@@ -3436,9 +3436,9 @@ public class DW_TenancyChangesUO extends DW_Object {
             YM31 = SHBE_Handler.getYM3(SHBEFilename1);
             year1 = SHBE_Handler.getYear(SHBEFilename1);
             month1 = SHBE_Handler.getMonthNumber(SHBEFilename1);
-            SHBE_Records1 = SHBE_Handler.getRecords(YM31, Env.HOOME);
+            SHBE_Records1 = SHBE_Handler.getRecords(YM31, env.HOOME);
             //cRecords = Records0;
-            Records1 = SHBE_Records1.getRecords(Env.HOOME);
+            Records1 = SHBE_Records1.getRecords(env.HOOME);
             CouncilUOSet1 = CouncilUOSets.get(YM31);
             RSLUOSet1 = RSLUOSets.get(YM31);
             header += strings.special_commaSpace + YM31;
@@ -4018,7 +4018,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             TotalCount_RSLEffectedDependents += m;
         }
 
-        Env.ge.log("From " + YM3Start + " to " + YM3End + " there were "
+        env.ge.log("From " + YM3Start + " to " + YM3End + " there were "
                 + "the following counts of claims and individuals effected by "
                 + "UnderOccupancy:", true);
         GeneralStatistics.put(sUO_To_LeftSHBEAtSomePoint,
@@ -4476,7 +4476,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         GeneralStatistics.put(
                 sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased,
                 BigDecimal.valueOf(Groups.get(sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased).size()));
-        Env.ge.log("</getTable>", true);
+        env.ge.log("</getTable>", true);
     }
 
     /**
@@ -6934,7 +6934,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             String endMonth,
             String endYear
     ) {
-        Env.ge.log("<WriteTenancyChangeTables>", true);
+        env.ge.log("<WriteTenancyChangeTables>", true);
         String Header;
         Header = (String) table[0];
         TreeMap<String, String> tableValues;
@@ -6963,7 +6963,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         String dirName;
         dirName = startMonth + startYear + "_To_" + endMonth + endYear;
 
-        Env.ge.log("<WriteTimeStatistics>", true);
+        env.ge.log("<WriteTimeStatistics>", true);
         PrintWriter pw5;
         pw5 = getPrintWriter("__TimeStatistics", dirName);
         pw5.println("Date, " + sTotalCount_CumulativeUniqueClaims
@@ -7132,7 +7132,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             }
         }
         pw5.close();
-        Env.ge.log("</WriteTimeStatistics>", true);
+        env.ge.log("</WriteTimeStatistics>", true);
 
         TreeMap<String, String> GroupNameDescriptions;
         GroupNameDescriptions = getGroupNameDescriptions(groups.keySet());
@@ -7152,7 +7152,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                 + sTotalCount_InArrearsOver500 + strings.special_commaSpace
                 + sTotalCount_UnderOccupancy;
 
-        Env.ge.log("<WriteGeneralStatistics>", true);
+        env.ge.log("<WriteGeneralStatistics>", true);
         String GeneralStatisticsHeader;
         GeneralStatisticsHeader = "GeneralStatistic, Value, GeneralStatisticDescription";
         pw5 = getPrintWriter(
@@ -7537,7 +7537,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         writeLine(sPermanantlyLeftUOButRemainedInSHBE_HouseholdSizeIncreased,
                 generalStatistics, generalStatisticsDescriptions, pw5);
         pw5.close();
-        Env.ge.log("</WriteGeneralStatistics>", true);
+        env.ge.log("</WriteGeneralStatistics>", true);
 
         HashSet<SHBE_ID> ClaimIDsCheck;
         ClaimIDsCheck = new HashSet<>();
@@ -7558,7 +7558,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         //Iterator<String> ite;
         int counter;
 
-        Env.ge.log("Group Size, Number in the group that have not previously been counted, Group Name", true);
+        env.ge.log("Group Size, Number in the group that have not previously been counted, Group Name", true);
 
         iteG = GroupNameDescriptions.keySet().iterator();
         while (iteG.hasNext()) {
@@ -7608,7 +7608,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                                     ClaimRef,
                                     pwAggregateStatistics2);
                         } else {
-                            Env.ge.log("ClaimRef " + ClaimRef
+                            env.ge.log("ClaimRef " + ClaimRef
                                     + " is in group " + GroupName
                                     + " and is in one of the not "
                                     + "expected other groups "
@@ -7643,7 +7643,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                                         ClaimRef,
                                         pwAggregateStatistics2);
                             } else {
-                                Env.ge.log("ClaimRef " + ClaimRef
+                                env.ge.log("ClaimRef " + ClaimRef
                                         + " is in group " + GroupName
                                         + " and is in one of the not "
                                         + "expected other groups "
@@ -7693,7 +7693,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                                             ClaimRef,
                                             pwAggregateStatistics2);
                                 } else {
-                                    Env.ge.log("ClaimRef " + ClaimRef
+                                    env.ge.log("ClaimRef " + ClaimRef
                                             + " is in group " + GroupName
                                             + " and is in one of the not "
                                             + "expected other groups "
@@ -7758,7 +7758,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                                                 ClaimRef,
                                                 pwAggregateStatistics2);
                                     } else {
-                                        Env.ge.log("ClaimRef " + ClaimRef
+                                        env.ge.log("ClaimRef " + ClaimRef
                                                 + " is in group " + GroupName
                                                 + " and is in one of the not "
                                                 + "expected other groups "
@@ -7838,7 +7838,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                                                     ClaimRef,
                                                     pwAggregateStatistics2);
                                         } else {
-                                            Env.ge.log("ClaimRef " + ClaimRef
+                                            env.ge.log("ClaimRef " + ClaimRef
                                                     + " is in group " + GroupName
                                                     + " and is in one of the not "
                                                     + "expected other groups "
@@ -7933,7 +7933,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                                                         ClaimRef,
                                                         pwAggregateStatistics2);
                                             } else {
-                                                Env.ge.log("ClaimRef " + ClaimRef
+                                                env.ge.log("ClaimRef " + ClaimRef
                                                         + " is in group " + GroupName
                                                         + " and is in one of the not "
                                                         + "expected other groups "
@@ -7973,7 +7973,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                                         ClaimRef,
                                         pwAggregateStatistics2);
                             } else {
-                                Env.ge.log("ClaimRef " + ClaimRef
+                                env.ge.log("ClaimRef " + ClaimRef
                                         + " is in group " + GroupName
                                         + " and is in one of the not "
                                         + "expected other groups "
@@ -8009,7 +8009,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                                         ClaimRef,
                                         pwAggregateStatistics2);
                             } else {
-                                Env.ge.log("ClaimRef " + ClaimRef
+                                env.ge.log("ClaimRef " + ClaimRef
                                         + " is in group " + GroupName
                                         + " and is in one of the not "
                                         + "expected other groups "
@@ -8101,7 +8101,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                                                         ClaimRef,
                                                         pwAggregateStatistics2);
                                             } else {
-                                                Env.ge.log("ClaimRef " + ClaimRef
+                                                env.ge.log("ClaimRef " + ClaimRef
                                                         + " is in group " + GroupName
                                                         + " and is in one of the not "
                                                         + "expected other groups "
@@ -8141,7 +8141,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                                         ClaimRef,
                                         pwAggregateStatistics2);
                             } else {
-                                Env.ge.log("ClaimRef " + ClaimRef
+                                env.ge.log("ClaimRef " + ClaimRef
                                         + " is in group " + GroupName
                                         + " and is in one of the not "
                                         + "expected other groups "
@@ -8149,7 +8149,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                             }
                         }
                     } else {
-//                                                            Env.ge.log("ClaimRef " + aClaimRef + " already added to"
+//                                                            env.ge.log("ClaimRef " + aClaimRef + " already added to"
 //                                                                    + " another group and in " + groupNameDescription);
 //                                                            writeRecordCollectionToStdOut(
 //                                                                    tableValues,
@@ -8202,7 +8202,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                             pwAggregateStatistics2);
                 }
             }
-            Env.ge.log(Group.size() + ", " + counter + ", " + GroupNameDescription, true);
+            env.ge.log(Group.size() + ", " + counter + ", " + GroupNameDescription, true);
             pw.close();
             pwAggregateStatistics.close();
             pw2.close();
@@ -8238,7 +8238,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                     pw);
         }
         pw.close();
-        Env.ge.log("</WriteTenancyChangeTables>", true);
+        env.ge.log("</WriteTenancyChangeTables>", true);
     }
 
     protected void writeAggregateRecords(

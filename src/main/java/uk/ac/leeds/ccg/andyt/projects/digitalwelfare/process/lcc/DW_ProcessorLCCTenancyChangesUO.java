@@ -39,7 +39,7 @@ public class DW_ProcessorLCCTenancyChangesUO extends DW_ProcessorLCC {
         ArrayList<Integer> include;
         include = SHBE_Handler.getIncludeMonthlyUO();
         DW_TenancyChangesUO UOTTC = new DW_TenancyChangesUO(
-                Env,
+                env,
                 handleOutOfMemoryError);
         int index;
         String startMonth;
@@ -60,14 +60,14 @@ public class DW_ProcessorLCCTenancyChangesUO extends DW_ProcessorLCC {
         while (iteB.hasNext()) {
             boolean includePreUnderOccupancyValues;
             includePreUnderOccupancyValues = iteB.next();
-            Env.ge.log("<includePreUnderOccupancyValues " 
+            env.ge.log("<includePreUnderOccupancyValues " 
                     + includePreUnderOccupancyValues + ">", true);
             table = UOTTC.getTable(UO_Data, SHBEFilenames, include,
                     includePreUnderOccupancyValues);
             UOTTC.writeTenancyChangeTables(table,
                     includePreUnderOccupancyValues, startMonth, startYear, 
                     endMonth, endYear);
-            Env.ge.log("</includePreUnderOccupancyValues " 
+            env.ge.log("</includePreUnderOccupancyValues " 
                     + includePreUnderOccupancyValues + ">", true);
         }
     }

@@ -104,7 +104,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         HashMap<Boolean, ArrayList<Integer>> regulatedGroups;
         HashMap<Boolean, ArrayList<Integer>> unregulatedGroups;
 
-        PTs = Env.SHBE_Env.strings.getPaymentTypes();
+        PTs = env.SHBE_Env.strings.getPaymentTypes();
 //            PTs.remove(strings.sPaymentTypeAll);
 //            PTs.remove(strings.sPaymentTypeIn);
 //            PTs.remove(strings.sPaymentTypeSuspended);
@@ -226,7 +226,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             HashMap<Boolean, ArrayList<Integer>> regulatedGroups,
             HashMap<Boolean, ArrayList<Integer>> unregulatedGroups,
             TreeMap<String, ArrayList<Integer>> includes) {
-        Env.ge.log("<doAggregation>", true);
+        env.ge.log("<doAggregation>", true);
         int CensusYear = 2011;
         // Get Lookup
         TreeMap<String, TreeMap<String, String>> LookupsFromPostcodeToLevelCode;
@@ -237,7 +237,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         while (tPTIte.hasNext()) {
             String aPT;
             aPT = tPTIte.next();
-            Env.ge.log("<" + aPT + ">", true);
+            env.ge.log("<" + aPT + ">", true);
             //Generic_UKPostcode_Handler.isValidPostcodeForm(String postcode)
             iteB = bArray.iterator();
             while (iteB.hasNext()) {
@@ -250,7 +250,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 //                    if (false) {
                         doCouncil = true;
                         doRSL = true;
-                        Env.ge.log("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
+                        env.ge.log("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
                         aggregateClaims(
                                 doUnderOccupied,
                                 doCouncil,
@@ -269,10 +269,10 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                 types,
                                 distanceTypes,
                                 distances);
-                        Env.ge.log("</aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
+                        env.ge.log("</aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
                         doCouncil = true;
                         doRSL = false;
-                        Env.ge.log("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
+                        env.ge.log("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
                         aggregateClaims(
                                 doUnderOccupied,
                                 doCouncil,
@@ -291,10 +291,10 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                 types,
                                 distanceTypes,
                                 distances);
-                        Env.ge.log("</aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
+                        env.ge.log("</aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
                         doCouncil = false;
                         doRSL = true;
-                        Env.ge.log("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
+                        env.ge.log("<aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
                         aggregateClaims(
                                 doUnderOccupied,
                                 doCouncil,
@@ -313,12 +313,12 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                 types,
                                 distanceTypes,
                                 distances);
-                        Env.ge.log("</aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
+                        env.ge.log("</aggregateClaimants(doCouncil " + doCouncil + ", doRSL " + doRSL + ")>", true);
                     }
                 } else {
                     doCouncil = false;
                     doRSL = false;
-                    Env.ge.log("<aggregateClaimants(doUnderOccupied " + doUnderOccupied + ")>", true);
+                    env.ge.log("<aggregateClaimants(doUnderOccupied " + doUnderOccupied + ")>", true);
                     aggregateClaims(
                             doUnderOccupied,
                             doCouncil,
@@ -337,12 +337,12 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                             types,
                             distanceTypes,
                             distances);
-                    Env.ge.log("</aggregateClaimants(doUnderOccupied " + doUnderOccupied + ")>", true);
+                    env.ge.log("</aggregateClaimants(doUnderOccupied " + doUnderOccupied + ")>", true);
                 }
             }
-            Env.ge.log("</" + aPT + ">", true);
+            env.ge.log("</" + aPT + ">", true);
         }
-        Env.ge.log("</doAggregation>", true);
+        env.ge.log("</doAggregation>", true);
     }
 
     /**
@@ -443,7 +443,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 totalCouncil.add(CTBRefID);
             }
         }
-        Env.ge.log("Number of Council tenants effected by underoccupancy " + totalCouncil.size(), true);
+        env.ge.log("Number of Council tenants effected by underoccupancy " + totalCouncil.size(), true);
         TreeMap<String, DW_UO_Set> tRSLSets;
         tRSLSets = (TreeMap<String, DW_UO_Set>) UnderOccupiedData[1];
         HashSet<SHBE_ID> totalRSL;
@@ -461,9 +461,9 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 totalRSL.add(CTBRefID);
             }
         }
-        Env.ge.log("Number of RSL tenants effected by underoccupancy " + totalRSL.size(), true);
+        env.ge.log("Number of RSL tenants effected by underoccupancy " + totalRSL.size(), true);
         totalCouncil.addAll(totalRSL);
-        Env.ge.log("Number of Council tenants effected by underoccupancy " + totalCouncil.size(), true);
+        env.ge.log("Number of Council tenants effected by underoccupancy " + totalCouncil.size(), true);
     }
 
     /**
@@ -488,7 +488,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             YM3 = ite.next();
             DW_UO_SetAll = result.get(YM3);
             if (DW_UO_SetAll == null) {
-                DW_UO_SetAll = new DW_UO_Set(Env);
+                DW_UO_SetAll = new DW_UO_Set(env);
                 result.put(YM3, DW_UO_SetAll);
             }
             DW_UO_SetCouncil = DW_UO_SetsCouncil.get(YM3);
@@ -499,7 +499,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             YM3 = ite.next();
             DW_UO_SetAll = result.get(YM3);
             if (DW_UO_SetAll == null) {
-                DW_UO_SetAll = new DW_UO_Set(Env);
+                DW_UO_SetAll = new DW_UO_Set(env);
                 result.put(YM3, DW_UO_SetAll);
             }
             DW_UO_SetRSL = DW_UO_SetsRSL.get(YM3);
@@ -517,9 +517,9 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         }
         result = new HashMap<>();
         SHBE_Records SHBE_Records;
-        SHBE_Records = SHBE_Handler.getRecords(YM3, Env.HOOME);
+        SHBE_Records = SHBE_Handler.getRecords(YM3, env.HOOME);
         HashMap<SHBE_ID, SHBE_Record> records;
-        records = SHBE_Records.getRecords(Env.HOOME);
+        records = SHBE_Records.getRecords(env.HOOME);
         Iterator<SHBE_ID> ite;
         ite = records.keySet().iterator();
         SHBE_ID ClaimID;
@@ -539,7 +539,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         if (ClaimIDToPostcodeIDLookups.containsKey(key)) {
             return ClaimIDToPostcodeIDLookups.get(key);
         }
-        r = Env.getSHBE_Handler().getRecords(YM3, Env.HOOME).getClaimIDToPostcodeIDLookup(Env.HOOME);
+        r = env.getSHBE_Handler().getRecords(YM3, env.HOOME).getClaimIDToPostcodeIDLookup(env.HOOME);
         ClaimIDToPostcodeIDLookups.put(key, r);
         return r;
     }
@@ -584,18 +584,18 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         if (reportTenancyTransitionBreaks) {
             dirOut2 = new File(
                     dirOut2,
-                    Env.SHBE_Env.strings.sIncludingTenancyTransitionBreaks);
+                    env.SHBE_Env.strings.sIncludingTenancyTransitionBreaks);
         } else {
             dirOut2 = new File(
                     dirOut2,
-                    Env.SHBE_Env.strings.sIncludingTenancyTransitionBreaksNo);
+                    env.SHBE_Env.strings.sIncludingTenancyTransitionBreaksNo);
         }
         dirOut2.mkdirs();
         File f;
         f = new File(
                 dirOut2,
                 name);
-        Env.ge.log("Write " + f, true);
+        env.ge.log("Write " + f, true);
         result = Generic_IO.getPrintWriter(f, false);
         return result;
     }
@@ -676,7 +676,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             ONSPD_YM3 YM30;
             YM30 = SHBE_Handler.getYM3(SHBEFilenames[i]);
             SHBE_Records recs0;
-            recs0 = Env.getSHBE_Handler().getRecords(YM30, Env.HOOME);
+            recs0 = env.getSHBE_Handler().getRecords(YM30, env.HOOME);
             ONSPD_YM3 YM30v;
             YM30v = recs0.getNearestYM3ForONSPDLookup();
             HashMap<SHBE_ID, SHBE_Record> records0;
@@ -765,7 +765,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 claimantTypeTenureLevelTypeAreaCounts.put(claimantType, TTLevelTypeAreaCounts);
                 claimantTypeTenureLevelTypeTenureCounts.put(claimantType, TTLevelTypeTenureCounts);
             }
-            records0 = recs0.getRecords(Env.HOOME);
+            records0 = recs0.getRecords(env.HOOME);
 
             // Init underOccupiedSets
             DW_UO_Set councilUOSet0 = null;
@@ -919,7 +919,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             tIDIndexes = new ArrayList<>();
             if (true) {
 //                ArrayList<SHBE_ID> tID_HashSet;
-//                tID_HashSet = recs0.getClaimIDToClaimantPersonIDLookup(Env.HOOME);
+//                tID_HashSet = recs0.getClaimIDToClaimantPersonIDLookup(env.HOOME);
 //                tIDIndexes.add(tID_HashSet);
             }
 
@@ -929,7 +929,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 ONSPD_YM3 YM31 = SHBE_Handler.getYM3(SHBEFilenames[i]);
                 // Load next data
                 SHBE_Records recs1;
-                recs1 = Env.getSHBE_Handler().getRecords(YM31, Env.HOOME);
+                recs1 = env.getSHBE_Handler().getRecords(YM31, env.HOOME);
                 HashMap<SHBE_ID, String> ClaimIDToPostcodeIDLookup1;
                 ClaimIDToPostcodeIDLookup1 = null;//recs1.getClaimSHBE_IDToPostcodeLookup();
                 HashMap<SHBE_ID, Integer> ClaimIDToTTLookup1;
@@ -969,12 +969,12 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 
                 if (true) {
 //                    ArrayList<SHBE_ID> tID_HashSet;
-//                    tID_HashSet = recs1.getClaimantClaimIDs(Env.HOOME);
+//                    tID_HashSet = recs1.getClaimantClaimIDs(env.HOOME);
 //                    tIDIndexes.add(tID_HashSet);
                 }
                 //records0 = (TreeMap<String, SHBE_Record>) SHBEData0[0];
                 HashMap<SHBE_ID, SHBE_Record> records1;
-                records1 = recs1.getRecords(Env.HOOME);
+                records1 = recs1.getRecords(env.HOOME);
                 /* Initialise A:
                  * output directories;
                  * claimantTypeTenureLevelTypeDirs;
@@ -1368,10 +1368,10 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                         }
                                                         double distance;
                                                         distance = Postcode_Handler.getDistanceBetweenPostcodes(
-                                                                Env.getSHBE_Handler().getPostcodeIDToPointLookup(YM30v).get(PostcodeID0),
-                                                                Env.getSHBE_Handler().getPostcodeIDToPointLookup(YM31v).get(PostcodeID1),
-                                                                Env.getSHBE_Handler().getPostcodeIDToPointLookup(YM31v).get(PostcodeID0),
-                                                                Env.getSHBE_Handler().getPostcodeIDToPointLookup(YM30v).get(PostcodeID1),
+                                                                env.getSHBE_Handler().getPostcodeIDToPointLookup(YM30v).get(PostcodeID0),
+                                                                env.getSHBE_Handler().getPostcodeIDToPointLookup(YM31v).get(PostcodeID1),
+                                                                env.getSHBE_Handler().getPostcodeIDToPointLookup(YM31v).get(PostcodeID0),
+                                                                env.getSHBE_Handler().getPostcodeIDToPointLookup(YM30v).get(PostcodeID1),
                                                                 YM30v, YM31v, PostcodeID0, PostcodeID1);
                                                         Iterator<Double> ite3;
                                                         ite3 = distances.iterator();
@@ -1533,17 +1533,17 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                             TreeMap<String, Integer> unexpectedCounts;
                             unexpectedCounts = levelUnexpectedCounts.get(level);
                             if (!unexpectedCounts.isEmpty()) {
-                                    Env.ge.log("Unexpected Counts for:"
+                                    env.ge.log("Unexpected Counts for:"
                                             + " Claimant Type " + claimantType
                                             + " Tenure " + TT
                                             + " Level " + level, true);
-                                    Env.ge.log("code,count", true);
+                                    env.ge.log("code,count", true);
                                     Iterator<String> unexpectedCountsIte;
                                     unexpectedCountsIte = unexpectedCounts.keySet().iterator();
                                     while (unexpectedCountsIte.hasNext()) {
                                         String code = unexpectedCountsIte.next();
                                         Integer count = unexpectedCounts.get(code);
-                                        Env.ge.log("" + code + ", " + count, true);
+                                        env.ge.log("" + code + ", " + count, true);
                                     }
                             }
                         }
@@ -2026,11 +2026,11 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 //        //Debug
 //        if (areaCounts == null) {
 //            // No area counts for distance
-//            Env.ge.log("No area counts for distance " + distance);
-//            Env.ge.log("claimantType " + claimantType);
-//            Env.ge.log("tenure " + tenure);
-//            Env.ge.log("level " + level);
-//            Env.ge.log("type " + type);
+//            env.ge.log("No area counts for distance " + distance);
+//            env.ge.log("claimantType " + claimantType);
+//            env.ge.log("tenure " + tenure);
+//            env.ge.log("level " + level);
+//            env.ge.log("type " + type);
 //        }
         Generic_Collections.addToTreeMapValueInteger(areaCounts, areaCode, 1);
     }

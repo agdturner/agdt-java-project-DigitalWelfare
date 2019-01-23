@@ -60,7 +60,7 @@ public class DW_Data_CAB0_Handler extends DW_Object {
             Object IDType) {
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> result;
         result = new TreeMap<>();
-        File directory = new File(Env.Files.getInputAdviceLeedsDir(),
+        File directory = new File(env.files.getInputAdviceLeedsDir(),
                 "ChapeltownCAB");
         File inputFile = new File(directory, filename);
         try {
@@ -90,9 +90,9 @@ public class DW_Data_CAB0_Handler extends DW_Object {
                         try {
                             DW_Data_CAB0_Record rec;
                             if (type == 0) {
-                                rec = new DW_Data_CAB0_Record(Env, RecordID, line, this);
+                                rec = new DW_Data_CAB0_Record(env, RecordID, line, this);
                             } else {
-                                rec = new DW_Data_CAB0_Record1(Env, RecordID, line, this);
+                                rec = new DW_Data_CAB0_Record1(env, RecordID, line, this);
                             }
                             String client_ref;
                             client_ref = rec.getClient_Ref();

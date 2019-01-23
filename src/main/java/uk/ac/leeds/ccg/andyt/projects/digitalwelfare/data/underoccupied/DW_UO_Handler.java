@@ -148,9 +148,9 @@ public class DW_UO_Handler extends DW_Object {
             }
             if (addedNewClaimIDs) {
                 Generic_IO.writeObject(ClaimIDToClaimRefLookup,
-                        Env.getSHBE_Handler().getClaimIDToClaimRefLookupFile());
+                        env.getSHBE_Handler().getClaimIDToClaimRefLookupFile());
                 Generic_IO.writeObject(ClaimRefToClaimIDLookup,
-                        Env.getSHBE_Handler().getClaimRefToClaimIDLookupFile());
+                        env.getSHBE_Handler().getClaimRefToClaimIDLookupFile());
             }
         } catch (IOException ex) {
             Logger.getLogger(DW_UO_Handler.class.getName()).log(Level.SEVERE, null, ex);
@@ -166,8 +166,8 @@ public class DW_UO_Handler extends DW_Object {
      */
     public DW_UO_Data loadUnderOccupiedReportData(boolean reload) {
         String methodName;
-        methodName = "loadUnderOccupiedReportData()";
-        Env.ge.log("<" + methodName + ">", true);
+        methodName = "loadUnderOccupiedReportData";
+        env.ge.log("<" + methodName + ">", true);
         DW_UO_Data result;
         TreeMap<ONSPD_YM3, DW_UO_Set> CouncilSets;
         CouncilSets = new TreeMap<>();
@@ -194,7 +194,7 @@ public class DW_UO_Handler extends DW_Object {
             YM3 = ite.next();
             filename = CouncilFilenames.get(YM3);
             DW_UO_Set set;
-            set = new DW_UO_Set(Env, type, filename, YM3, reload);
+            set = new DW_UO_Set(env, type, filename, YM3, reload);
             CouncilSets.put(YM3, set);
         }
         ite = RSLFilenames.keySet().iterator();
@@ -203,11 +203,11 @@ public class DW_UO_Handler extends DW_Object {
             YM3 = ite.next();
             filename = RSLFilenames.get(YM3);
             DW_UO_Set set;
-            set = new DW_UO_Set(Env, type, filename, YM3, reload);
+            set = new DW_UO_Set(env, type, filename, YM3, reload);
             RSLSets.put(YM3, set);
         }
-        result = new DW_UO_Data(Env, RSLSets, CouncilSets);
-        Env.ge.log("</" + methodName + ">", true);
+        result = new DW_UO_Data(env, RSLSets, CouncilSets);
+        env.ge.log("</" + methodName + ">", true);
         return result;
     }
 
@@ -333,7 +333,7 @@ public class DW_UO_Handler extends DW_Object {
             s = yearAll + underOccupiedReportForUniversityString + "Month " + i;
 //            String filename;
 //            filename = s + councilEndFilename;
-//            Env.getFiles().getInputUnderOccupiedDir();
+//            env.getFiles().getInputUnderOccupiedDir();
             CouncilFilenames.put(new ONSPD_YM3(ym), s + councilEndFilename);
             RSLFilenames.put(new ONSPD_YM3(ym), s + RSLEndFilename2);
         }

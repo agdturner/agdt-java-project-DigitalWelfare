@@ -54,12 +54,12 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                 "RentArrearsAll" + files.getDefaultBinaryFileExtension());
         DW_RentArrearsUO RentArrearsUO;
         if (newData) {
-            RentArrearsUO = new DW_RentArrearsUO(Env);
+            RentArrearsUO = new DW_RentArrearsUO(env);
             Generic_IO.writeObject(RentArrearsUO, f);
         } else if (f.exists()) {
             RentArrearsUO = (DW_RentArrearsUO) Generic_IO.readObject(f);
-            RentArrearsUO.SHBE_Handler = Env.getSHBE_Handler();
-            RentArrearsUO.UO_Data = Env.getUO_Data();
+            RentArrearsUO.SHBE_Handler = env.getSHBE_Handler();
+            RentArrearsUO.UO_Data = env.getUO_Data();
 // The following code was an attempt to automatically detect if a reload was 
 // necessary and simplify things a bit, but I didn't quite get it to work. The
 // idea was to count the number of files and compare this with the size of the 
@@ -67,11 +67,11 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
 //            int nUOSets = DW_RentArrearsUO.ClaimData.entrySet().iterator().next().getValue().InUO.size();
 //            int nUOFiles = files.getInputUnderOccupiedDir().listFiles().length / 2;
 //            if (nUOSets < nUOFiles) {
-//                DW_RentArrearsUO = new DW_RentArrearsUO(Env);
+//                DW_RentArrearsUO = new DW_RentArrearsUO(env);
 //                Generic_IO.writeObject(DW_RentArrearsUO, f);
 //            }
         } else {
-            RentArrearsUO = new DW_RentArrearsUO(Env);
+            RentArrearsUO = new DW_RentArrearsUO(env);
             Generic_IO.writeObject(RentArrearsUO, f);
         }
 
@@ -293,15 +293,15 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
         AllRANonZeroCount = 0;
 
         ArrayList<Integer> include;
-        //include = Env.getSHBE_Handler().getIncludeMonthlyUO();
-        include = Env.getSHBE_Handler().getIncludeAll();
+        //include = env.getSHBE_Handler().getIncludeMonthlyUO();
+        include = env.getSHBE_Handler().getIncludeAll();
         int i0 = include.iterator().next();
 
         String line;
 
         if (doClaims) {
 
-            Env.ge.log("Iterate over each claim first then each time period.", true);
+            env.ge.log("Iterate over each claim first then each time period.", true);
             line = "Number, ClaimID, ClaimRef, "
                     + "FirstSeenSHBEDate, LastSeenSHBEDate, "
                     + "SHBECount, "
@@ -334,7 +334,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     + "Households with young children (under 11), "
                     + "Ethnicity of Claimant, "
                     + "PostcodeFirstSeenBTDate, PostcodeLastSeenSHBEDate, PostcodeChanged";
-            Env.ge.log(line, true);
+            env.ge.log(line, true);
             pw0.println(line);
             // Iterate over each claim
             ite2 = ClaimData.keySet().iterator();
@@ -432,10 +432,10 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
 
 //            for (int j = 0; j < 17; j++) {
 //                YM3 = SHBE_Handler.getYM3(SHBEFilenames[j]);
-//                Env.ge.log("YM3 " + YM3, true);
+//                env.ge.log("YM3 " + YM3, true);
 //                SHBE_Records = SHBE_Handler.getRecords(YM3);
 //                HashMap<SHBE_ID, SHBE_Record> Records;
-//                Records = SHBE_Records.getRecords(Env.HOOME);
+//                Records = SHBE_Records.getRecords(env.HOOME);
 //                if (Records.keySet().contains(ClaimID)) {
 //                    SHBECountPriorToApril2013++;
 //                    SHBECount++;
@@ -806,14 +806,14 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     //System.out.println("IndexOfFirstBT " + IndexOfFirstBT);
                     //System.out.println("YM3 " + YM3);
                     //SHBE_Records = AllSHBE.get(YM3);
-                    SHBE_Records = SHBE_Handler.getRecords(YM3, Env.HOOME);
+                    SHBE_Records = SHBE_Handler.getRecords(YM3, env.HOOME);
                     if (SHBE_Records == null) {
-                        Env.ge.log("AllSHBE.get(YM3) is null!");
+                        env.ge.log("AllSHBE.get(YM3) is null!");
                     }
                     HashMap<SHBE_ID, SHBE_Record> Records;
-                    Records = SHBE_Records.getRecords(Env.HOOME);
+                    Records = SHBE_Records.getRecords(env.HOOME);
                     if (Records == null) {
-                        Env.ge.log("AllSHBE.get(YM3).getRecords(true) is null!");
+                        env.ge.log("AllSHBE.get(YM3).getRecords(true) is null!");
                     }
                     Record = Records.get(ClaimID);
                     if (Record != null) {
@@ -848,13 +848,13 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     }
                 }
                 if (counter % 500 == 0 || counter < 10) {
-                    Env.ge.log(line, true);
+                    env.ge.log(line, true);
                 }
                 pw0.println(line);
             }
             pw0.close();
 
-            Env.ge.log("After " + counter + " out of " + ClaimData.size(), true);
+            env.ge.log("After " + counter + " out of " + ClaimData.size(), true);
             line = "BTTotal, BTCount, BTAverage, "
                     + "BT14Total, BT14Count, BT14Average, "
                     + "BT25Total, BT25Count, BT25Average, "
@@ -863,7 +863,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     + "RADNoDHPAverage, RADPositiveNoDHPAverage, RADNegativeNoDHPAverage, "
                     + "RentArrearsMaximum, "
                     + "RentArrearsTotal, RentArrearsCount, RentArrearsNonZeroCount";
-            Env.ge.log(line, true);
+            env.ge.log(line, true);
             pw2.println(line);
             // BT
             // All
@@ -919,14 +919,14 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
             line += ", " + AllRATotal;
             line += ", " + AllRACount;
             line += ", " + AllRANonZeroCount;
-            Env.ge.log(line, true);
+            env.ge.log(line, true);
             pw2.println(line);
             counter = 0;
             pw2.close();
         }
 
         if (doMonths) {
-            Env.ge.log("Iterate over each time period first then each claim.", true);
+            env.ge.log("Iterate over each time period first then each claim.", true);
             line = "YM3, "
                     + "BTTotal, BTCount, BTAverage, "
                     + "BT14Total, BT14Count, BT14Average, "
@@ -935,7 +935,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     + "RADDHPAverage, RADPositiveDHPAverage, RADNegativeDHPAverage,"
                     + "RADNoDHPAverage, RADPositiveNoDHPAverage, RADNegativeNoDHPAverage, "
                     + "RentArrearsMaximum, RentArrearsTotal, RentArrearsCount, RentArrearsNonZeroCount";
-            Env.ge.log(line, true);
+            env.ge.log(line, true);
             pw1.println(line);
             // Iterate over each time period
             ite = include.iterator();
@@ -1100,14 +1100,14 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                 line += ", " + df.format(RATotal);
                 line += ", " + df.format(RACount);
                 line += ", " + df.format(RANonZeroCount);
-                Env.ge.log(line, true);
+                env.ge.log(line, true);
                 pw1.println(line);
             }
             pw1.close();
         }
 
 //        System.out.println("totalBT " + totalBT);
-//            Env.ge.log("</" + PT + ">");
+//            env.ge.log("</" + PT + ">");
 //        }
     }
 }

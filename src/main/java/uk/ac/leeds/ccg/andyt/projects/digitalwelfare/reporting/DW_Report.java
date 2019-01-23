@@ -57,7 +57,7 @@ public class DW_Report extends DW_HTMLPage {
         mainDirectoryName = "Report";
         reportName = "Report1";
 
-        claimantTypes = Env.Strings.getHB_CTB();
+        claimantTypes = env.strings.getHB_CTB();
 
         tenureTypeGroups = new ArrayList<>();
         tenureTypeGroups.add("all");
@@ -87,7 +87,7 @@ public class DW_Report extends DW_HTMLPage {
         distanceTypes.add("OutDistanceChurn"); // A count of all claimants that have moved out from this area.
 
         // Run for consecutive monthly data
-        includes = Env.getSHBE_Handler().getIncludes();
+        includes = env.getSHBE_Handler().getIncludes();
         includes.remove("All");
 //        includes.remove("Yearly");
 //        includes.remove("6Monthly");
@@ -136,7 +136,7 @@ public class DW_Report extends DW_HTMLPage {
                     writeEndOfMaster();
                     boolean writeDefinitions = true;
                     if (writeDefinitions) {
-                        new DW_Types(Env).run();
+                        new DW_Types(env).run();
                     }
                 }
             } else {
@@ -160,7 +160,7 @@ public class DW_Report extends DW_HTMLPage {
                 writeEndOfMaster();
                 boolean writeDefinitions = true;
                 if (writeDefinitions) {
-                    new DW_Types(Env).run();
+                    new DW_Types(env).run();
                 }
             }
         }
@@ -170,8 +170,8 @@ public class DW_Report extends DW_HTMLPage {
             boolean doUnderOccupied,
             boolean doCouncil) {
         try {
-            File dirOut = new File(Env.Files.getOutputDataDir(), baseReportDir);
-            dirOut = Env.Files.getUODir(dirOut, doUnderOccupied, doCouncil);
+            File dirOut = new File(env.files.getOutputDataDir(), baseReportDir);
+            dirOut = env.files.getUODir(dirOut, doUnderOccupied, doCouncil);
             dirOut.mkdirs();
             String pageTitle = "Results";
             File f;
@@ -187,7 +187,7 @@ public class DW_Report extends DW_HTMLPage {
 
     public void writeToMaster() {
         try {
-            File dir0 = new File(Env.Files.getOutputDataDir(), baseReportDir);
+            File dir0 = new File(env.files.getOutputDataDir(), baseReportDir);
             File dir1 = new File(dir0, levelsString);
             writeLine("<div>", masterFOS);
             writeLine("<ul>", masterFOS);
@@ -237,9 +237,9 @@ public class DW_Report extends DW_HTMLPage {
     public void write(
             boolean doUnderOccupied,
             boolean doCouncil) {
-        File dirOut = new File(Env.Files.getOutputDataDir(), baseReportDir);
+        File dirOut = new File(env.files.getOutputDataDir(), baseReportDir);
         dirOut = new File(dirOut, levelsString);
-        dirOut = Env.Files.getUODir(dirOut, doUnderOccupied, doCouncil);
+        dirOut = env.files.getUODir(dirOut, doUnderOccupied, doCouncil);
         String[] tFilenames;
         tFilenames = getFilenames();
         Iterator<String> claimantTypesIte;
@@ -498,7 +498,7 @@ public class DW_Report extends DW_HTMLPage {
         File f;
         ArrayList<String> table;
         // Total, In and Out Count Table
-        dir = new File(Env.Files.getOutputSHBEChoroplethDir(level), filepath);
+        dir = new File(env.files.getOutputSHBEChoroplethDir(level), filepath);
         f = new File(dir, name + ".txt");
         if (f.exists()) {
             writeLine("", componentFOS);
@@ -508,7 +508,7 @@ public class DW_Report extends DW_HTMLPage {
             writeTable(table, componentFOS);
         }
         // Counts By Tenure Table
-        dir = new File(Env.Files.getGeneratedSHBEDir(level, doUnderOccupied, doCouncil),
+        dir = new File(env.files.getGeneratedSHBEDir(level, doUnderOccupied, doCouncil),
                 type + "/" + claimantType + "/" + tenure);
         if (type.contains("Distance")) {
             dir = new File(dir, "" + distanceThreshold);

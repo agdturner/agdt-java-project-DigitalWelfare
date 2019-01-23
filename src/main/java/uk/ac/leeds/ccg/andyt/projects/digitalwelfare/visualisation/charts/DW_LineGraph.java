@@ -65,8 +65,8 @@ public class DW_LineGraph extends Generic_LineGraph {
 
     public DW_LineGraph(DW_Environment de) {
         this.Env = de;
-        this.Files = de.Files;
-        this.Strings = de.Strings;
+        this.Files = de.files;
+        this.Strings = de.strings;
         this.SHBE_Handler = de.getSHBE_Handler();
         this.UO_Data = de.getUO_Data();
         this.UO_Handler = de.getUO_Handler();
@@ -83,8 +83,8 @@ public class DW_LineGraph extends Generic_LineGraph {
                 true, decimalPlacePrecisionForCalculations, 
                 decimalPlacePrecisionForDisplay, rm);
         this.Env = de;
-        this.Files = de.Files;
-        this.Strings = de.Strings;
+        this.Files = de.files;
+        this.Strings = de.strings;
         this.SHBE_Handler = de.getSHBE_Handler();
         this.UO_Data = de.getUO_Data();
         this.UO_Handler = de.getUO_Handler();

@@ -52,8 +52,8 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
     public DW_IncomeAndRentSummary(DW_Environment e) {
         super(e.SHBE_Env);
         this.de = e;
-        this.df = e.Files;
-        this.ds = e.Strings;
+        this.df = e.files;
+        this.ds = e.strings;
     }
 
     /**

@@ -229,7 +229,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
         System.out.println("Load Leeds CAB Data 2012 to 2013");
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         //TreeMap<?, DW_Data_CAB2_Record> tLeedsCABData1213;
-        tLeedsCABData1213 = loadLeedsCABData(Env,
+        tLeedsCABData1213 = loadLeedsCABData(env,
                 filename,
                 Data_CAB2_Handler,
                 IDType);
@@ -821,7 +821,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 
         // Load Leeds CAB Data
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
-        tLeedsCABData = loadLeedsCABData(Env,
+        tLeedsCABData = loadLeedsCABData(env,
                 filename, Data_CAB2_Handler, IDType);
         result[0] = tLeedsCABData;
 
@@ -1250,7 +1250,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             String postcode,
             TreeMap<String, String> tLookupFromPostcodeToCensusCode) {
         ONSPD_Handler tDW_Postcode_Handler;
-        tDW_Postcode_Handler = Env.getPostcode_Handler();
+        tDW_Postcode_Handler = env.getPostcode_Handler();
         String key = "";
         if (level.equalsIgnoreCase("PostcodeDistrict")
                 || level.equalsIgnoreCase("PostcodeSector")
@@ -1298,7 +1298,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             TreeMap data,
             TreeMap<String, String> tLookupFromPostcodeToCensusCode) {
         ONSPD_Handler tDW_Postcode_Handler;
-        tDW_Postcode_Handler = Env.getPostcode_Handler();
+        tDW_Postcode_Handler = env.getPostcode_Handler();
         TreeMap<String, TreeMap<String, Integer>> result;
         result = new TreeMap<>();
         String outlet;
@@ -1816,7 +1816,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             String filename,
             DW_Data_CAB2_Handler tCAB_DataRecord2_Handler,
             Object IDType) {
-        File dir = new File(                env.Files.getGeneratedAdviceLeedsDir(),                "LeedsCAB");
+        File dir = new File(                env.files.getGeneratedAdviceLeedsDir(),                "LeedsCAB");
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> result;
         result = tCAB_DataRecord2_Handler.loadInputData(
                 dir, filename, IDType);
@@ -2142,19 +2142,19 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
 //        return DeprivationClass;
 //    }
     public void initData_CAB0_Handler() {
-        Data_CAB0_Handler = new DW_Data_CAB0_Handler(Env);
+        Data_CAB0_Handler = new DW_Data_CAB0_Handler(env);
     }
 
     public void initData_CAB1_Handler() {
-        Data_CAB1_Handler = new DW_Data_CAB1_Handler(Env);
+        Data_CAB1_Handler = new DW_Data_CAB1_Handler(env);
     }
 
     public void initData_CAB2_Handler() {
-        Data_CAB2_Handler = new DW_Data_CAB2_Handler(Env);
+        Data_CAB2_Handler = new DW_Data_CAB2_Handler(env);
     }
 
     public void initData_LCC_WRU_Handler() {
-        Data_LCC_WRU_Handler = new DW_Data_LCC_WRU_Handler(Env);
+        Data_LCC_WRU_Handler = new DW_Data_LCC_WRU_Handler(env);
     }
 
     public static TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record> getLCC_WRUData(

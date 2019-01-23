@@ -140,7 +140,7 @@ public class DW_ProcessorAdviceLeeds extends DW_ProcessorAbstract {
 
     public TreeMap<String, ONSPD_Point> getOutletsAndPoints() {
         ONSPD_Handler DW_Postcode_Handler;
-        DW_Postcode_Handler = Env.getPostcode_Handler();
+        DW_Postcode_Handler = env.getPostcode_Handler();
         TreeMap<String, ONSPD_Point> result;
         result = DW_Postcode_Handler.postcodeToPoints(getOutletsAndPostcodes(),
                 DW_Postcode_Handler.getDefaultYM3());
@@ -216,7 +216,7 @@ public class DW_ProcessorAdviceLeeds extends DW_ProcessorAbstract {
     public TreeMap<String, ONSPD_Point> getAdviceLeedsNamesAndPoints() {
         TreeMap<String, ONSPD_Point> result;
         ONSPD_Handler DW_Postcode_Handler;
-        DW_Postcode_Handler = Env.getPostcode_Handler();
+        DW_Postcode_Handler = env.getPostcode_Handler();
         result = DW_Postcode_Handler.postcodeToPoints(getAdviceLeedsNamesAndPostcodes(),
                 DW_Postcode_Handler.getDefaultYM3());
         return result;

@@ -188,7 +188,7 @@ public class DW_Types extends DW_HTMLPage {
                 + projectName + "/" + baseReportDir;
         String date = Generic_Time.getDate();
 
-        File dir = new File(Env.Files.getOutputDataDir(), baseReportDir);
+        File dir = new File(env.files.getOutputDataDir(), baseReportDir);
         dir.mkdirs();
         String reportFilename = type + ".html";
         String baseURLString1 = baseURLString0 + reportFilename;

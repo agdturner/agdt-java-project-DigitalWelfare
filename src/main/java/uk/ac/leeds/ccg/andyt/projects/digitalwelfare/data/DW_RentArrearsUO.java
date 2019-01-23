@@ -73,19 +73,19 @@ public final class DW_RentArrearsUO extends DW_Object {
      */
     void initClaimData() {
         String methodName = "initClaimData()";
-        Env.ge.log("<" + methodName + ">", true);
+        env.ge.log("<" + methodName + ">", true);
         // Declare and fill ClaimData with empty DW_Claims
         ClaimData = new HashMap<>();
         HashSet<SHBE_ID> AllCouncilUOClaimIDs;
         AllCouncilUOClaimIDs = UO_Data.getClaimIDsInCouncilUO();
-        Env.ge.log("AllCouncilUOClaimIDs.size() " + AllCouncilUOClaimIDs.size(),
+        env.ge.log("AllCouncilUOClaimIDs.size() " + AllCouncilUOClaimIDs.size(),
                 true);
         SHBE_ID ClaimID;
         Iterator<SHBE_ID> ite;
         ite = AllCouncilUOClaimIDs.iterator();
         while (ite.hasNext()) {
             ClaimID = ite.next();
-            ClaimData.put(ClaimID, new DW_Claim(Env, ClaimID));
+            ClaimData.put(ClaimID, new DW_Claim(env, ClaimID));
         }
         // Loop through and add data to ClaimData
         // Declare variables
@@ -123,11 +123,11 @@ public final class DW_RentArrearsUO extends DW_Object {
             i = includeIte.next();
             filename = SHBEFilenames[i];
             YM3 = SHBE_Handler.getYM3(filename);
-            Env.ge.log("YM3 " + YM3, true);
+            env.ge.log("YM3 " + YM3, true);
             CouncilUOSet = CouncilUOSets.get(YM3);
             if (CouncilUOSet == null) {
-                SHBE_Records = SHBE_Handler.getRecords(YM3, Env.HOOME);
-                Records = SHBE_Records.getRecords(Env.HOOME);
+                SHBE_Records = SHBE_Handler.getRecords(YM3, env.HOOME);
+                Records = SHBE_Records.getRecords(env.HOOME);
                 ite = AllCouncilUOClaimIDs.iterator();
                 while (ite.hasNext()) {
                     ClaimID = ite.next();
@@ -152,8 +152,8 @@ public final class DW_RentArrearsUO extends DW_Object {
                 HashMap<SHBE_ID, DW_UO_Record> CouncilUOMap;
                 CouncilUOMap = CouncilUOSet.getMap();
 
-                SHBE_Records = SHBE_Handler.getRecords(YM3, Env.HOOME);
-                Records = SHBE_Records.getRecords(Env.HOOME);
+                SHBE_Records = SHBE_Handler.getRecords(YM3, env.HOOME);
+                Records = SHBE_Records.getRecords(env.HOOME);
 
                 ite = AllCouncilUOClaimIDs.iterator();
                 while (ite.hasNext()) {
@@ -199,7 +199,7 @@ public final class DW_RentArrearsUO extends DW_Object {
                     } else {
                         if (CouncilUOSet.getClaimIDs().contains(ClaimID)) {
                             DW_Claim.InUO.put(i, true);
-                            Env.ge.log("ClaimID " + ClaimID + " Odd case where "
+                            env.ge.log("ClaimID " + ClaimID + " Odd case where "
                                     + "UO data exists, but claim in SHBE does "
                                     + "not.", true);
                         } else {

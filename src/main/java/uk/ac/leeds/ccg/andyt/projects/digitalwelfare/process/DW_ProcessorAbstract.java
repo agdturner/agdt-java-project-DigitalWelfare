@@ -91,7 +91,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
         File outfile = new File(dir, outputFilename);
         if (!outfile.exists()) {
             dir.mkdirs();
-            File infile = Env.SHBE_Env.oe.Files.getInputONSPDFile(YM3Nearest);
+            File infile = env.SHBE_Env.oe.Files.getInputONSPDFile(YM3Nearest);
             r = initLookupFromPostcodeToCensusCodes(infile, outfile, level,
                     CensusYear, YM3Nearest);
         } else {
@@ -217,7 +217,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
     }
 
     public TreeMap<String, Census_DeprivationDataRecord> getDeprivation_Data() {
-        File depravationDir = new File(Env.Files.getInputCensus2011AttributeDataDir("LSOA"), "England/Deprivation");
+        File depravationDir = new File(env.files.getInputCensus2011AttributeDataDir("LSOA"), "England/Deprivation");
         String deprivationFilename = "1871524.csv";
         Census_DeprivationDataHandler aDeprivation_DataHandler;
         aDeprivation_DataHandler = new Census_DeprivationDataHandler();

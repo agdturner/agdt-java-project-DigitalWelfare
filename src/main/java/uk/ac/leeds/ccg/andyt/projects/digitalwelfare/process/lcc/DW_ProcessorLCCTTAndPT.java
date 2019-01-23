@@ -156,7 +156,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
 //            // <Debug to skip to a particular output creation>
 //            DoUnderOccupiedData = false;
 //            // </Debug to skip to a particular output creation>
-            Env.ge.log("<DoUnderOccupiedData " + DoUnderOccupiedData + ">", true);
+            env.ge.log("<DoUnderOccupiedData " + DoUnderOccupiedData + ">", true);
             if (DoUnderOccupiedData) {
                 TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUOSets;
                 CouncilUOSets = UO_Data.getCouncilUOSets();
@@ -167,33 +167,33 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                         CouncilUOSets,
                         RSLUOSets);
                 if (DoPostcodeChanges) {
-                    Env.ge.log("<DoPostcodeChanges>", true);
+                    env.ge.log("<DoPostcodeChanges>", true);
                     iteB = b.iterator();
                     while (iteB.hasNext()) {
                         boolean CheckPreviousTenancyType;
                         CheckPreviousTenancyType = iteB.next();
-                        Env.ge.log("<CheckPreviousTenancyType " + CheckPreviousTenancyType + ">", true);
+                        env.ge.log("<CheckPreviousTenancyType " + CheckPreviousTenancyType + ">", true);
                         iteB2 = b.iterator();
                         while (iteB2.hasNext()) {
                             boolean ReportTenancyTransitionBreaks;
                             ReportTenancyTransitionBreaks = iteB2.next();
-                            Env.ge.log("<ReportTenancyTransitionBreaks " + ReportTenancyTransitionBreaks + ">", true);
+                            env.ge.log("<ReportTenancyTransitionBreaks " + ReportTenancyTransitionBreaks + ">", true);
                             iteB5 = b.iterator();
                             while (iteB5.hasNext()) {
                                 boolean PostcodeChange;
                                 PostcodeChange = iteB5.next();
-                                Env.ge.log("<PostcodeChange " + PostcodeChange + ">", true);
+                                env.ge.log("<PostcodeChange " + PostcodeChange + ">", true);
                                 iteB6 = b.iterator();
                                 while (iteB6.hasNext()) {
                                     boolean CheckPreviousPostcode;
                                     CheckPreviousPostcode = iteB6.next();
-                                    Env.ge.log("<CheckPreviousPostcode " + CheckPreviousPostcode + ">", true);
+                                    env.ge.log("<CheckPreviousPostcode " + CheckPreviousPostcode + ">", true);
                                     boolean DoUOOnlyOnThoseOriginallyUO;
                                     //doUOOnlyOnThoseOriginallyUO = true;
                                     iteB0 = b.iterator();
                                     while (iteB0.hasNext()) {
                                         DoUOOnlyOnThoseOriginallyUO = iteB0.next();
-                                        Env.ge.log("<DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
+                                        env.ge.log("<DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
                                         Set<SHBE_ID> UOApril2013ClaimIDsDummy;
                                         if (DoUOOnlyOnThoseOriginallyUO) {
                                             UOApril2013ClaimIDsDummy = UOApril2013ClaimIDs;
@@ -213,39 +213,39 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                                                 AllUOSets,
                                                 UOApril2013ClaimIDsDummy,
                                                 DoGrouped);
-                                        Env.ge.log("</DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
+                                        env.ge.log("</DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
                                     }
-                                    Env.ge.log("</CheckPreviousPostcode " + CheckPreviousPostcode + ">", true);
+                                    env.ge.log("</CheckPreviousPostcode " + CheckPreviousPostcode + ">", true);
                                 }
-                                Env.ge.log("</PostcodeChange " + PostcodeChange + ">", true);
+                                env.ge.log("</PostcodeChange " + PostcodeChange + ">", true);
                             }
-                            Env.ge.log("</ReportTenancyTransitionBreaks " + ReportTenancyTransitionBreaks + ">", true);
+                            env.ge.log("</ReportTenancyTransitionBreaks " + ReportTenancyTransitionBreaks + ">", true);
                         }
-                        Env.ge.log("</CheckPreviousTenancyType " + CheckPreviousTenancyType + ">", true);
+                        env.ge.log("</CheckPreviousTenancyType " + CheckPreviousTenancyType + ">", true);
                     }
-                    Env.ge.log("</DoPostcodeChanges>", true);
+                    env.ge.log("</DoPostcodeChanges>", true);
                 }
                 if (DoAnyTenancyChanges) {
-                    Env.ge.log("<DoAnyTenancyChanges>", true);
+                    env.ge.log("<DoAnyTenancyChanges>", true);
                     // TenancyTransitions
                     boolean CheckPreviousTenancyType;
                     iteB = b.iterator();
                     while (iteB.hasNext()) {
                         CheckPreviousTenancyType = iteB.next();
-                        Env.ge.log("<CheckPreviousTenancyType " + CheckPreviousTenancyType + ">", true);
+                        env.ge.log("<CheckPreviousTenancyType " + CheckPreviousTenancyType + ">", true);
                         iteB2 = b.iterator();
                         while (iteB2.hasNext()) {
                             boolean ReportTenancyTransitionBreaks;
                             ReportTenancyTransitionBreaks = iteB2.next();
-                            Env.ge.log("<ReportTenancyTransitionBreaks " + ReportTenancyTransitionBreaks + ">", true);
+                            env.ge.log("<ReportTenancyTransitionBreaks " + ReportTenancyTransitionBreaks + ">", true);
                             if (DoTenancyChanges) {
-                                Env.ge.log("<DoTenancyChanges " + DoTenancyChanges + ">", true);
+                                env.ge.log("<DoTenancyChanges " + DoTenancyChanges + ">", true);
                                 boolean DoUOOnlyOnThoseOriginallyUO;
 //                                doUOOnlyOnThoseOriginallyUO = true;
                                 iteB0 = b.iterator();
                                 while (iteB0.hasNext()) {
                                     DoUOOnlyOnThoseOriginallyUO = iteB0.next();
-                                    Env.ge.log("<DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
+                                    env.ge.log("<DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
                                     Set<SHBE_ID> UOApril2013ClaimIDsDummy;
                                     if (DoUOOnlyOnThoseOriginallyUO) {
                                         UOApril2013ClaimIDsDummy = UOApril2013ClaimIDs;
@@ -266,28 +266,28 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                                             TTGLookup,
                                             DoGrouped,
                                             GTTs);
-                                    Env.ge.log("</DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
+                                    env.ge.log("</DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
                                 }
-                                Env.ge.log("</DoTenancyChanges " + DoTenancyChanges + ">", true);
+                                env.ge.log("</DoTenancyChanges " + DoTenancyChanges + ">", true);
                             }
                             if (DoTenancyAndPostcodeChanges) {
-                                Env.ge.log("<DoTenancyAndPostcodeChanges " + DoTenancyAndPostcodeChanges + ">", true);
+                                env.ge.log("<DoTenancyAndPostcodeChanges " + DoTenancyAndPostcodeChanges + ">", true);
                                 iteB5 = b.iterator();
                                 while (iteB5.hasNext()) {
                                     boolean PostcodeChange;
                                     PostcodeChange = iteB5.next();
-                                    Env.ge.log("<PostcodeChange " + PostcodeChange + ">", true);
+                                    env.ge.log("<PostcodeChange " + PostcodeChange + ">", true);
                                     iteB6 = b.iterator();
                                     while (iteB6.hasNext()) {
                                         boolean CheckPreviousPostcode;
                                         CheckPreviousPostcode = iteB6.next();
-                                        Env.ge.log("<CheckPreviousPostcode " + CheckPreviousPostcode + ">", true);
+                                        env.ge.log("<CheckPreviousPostcode " + CheckPreviousPostcode + ">", true);
                                         boolean DoUOOnlyOnThoseOriginallyUO;
                                         //doUOOnlyOnThoseOriginallyUO = true;
                                         iteB0 = b.iterator();
                                         while (iteB0.hasNext()) {
                                             DoUOOnlyOnThoseOriginallyUO = iteB0.next();
-                                            Env.ge.log("<DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
+                                            env.ge.log("<DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
                                             Set<SHBE_ID> UOApril2013ClaimIDsDummy;
                                             if (DoUOOnlyOnThoseOriginallyUO) {
                                                 UOApril2013ClaimIDsDummy = UOApril2013ClaimIDs;
@@ -307,51 +307,51 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                                                     RSLUOSets,
                                                     UOApril2013ClaimIDsDummy,
                                                     DoGrouped);
-                                            Env.ge.log("</DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
+                                            env.ge.log("</DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
                                         }
-                                        Env.ge.log("</CheckPreviousPostcode " + CheckPreviousPostcode + ">", true);
+                                        env.ge.log("</CheckPreviousPostcode " + CheckPreviousPostcode + ">", true);
                                     }
-                                    Env.ge.log("</PostcodeChange " + PostcodeChange + ">", true);
+                                    env.ge.log("</PostcodeChange " + PostcodeChange + ">", true);
                                 }
-                                Env.ge.log("</DoTenancyAndPostcodeChanges " + DoTenancyAndPostcodeChanges + ">", true);
+                                env.ge.log("</DoTenancyAndPostcodeChanges " + DoTenancyAndPostcodeChanges + ">", true);
                             }
-                            Env.ge.log("</ReportTenancyTransitionBreaks " + ReportTenancyTransitionBreaks + ">", true);
+                            env.ge.log("</ReportTenancyTransitionBreaks " + ReportTenancyTransitionBreaks + ">", true);
                         }
-                        Env.ge.log("</CheckPreviousTenancyType " + CheckPreviousTenancyType + ">", true);
+                        env.ge.log("</CheckPreviousTenancyType " + CheckPreviousTenancyType + ">", true);
                     }
-                    Env.ge.log("</DoAnyTenancyChanges>", true);
+                    env.ge.log("</DoAnyTenancyChanges>", true);
                 }
-                Env.ge.log("</DoUnderOccupiedData " + DoUnderOccupiedData + ">", true);
+                env.ge.log("</DoUnderOccupiedData " + DoUnderOccupiedData + ">", true);
             } else {
-                Env.ge.log("<DoUnderOccupiedData " + DoUnderOccupiedData + ">", true);
+                env.ge.log("<DoUnderOccupiedData " + DoUnderOccupiedData + ">", true);
                 if (DoPostcodeChanges) {
-                    Env.ge.log("<DoPostcodeChanges>", true);
+                    env.ge.log("<DoPostcodeChanges>", true);
                     iteB = b.iterator();
                     while (iteB.hasNext()) {
                         boolean CheckPreviousTenancyType;
                         CheckPreviousTenancyType = iteB.next();
-                        Env.ge.log("<CheckPreviousTenancyType " + CheckPreviousTenancyType + ">", true);
+                        env.ge.log("<CheckPreviousTenancyType " + CheckPreviousTenancyType + ">", true);
                         iteB2 = b.iterator();
                         while (iteB2.hasNext()) {
                             boolean ReportTenancyTransitionBreaks;
                             ReportTenancyTransitionBreaks = iteB2.next();
-                            Env.ge.log("<ReportTenancyTransitionBreaks " + ReportTenancyTransitionBreaks + ">", true);
+                            env.ge.log("<ReportTenancyTransitionBreaks " + ReportTenancyTransitionBreaks + ">", true);
                             iteB5 = b.iterator();
                             while (iteB5.hasNext()) {
                                 boolean PostcodeChange;
                                 PostcodeChange = iteB5.next();
-                                Env.ge.log("<PostcodeChange " + PostcodeChange + ">", true);
+                                env.ge.log("<PostcodeChange " + PostcodeChange + ">", true);
                                 iteB6 = b.iterator();
                                 while (iteB6.hasNext()) {
                                     boolean CheckPreviousPostcode;
                                     CheckPreviousPostcode = iteB6.next();
-                                    Env.ge.log("<CheckPreviousPostcode " + CheckPreviousPostcode + ">", true);
+                                    env.ge.log("<CheckPreviousPostcode " + CheckPreviousPostcode + ">", true);
                                     boolean DoUOOnlyOnThoseOriginallyUO;
                                     //doUOOnlyOnThoseOriginallyUO = true;
                                     iteB0 = b.iterator();
                                     while (iteB0.hasNext()) {
                                         DoUOOnlyOnThoseOriginallyUO = iteB0.next();
-                                        Env.ge.log("<DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
+                                        env.ge.log("<DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
                                         Set<SHBE_ID> UOApril2013ClaimIDsDummy;
                                         if (DoUOOnlyOnThoseOriginallyUO) {
                                             UOApril2013ClaimIDsDummy = UOApril2013ClaimIDs;
@@ -371,39 +371,39 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                                                 null,
                                                 UOApril2013ClaimIDsDummy,
                                                 DoGrouped);
-                                        Env.ge.log("</DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
+                                        env.ge.log("</DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
                                     }
-                                    Env.ge.log("</CheckPreviousPostcode " + CheckPreviousPostcode + ">", true);
+                                    env.ge.log("</CheckPreviousPostcode " + CheckPreviousPostcode + ">", true);
                                 }
-                                Env.ge.log("</PostcodeChange " + PostcodeChange + ">", true);
+                                env.ge.log("</PostcodeChange " + PostcodeChange + ">", true);
                             }
-                            Env.ge.log("</ReportTenancyTransitionBreaks " + ReportTenancyTransitionBreaks + ">", true);
+                            env.ge.log("</ReportTenancyTransitionBreaks " + ReportTenancyTransitionBreaks + ">", true);
                         }
-                        Env.ge.log("</CheckPreviousTenancyType " + CheckPreviousTenancyType + ">", true);
+                        env.ge.log("</CheckPreviousTenancyType " + CheckPreviousTenancyType + ">", true);
                     }
-                    Env.ge.log("</DoPostcodeChanges>", true);
+                    env.ge.log("</DoPostcodeChanges>", true);
                 }
                 if (DoAnyTenancyChanges) {
-                    Env.ge.log("<DoAnyTenancyChanges>", true);
+                    env.ge.log("<DoAnyTenancyChanges>", true);
                     // TenancyTransitions
                     boolean CheckPreviousTenancyType;
                     iteB = b.iterator();
                     while (iteB.hasNext()) {
                         CheckPreviousTenancyType = iteB.next();
-                        Env.ge.log("<CheckPreviousTenancyType " + CheckPreviousTenancyType + ">", true);
+                        env.ge.log("<CheckPreviousTenancyType " + CheckPreviousTenancyType + ">", true);
                         iteB2 = b.iterator();
                         while (iteB2.hasNext()) {
                             boolean ReportTenancyTransitionBreaks;
                             ReportTenancyTransitionBreaks = iteB2.next();
-                            Env.ge.log("<ReportTenancyTransitionBreaks " + ReportTenancyTransitionBreaks + ">", true);
+                            env.ge.log("<ReportTenancyTransitionBreaks " + ReportTenancyTransitionBreaks + ">", true);
                             if (DoTenancyChanges) {
-                                Env.ge.log("<DoTenancyChanges " + DoTenancyChanges + ">", true);
+                                env.ge.log("<DoTenancyChanges " + DoTenancyChanges + ">", true);
                                 boolean DoUOOnlyOnThoseOriginallyUO;
                                 //doUOOnlyOnThoseOriginallyUO = true;
                                 iteB0 = b.iterator();
                                 while (iteB0.hasNext()) {
                                     DoUOOnlyOnThoseOriginallyUO = iteB0.next();
-                                    Env.ge.log("<DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
+                                    env.ge.log("<DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
                                     Set<SHBE_ID> UOApril2013ClaimIDsDummy;
                                     if (DoUOOnlyOnThoseOriginallyUO) {
                                         UOApril2013ClaimIDsDummy = UOApril2013ClaimIDs;
@@ -424,28 +424,28 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                                             TTGLookup,
                                             DoGrouped,
                                             GTTs);
-                                    Env.ge.log("</DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
+                                    env.ge.log("</DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
                                 }
-                                Env.ge.log("</DoTenancyChanges " + DoTenancyChanges + ">", true);
+                                env.ge.log("</DoTenancyChanges " + DoTenancyChanges + ">", true);
                             }
                             if (DoTenancyAndPostcodeChanges) {
-                                Env.ge.log("<DoTenancyAndPostcodeChanges " + DoTenancyAndPostcodeChanges + ">", true);
+                                env.ge.log("<DoTenancyAndPostcodeChanges " + DoTenancyAndPostcodeChanges + ">", true);
                                 iteB5 = b.iterator();
                                 while (iteB5.hasNext()) {
                                     boolean PostcodeChange;
                                     PostcodeChange = iteB5.next();
-                                    Env.ge.log("<PostcodeChange " + PostcodeChange + ">", true);
+                                    env.ge.log("<PostcodeChange " + PostcodeChange + ">", true);
                                     iteB6 = b.iterator();
                                     while (iteB6.hasNext()) {
                                         boolean CheckPreviousPostcode;
                                         CheckPreviousPostcode = iteB6.next();
-                                        Env.ge.log("<CheckPreviousPostcode " + CheckPreviousPostcode + ">", true);
+                                        env.ge.log("<CheckPreviousPostcode " + CheckPreviousPostcode + ">", true);
                                         boolean DoUOOnlyOnThoseOriginallyUO;
                                         //doUOOnlyOnThoseOriginallyUO = true;
                                         iteB0 = b.iterator();
                                         while (iteB0.hasNext()) {
                                             DoUOOnlyOnThoseOriginallyUO = iteB0.next();
-                                            Env.ge.log("<DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
+                                            env.ge.log("<DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
                                             Set<SHBE_ID> UOApril2013ClaimIDsDummy;
                                             if (DoUOOnlyOnThoseOriginallyUO) {
                                                 UOApril2013ClaimIDsDummy = UOApril2013ClaimIDs;
@@ -462,21 +462,21 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                                                     CheckPreviousPostcode,
                                                     UOApril2013ClaimIDsDummy,
                                                     DoGrouped);
-                                            Env.ge.log("</DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
+                                            env.ge.log("</DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
                                         }
-                                        Env.ge.log("</CheckPreviousPostcode " + CheckPreviousPostcode + ">", true);
+                                        env.ge.log("</CheckPreviousPostcode " + CheckPreviousPostcode + ">", true);
                                     }
-                                    Env.ge.log("</PostcodeChange " + PostcodeChange + ">", true);
+                                    env.ge.log("</PostcodeChange " + PostcodeChange + ">", true);
                                 }
-                                Env.ge.log("</DoTenancyAndPostcodeChanges " + DoTenancyAndPostcodeChanges + ">", true);
+                                env.ge.log("</DoTenancyAndPostcodeChanges " + DoTenancyAndPostcodeChanges + ">", true);
                             }
-                            Env.ge.log("</ReportTenancyTransitionBreaks " + ReportTenancyTransitionBreaks + ">", true);
+                            env.ge.log("</ReportTenancyTransitionBreaks " + ReportTenancyTransitionBreaks + ">", true);
                         }
-                        Env.ge.log("</CheckPreviousTenancyType " + CheckPreviousTenancyType + ">", true);
+                        env.ge.log("</CheckPreviousTenancyType " + CheckPreviousTenancyType + ">", true);
                     }
-                    Env.ge.log("</DoAnyTenancyChanges>", true);
+                    env.ge.log("</DoAnyTenancyChanges>", true);
                 }
-                Env.ge.log("</DoUnderOccupiedData " + DoUnderOccupiedData + ">", true);
+                env.ge.log("</DoUnderOccupiedData " + DoUnderOccupiedData + ">", true);
             }
         }
     }
@@ -503,7 +503,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             YM3 = ite.next();
             DW_UO_SetAll = result.get(YM3);
             if (DW_UO_SetAll == null) {
-                DW_UO_SetAll = new DW_UO_Set(Env);
+                DW_UO_SetAll = new DW_UO_Set(env);
                 result.put(YM3, DW_UO_SetAll);
             }
             DW_UO_SetCouncil = DW_UO_SetsCouncil.get(YM3);
@@ -514,7 +514,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             YM3 = ite.next();
             DW_UO_SetAll = result.get(YM3);
             if (DW_UO_SetAll == null) {
-                DW_UO_SetAll = new DW_UO_Set(Env);
+                DW_UO_SetAll = new DW_UO_Set(env);
                 result.put(YM3, DW_UO_SetAll);
             }
             DW_UO_SetRSL = DW_UO_SetsRSL.get(YM3);
@@ -606,7 +606,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             dirOut2.mkdirs();
             // dirOut3 will be for the grouped or ungrouped results.
             File dirOut3;
-            Env.ge.log("dirOut " + dirOut2, true);
+            env.ge.log("dirOut " + dirOut2, true);
             ArrayList<Integer> include;
             include = includes.get(includeKey);
             Iterator<Integer> includeIte;
@@ -624,9 +624,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             DW_UO_Set CouncilUOSet0 = null;
             DW_UO_Set RSLUOSet0 = null;
             SHBE_Records SHBE_Records0 = null;
-            SHBE_Records0 = SHBE_Handler.getRecords(YM30, Env.HOOME);
+            SHBE_Records0 = SHBE_Handler.getRecords(YM30, env.HOOME);
             HashMap<SHBE_ID, SHBE_Record> Records0;
-            Records0 = SHBE_Records0.getRecords(Env.HOOME);
+            Records0 = SHBE_Records0.getRecords(env.HOOME);
             // ClaimIDToTTLookups
             HashMap<Integer, HashMap<SHBE_ID, Integer>> ClaimIDToTTLookups;
             ClaimIDToTTLookups = new HashMap<>();
@@ -682,16 +682,16 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                     ClaimIDToPostcodeIDLookups.put(i, new HashMap<>());
                     // Set Year and Month variables
                     ONSPD_YM3 YM31 = SHBE_Handler.getYM3(filename);
-                    Env.ge.log("Year Month " + YM31, true);
+                    env.ge.log("Year Month " + YM31, true);
                     SHBE_Records SHBE_Records1;
-                    SHBE_Records1 = SHBE_Handler.getRecords(YM31, Env.HOOME);
+                    SHBE_Records1 = SHBE_Handler.getRecords(YM31, env.HOOME);
                     ClaimIDToPostcodeIDLookup = loadClaimIDToPostcodeIDLookup(
                             YM31,
                             i,
                             ClaimIDToPostcodeIDLookups);
                     ClaimIDToPostcodeIDLookups.put(i, ClaimIDToPostcodeIDLookup);
                     HashMap<SHBE_ID, SHBE_Record> Records1;
-                    Records1 = SHBE_Records1.getRecords(Env.HOOME);
+                    Records1 = SHBE_Records1.getRecords(env.HOOME);
                     // ClaimIDToTTLookup1
                     HashMap<SHBE_ID, Integer> ClaimIDToTTLookup1;
                     ClaimIDToTTLookup1 = loadClaimIDToTTLookup(
@@ -837,9 +837,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                     }
                 }
                 if (max > (include.size() - 1)) {
-                    Env.ge.log("Warning: " + this.getClass().getName() + "." + methodName + " line 737 ", true);
+                    env.ge.log("Warning: " + this.getClass().getName() + "." + methodName + " line 737 ", true);
                 }
-                Env.ge.log(includeKey + " maximum number of transitions "
+                env.ge.log(includeKey + " maximum number of transitions "
                         + max + " out of a possible " + (include.size() - 1), true);
                 writeTransitionFrequencies(
                         transitions,
@@ -901,9 +901,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                         }
                     }
                     if (max > (include.size() - 1)) {
-                        Env.ge.log("Warning: " + this.getClass().getName() + "." + methodName + " line 796 ", true);
+                        env.ge.log("Warning: " + this.getClass().getName() + "." + methodName + " line 796 ", true);
                     }
-                    Env.ge.log(includeKey + " maximum number of transitions "
+                    env.ge.log(includeKey + " maximum number of transitions "
                             + max + " out of a possible " + (include.size() - 1), true);
                     writeTransitionFrequencies(
                             transitions,
@@ -984,7 +984,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             dirOut2.mkdirs();
             // dirOut3 is for grouped or non-grouped results;
             File dirOut3;
-            Env.ge.log("dirOut " + dirOut2, true);
+            env.ge.log("dirOut " + dirOut2, true);
             ArrayList<Integer> include;
             include = includes.get(includeKey);
             Iterator<Integer> includeIte;
@@ -1182,9 +1182,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                     }
                 }
                 if (max > (include.size() - 1)) {
-                    Env.ge.log("Warning: " + this.getClass().getName() + "." + methodName + " line 1090 ", true);
+                    env.ge.log("Warning: " + this.getClass().getName() + "." + methodName + " line 1090 ", true);
                 }
-                Env.ge.log(includeKey + " maximum number of transitions "
+                env.ge.log(includeKey + " maximum number of transitions "
                         + max + " out of a possible " + (include.size() - 1), true);
                 writeTransitionFrequencies(
                         transitions,
@@ -1244,9 +1244,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                         }
                     }
                     if (max > (include.size() - 1)) {
-                        Env.ge.log("Warning: " + this.getClass().getName() + "." + methodName + " line 1150 ", true);
+                        env.ge.log("Warning: " + this.getClass().getName() + "." + methodName + " line 1150 ", true);
                     }
-                    Env.ge.log(includeKey + " maximum number of transitions "
+                    env.ge.log(includeKey + " maximum number of transitions "
                             + max + " out of a possible " + (include.size() - 1), true);
                     writeTransitionFrequencies(transitions, dirOut3,
                             "FrequenciesGrouped.csv", reportTenancyTransitionBreaks);
@@ -1317,7 +1317,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
 
             // dirOut3 is for grouped or ungrouped results
             File dirOut3;
-            Env.ge.log("dirOut " + dirOut2, true);
+            env.ge.log("dirOut " + dirOut2, true);
             ArrayList<Integer> include;
             include = includes.get(includeKey);
             Iterator<Integer> includeIte;
@@ -1463,9 +1463,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                 }
             }
             if (max > (include.size() - 1)) {
-                Env.ge.log("Warning: " + this.getClass().getName() + "." + methodName + " line 1375 ", true);
+                env.ge.log("Warning: " + this.getClass().getName() + "." + methodName + " line 1375 ", true);
             }
-            Env.ge.log(includeKey
+            env.ge.log(includeKey
                     + " maximum number of transitions " + max
                     + " out of a possible " + (include.size() - 1), true);
             writeTransitionFrequencies(
@@ -1520,9 +1520,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                     }
                 }
                 if (max > (include.size() - 1)) {
-                    Env.ge.log("Warning: " + this.getClass().getName() + "." + methodName + " line 1430 ", true);
+                    env.ge.log("Warning: " + this.getClass().getName() + "." + methodName + " line 1430 ", true);
                 }
-                Env.ge.log(includeKey + " maximum number of transitions "
+                env.ge.log(includeKey + " maximum number of transitions "
                         + max + " out of a possible " + (include.size() - 1), true);
                 writeTransitionFrequencies(
                         transitions,
@@ -1660,7 +1660,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                 UOClaimIDSets = new HashMap<>();
                 UOSet0 = DW_UO_SetsAll.get(YM30);
                 if (UOSet0 == null) {
-                    Env.ge.log("UnderOccupiedSet0 == null, YM30 = " + YM30, true);
+                    env.ge.log("UnderOccupiedSet0 == null, YM30 = " + YM30, true);
                 } else {
                     UOClaimIDSet0 = UOSet0.getClaimIDs();
                 }
@@ -1692,7 +1692,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                 if (DoUnderOccupiedData) {
                     UOSet1 = DW_UO_SetsAll.get(YM31);
                     if (UOSet1 == null) {
-                        Env.ge.log("UnderOccupiedSet1 == null, YM31 = " + YM31, true);
+                        env.ge.log("UnderOccupiedSet1 == null, YM31 = " + YM31, true);
                     } else {
                         UOClaimIDSet1 = UOSet1.getClaimIDs();
                     }
@@ -1700,7 +1700,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                 // Get PostcodeTransitionCounts
                 TreeMap<String, TreeMap<String, Integer>> postcodeTransitionCounts;
                 if ((UOClaimIDSet0 == null || UOClaimIDSet1 == null) && DoUnderOccupiedData) {
-                    Env.ge.log("Not calculating or writing out postcodeTransitionCounts", true);
+                    env.ge.log("Not calculating or writing out postcodeTransitionCounts", true);
                 } else {
                     postcodeTransitionCounts = getPTCountsNoTTT(
                             dirOut2,
@@ -1796,9 +1796,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                 }
             }
             if (max > (include.size() - 1)) {
-                Env.ge.log("Warning: " + this.getClass().getName() + "." + methodName + " line 1692 ", true);
+                env.ge.log("Warning: " + this.getClass().getName() + "." + methodName + " line 1692 ", true);
             }
-            Env.ge.log(includeKey + " maximum number of transitions "
+            env.ge.log(includeKey + " maximum number of transitions "
                     + max + " out of a possible " + (include.size() - 1), true);
             writeTransitionFrequencies(
                     transitions,
@@ -1858,9 +1858,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                     }
                 }
                 if (max > (include.size() - 1)) {
-                    Env.ge.log("Warning: " + this.getClass().getName() + "." + methodName + " line 1752 ", true);
+                    env.ge.log("Warning: " + this.getClass().getName() + "." + methodName + " line 1752 ", true);
                 }
-                Env.ge.log(includeKey + " maximum number of transitions "
+                env.ge.log(includeKey + " maximum number of transitions "
                         + max + " out of a possible " + (include.size() - 1), true);
                 writeTransitionFrequencies(
                         transitions,
@@ -1881,9 +1881,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         }
         result = new HashMap<>();
         SHBE_Records SHBE_Records;
-        SHBE_Records = SHBE_Handler.getRecords(YM3, Env.HOOME);
+        SHBE_Records = SHBE_Handler.getRecords(YM3, env.HOOME);
         HashMap<SHBE_ID, SHBE_Record> records;
-        records = SHBE_Records.getRecords(Env.HOOME);
+        records = SHBE_Records.getRecords(env.HOOME);
         Iterator<SHBE_ID> ite;
         ite = records.keySet().iterator();
         SHBE_ID ClaimID;
@@ -1904,7 +1904,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         if (ClaimIDToPostcodeIDLookups.containsKey(key)) {
             return ClaimIDToPostcodeIDLookups.get(key);
         }
-        r = SHBE_Handler.getRecords(YM3, Env.HOOME).getClaimIDToPostcodeIDLookup(Env.HOOME);
+        r = SHBE_Handler.getRecords(YM3, env.HOOME).getClaimIDToPostcodeIDLookup(env.HOOME);
         ClaimIDToPostcodeIDLookups.put(key, r);
         return r;
     }
@@ -1949,15 +1949,15 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         dirOut2 = new File(dirOut, "Frequencies");
         if (reportTenancyTransitionBreaks) {
             dirOut2 = new File(dirOut2,
-                    Env.SHBE_Env.strings.sIncludingTenancyTransitionBreaks);
+                    env.SHBE_Env.strings.sIncludingTenancyTransitionBreaks);
         } else {
             dirOut2 = new File(dirOut2,
-                    Env.SHBE_Env.strings.sIncludingTenancyTransitionBreaksNo);
+                    env.SHBE_Env.strings.sIncludingTenancyTransitionBreaksNo);
         }
         dirOut2.mkdirs();
         File f;
         f = new File(dirOut2, name);
-        Env.ge.log("Write " + f, true);
+        env.ge.log("Write " + f, true);
         result = Generic_IO.getPrintWriter(f, false);
         return result;
     }
@@ -2366,11 +2366,11 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
 //        //Debug
 //        if (areaCounts == null) {
 //            // No area counts for distance
-//            Env.ge.log("No area counts for distance " + distance);
-//            Env.ge.log("claimantType " + claimantType);
-//            Env.ge.log("tenure " + tenure);
-//            Env.ge.log("level " + level);
-//            Env.ge.log("type " + type);
+//            env.ge.log("No area counts for distance " + distance);
+//            env.ge.log("claimantType " + claimantType);
+//            env.ge.log("tenure " + tenure);
+//            env.ge.log("level " + level);
+//            env.ge.log("type " + type);
 //        }
         Generic_Collections.addToTreeMapValueInteger(
                 areaCounts,
@@ -2630,8 +2630,8 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
 
         HashMap<SHBE_ID, ONSPD_ID> ClaimIDToPostcodeIDLookup;
 
-//        Env.ge.log("i " + i);
-//        Env.ge.log("index " + index);
+//        env.ge.log("i " + i);
+//        env.ge.log("index " + index);
         li = include.listIterator(index); // Start listIterator at index and work backwards
         Integer TT = null;
         String underOccupancy = "";
@@ -2755,8 +2755,8 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
 
         HashMap<SHBE_ID, ONSPD_ID> ClaimIDToPostcodeIDLookup;
 
-//        Env.ge.log("i " + i);
-//        Env.ge.log("index " + index);
+//        env.ge.log("i " + i);
+//        env.ge.log("index " + index);
         li = include.listIterator(index); // Start listIterator at index and work backwards
         Integer TT = null;
         while (li.hasPrevious()) {
@@ -2847,7 +2847,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         while (li.hasPrevious()) {
             Integer previousIndex;
             previousIndex = li.previous();
-//            Env.ge.log("previousIndex " + previousIndex);
+//            env.ge.log("previousIndex " + previousIndex);
             HashMap<SHBE_ID, Integer> ClaimIDToTTLookup;
             ClaimIDToTTLookup = ClaimIDToTTLookups.get(previousIndex);
             Set<SHBE_ID> UOClaimIDSet;
@@ -3387,12 +3387,12 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
 
                         boolean doRecord = true;
                         if (!sTT0.endsWith(sU)) {
-//                            Env.ge.log(CTBRef);
+//                            env.ge.log(CTBRef);
 //                            boolean test = tCTBRefs.contains(CTBRef);
-//                            Env.ge.log(test);
+//                            env.ge.log(test);
 //                            CTBRef = tIDByCTBRef1.get(tID1);
 //                            test = underOccupiedInApril2013.contains(CTBRef);
-//                            Env.ge.log(test);
+//                            env.ge.log(test);
                             if (!TTTs.containsKey(ClaimID)) {
                                 //int debug = 1;
                                 // This only happens in cases where there is a -999U initial case!
@@ -3415,7 +3415,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                                     //env.logO(CTBRef);
                                 } else {
                                     int debug = 1;
-                                    Env.ge.log(ClaimID.toString(), true);
+                                    env.ge.log(ClaimID.toString(), true);
                                 }
                             }
                         }
@@ -3530,12 +3530,12 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
 //                        }
                         boolean doRecord = true;
                         if (!TT0.endsWith(sU)) {
-//                            Env.ge.log(CTBRef);
+//                            env.ge.log(CTBRef);
 //                            boolean test = tCTBRefs.contains(CTBRef);
-//                            Env.ge.log(test);
+//                            env.ge.log(test);
 //                            CTBRef = tIDByCTBRef1.get(tID1);
 //                            test = tCTBRefs.contains(CTBRef);
-//                            Env.ge.log(test);
+//                            env.ge.log(test);
                             if (!TTTs.containsKey(ClaimID)) {
                                 //int debug = 1;
                                 // This only happens in cases where there is a -999U initial case!
@@ -3787,7 +3787,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                             Integer indexOfLastKnownTenureOrNot;
                             indexOfLastKnownTenureOrNot = (Integer) previousTTAndP[1];
                             if (indexOfLastKnownTenureOrNot != null) {
-//                                  Env.ge.log("indexOfLastKnownTenureOrNot " + indexOfLastKnownTenureOrNot);
+//                                  env.ge.log("indexOfLastKnownTenureOrNot " + indexOfLastKnownTenureOrNot);
                                 if (checkPreviousPostcode) {
                                     postcode0 = ClaimIDToPostcodeIDLookups.get(indexOfLastKnownTenureOrNot).get(ClaimID);
                                 }
@@ -4073,7 +4073,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                             Integer indexOfLastKnownTenureOrNot;
                             indexOfLastKnownTenureOrNot = (Integer) previousTTAndP[1];
                             if (indexOfLastKnownTenureOrNot != null) {
-//                                  Env.ge.log("indexOfLastKnownTenureOrNot " + indexOfLastKnownTenureOrNot);
+//                                  env.ge.log("indexOfLastKnownTenureOrNot " + indexOfLastKnownTenureOrNot);
                                 if (checkPreviousPostcode) {
                                     postcode0 = ClaimIDToPostcodeIDLookups.get(indexOfLastKnownTenureOrNot).get(ClaimID);
                                 }
@@ -4356,8 +4356,8 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         result[1] = YM30.toString();
         result[2] = YM31.toString();
         result[3] = TTChange;
-        result[4] = Env.getSHBE_Handler().getPostcodeIDToPostcodeLookup().get(PostcodeID0);
-        result[5] = Env.getSHBE_Handler().getPostcodeIDToPostcodeLookup().get(PostcodeID1);
+        result[4] = env.getSHBE_Handler().getPostcodeIDToPostcodeLookup().get(PostcodeID0);
+        result[5] = env.getSHBE_Handler().getPostcodeIDToPostcodeLookup().get(PostcodeID1);
         return result;
     }
 
@@ -4471,7 +4471,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                                     Integer indexOfLastKnownTenureOrNot;
                                     indexOfLastKnownTenureOrNot = (Integer) previousTenure[1];
                                     if (indexOfLastKnownTenureOrNot != null) {
-//                                       Env.ge.log("indexOfLastKnownTenureOrNot " + indexOfLastKnownTenureOrNot);
+//                                       env.ge.log("indexOfLastKnownTenureOrNot " + indexOfLastKnownTenureOrNot);
                                         if (!isValidPostcodeFormPostcode0 && checkPreviousPostcode) {
                                             postcode0 = ClaimIDToPostcodeIDLookups.get(indexOfLastKnownTenureOrNot).get(ClaimID);
                                         }
@@ -4741,7 +4741,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
 //                                    Integer indexOfLastKnownTenureOrNot;
 //                                    indexOfLastKnownTenureOrNot = (Integer) previousTenure[1];
 //                                    if (indexOfLastKnownTenureOrNot != null) {
-////                                       Env.ge.log("indexOfLastKnownTenureOrNot " + indexOfLastKnownTenureOrNot);
+////                                       env.ge.log("indexOfLastKnownTenureOrNot " + indexOfLastKnownTenureOrNot);
 //                                        if (!isValidPostcodeFormPostcode0 && checkPreviousPostcode) {
 //                                            postcode0 = ClaimIDToPostcodeIDLookups.get(indexOfLastKnownTenureOrNot).get(ClaimID);
 //                                        }
@@ -4906,13 +4906,13 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
 ////                                postcode0 = ClaimIDToPostcodeIDLookup0.get(tID);
 ////                                boolean isValidPostcode0 = false;
 ////                                if (postcode0 != null) {
-////                                    isValidPostcode0 = Postcode_Handler.isValidPostcode(postcode0);
+////                                    isValidPostcode0 = ONSPD_Handler.isValidPostcode(postcode0);
 ////                                }
 ////                                String postcode1;
 ////                                postcode1 = ClaimIDToPostcodeIDLookup1.get(tID);
 ////                                boolean isValidPostcode1 = false;
 ////                                if (postcode1 != null) {
-////                                    isValidPostcode1 = Postcode_Handler.isValidPostcode(postcode1);
+////                                    isValidPostcode1 = ONSPD_Handler.isValidPostcode(postcode1);
 ////                                }
 ////                                if (isValidPostcode0 && isValidPostcode1) {
 ////                                    boolean doCount = false;
@@ -5113,7 +5113,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                                 Integer indexOfLastKnownTenureOrNot;
                                 indexOfLastKnownTenureOrNot = (Integer) previousTenure[1];
                                 if (indexOfLastKnownTenureOrNot != null) {
-//                                       Env.ge.log("indexOfLastKnownTenureOrNot " + indexOfLastKnownTenureOrNot);
+//                                       env.ge.log("indexOfLastKnownTenureOrNot " + indexOfLastKnownTenureOrNot);
                                     if (checkPreviousPostcode) {
                                         postcode0 = ClaimIDToPostcodeIDLookups.get(indexOfLastKnownTenureOrNot).get(ClaimID);
                                     }
@@ -5576,7 +5576,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                 + "_Start_" + YM30
                 + "_End_" + YM31 + ".csv");
 
-        Env.ge.log("Write " + f, true);
+        env.ge.log("Write " + f, true);
         PrintWriter pw;
         pw = Generic_IO.getPrintWriter(f, false);
         pw.println("SHBE_ID, StartTime, EndTime, TenancyTypeChange, StartPostcode, End Postcode");
@@ -5695,7 +5695,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                 name
                 + "_Start_" + YM30
                 + "_End_" + YM31 + ".csv");
-        Env.ge.log("Write " + f.toString(), true);
+        env.ge.log("Write " + f.toString(), true);
         PrintWriter pw;
         try {
             pw = new PrintWriter(f);
@@ -5886,18 +5886,18 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         ONSPD_YM3 YM30;
         YM30 = SHBE_Handler.getYM3(SHBEFilenames[startIndex]);
         SHBE_Records recs0;
-        recs0 = SHBE_Handler.getRecords(YM30, Env.HOOME);
-//        recs0 = Env.getSHBE_Handler().getData().get(YM30);
+        recs0 = SHBE_Handler.getRecords(YM30, env.HOOME);
+//        recs0 = env.getSHBE_Handler().getData().get(YM30);
         HashMap<SHBE_ID, SHBE_Record> recordsStart;
-        recordsStart = recs0.getRecords(Env.HOOME);
+        recordsStart = recs0.getRecords(env.HOOME);
         // End
         ONSPD_YM3 YM31;
         YM31 = SHBE_Handler.getYM3(SHBEFilenames[endIndex]);
         SHBE_Records recs1;
-        recs1 = SHBE_Handler.getRecords(YM31, Env.HOOME);
-//        recs1 = Env.getSHBE_Handler().getData().get(YM31);
+        recs1 = SHBE_Handler.getRecords(YM31, env.HOOME);
+//        recs1 = env.getSHBE_Handler().getData().get(YM31);
         HashMap<SHBE_ID, SHBE_Record> recordsEnd;
-        recordsEnd = recs1.getRecords(Env.HOOME);
+        recordsEnd = recs1.getRecords(env.HOOME);
         //TreeMap<String, SHBE_Record> SRecordsEnd = (TreeMap<String, SHBE_Record>) SHBEDataEnd[1];
         // Iterate over records and join these with SHBE records to get postcodes
         TreeMap<Integer, Integer> destinationCounts;
@@ -6085,17 +6085,17 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         ONSPD_YM3 YM30;
         YM30 = SHBE_Handler.getYM3(SHBEFilenames[startIndex]);
         SHBE_Records recs0;
-        recs0 = SHBE_Handler.getRecords(YM30, Env.HOOME);
-        //recs0 = Env.getSHBE_Handler().getData().get(YM30);
+        recs0 = SHBE_Handler.getRecords(YM30, env.HOOME);
+        //recs0 = env.getSHBE_Handler().getData().get(YM30);
         HashMap<SHBE_ID, SHBE_Record> recordsStart;
-        recordsStart = recs0.getRecords(Env.HOOME);
+        recordsStart = recs0.getRecords(env.HOOME);
         ONSPD_YM3 YM31;
         YM31 = SHBE_Handler.getYM3(SHBEFilenames[endIndex]);
         SHBE_Records recs1;
-        recs1 = SHBE_Handler.getRecords(YM31, Env.HOOME);
-        //recs1 = Env.getSHBE_Handler().getData().get(YM31);
+        recs1 = SHBE_Handler.getRecords(YM31, env.HOOME);
+        //recs1 = env.getSHBE_Handler().getData().get(YM31);
         HashMap<SHBE_ID, SHBE_Record> recordsEnd;
-        recordsEnd = recs1.getRecords(Env.HOOME);
+        recordsEnd = recs1.getRecords(env.HOOME);
         // Iterate over records and join these with SHBE records to get postcodes
         TreeMap<Integer, Integer> destinationCounts;
         Iterator<SHBE_ID> ite;

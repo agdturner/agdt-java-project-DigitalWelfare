@@ -58,7 +58,7 @@ public class DW_BarChart extends Generic_BarChart {
 
     public DW_BarChart(DW_Environment env) {
         this.Env = env;
-        this.Strings = env.Strings;
+        this.Strings = env.strings;
     }
 
     /**
@@ -204,8 +204,8 @@ public class DW_BarChart extends Generic_BarChart {
 
         format = "PNG";
         File dirOut;
-        dirOut = new File(Env.Files.getOutputSHBEPlotsDir(), "BarCharts");
-        dirOut = Env.Files.getUODir(dirOut, doUnderOccupied, doCouncil);
+        dirOut = new File(Env.files.getOutputSHBEPlotsDir(), "BarCharts");
+        dirOut = Env.files.getUODir(dirOut, doUnderOccupied, doCouncil);
         Iterator<String> levelsIte;
         Iterator<String> claimantTypesIte;
         Iterator<String> tenureTypesIte;
@@ -250,7 +250,7 @@ public class DW_BarChart extends Generic_BarChart {
                             fout = new File(dirOut4, year + month + "BarChart.PNG");
                             title = year + " " + month + " Bar Chart";
                             xAxisLabel = type + " Count";
-                            File dirIn = new File(Env.Files.getGeneratedSHBEDir(
+                            File dirIn = new File(Env.files.getGeneratedSHBEDir(
                                     level, doUnderOccupied, doCouncil),
                                     type);
                             dirIn = new File(dirIn, claimantType);
@@ -267,7 +267,7 @@ public class DW_BarChart extends Generic_BarChart {
                             while (distancesIte.hasNext()) {
                                 Double distanceThreshold = distancesIte.next();
                                 File dir;
-                                dir = Env.Files.getOutputSHBEPlotsDir();
+                                dir = Env.files.getOutputSHBEPlotsDir();
                                 dir = new File(dir, level);
                                 dir = new File(dir, claimantType);
                                 dir = new File(dir, distanceType);
@@ -278,7 +278,7 @@ public class DW_BarChart extends Generic_BarChart {
                                 fout = new File(dir, year + month + "BarChart.PNG");
                                 title = year + " " + month + " Bar Chart";
                                 xAxisLabel = distanceType + " " + distanceThreshold + " Count";
-                                dir = new File(Env.Files.getGeneratedSHBEDir(
+                                dir = new File(Env.files.getGeneratedSHBEDir(
                                         level, doUnderOccupied, doCouncil),
                                         distanceType);
                                 dir = new File(dir, claimantType);
@@ -426,14 +426,14 @@ public class DW_BarChart extends Generic_BarChart {
             File fin;
             File fout;
             if (level.startsWith("Post")) {
-                dir = new File(Env.Files.getGeneratedPostcodeDir(), "Leeds");
+                dir = new File(Env.files.getGeneratedPostcodeDir(), "Leeds");
                 dir = new File(dir, level);
                 fin = new File(dir, "AreaCodes.csv");
                 fout = new File(dir, "AreaCodes_HashSetString" + Strings.sBinaryFileExtension);
             } else {
-                dir = new File(Env.Files.getInputCensus2011AttributeDataDir(level), "Leeds");
+                dir = new File(Env.files.getInputCensus2011AttributeDataDir(level), "Leeds");
                 fin = new File(dir, "censusCodes.csv");
-                dir = new File(Env.Files.getGeneratedCensus2011Dir(level), "AttributeData");
+                dir = new File(Env.files.getGeneratedCensus2011Dir(level), "AttributeData");
                 dir = new File(dir, "Leeds");
                 dir.mkdirs();
                 fout = new File(dir, "AreaCodes_HashSetString" + Strings.sBinaryFileExtension);

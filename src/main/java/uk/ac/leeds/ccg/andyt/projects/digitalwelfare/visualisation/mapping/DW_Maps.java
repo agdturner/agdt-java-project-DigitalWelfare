@@ -78,8 +78,8 @@ public class DW_Maps extends Geotools_Maps {
     public DW_Maps(DW_Environment de) {
         this.Env = de;
         this.Geotools = de.getGeotools();
-        Files = de.Files;
-        Strings = de.Strings;
+        Files = de.files;
+        Strings = de.strings;
         ONSPD_Handler = de.getPostcode_Handler();
         //DW_Postcode_Handler = env.getDW_Postcode_Handler(); Stack overflow doing this here.
     }
@@ -95,7 +95,7 @@ public class DW_Maps extends Geotools_Maps {
 //    protected void initPostcode_Handler() {
 //        if (ONSPD_Handler == null) {
 ////            ONSPD_Handler = new ONSPD_Handler(Env.ONSPD_Environment);
-//            ONSPD_Handler = new ONSPD_Handler(new ONSPD_Environment(Files.getDataDir()));
+//            ONSPD_Handler = new ONSPD_Handler(new ONSPD_Environment(files.getDataDir()));
 //        }
 //    }
 //
@@ -107,7 +107,7 @@ public class DW_Maps extends Geotools_Maps {
 //        //levels.add("Sector");
 //        //levels.add("Area");
 //        TreeMap<ONSPD_YM3, File> ONSPDFiles;
-//        ONSPDFiles = Files.getONSPD_Files().getInputONSPDFiles();
+//        ONSPDFiles = files.getONSPD_Files().getInputONSPDFiles();
 //        Iterator<String> ite2;
 //        ite2 = levels.iterator();
 //        while (ite2.hasNext()) {
@@ -138,7 +138,7 @@ public class DW_Maps extends Geotools_Maps {
         String year;
         year = "2012";
         File generatedCodePointDir;
-        generatedCodePointDir = new File(env.Files.getGeneratedCodePointDir(), 
+        generatedCodePointDir = new File(env.files.getGeneratedCodePointDir(), 
                 year);
         File polyShapefile = new File(generatedCodePointDir, polyShapefilename);
         polyShapefile.mkdirs();
@@ -208,7 +208,7 @@ public class DW_Maps extends Geotools_Maps {
     public DW_Shapefile getPostcodePoly_DW_Shapefile(            DW_Environment env,            String level) {
         DW_Shapefile r;
         File dir;
-        dir = new File(                env.Files.getInputPostcodeDir(),                "BoundaryData");
+        dir = new File(                env.files.getInputPostcodeDir(),                "BoundaryData");
         dir = new File(                dir,                "GBPostcodeAreaSectorDistrict");
         dir = new File(                dir,                "GB_Postcodes");
         String name;
@@ -309,7 +309,7 @@ public class DW_Maps extends Geotools_Maps {
             String area) {
         TreeMap<String, Integer> result;
         result = new TreeMap<>();
-        File dir = new File(                Env.Files.getInputCensus2011AttributeDataDir(level),
+        File dir = new File(                Env.files.getInputCensus2011AttributeDataDir(level),
                 area);
         File file = new File(dir, "pop.csv");
         try {
@@ -401,7 +401,7 @@ public class DW_Maps extends Geotools_Maps {
                 name = level + "_2011_EW_BGC.shp";
             }
             ///scratch02/DigitalWelfare/Input/Census/2011/LSOA/BoundaryData/
-            File censusDirectory = Env.Files.getInputCensus2011Dir(level);
+            File censusDirectory = Env.files.getInputCensus2011Dir(level);
             File boundaryDirectory = new File(                    censusDirectory,                    "/BoundaryData/");
             File shapefileDirectory = new File(                    boundaryDirectory,                    name);
 //        File boundaryDirectory = new File(
@@ -423,7 +423,7 @@ public class DW_Maps extends Geotools_Maps {
         File result;
         String name = area + "_" + level + "_2011_EW_BGC.shp";
         File boundaryDirectory = new File(
-                Env.Files.getGeneratedCensus2011Dir(level),
+                Env.files.getGeneratedCensus2011Dir(level),
                 "/BoundaryData/" + name);
         if (!boundaryDirectory.exists()) {
             boolean dirCreated;
@@ -444,7 +444,7 @@ public class DW_Maps extends Geotools_Maps {
     protected File getLeedsPostcodeSectorShapefile() {
         File r;
         String fileAndDirName = "LSPostalSector.shp";
-        File boundaryDirectory = new File(                Env.Files.getInputPostcodeDir(),
+        File boundaryDirectory = new File(                Env.files.getInputPostcodeDir(),
                 "BoundaryData");
         File shapefileDir = new File(                boundaryDirectory,                fileAndDirName);
         r = new File(                shapefileDir,                fileAndDirName);
@@ -805,7 +805,7 @@ public class DW_Maps extends Geotools_Maps {
     public DW_Shapefile getCommunityAreasDW_Shapefile() {
         DW_Shapefile r;
         String name = "communityareas_region.shp";
-        File dir = new File(Env.Files.getInputDataDir(), "CommunityAreas");
+        File dir = new File(Env.files.getInputDataDir(), "CommunityAreas");
         dir = new File(dir, name);
         File f;
         f = new File(dir, name);

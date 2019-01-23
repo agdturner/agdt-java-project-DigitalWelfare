@@ -136,7 +136,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
                 tLeedsAndNearNeighbouringLADCodes,
                 sdsf);
         File censusDataDirectory = new File(
-                env.Files.getInputCensus2011AttributeDataDir(level),
+                env.files.getInputCensus2011AttributeDataDir(level),
                 tLeedsString);
         if (level.equalsIgnoreCase("OA")
                 || level.equalsIgnoreCase("LSOA")
@@ -204,7 +204,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
             DW_Shapefile tLevelDW_Shapefile) {
         TreeSet<String> result;
         File censusDataDirectory = new File(
-                Env.Files.getInputCensus2011AttributeDataDir(level), area);
+                env.files.getInputCensus2011AttributeDataDir(level), area);
         if (level.equalsIgnoreCase("OA")
                 || level.equalsIgnoreCase("LSOA")
                 || level.equalsIgnoreCase("MSOA")) {
@@ -280,7 +280,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
 
     public final File getPostcodeShapefile(String area, String level) {
         File r;
-        r = new File(Env.Files.getGeneratedPostcodeDir(),
+        r = new File(env.files.getGeneratedPostcodeDir(),
                 area + level + "PolyShapefile.shp");
         r = new File(r, area + level + "PolyShapefile.shp");
         return r;
@@ -317,7 +317,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
 
     public File getPostcodeDataAreaCodesFile(            String area,            String level) {
         File r;
-        File dir = new File(Env.Files.getGeneratedPostcodeDir(), area);
+        File dir = new File(env.files.getGeneratedPostcodeDir(), area);
         dir = new File(dir, level);
         dir.mkdirs();
         r = new File(dir, "AreaCodes.csv");
@@ -351,7 +351,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
      */
     public TreeSet<String> getAreaCodes(String area, String level) {
         TreeSet<String> result = null;
-        File dir = new File(Env.Files.getGeneratedPostcodeDir(), area);
+        File dir = new File(env.files.getGeneratedPostcodeDir(), area);
         dir = new File(dir, level);
         File file = new File(dir, "AreaCodes.csv");
         if (file.exists()) {

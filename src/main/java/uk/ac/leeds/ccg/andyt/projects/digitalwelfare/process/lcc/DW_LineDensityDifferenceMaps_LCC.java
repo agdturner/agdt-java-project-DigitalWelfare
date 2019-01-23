@@ -193,7 +193,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
     //public void runAll(int resolutionMultiplier) {
     public void runAll() throws Exception, Error {
 //        TreeMap<String, ArrayList<Integer>> includes;
-//        includes = Env.getDW_SHBE_Handler().getIncludes();
+//        includes = env.getDW_SHBE_Handler().getIncludes();
 //        includes.remove("All");
 ////        includes.remove("Yearly");
 ////        includes.remove("6Monthly");
@@ -316,7 +316,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
 //        backgrounds = new ArrayList<AGDT_Shapefile>();
         //initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
         tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
-                Env,
+                env,
                 "LSOA",
                 targetPropertyNameLSOA,
                 Maps.getShapefileDataStoreFactory());

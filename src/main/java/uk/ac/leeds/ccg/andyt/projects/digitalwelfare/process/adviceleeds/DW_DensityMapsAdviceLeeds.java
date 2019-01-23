@@ -108,7 +108,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
 //        Maps.setImageWidth(1000);
         ONSPD_YM3 YM3;
         YM3 = new ONSPD_YM3(2011, 5);
-        Env.SHBE_Env.oe.initONSPDLookups();
+        env.SHBE_Env.oe.initONSPDLookups();
         // Initialise styleParameters
         /*
          * YlOrRd,PRGn,PuOr,RdGy,Spectral,Grays,PuBuGn,RdPu,BuPu,YlOrBr,Greens,
@@ -216,7 +216,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
             // Get LSOA Codes LSOA Shapefile and Leeds LSOA Shapefile
             DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
             tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
-                    Env, level, targetPropertyName, 
+                    env, level, targetPropertyName, 
                     MapsAdviceLeeds.getShapefileDataStoreFactory());
             tLookupFromPostcodeToCensusCodes = ProcessorAdviceLeeds.getClaimPostcodeF_To_LevelCode_Map(
                     level, CensusYear, YM3);
@@ -719,9 +719,9 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         result = new TreeMap<>();
         String filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         DW_Data_CAB2_Handler aCAB_DataRecord2_Handler;
-        aCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler(Env);
+        aCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler(env);
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
-        tLeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(Env,
+        tLeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(env,
                 filename,
                 aCAB_DataRecord2_Handler,
                 IDType);
@@ -736,7 +736,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
             String formattedpostcode = Postcode_Handler.formatPostcode(postcode);
             String postcodeLevel;
             postcodeLevel = Postcode_Handler.getPostcodeLevel(formattedpostcode);
-            ONSPD_Point aPoint = Env.SHBE_Env.oe.getONSPDlookups().get(postcodeLevel).get(Postcode_Handler.getDefaultYM3()).get(formattedpostcode);
+            ONSPD_Point aPoint = env.SHBE_Env.oe.getONSPDlookups().get(postcodeLevel).get(Postcode_Handler.getDefaultYM3()).get(formattedpostcode);
             if (aPoint != null) {
                 if (result.containsKey(outlet)) {
                     result.get(outlet).add(aPoint);
@@ -760,9 +760,9 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         result = new TreeMap<>();
         String filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         DW_Data_CAB2_Handler aCAB_DataRecord2_Handler;
-        aCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler(Env);
+        aCAB_DataRecord2_Handler = new DW_Data_CAB2_Handler(env);
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
-        tLeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(Env,
+        tLeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(env,
                 filename,
                 aCAB_DataRecord2_Handler,
                 IDType);
@@ -791,7 +791,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         ArrayList<ONSPD_Point> result;
         result = new ArrayList<>();
         DW_Data_CAB0_Handler tCAB_DataRecord0_Handler;
-        tCAB_DataRecord0_Handler = new DW_Data_CAB0_Handler(Env);
+        tCAB_DataRecord0_Handler = new DW_Data_CAB0_Handler(env);
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
         tChapeltownCABData = DW_DataProcessorAdviceLeeds.getChapeltownCABData(
                 tCAB_DataRecord0_Handler,
@@ -806,7 +806,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
             String formattedpostcode = Postcode_Handler.formatPostcode(postcode);
             String postcodeLevel;
             postcodeLevel = Postcode_Handler.getPostcodeLevel(formattedpostcode);
-            ONSPD_Point aPoint = Env.SHBE_Env.oe.getONSPDlookups().get(postcodeLevel).get(Postcode_Handler.getDefaultYM3()).get(formattedpostcode);
+            ONSPD_Point aPoint = env.SHBE_Env.oe.getONSPDlookups().get(postcodeLevel).get(Postcode_Handler.getDefaultYM3()).get(formattedpostcode);
             if (aPoint != null) {
                 result.add(aPoint);
             } else {
@@ -822,7 +822,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         ArrayList<String> result;
         result = new ArrayList<>();
         DW_Data_LCC_WRU_Handler h;
-        h = new DW_Data_LCC_WRU_Handler(Env);
+        h = new DW_Data_LCC_WRU_Handler(env);
         TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record> data;
         data = DW_DataProcessorAdviceLeeds.getLCC_WRUData(
                 h,
@@ -844,7 +844,7 @@ public class DW_DensityMapsAdviceLeeds extends DW_DensityMapsAbstract {
         ArrayList<String> result;
         result = new ArrayList<>();
         DW_Data_CAB0_Handler tCAB_DataRecord0_Handler;
-        tCAB_DataRecord0_Handler = new DW_Data_CAB0_Handler(Env);
+        tCAB_DataRecord0_Handler = new DW_Data_CAB0_Handler(env);
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
         tChapeltownCABData = DW_DataProcessorAdviceLeeds.getChapeltownCABData(
                 tCAB_DataRecord0_Handler,

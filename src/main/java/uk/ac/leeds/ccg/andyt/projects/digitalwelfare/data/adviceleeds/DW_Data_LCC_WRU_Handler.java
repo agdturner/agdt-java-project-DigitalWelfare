@@ -54,7 +54,7 @@ public class DW_Data_LCC_WRU_Handler extends DW_Object {
      */
     public TreeMap<DW_ID_ClientID, DW_Data_LCC_WRU_Record> loadInputData(
             String filename, Object IDType) {
-        File directory = new File(Env.Files.getInputAdviceLeedsDir(), "LCC_WRU");
+        File directory = new File(env.files.getInputAdviceLeedsDir(), "LCC_WRU");
         return loadInputData(directory, filename, IDType);
     }
 
@@ -98,7 +98,7 @@ public class DW_Data_LCC_WRU_Handler extends DW_Object {
                         line = st.sval;
                         try {
                             DW_Data_LCC_WRU_Record rec;
-                            rec = new DW_Data_LCC_WRU_Record(Env, RecordID, line, this);
+                            rec = new DW_Data_LCC_WRU_Record(env, RecordID, line, this);
                             //String enquiryReferenceNumber = record.getEnquiryReferenceNumber();
                             //1-102J,20-Sep-1936,Not Stated,Refused,LS6 1LS,2-464768375,2-7SFJ2M,Welfare Rights,Home Visit (MacMillan),05-Dec-2011,Blue Badge,-,75,77.11
                             String client_ref;

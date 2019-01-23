@@ -48,14 +48,15 @@ public class DW_Processor extends DW_ProcessorAbstract {
             } else {
                 File dataDir = new File(args[1]);
                 Generic_Environment ge;
-                ge = new Generic_Environment(dataDir, Level.FINE, 100);
+                ge = new Generic_Environment(dataDir);
                 DW_Environment env = new DW_Environment(ge);
                 DW_Processor p;
                 p = new DW_Processor(env);
-//                p.Env.SHBE_Env = new SHBE_Environment(p.files.getDataDir(), 
+//                p.env.SHBE_Env = new SHBE_Environment(p.files.getDataDir(), 
 //                SHBE_Environment.DEBUG_Level_NORMAL);
-//                p.Env.ONSPD_Env = new ONSPD_Environment(p.files.getDataDir());
+//                p.env.ONSPD_Env = new ONSPD_Environment(p.files.getDataDir());
                 p.run();
+                env.ge.closeLog(0);
             }
         } catch (Exception | Error e) {
             System.err.println(e.getLocalizedMessage());
@@ -81,7 +82,7 @@ public class DW_Processor extends DW_ProcessorAbstract {
          * Run LCC SHBE data processing
          */
         DW_ProcessorLCC p;
-        p = new DW_ProcessorLCC(Env);
+        p = new DW_ProcessorLCC(env);
         p.run();
     }
 
