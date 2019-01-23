@@ -103,8 +103,8 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
          * in that some parts have to have been run before others will produce 
          * results as expected/desired.
          */
-        RunAllFromScratch = true;
-//        RunAllFromScratch = false;
+//        RunAllFromScratch = true;
+        RunAllFromScratch = false;
         RunAllFromUpdate = false;
         if (!RunAllFromScratch) {
             if (!RunAllFromUpdate) {
