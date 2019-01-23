@@ -5,7 +5,6 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io;
 
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_IO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
