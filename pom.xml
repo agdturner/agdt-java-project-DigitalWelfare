@@ -4,7 +4,7 @@
 
     <groupId>uk.ac.leeds.ccg.andyt</groupId>
     <artifactId>agdt-java-project-DigitalWelfare</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>agdt-java-project-DigitalWelfare</name>
@@ -42,8 +42,9 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jts.version>1.12</jts.version>
-        <geotools.version>13.2</geotools.version>
+        <geotools.version>20.2</geotools.version>
         <!--
+        <geotools.version>13.2</geotools.version>
         <geotools.version>13-SNAPSHOT</geotools.version>
         <geotools.version>14-SNAPSHOT</geotools.version>
         <geotools.version>12</geotools.version>
@@ -52,17 +53,17 @@
         <geotools.version>12.0.1</geotools.version>
         <geotools.version>12.1</geotools.version>
         -->
-        <agdt-java-generic.version>1.0.0</agdt-java-generic.version>
-        <agdt-java-generic-data.version>0.1-SNAPSHOT</agdt-java-generic-data.version>
-        <agdt-java-generic-data-Census.version>0.1-SNAPSHOT</agdt-java-generic-data-Census.version>
-        <agdt-java-generic-data-ONSPD.version>0.1-SNAPSHOT</agdt-java-generic-data-ONSPD.version>
-        <agdt-java-generic-data-SHBE.version>0.1-SNAPSHOT</agdt-java-generic-data-SHBE.version>
-        <agdt-java-generic-chart.version>0.1-SNAPSHOT</agdt-java-generic-chart.version>
-        <agdt-java-generic-math.version>0.1-SNAPSHOT</agdt-java-generic-math.version>
-        <agdt-java-generic-geotools.version>0.1-SNAPSHOT</agdt-java-generic-geotools.version>
+        <agdt-java-generic.version>1.0-SNAPSHOT</agdt-java-generic.version>
+        <agdt-java-generic-data.version>1.0-SNAPSHOT</agdt-java-generic-data.version>
+        <agdt-java-generic-data-Census.version>1.0-SNAPSHOT</agdt-java-generic-data-Census.version>
+        <agdt-java-generic-data-ONSPD.version>1.0-SNAPSHOT</agdt-java-generic-data-ONSPD.version>
+        <agdt-java-generic-data-SHBE.version>1.0-SNAPSHOT</agdt-java-generic-data-SHBE.version>
+        <agdt-java-generic-chart.version>1.0-SNAPSHOT</agdt-java-generic-chart.version>
+        <agdt-java-generic-math.version>1.0-SNAPSHOT</agdt-java-generic-math.version>
+        <agdt-java-generic-geotools.version>1.0-SNAPSHOT</agdt-java-generic-geotools.version>
         <agdt-java-generic-grids.version>1.0-SNAPSHOT</agdt-java-generic-grids.version>
         <agdt-java-generic-vector.version>1.0-SNAPSHOT</agdt-java-generic-vector.version>
-        <agdt-java-generic-web.version>0.1-SNAPSHOT</agdt-java-generic-web.version>
+        <agdt-java-generic-web.version>1.0-SNAPSHOT</agdt-java-generic-web.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
