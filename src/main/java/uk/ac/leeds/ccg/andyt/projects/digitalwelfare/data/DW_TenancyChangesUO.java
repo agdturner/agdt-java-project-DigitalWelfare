@@ -1980,18 +1980,18 @@ public class DW_TenancyChangesUO extends DW_Object {
             result[4] = preUnderOccupancyValues;
         }
 
-        SHBE_Records SHBE_Records1 = null;
+        SHBE_Records SHBE_Records1;
         ONSPD_YM3 YM3Start = null;
         ONSPD_YM3 YM30 = null;
         String year0 = s;
         String month0 = s;
         ONSPD_YM3 YM31;
-        String year1 = s;
-        String month1 = s;
+        String year1;
+        String month1;
         DW_UO_Set CouncilUOSet0 = null;
         DW_UO_Set RSLUOSet0 = null;
         DW_UO_Set CouncilUOSet1;
-        DW_UO_Set RSLUOSet1 = null;
+        DW_UO_Set RSLUOSet1;
         String SHBEFilename1;
 
         Iterator<Integer> iteX;
@@ -2009,14 +2009,11 @@ public class DW_TenancyChangesUO extends DW_Object {
         year1 = SHBE_Handler.getYear(SHBEFilename1);
         month1 = SHBE_Handler.getMonthNumber(SHBEFilename1);
         CouncilUOSet1 = CouncilUOSets.get(YM31);
-        if (CouncilUOSet1 != null) {
-            RSLUOSet1 = RSLUOSets.get(YM31);
-            SHBE_Records1 = SHBE_Handler.getRecords(YM31, env.HOOME);
-        }
+        RSLUOSet1 = RSLUOSets.get(YM31);
+        SHBE_Records1 = SHBE_Handler.getRecords(YM31, env.HOOME);
         HashMap<SHBE_ID, SHBE_Record> Records1;
         Records1 = SHBE_Records1.getRecords(env.HOOME);
         SHBE_Record Record1;
-        CouncilUOSet1 = CouncilUOSets.get(YM31);
         HashMap<SHBE_ID, DW_UO_Record> CouncilUOSetMap1;
         CouncilUOSetMap1 = CouncilUOSet1.getMap();
 
@@ -4714,23 +4711,13 @@ public class DW_TenancyChangesUO extends DW_Object {
             HashSet<SHBE_ID> tUOClaims,
             TreeMap<String, BigDecimal> AggregateStatistics,
             TreeMap<String, BigDecimal> generalStatistics,
-            SHBE_ID ClaimID,
-            String ClaimRef,
-            String year0,
-            String month0,
-            ONSPD_YM3 YM30,
-            String year1,
-            String month1,
-            ONSPD_YM3 YM31,
-            SHBE_Record Record1,
-            HashMap<SHBE_ID, SHBE_Record> Records0,
+            SHBE_ID ClaimID, String ClaimRef, String year0, String month0,
+            ONSPD_YM3 YM30, String year1, String month1, ONSPD_YM3 YM31,
+            SHBE_Record Record1, HashMap<SHBE_ID, SHBE_Record> Records0,
             //HashMap<SHBE_ID, SHBE_Record> cRecords,
-            TreeMap<String, String> TableValues,
-            DW_UO_Set CouncilUOSet0,
-            DW_UO_Set RSLUOSet0,
-            DW_UO_Set CouncilUOSet1,
-            DW_UO_Set RSLUOSet1,
-            HashMap<ONSPD_YM3, Double> arrears,
+            TreeMap<String, String> TableValues, DW_UO_Set CouncilUOSet0,
+            DW_UO_Set RSLUOSet0, DW_UO_Set CouncilUOSet1,
+            DW_UO_Set RSLUOSet1, HashMap<ONSPD_YM3, Double> arrears,
             HashMap<ONSPD_YM3, Double> arrearsCounts,
             HashMap<ONSPD_YM3, Double> arrearsDiffs,
             HashMap<ONSPD_YM3, Double> arrearsDiffCounts,
@@ -4973,21 +4960,21 @@ public class DW_TenancyChangesUO extends DW_Object {
         String DS1;
         String DC1;
         String DE1;
-        int HBDP1 = 0;
+        int HBDP1;
         Double Arrears1;
         SHBE_D_Record DRecord0;
         int TT0;
         String PC0;
         int Status0;
         int WHBE0;
-        int WERA0 = 0;
+        int WERA0;
         int PSI0;
         int SHBC0;
         int RTHBCC0;
         int CEG0;
-        long HS0 = 0;
-        long ND0 = 0;
-        long CD0 = 0;
+        long HS0;
+        long ND0;
+        long CD0;
         String PDD0;
         String CDoB0;
         String PDoB0;
@@ -5477,20 +5464,14 @@ public class DW_TenancyChangesUO extends DW_Object {
                 if (CouncilUOSet1.getMap().keySet().contains(ClaimID)) {
                     result[1] = true;
                     // Add to Council
-                    addToSets(
-                            ClaimID,
-                            CouncilUniqueClaimantsEffectedPersonIDs,
+                    addToSets(ClaimID, CouncilUniqueClaimantsEffectedPersonIDs,
                             CouncilUniquePartnersEffectedPersonIDs,
                             CouncilUniqueDependentChildrenUnder10EffectedPersonIDs,
                             CouncilUniqueDependentChildrenOver10EffectedPersonIDs,
                             CouncilUniqueNonDependentsEffectedPersonIDs,
                             CouncilMaxNumberOfDependentsInClaimWhenUO,
-                            year1,
-                            month1,
-                            YM31,
-                            Record1.getSRecords(),
-                            DRecord1,
-                            ClaimIDToClaimantPersonIDLookup);
+                            year1, month1, YM31, Record1.getSRecords(),
+                            DRecord1, ClaimIDToClaimantPersonIDLookup);
                     DW_UO_Record rec = CouncilUOSet1.getMap().get(ClaimID);
                     int bedrooms = rec.getBedroomsInProperty();
                     int householdSizeSHBE;

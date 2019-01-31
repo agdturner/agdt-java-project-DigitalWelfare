@@ -18,7 +18,6 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps;
 import java.io.File;
 import java.math.BigDecimal;
@@ -31,6 +30,7 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.map.MapContent;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
 import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDouble;

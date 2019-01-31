@@ -18,7 +18,6 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,6 +25,7 @@ import java.util.TreeMap;
 import org.geotools.data.collection.TreeSetFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;

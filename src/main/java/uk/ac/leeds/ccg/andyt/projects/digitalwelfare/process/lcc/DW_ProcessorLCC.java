@@ -111,7 +111,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 //                // Choose which bits to run
 //                doLoadAllONSPDFromSource = true;
 ////                doLoadNewONSPDFromSource = true;
-                doLoadAllSHBEFromSource = true;
+//                doLoadAllSHBEFromSource = true;
 ////                doLoadNewSHBEFromSource = true;
 //                doLoadSHBE = true;
 ////                doPostcodeCheckLatest = true;
