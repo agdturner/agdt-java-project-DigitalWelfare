@@ -316,7 +316,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      *
      * @return
      */
-    public ONSPD_Handler getPostcode_Handler() {
+    public ONSPD_Handler getONSPD_Handler() {
         if (ONSPD_Handler == null) {
             ONSPD_Handler = SHBE_Env.oe.getHandler();
         }

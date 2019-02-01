@@ -78,7 +78,7 @@ public abstract class DW_DensityMapsAbstract extends DW_Object {
     public DW_DensityMapsAbstract(DW_Environment de) {
         super(de);
         Maps = de.getMaps();
-        Postcode_Handler = de.getPostcode_Handler();
+        Postcode_Handler = de.getONSPD_Handler();
     }
 
     // Add from postcodes

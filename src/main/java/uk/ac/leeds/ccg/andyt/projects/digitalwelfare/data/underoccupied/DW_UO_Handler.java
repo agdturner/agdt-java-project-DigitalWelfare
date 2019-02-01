@@ -45,8 +45,8 @@ public class DW_UO_Handler extends DW_Object {
     /**
      * For convenience.
      */
-    private HashMap<SHBE_ID, String> ClaimIDToClaimRefLookup;
-    private HashMap<String, SHBE_ID> ClaimRefToClaimIDLookup;
+    private final HashMap<SHBE_ID, String> ClaimIDToClaimRefLookup;
+    private final HashMap<String, SHBE_ID> ClaimRefToClaimIDLookup;
 
     private HashSet<String> RecordTypes;
 
@@ -62,117 +62,109 @@ public class DW_UO_Handler extends DW_Object {
     }
 
     /**
-     * @param directory
-     * @param filename
-     * @return
+     * Loads and returns the data from the specified input file.
+     *
+     * @param dir Directory data are loaded from.
+     * @param fn Name of file from which data are loaded.
+     * @return The loaded data.
      */
-    public HashMap<SHBE_ID, DW_UO_Record> loadInputData(File directory,
-            String filename) {
-//        String type;
-//        if (filename.contains("RSL")) {
-//            type = "RSL";
-//        } else {
-//            type = "Council";
-//        }
-        HashMap<SHBE_ID, DW_UO_Record> result;
-        result = new HashMap<>();
-        File inputFile = new File(directory, filename);
+    public HashMap<SHBE_ID, DW_UO_Record> loadInputData(File dir, String fn) {
+        String methodName;
+        methodName = "loadInputData(File,String)";
+        env.ge.log("<" + methodName + ">", true);
+        HashMap<SHBE_ID, DW_UO_Record> r = new HashMap<>();
+        File inputFile = new File(dir, fn);
         boolean addedNewClaimIDs;
         addedNewClaimIDs = false;
-        try {
-            try (BufferedReader br = Generic_IO.getBufferedReader(inputFile)) {
-                StreamTokenizer st = new StreamTokenizer(br);
-                Generic_IO.setStreamTokenizerSyntax5(st);
-                st.wordChars('`', '`');
-                st.wordChars('*', '*');
-                String line;
-                //int duplicateEntriesCount = 0;
-                //int replacementEntriesCount = 0;
-                long RecordID = 0;
-                // Read firstline and check format
-                int tokenType;
-                st.nextToken();
-                line = st.sval;
-                String[] fieldnames = line.split(",");
-//            // Skip the first line
-//            Generic_IO.skipline(st);
-// Read data
-                tokenType = st.nextToken();
-                while (tokenType != StreamTokenizer.TT_EOF) {
-                    switch (tokenType) {
-                        case StreamTokenizer.TT_EOL:
-                            //System.out.println(line);
-                            break;
-                        case StreamTokenizer.TT_WORD:
-                            line = st.sval;
-                            try {
-                                DW_UO_Record DW_UO_Record;
-                                DW_UO_Record = new DW_UO_Record(
-                                        RecordID, line, fieldnames);
-                                //RecordID, line, type);
-                                String ClaimRef;
-                                ClaimRef = DW_UO_Record.getClaimRef();
-                                SHBE_ID ClaimID;
-                                ClaimID = ClaimRefToClaimIDLookup.get(ClaimRef);
-                                if (ClaimID == null) {
-                                    ClaimID = new SHBE_ID(ClaimRefToClaimIDLookup.size());
-                                    ClaimRefToClaimIDLookup.put(ClaimRef, ClaimID);
-                                    ClaimIDToClaimRefLookup.put(ClaimID, ClaimRef);
-                                    addedNewClaimIDs = true;
-                                }
-                                Object o = result.put(
-                                        ClaimID,
-                                        DW_UO_Record);
-                                if (o != null) {
-                                    DW_UO_Record existingUnderOccupiedReport_Record;
-                                    existingUnderOccupiedReport_Record = (DW_UO_Record) o;
-                                    if (!existingUnderOccupiedReport_Record.equals(DW_UO_Record)) {
-                                        System.out.println("existingUnderOccupiedReport_DataRecord " + existingUnderOccupiedReport_Record);
-                                        System.out.println("replacementUnderOccupiedReport_DataRecord " + DW_UO_Record);
-                                        System.out.println("RecordID " + RecordID);
-                                        //replacementEntriesCount++;
-                                    }
-                                }
-                            } catch (Exception e) {
-                                System.err.println("DW_UnderOccupiedReport_Handler error processing from file " + inputFile);
-                                System.err.println(line);
-                                System.err.println("RecordID " + RecordID);
-                                System.err.println(e.getLocalizedMessage());
+        String uorr = " Under-Occupied Report Record ";
+        try (BufferedReader br = Generic_IO.getBufferedReader(inputFile)) {
+            StreamTokenizer st = new StreamTokenizer(br);
+            Generic_IO.setStreamTokenizerSyntax5(st);
+            st.wordChars('`', '`');
+            st.wordChars('*', '*');
+            String line;
+            //int duplicateEntriesCount = 0;
+            int replacementEntriesCount = 0;
+            long recID = 0;
+            // Read firstline and check format
+            int tt; // Token type.
+            st.nextToken();
+            line = st.sval;
+            String[] fieldnames = line.split(",");
+            // Read data
+            tt = st.nextToken();
+            while (tt != StreamTokenizer.TT_EOF) {
+                switch (tt) {
+                    case StreamTokenizer.TT_EOL:
+                        //System.out.println(line);
+                        break;
+                    case StreamTokenizer.TT_WORD:
+                        line = st.sval;
+                        try {
+                            DW_UO_Record rec;
+                            rec = new DW_UO_Record(recID, line, fieldnames);
+                            String claimRef;
+                            claimRef = rec.getClaimRef();
+                            SHBE_ID claimID;
+                            claimID = ClaimRefToClaimIDLookup.get(claimRef);
+                            if (claimID == null) {
+                                claimID = new SHBE_ID(
+                                        ClaimRefToClaimIDLookup.size());
+                                ClaimRefToClaimIDLookup.put(claimRef, claimID);
+                                ClaimIDToClaimRefLookup.put(claimID, claimRef);
+                                addedNewClaimIDs = true;
                             }
-                            RecordID++;
-                            break;
-                    }
-                    tokenType = st.nextToken();
+                            Object o = r.put(claimID, rec);
+                            if (o != null) {
+                                // Existing Under-Occupied report record.
+                                DW_UO_Record euorr;
+                                euorr = (DW_UO_Record) o;
+                                if (!euorr.equals(rec)) {
+                                    env.ge.log("Existing" + uorr + euorr);
+                                    env.ge.log("Replacement" + uorr + rec);
+                                    env.ge.log("Record ID " + recID);
+                                    replacementEntriesCount++;
+                                }
+                            }
+                        } catch (Exception e) {
+                            env.ge.log("Error processing from file "
+                                    + inputFile);
+                            env.ge.log(line);
+                            env.ge.log("RecordID " + recID);
+                            env.ge.log(e.getLocalizedMessage());
+                        }
+                        recID++;
+                        break;
                 }
-                //System.out.println("replacementEntriesCount " + replacementEntriesCount);
+                tt = st.nextToken();
             }
-            if (addedNewClaimIDs) {
-                Generic_IO.writeObject(ClaimIDToClaimRefLookup,
-                        env.getSHBE_Handler().getClaimIDToClaimRefLookupFile());
-                Generic_IO.writeObject(ClaimRefToClaimIDLookup,
-                        env.getSHBE_Handler().getClaimRefToClaimIDLookupFile());
-            }
+            env.ge.log("Replacement Entries " + replacementEntriesCount);
         } catch (IOException ex) {
             Logger.getLogger(DW_UO_Handler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return result;
+        if (addedNewClaimIDs) {
+            Generic_IO.writeObject(ClaimIDToClaimRefLookup,
+                    env.getSHBE_Handler().getClaimIDToClaimRefLookupFile());
+            Generic_IO.writeObject(ClaimRefToClaimIDLookup,
+                    env.getSHBE_Handler().getClaimRefToClaimIDLookupFile());
+        }
+        env.ge.log("</" + methodName + ">", true);
+        return r;
     }
 
     /**
      * Loads the Under-Occupied report data for Leeds.
      *
-     * @param reload If reload is true then the data is reloaded from source.
-     * @return
+     * @param reload Iff true then the data is reloaded from source.
+     * @return The loaded data.
      */
     public DW_UO_Data loadUnderOccupiedReportData(boolean reload) {
         String methodName;
-        methodName = "loadUnderOccupiedReportData";
+        methodName = "loadUnderOccupiedReportData(boolean)";
         env.ge.log("<" + methodName + ">", true);
-        DW_UO_Data result;
-        TreeMap<ONSPD_YM3, DW_UO_Set> CouncilSets;
-        CouncilSets = new TreeMap<>();
-        TreeMap<ONSPD_YM3, DW_UO_Set> RSLSets;
-        RSLSets = new TreeMap<>();
+        DW_UO_Data r;
+        TreeMap<ONSPD_YM3, DW_UO_Set> sc = new TreeMap<>();
+        TreeMap<ONSPD_YM3, DW_UO_Set> sr = new TreeMap<>();
 
         /**
          * Look where the generated data should be stored. Look where the input
@@ -181,164 +173,123 @@ public class DW_UO_Handler extends DW_Object {
          */
         String type;
         Object[] filenames = getInputFilenames();
-        TreeMap<ONSPD_YM3, String> CouncilFilenames;
-        CouncilFilenames = (TreeMap<ONSPD_YM3, String>) filenames[0];
-        TreeMap<ONSPD_YM3, String> RSLFilenames;
-        RSLFilenames = (TreeMap<ONSPD_YM3, String>) filenames[1];
-        ONSPD_YM3 YM3;
+        // Filenames for Council data.
+        TreeMap<ONSPD_YM3, String> fc;
+        fc = (TreeMap<ONSPD_YM3, String>) filenames[0];
+        // Filenames for RSL data.
+        TreeMap<ONSPD_YM3, String> fr;
+        fr = (TreeMap<ONSPD_YM3, String>) filenames[1];
+        ONSPD_YM3 ym3;
+        DW_UO_Set set;
         String filename;
         Iterator<ONSPD_YM3> ite;
-        ite = CouncilFilenames.keySet().iterator();
+        ite = fc.keySet().iterator();
         type = strings.sCouncil;
         while (ite.hasNext()) {
-            YM3 = ite.next();
-            filename = CouncilFilenames.get(YM3);
-            DW_UO_Set set;
-            set = new DW_UO_Set(env, type, filename, YM3, reload);
-            CouncilSets.put(YM3, set);
+            ym3 = ite.next();
+            filename = fc.get(ym3);
+            set = new DW_UO_Set(env, type, filename, ym3, reload);
+            sc.put(ym3, set);
         }
-        ite = RSLFilenames.keySet().iterator();
+        ite = fr.keySet().iterator();
         type = strings.sRSL;
         while (ite.hasNext()) {
-            YM3 = ite.next();
-            filename = RSLFilenames.get(YM3);
-            DW_UO_Set set;
-            set = new DW_UO_Set(env, type, filename, YM3, reload);
-            RSLSets.put(YM3, set);
+            ym3 = ite.next();
+            filename = fr.get(ym3);
+            set = new DW_UO_Set(env, type, filename, ym3, reload);
+            sr.put(ym3, set);
         }
-        result = new DW_UO_Data(env, RSLSets, CouncilSets);
+        r = new DW_UO_Data(env, sr, sc);
         env.ge.log("</" + methodName + ">", true);
-        return result;
+        return r;
     }
 
     /**
-     * Returns the number of input files of UnderOccupied Data
-     *
-     * @return
+     * @return The number of input files of Under-Occupied Data
      */
     public int getNumberOfInputFiles() {
-        int result;
-        File dirIn;
-        dirIn = files.getInputUnderOccupiedDir();
-        File[] files;
-        files = dirIn.listFiles();
-        result = files.length;
-        return result;
+        return files.getInputUnderOccupiedDir().listFiles().length;
     }
 
     /**
-     * Returns the number of generated files of UnderOccupied Data
-     *
-     * @return
+     * @return The number of generated files of Under-Occupied Data
      */
     public int getNumberOfGeneratedFiles() {
-        int result;
-        File dirIn;
-        dirIn = files.getGeneratedUnderOccupiedDir();
-        result = dirIn.listFiles().length;
-        return result;
+        return files.getGeneratedUnderOccupiedDir().listFiles().length;
     }
 
     /**
-     * Do we really want to store these?
+     * This needs modifying as more data are added.
      *
-     * @return Object[] result where: null null null null null null null null
-     * null null null null null null null null null     {@code 
-     * result[0] TreeMap<String, String> councilFilenames (year_Month, filename)
-     * result[1] TreeMap<String, String> RSLFilenames (year_Month, filename)
+     * @return Object[] r where:
+     * <ul>
+     * <li>r[0] = {@code TreeMap<String, String>} of filenames of Council data;
+     * where the keys are {@link ONSPD_YM3} and the values are the
+     * filenames.</li>
+     * <li>r[1] = {@code TreeMap<String, String>} of filenames of RSL data;
+     * where the keys are {@link ONSPD_YM3} and the values are the
+     * filenames.</li>
      * }
-     */
-    private Object[] inputFilenames;
-
-    /**
-     * This needs modifying as more datasets are added currently....
-     *
-     * @return
+     * </ul>
      */
     public Object[] getInputFilenames() {
-        if (inputFilenames == null) {
-            inputFilenames = new Object[2];
-            TreeMap<ONSPD_YM3, String> CouncilFilenames;
-            TreeMap<ONSPD_YM3, String> RSLFilenames;
-            CouncilFilenames = new TreeMap<>();
-            RSLFilenames = new TreeMap<>();
-            inputFilenames[0] = CouncilFilenames;
-            inputFilenames[1] = RSLFilenames;
-//            String[] list = files.getInputUnderOccupiedDir().list();
-//            String s;
-//            String ym;
-//            TreeMap<String,String> yms;
-//            yms = new TreeMap<String,String>();
-//            for (String list1 : list) {
-//                s = list1;
-//                ym = getYearMonthNumber(s);
-//                yms.put(ym, s);
-//            }
-//            Iterator<String> ite;
-//            ite = yms.keySet().iterator();
-//            int i = 0;
-//            while (ite.hasNext()) {
-//                ym = ite.next();
-//                SHBEFilenamesAll[i] = yms.get(ym);
-//                i ++;
-//            }
-            CouncilFilenames.put(
-                    new ONSPD_YM3(2013, 3),
-                    "2013 14 Under Occupied Report For University Year Start Council Tenants.csv");
-            RSLFilenames.put(
-                    new ONSPD_YM3(2013, 3),
-                    "2013 14 Under Occupied Report For University Year Start RSLs.csv");
-            String councilEndFilename = " Council Tenants.csv";
-            String RSLEndFilename = " RSLs.csv";
-            String RSLEndFilename2 = " RSL.csv";
-            String underOccupiedReportForUniversityString = " Under Occupied Report For University ";
-            String yearAll;
-            yearAll = "2013 14";
-            //councilFilenames.add(yearAll + underOccupiedReportForUniversityString + "Year Start" + councilEndFilename);
-            //registeredSocialLandlordFilenames.add(yearAll + underOccupiedReportForUniversityString + "Year Start" + RSLEndFilename);
-            putFilenames(yearAll, underOccupiedReportForUniversityString,
-                    councilEndFilename, RSLEndFilename, CouncilFilenames,
-                    RSLFilenames, 1, 12);
-            yearAll = "2014 15";
-            putFilenames(yearAll, underOccupiedReportForUniversityString,
-                    councilEndFilename, RSLEndFilename2, CouncilFilenames,
-                    RSLFilenames, 1, 12);
-            yearAll = "2015 16";
-            putFilenames(yearAll, underOccupiedReportForUniversityString,
-                    councilEndFilename, RSLEndFilename2, CouncilFilenames,
-                    RSLFilenames, 1, 12);
-            yearAll = "2016 17";
-            putFilenames(yearAll, underOccupiedReportForUniversityString,
-                    councilEndFilename, RSLEndFilename2, CouncilFilenames,
-                    RSLFilenames, 1, 12);
-            yearAll = "2017 18";
-            putFilenames(yearAll, underOccupiedReportForUniversityString,
-                    councilEndFilename, RSLEndFilename2, CouncilFilenames,
-                    RSLFilenames, 1, 9); // The number 6 needs increasing as there are more datasets....
-        }
-        return inputFilenames;
+        Object[] r;
+        r = new Object[2];
+        // Collection of filenames of Council data.
+        TreeMap<ONSPD_YM3, String> fc;
+        // Collection of filenames of Council data.
+        TreeMap<ONSPD_YM3, String> fr;
+        fc = new TreeMap<>();
+        fr = new TreeMap<>();
+        r[0] = fc;
+        r[1] = fr;
+        String yearAll = "2013 14";
+        String uorfu = " Under Occupied Report For University ";
+        String efc = " Council Tenants.csv";
+        String efr = " RSLs.csv";
+        String efr2 = " RSL.csv";
+        ONSPD_YM3 ym3 = new ONSPD_YM3(2013, 3);
+        fc.put(ym3, yearAll + uorfu + "Year Start" + efc);
+        fr.put(ym3, yearAll + uorfu + "Year Start" + efr);
+        putFilenames(yearAll, uorfu, efc, efr, fc, fr, 1, 12);
+        yearAll = "2014 15";
+        putFilenames(yearAll, uorfu, efc, efr2, fc, fr, 1, 12);
+        yearAll = "2015 16";
+        putFilenames(yearAll, uorfu, efc, efr2, fc, fr, 1, 12);
+        yearAll = "2016 17";
+        putFilenames(yearAll, uorfu, efc, efr2, fc, fr, 1, 12);
+        yearAll = "2017 18";
+        putFilenames(yearAll, uorfu, efc, efr2, fc, fr, 1, 9); // The number 9 needs increasing more data are added....
+        return r;
     }
 
-    protected static void putFilenames(String yearAll,
-            String underOccupiedReportForUniversityString,
-            String councilEndFilename, String RSLEndFilename2,
-            TreeMap<ONSPD_YM3, String> CouncilFilenames,
-            TreeMap<ONSPD_YM3, String> RSLFilenames,
-            int minMonth, int maxMonth) {
+    /**
+     * @param yearAll The financial year (e.g. "2014 15"). This starts in March.
+     * @param uorfu Expecting " Under Occupied Report For University ".
+     * @param efc End of filename for Council data.
+     * @param efr End of filename for RSL data.
+     * @param fc Collection of filenames of Council data that is added to.
+     * @param fr Collection of filenames of RSL data that is added to.
+     * @param minMonth The first month to be added.
+     * @param maxMonth The last month to be added.
+     */
+    private static void putFilenames(String yearAll, String uorfu, String efc,
+            String efr, TreeMap<ONSPD_YM3, String> fc,
+            TreeMap<ONSPD_YM3, String> fr, int minMonth, int maxMonth) {
         for (int i = minMonth; i <= maxMonth; i++) {
-            String y = getYear(yearAll, i);
-            String m = getMonth3(i);
-            String ym = y + "_" + m;
-            String s;
-            s = yearAll + underOccupiedReportForUniversityString + "Month " + i;
-//            String filename;
-//            filename = s + councilEndFilename;
-//            env.getFiles().getInputUnderOccupiedDir();
-            CouncilFilenames.put(new ONSPD_YM3(ym), s + councilEndFilename);
-            RSLFilenames.put(new ONSPD_YM3(ym), s + RSLEndFilename2);
+            String s = yearAll + uorfu + "Month " + i;
+            ONSPD_YM3 ym3 = new ONSPD_YM3(getYear(yearAll, i), getMonth3(i));
+            fc.put(ym3, s + efc);
+            fr.put(ym3, s + efr);
         }
     }
 
+    /**
+     * @param yearAll The financial year (e.g. "2014 15"). This starts in March.
+     * @param i The month of the financial year. (1 is April, 2 is May,..., 12
+     * is March).
+     * @return The calendar year.
+     */
     protected static String getYear(String yearAll, int i) {
         String r;
         String[] split;
@@ -354,7 +305,14 @@ public class DW_UO_Handler extends DW_Object {
         return r;
     }
 
-    // The first month of this year sequence is April (financial year)
+    /**
+     * The first month of this year sequence is April (financial year).
+     *
+     * @param i The month of the financial year. (1 is April, 2 is May,..., 12
+     * is March).
+     *
+     * @return The full name of the month (e.g. "April").
+     */
     protected static String getMonth(int i) {
         switch (i) {
             case 10:
@@ -385,44 +343,52 @@ public class DW_UO_Handler extends DW_Object {
         return "";
     }
 
-    // The first month of this year sequence is April (financial year)
+    /**
+     * The first month of this year sequence is April (financial year).
+     *
+     * @param i The month of the financial year. (1 is April, 2 is May,..., 12
+     * is March).
+     *
+     * @return The 3 letter name of the month (e.g. "Apr").
+     */
     protected static String getMonth3(int i) {
         return getMonth(i).substring(0, 3);
     }
 
     /**
-     * Returns a {@code Set<SHBE_ID>} of the ClaimIDs of those UnderOccupying at
+     * @return A {@code Set<SHBE_ID>} of the ClaimIDs of those UnderOccupying at
      * the start of April2013.
      *
-     * @param DW_UO_Data
-     * @return
+     * @param d The Under-Occupied Data.
+     *
      */
-    public Set<SHBE_ID> getUOStartApril2013ClaimIDs(
-            DW_UO_Data DW_UO_Data) {
-        return DW_UO_Data.getClaimIDsInUO().get(DW_UO_Data.getBaselineYM3());
+    public Set<SHBE_ID> getUOStartApril2013ClaimIDs(DW_UO_Data d) {
+        return d.getClaimIDsInUO().get(d.getBaselineYM3());
     }
 
     /**
-     * This returns a Set of all ClaimIDs of all Claims that have at some time
-     * been classed as Council Under Occupying.
+     * @return A {@code Set<SHBE_ID>} of the ClaimIDs of all Claims that have at
+     * some time been classed as Council Under Occupying.
      *
-     * @param DW_UO_Data
-     * @return
+     * @param d The Under-Occupied Data.
      */
-    public Set<SHBE_ID> getAllCouncilUOClaimIDs(
-            DW_UO_Data DW_UO_Data) {
-        return DW_UO_Data.getClaimIDsInCouncilUO();
+    public Set<SHBE_ID> getAllCouncilUOClaimIDs(DW_UO_Data d) {
+        return d.getClaimIDsInCouncilUO();
     }
 
+    /**
+     * @param rec The Under-Occupied record.
+     * @return The Household size excluding partners
+     * {@code 1 + rec.getTotalDependentChildren() + rec.getNonDependents()}
+     */
     public static int getHouseholdSizeExcludingPartners(DW_UO_Record rec) {
-        int result;
-        result
-                = 1 + rec.getTotalDependentChildren()
+        int r;
+        r = 1 + rec.getTotalDependentChildren()
                 //rec.getChildrenOver16()
                 //+ rec.getFemaleChildren10to16() + rec.getFemaleChildrenUnder10()
                 //+ rec.getMaleChildren10to16() + rec.getMaleChildrenUnder10()
                 + rec.getNonDependents();
-        return result;
+        return r;
     }
 
 }

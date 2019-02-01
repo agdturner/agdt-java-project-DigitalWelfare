@@ -39,7 +39,7 @@ public class DW_Deprivation_DataHandler extends Census_DeprivationDataHandler {
     
     public DW_Deprivation_DataHandler(DW_Environment env) {
         this.Env = env;
-        this.Postcode_Handler = env.getPostcode_Handler();
+        this.Postcode_Handler = env.getONSPD_Handler();
     }
     /**
      *

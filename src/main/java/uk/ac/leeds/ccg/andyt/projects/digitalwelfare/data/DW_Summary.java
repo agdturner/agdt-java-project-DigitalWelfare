@@ -820,7 +820,7 @@ public class DW_Summary extends DW_Object {
     public DW_Summary(DW_Environment env) {
         super(env);
         this.SHBE_Handler = env.getSHBE_Handler();
-        this.Postcode_Handler = env.getPostcode_Handler();
+        this.Postcode_Handler = env.getONSPD_Handler();
         this.SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
     }
 

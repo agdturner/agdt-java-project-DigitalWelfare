@@ -31,7 +31,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
 
     public DW_ProcessorAbstract(DW_Environment e) {
         super(e);
-        this.Postcode_Handler = e.getPostcode_Handler();
+        this.Postcode_Handler = e.getONSPD_Handler();
     }
 
     public ArrayList<Boolean> getArrayListBoolean() {

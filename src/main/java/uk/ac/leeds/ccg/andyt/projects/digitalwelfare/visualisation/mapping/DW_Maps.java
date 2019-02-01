@@ -57,10 +57,10 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  */
 public class DW_Maps extends Geotools_Maps {
 
-    protected final transient DW_Environment Env;
-    protected transient DW_Geotools Geotools;
-    protected final transient DW_Files Files;
-    protected final transient DW_Strings Strings;
+    protected final transient DW_Environment env;
+    protected transient DW_Geotools geotools;
+    protected final transient DW_Files files;
+    protected final transient DW_Strings strings;
     protected final transient ONSPD_Handler ONSPD_Handler;
 
     //private TreeMap<String, ONSPD_Point>[] ONSPDlookups;
@@ -76,11 +76,11 @@ public class DW_Maps extends Geotools_Maps {
     public boolean doDebug;
 
     public DW_Maps(DW_Environment de) {
-        this.Env = de;
-        this.Geotools = de.getGeotools();
-        Files = de.files;
-        Strings = de.strings;
-        ONSPD_Handler = de.getPostcode_Handler();
+        this.env = de;
+        this.geotools = de.getGeotools();
+        files = de.files;
+        strings = de.strings;
+        ONSPD_Handler = de.getONSPD_Handler();
         //DW_Postcode_Handler = env.getDW_Postcode_Handler(); Stack overflow doing this here.
     }
 
@@ -94,7 +94,7 @@ public class DW_Maps extends Geotools_Maps {
 //
 //    protected void initPostcode_Handler() {
 //        if (ONSPD_Handler == null) {
-////            ONSPD_Handler = new ONSPD_Handler(Env.ONSPD_Environment);
+////            ONSPD_Handler = new ONSPD_Handler(env.ONSPD_Environment);
 //            ONSPD_Handler = new ONSPD_Handler(new ONSPD_Environment(files.getDataDir()));
 //        }
 //    }
@@ -309,7 +309,7 @@ public class DW_Maps extends Geotools_Maps {
             String area) {
         TreeMap<String, Integer> result;
         result = new TreeMap<>();
-        File dir = new File(                Env.files.getInputCensus2011AttributeDataDir(level),
+        File dir = new File(                env.files.getInputCensus2011AttributeDataDir(level),
                 area);
         File file = new File(dir, "pop.csv");
         try {
@@ -374,21 +374,21 @@ public class DW_Maps extends Geotools_Maps {
             if (level.equalsIgnoreCase("PostcodeUnit")) {
                 // Get Postcode Unit Boundaries
                 DW_Shapefile postcodeUnitPoly_DW_Shapefile;
-                postcodeUnitPoly_DW_Shapefile = getPostcodeUnitPoly_DW_Shapefile(Env,
+                postcodeUnitPoly_DW_Shapefile = getPostcodeUnitPoly_DW_Shapefile(env,
                         new ShapefileDataStoreFactory());
                 result = postcodeUnitPoly_DW_Shapefile.getFile();
             }
             if (level.equalsIgnoreCase("PostcodeSector")) {
                 // Get PostcodeSector Boundaries
                 DW_Shapefile postcodeSectorPoly_DW_Shapefile;
-                postcodeSectorPoly_DW_Shapefile = getPostcodePoly_DW_Shapefile(Env,
+                postcodeSectorPoly_DW_Shapefile = getPostcodePoly_DW_Shapefile(env,
                         "Sector");
                 result = postcodeSectorPoly_DW_Shapefile.getFile();
             }
             if (level.equalsIgnoreCase("PostcodeDistrict")) {
                 // Get PostcodeSector Boundaries
                 DW_Shapefile postcodeSectorPoly_DW_Shapefile;
-                postcodeSectorPoly_DW_Shapefile = getPostcodePoly_DW_Shapefile(Env,
+                postcodeSectorPoly_DW_Shapefile = getPostcodePoly_DW_Shapefile(env,
                         "District");
                 result = postcodeSectorPoly_DW_Shapefile.getFile();
             }
@@ -401,7 +401,7 @@ public class DW_Maps extends Geotools_Maps {
                 name = level + "_2011_EW_BGC.shp";
             }
             ///scratch02/DigitalWelfare/Input/Census/2011/LSOA/BoundaryData/
-            File censusDirectory = Env.files.getInputCensus2011Dir(level);
+            File censusDirectory = env.files.getInputCensus2011Dir(level);
             File boundaryDirectory = new File(                    censusDirectory,                    "/BoundaryData/");
             File shapefileDirectory = new File(                    boundaryDirectory,                    name);
 //        File boundaryDirectory = new File(
@@ -423,7 +423,7 @@ public class DW_Maps extends Geotools_Maps {
         File result;
         String name = area + "_" + level + "_2011_EW_BGC.shp";
         File boundaryDirectory = new File(
-                Env.files.getGeneratedCensus2011Dir(level),
+                env.files.getGeneratedCensus2011Dir(level),
                 "/BoundaryData/" + name);
         if (!boundaryDirectory.exists()) {
             boolean dirCreated;
@@ -444,7 +444,7 @@ public class DW_Maps extends Geotools_Maps {
     protected File getLeedsPostcodeSectorShapefile() {
         File r;
         String fileAndDirName = "LSPostalSector.shp";
-        File boundaryDirectory = new File(                Env.files.getInputPostcodeDir(),
+        File boundaryDirectory = new File(                env.files.getInputPostcodeDir(),
                 "BoundaryData");
         File shapefileDir = new File(                boundaryDirectory,                fileAndDirName);
         r = new File(                shapefileDir,                fileAndDirName);
@@ -805,7 +805,7 @@ public class DW_Maps extends Geotools_Maps {
     public DW_Shapefile getCommunityAreasDW_Shapefile() {
         DW_Shapefile r;
         String name = "communityareas_region.shp";
-        File dir = new File(Env.files.getInputDataDir(), "CommunityAreas");
+        File dir = new File(env.files.getInputDataDir(), "CommunityAreas");
         dir = new File(dir, name);
         File f;
         f = new File(dir, name);

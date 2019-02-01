@@ -118,14 +118,14 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 ////                doPostcodeCheck = true;
 //                doLoadUnderOccupancyFromSource = true;
 //                doLoadUnderOccupancy = true;
-                doLCCSummary = true;
-                doRentArrears = true;
+//                doLCCSummary = true;
+//                doRentArrears = true;
 //                doRentArrearsNewData = true;
-                doLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
-                doLCCHBGeneralAggregateStatistics = true;
-                doLCCTTAndPT = true;
-                if (doLCCTTAndPT) {
-                    doLCCTTAndPTAll = true; // Runtime 13:23:08.458s
+//                doLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
+//                doLCCHBGeneralAggregateStatistics = true;
+//                doLCCTTAndPT = true;
+//                if (doLCCTTAndPT) {
+//                    doLCCTTAndPTAll = true; // Runtime 13:23:08.458s
                     /**
                      * If doLCCTTAndPTAll = false then choose bits otherwise run
                      * for all combinations.
@@ -140,7 +140,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 ////                    LCCTTAndPT_DoTenancyChanges = false;
 //                    LCCTTAndPT_DoTenancyAndPostcodeChanges = true;
 ////                    LCCTTAndPT_DoTenancyAndPostcodeChanges = false;
-                }
+//                }
                 doChoroplethMapping = true;
                 doLineMaps = true;
                 doReports = true;

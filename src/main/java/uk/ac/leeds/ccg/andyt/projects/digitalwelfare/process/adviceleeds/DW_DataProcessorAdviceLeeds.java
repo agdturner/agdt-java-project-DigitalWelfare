@@ -70,7 +70,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             DW_Environment env,
             File tDW_directory) {
         super(env);
-        Postcode_Handler = env.getPostcode_Handler();
+        Postcode_Handler = env.getONSPD_Handler();
         Deprivation_DataHandler = env.getDeprivation_DataHandler();
     }
 
@@ -1250,7 +1250,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             String postcode,
             TreeMap<String, String> tLookupFromPostcodeToCensusCode) {
         ONSPD_Handler tDW_Postcode_Handler;
-        tDW_Postcode_Handler = env.getPostcode_Handler();
+        tDW_Postcode_Handler = env.getONSPD_Handler();
         String key = "";
         if (level.equalsIgnoreCase("PostcodeDistrict")
                 || level.equalsIgnoreCase("PostcodeSector")
@@ -1298,7 +1298,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             TreeMap data,
             TreeMap<String, String> tLookupFromPostcodeToCensusCode) {
         ONSPD_Handler tDW_Postcode_Handler;
-        tDW_Postcode_Handler = env.getPostcode_Handler();
+        tDW_Postcode_Handler = env.getONSPD_Handler();
         TreeMap<String, TreeMap<String, Integer>> result;
         result = new TreeMap<>();
         String outlet;

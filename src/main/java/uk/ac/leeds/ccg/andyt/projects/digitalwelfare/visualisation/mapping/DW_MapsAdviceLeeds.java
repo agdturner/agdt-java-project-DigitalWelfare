@@ -153,7 +153,7 @@ public class DW_MapsAdviceLeeds extends DW_Maps {
         String tAdviceLeedsPointName = "AllAdviceLeedsPoints";
         File tAdviceLeedsPointShapefileDir;
         tAdviceLeedsPointShapefileDir = new File(
-                Env.files.getGeneratedAdviceLeedsDir(),
+                env.files.getGeneratedAdviceLeedsDir(),
                 tAdviceLeedsPointName);
         String tAdviceLeedsPointShapefileFilename;
         tAdviceLeedsPointShapefileFilename = tAdviceLeedsPointName + ".shp";
@@ -178,7 +178,7 @@ public class DW_MapsAdviceLeeds extends DW_Maps {
             String tAdviceLeedsPointName = ite.next();
             File tAdviceLeedsPointShapefileDir;
             tAdviceLeedsPointShapefileDir = new File(
-                    Files.getGeneratedAdviceLeedsDir(),
+                    files.getGeneratedAdviceLeedsDir(),
                     tAdviceLeedsPointName);
             String tAdviceLeedsPointShapefileFilename;
             tAdviceLeedsPointShapefileFilename = tAdviceLeedsPointName + ".shp";

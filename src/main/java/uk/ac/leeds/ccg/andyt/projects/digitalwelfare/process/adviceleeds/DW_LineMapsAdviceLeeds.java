@@ -79,7 +79,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
     public DW_LineMapsAdviceLeeds(DW_Environment de) {
         super(de);
         ProcessorAdviceLeeds = new DW_ProcessorAdviceLeeds(de);
-        Geotools = de.getGeotools();
+        geotools = de.getGeotools();
     }
 
     /**
@@ -135,16 +135,16 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
     private void init() {
         level = "MSOA";
         initStyleParameters();
-        mapDirectory = Files.getOutputAdviceLeedsMapsDir();
+        mapDirectory = files.getOutputAdviceLeedsMapsDir();
         // init tLSOACodesAndLeedsLSOAShapefile
         initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
         // init tMSOACodesAndLeedsMSOAShapefile
         initMSOACodesAndLeedsMSOAShapefile(targetPropertyNameMSOA);
-        Env.SHBE_Env.oe.initONSPDLookups();
+        env.SHBE_Env.oe.initONSPDLookups();
         initCABOutletPoints();
-        Data_CAB2_Handler = new DW_Data_CAB2_Handler(Env);
-        Data_CAB0_Handler = new DW_Data_CAB0_Handler(Env);
-        Data_LCC_WRU_Handler = new DW_Data_LCC_WRU_Handler(Env);
+        Data_CAB2_Handler = new DW_Data_CAB2_Handler(env);
+        Data_CAB0_Handler = new DW_Data_CAB0_Handler(env);
+        Data_LCC_WRU_Handler = new DW_Data_LCC_WRU_Handler(env);
         LSOAToCentroidLookupTable = getCentroidLookupTable(                "LSOA",
                 targetPropertyNameLSOA);
         MSOAToCentroidLookupTable = getCentroidLookupTable(                "MSOA",
@@ -158,12 +158,12 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
 //        styleParameters.setAddWhiteForZero(true);
         styleParameters.setForegroundStyleName(0, "Foreground Style 0");
 //        styleParameters.setForegroundStyles(DW_Style.createDefaultPointStyle());
-        styleParameters.setForegroundStyles(Geotools.getStyle().createAdviceLeedsPointStyles());
-        styleParameters.setForegroundStyle1(Geotools.getStyle().createDefaultPolygonStyle(
+        styleParameters.setForegroundStyles(geotools.getStyle().createAdviceLeedsPointStyles());
+        styleParameters.setForegroundStyle1(geotools.getStyle().createDefaultPolygonStyle(
                 Color.GREEN,
                 Color.WHITE));
         styleParameters.setForegroundStyleTitle1("Foreground Style 1");
-        styleParameters.setBackgroundStyle(Geotools.getStyle().createDefaultPolygonStyle(
+        styleParameters.setBackgroundStyle(geotools.getStyle().createDefaultPolygonStyle(
                 Color.BLACK,
                 Color.WHITE));
         styleParameters.setBackgroundStyleTitle("Background Style");
@@ -172,7 +172,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
     private void initLSOACodesAndLeedsLSOAShapefile(
             String targetPropertyNameLSOA) {
         tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
-                Env,
+                env,
                 "LSOA",
                 targetPropertyNameLSOA,
                 getShapefileDataStoreFactory());
@@ -181,7 +181,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
     private void initMSOACodesAndLeedsMSOAShapefile(
             String targetPropertyNameMSOA) {
         MSOACodesAndLeedsMSOAShapefile = new DW_AreaCodesAndShapefiles(
-                Env,
+                env,
                 "MSOA",
                 targetPropertyNameMSOA,
                 getShapefileDataStoreFactory());
@@ -230,7 +230,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         // Load Leeds CAB Data
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> LeedsCABData;
-        LeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(Env,
+        LeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(env,
                 filename,
                 Data_CAB2_Handler,
                 IDType);
@@ -593,7 +593,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         while (ite_String.hasNext()) {
             String tCABOutlet = ite_String.next();
             TreeSetFeatureCollection tsfc = tsfcs.get(tCABOutlet);
-            File outputShapefile = Geotools.getOutputShapefile(
+            File outputShapefile = geotools.getOutputShapefile(
                     spiderMapDirectory,
                     tCABOutlet);
             DW_Shapefile.transact(
@@ -606,14 +606,14 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
 //            FeatureLayer backgroundFeatureLayer = DW_Shapefile.getFeatureLayer(
 //                backgroundShapefile,
 //                backgroundStyle);
-            Geotools.outputToImage(tCABOutlet,
+            geotools.outputToImage(tCABOutlet,
                     outputShapefile,
                     foregroundDW_Shapefile0,
                     ForegroundDW_Shapefile1,
                     BackgroundDW_Shapefile,
                     "",
                     spiderMapDirectory,
-                    Geotools.getGeotools_Strings().png_String,
+                    geotools.getGeotools_Strings().png_String,
                     imageWidth,
                     styleParameters,
                     0,
@@ -649,7 +649,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         // Load Leeds CAB Data
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> tLeedsCABData;
-        tLeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(Env,
+        tLeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(env,
                 filename, Data_CAB2_Handler, IDType);
         // Load Chapeltown CAB data
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
@@ -861,14 +861,14 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         while (ite_String.hasNext()) {
             String tCABOutlet = ite_String.next();
             TreeSetFeatureCollection tsfc = tsfcs.get(tCABOutlet);
-            File outputShapefile = Geotools.getOutputShapefile(
+            File outputShapefile = geotools.getOutputShapefile(
                     spiderMapDirectory, tCABOutlet);
             DW_Shapefile.transact(outputShapefile, aLineSFT, tsfc,
                     getShapefileDataStoreFactory());
-            Geotools.outputToImage(tCABOutlet, outputShapefile,
+            geotools.outputToImage(tCABOutlet, outputShapefile,
                     foregroundDW_Shapefile0, ForegroundDW_Shapefile1,
                     BackgroundDW_Shapefile, "", spiderMapDirectory,
-                    Geotools.getGeotools_Strings().png_String, imageWidth,
+                    geotools.getGeotools_Strings().png_String, imageWidth,
                     styleParameters, 0, Double.POSITIVE_INFINITY,
                     showMapsInJMapPane);
         }
@@ -888,7 +888,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         filename = "Leeds CAb data 2012-13ProblemFieldsCleared.csv";
         // Load Leeds CAB Data
         TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> LeedsCABData;
-        LeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(Env,
+        LeedsCABData = DW_DataProcessorAdviceLeeds.loadLeedsCABData(env,
                 filename, Data_CAB2_Handler, IDType);
         // Load Chapeltown CAB data
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> tChapeltownCABData;
@@ -1063,7 +1063,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         while (ite_String.hasNext()) {
             String tCABOutlet = ite_String.next();
             TreeSetFeatureCollection tsfc = tsfcs.get(tCABOutlet);
-            File outputShapeFile = Geotools.getOutputShapefile(
+            File outputShapeFile = geotools.getOutputShapefile(
                     spiderMapDirectory,
                     tCABOutlet);
             DW_Shapefile.transact(
@@ -1076,14 +1076,14 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
 //            FeatureLayer backgroundFeatureLayer = DW_Shapefile.getFeatureLayer(
 //                backgroundShapefile,
 //                backgroundStyle);
-            Geotools.outputToImage(tCABOutlet,
+            geotools.outputToImage(tCABOutlet,
                     outputShapeFile,
                     foregroundDW_Shapefile0,
                     ForegroundDW_Shapefile1,
                     BackgroundDW_Shapefile,
                     "",
                     spiderMapDirectory,
-                    Geotools.getGeotools_Strings().png_String,
+                    geotools.getGeotools_Strings().png_String,
                     imageWidth,
                     styleParameters,
                     0,
@@ -1105,10 +1105,10 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
             String level,
             String targetPropertyName) {
         TreeMap<String, Point> result;
-        File generatedCensus2011LUTsDir = Files.getGeneratedCensus2011LUTsDir();
+        File generatedCensus2011LUTsDir = files.getGeneratedCensus2011LUTsDir();
         File tLSOAToCentroidLookupTableFile = new File(
                 generatedCensus2011LUTsDir,
-                level + "ToCentroidLookupTable_TreeMap" + Strings.sBinaryFileExtension);
+                level + "ToCentroidLookupTable_TreeMap" + strings.sBinaryFileExtension);
         if (tLSOAToCentroidLookupTableFile.exists()) {
             result = (TreeMap<String, Point>) Generic_IO.readObject(
                     tLSOAToCentroidLookupTableFile);

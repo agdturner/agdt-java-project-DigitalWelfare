@@ -84,7 +84,7 @@ public class DW_PostcodeMaps extends DW_Maps {
     public void run() {
         showMapsInJMapPane = true;//false;//true;//false;
         imageWidth = 1000;
-        mapDirectory = Files.getGeneratedPostcodeDir();
+        mapDirectory = files.getGeneratedPostcodeDir();
 
         sdsf = getShapefileDataStoreFactory();
 
@@ -93,7 +93,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         File aLeedsPostcodeSectorShapefile = getLeedsPostcodeSectorShapefile();
         // Postcode Units
         DW_Shapefile postcodeUnitPoly_DW_Shapefile;
-        postcodeUnitPoly_DW_Shapefile = getPostcodeUnitPoly_DW_Shapefile(Env,
+        postcodeUnitPoly_DW_Shapefile = getPostcodeUnitPoly_DW_Shapefile(env,
                 new ShapefileDataStoreFactory());
 
         ONSPD_YM3 yM3;
@@ -125,7 +125,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         targetPropertyName = "CODE";
         DW_AreaCodesAndShapefiles tOACodesAndLeedsLevelShapefile;
         tOACodesAndLeedsLevelShapefile = new DW_AreaCodesAndShapefiles(
-                Env,
+                env,
                 level,
                 targetPropertyName,
                 sdsf);
@@ -139,7 +139,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         targetPropertyName = "LSOA11CD";
         DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLevelShapefile;
         tLSOACodesAndLeedsLevelShapefile = new DW_AreaCodesAndShapefiles(
-                Env,
+                env,
                 level,
                 targetPropertyName,
                 sdsf);
@@ -151,7 +151,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         targetPropertyName = "MSOA11CD";
         DW_AreaCodesAndShapefiles tMSOACodesAndLeedsLevelShapefile;
         tMSOACodesAndLeedsLevelShapefile = new DW_AreaCodesAndShapefiles(
-                Env,
+                env,
                 level,
                 targetPropertyName,
                 sdsf);
@@ -186,7 +186,7 @@ public class DW_PostcodeMaps extends DW_Maps {
 
         String outname = "outname";
         Grids_Environment ge;
-        ge = Env.Grids_Env;
+        ge = env.Grids_Env;
         Grids_GridDoubleFactory gf;
         Grids_Processor gp;
         gp = ge.getProcessor();
@@ -198,7 +198,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         grid = toGrid(polyGrid, nrows, ncols, xllcorner, yllcorner, cellsize,
                 postcodeUnitPoly_DW_Shapefile, gf);
         MapContent mc;
-        mc = Env.getGeotools().createMapContent(
+        mc = env.getGeotools().createMapContent(
                 new DW_Shapefile(aLeedsPostcodeSectorShapefile),
                 OA_Shapefile,
                 null,//LSOA_Shapefile,
@@ -210,7 +210,7 @@ public class DW_PostcodeMaps extends DW_Maps {
 
         File outputDir = mapDirectory;
 
-        Env.getGeotools().outputToImage(mc, outname,
+        env.getGeotools().outputToImage(mc, outname,
                 aLeedsPostcodeSectorShapefile, outputDir, imageWidth,
                 showMapsInJMapPane);
 
@@ -263,7 +263,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         filename = "Gridlines_" + nrows + "_" + ncols + "_" + xllcorner + "_"
                 + yllcorner + "_" + cellsize + "_" + ".shp";
         File dir;
-        dir = new File(Files.getGeneratedDataDir(), "LineGrids");
+        dir = new File(files.getGeneratedDataDir(), "LineGrids");
         dir.mkdirs();
         File shapefile = createPolyGridShapefileIfItDoesNotExist(dir,
                 filename, nrows, ncols, xllcorner, yllcorner, cellsize);
@@ -278,7 +278,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         filename = "Gridlines_" + nrows + "_" + ncols + "_" + xllcorner + "_"
                 + yllcorner + "_" + cellsize + "_" + ".shp";
         File dir;
-        dir = new File(Files.getGeneratedDataDir(), "LineGrids");
+        dir = new File(files.getGeneratedDataDir(), "LineGrids");
         dir.mkdirs();
         File shapefile = createLineGridShapefileIfItDoesNotExist(dir, filename,
                 nrows, ncols, xllcorner, yllcorner, cellsize);
@@ -295,7 +295,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         ArrayList<DW_Shapefile> result;
         result = new ArrayList<>();
         File dir;
-        dir = Files.getGeneratedPostcodeDir();
+        dir = files.getGeneratedPostcodeDir();
         ArrayList<String> postCodeLevels;
         postCodeLevels = new ArrayList<>();
         postCodeLevels.add("Unit");
@@ -343,9 +343,9 @@ public class DW_PostcodeMaps extends DW_Maps {
         TreeSetFeatureCollection result;
         result = new TreeSetFeatureCollection();
         ONSPD_Handler dph;
-        dph = Env.getPostcode_Handler();
+        dph = env.getONSPD_Handler();
         TreeMap<String, ONSPD_Point> tONSPDlookup;
-        tONSPDlookup = Env.SHBE_Env.oe.getONSPDlookups().get(postcodeLevel).get(
+        tONSPDlookup = env.SHBE_Env.oe.getONSPDlookups().get(postcodeLevel).get(
                 dph.getNearestYM3ForONSPDLookup(yM3));
         /*
          * GeometryFactory will be used to create the geometry attribute of each feature,
