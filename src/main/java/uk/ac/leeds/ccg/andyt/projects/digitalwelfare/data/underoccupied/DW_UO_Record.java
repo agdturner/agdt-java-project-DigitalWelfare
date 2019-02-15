@@ -19,6 +19,7 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -85,11 +86,8 @@ public class DW_UO_Record implements Serializable {
      * @param fieldNames
      * @throws Exception
      */
-    public DW_UO_Record(
-            long RecordID,
-            String line,
-            //String type
-            String[] fieldNames) throws Exception {
+    public DW_UO_Record(long RecordID, String line, String[] fieldNames) 
+            throws Exception {
         this.RecordID = RecordID;
         String[] fields = line.split(",");
 //        if (fields.length != fieldNames.length) {
@@ -111,46 +109,46 @@ public class DW_UO_Record implements Serializable {
                     this.ClaimRef = fields[i];
                 } else if (fieldNames[i].equalsIgnoreCase("room_requirem")
                         || fieldNames[i].equalsIgnoreCase("bedroom_requirement")) {
-                    this.BedroomRequirement = new Integer(fields[i]);
+                    this.BedroomRequirement = Integer.valueOf(fields[i]);
                 } else if (fieldNames[i].equalsIgnoreCase("bedrooms_in_p")
                         || fieldNames[i].equalsIgnoreCase("bedrooms_in_property")) {
-                    this.BedroomsInProperty = new Integer(fields[i]);
+                    this.BedroomsInProperty = Integer.valueOf(fields[i]);
                 } else if (fieldNames[i].equalsIgnoreCase("male_children under 10")) {
-                    this.MaleChildrenUnder10 = new Integer(fields[i]);
+                    this.MaleChildrenUnder10 = Integer.valueOf(fields[i]);
                 } else if (fieldNames[i].equalsIgnoreCase("male_children 10 to 16")) {
-                    this.MaleChildren10to16 = new Integer(fields[i]);
+                    this.MaleChildren10to16 = Integer.valueOf(fields[i]);
                 } else if (fieldNames[i].equalsIgnoreCase("male_children")) {
                     // This is because two fields are identically named in many of the files!
                     if (doneMaleChildrenUnder10) {
-                        this.MaleChildren10to16 = new Integer(fields[i]);
+                        this.MaleChildren10to16 = Integer.valueOf(fields[i]);
                     } else {
-                        this.MaleChildrenUnder10 = new Integer(fields[i]);
+                        this.MaleChildrenUnder10 = Integer.valueOf(fields[i]);
                         doneMaleChildrenUnder10 = true;
                     }
                 } else if (fieldNames[i].equalsIgnoreCase("female_children under 10")) {
-                    this.FemaleChildrenUnder10 = new Integer(fields[i]);
+                    this.FemaleChildrenUnder10 = Integer.valueOf(fields[i]);
                 } else if (fieldNames[i].equalsIgnoreCase("female_children 10 to 16")) {
-                    this.FemaleChildren10to16 = new Integer(fields[i]);
+                    this.FemaleChildren10to16 = Integer.valueOf(fields[i]);
                 } else if (fieldNames[i].equalsIgnoreCase("female_childr")) {
                     if (doneFemaleChildrenUnder10) {
-                        this.FemaleChildren10to16 = new Integer(fields[i]);
+                        this.FemaleChildren10to16 = Integer.valueOf(fields[i]);
                     } else {
-                        this.FemaleChildrenUnder10 = new Integer(fields[i]);
+                        this.FemaleChildrenUnder10 = Integer.valueOf(fields[i]);
                         doneFemaleChildrenUnder10 = true;
                     }
                 } else if (fieldNames[i].equalsIgnoreCase("children_over")
                         || fieldNames[i].equalsIgnoreCase("children_over 16")) {
-                    this.ChildrenOver16 = new Integer(fields[i]);
+                    this.ChildrenOver16 = Integer.valueOf(fields[i]);
                 } else if (fieldNames[i].equalsIgnoreCase("TOTAL Dep Children")) {
-                    this.TotalDependentChildren = new Integer(fields[i]);
+                    this.TotalDependentChildren = Integer.valueOf(fields[i]);
                 } else if (fieldNames[i].equalsIgnoreCase("nondependants")) {
-                    this.NonDependents = new Integer(fields[i]);
+                    this.NonDependents = Integer.valueOf(fields[i]);
                 } else if (fieldNames[i].equalsIgnoreCase("total_rent")
                         || fieldNames[i].equalsIgnoreCase("total_rent arrears")) {
                     if (fields[i].trim().isEmpty()) {
                         this.TotalRentArrears = null;
                     } else {
-                        this.TotalRentArrears = new Double(fields[i]);
+                        this.TotalRentArrears = Double.valueOf(fields[i]);
                     }
                 } else {
                     System.err.println("Unrecognised field: " + fieldNames[i] + ". Debug needed of: " + this.getClass().getName());
@@ -417,7 +415,7 @@ public class DW_UO_Record implements Serializable {
         if (this.NonDependents != other.NonDependents) {
             return false;
         }
-        if (this.TotalRentArrears != other.TotalRentArrears) {
+        if (!Objects.equals(this.TotalRentArrears, other.TotalRentArrears)) {
             return false;
         }
         return true;

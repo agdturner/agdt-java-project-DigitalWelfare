@@ -35,11 +35,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 public class DW_UO_Set extends DW_Object implements Serializable {
 
     /**
-     * For convenience
-     */
-    transient DW_UO_Handler UO_Handler;
-
-    /**
      * DW_UO_Records indexed by ClaimID
      */
     protected HashMap<SHBE_ID, DW_UO_Record> Map;
@@ -47,7 +42,6 @@ public class DW_UO_Set extends DW_Object implements Serializable {
     public DW_UO_Set(DW_Environment env) {
         super(env);
         Map = new HashMap<>();
-        UO_Handler = this.env.getUO_Handler();
     }
 
     /**
@@ -70,9 +64,7 @@ public class DW_UO_Set extends DW_Object implements Serializable {
         methodName = "DW_UO_Set(...)";
         this.env.ge.log("<" + methodName + ">", true);
         this.env.ge.log("filename " + filename, true);
-        UO_Handler = this.env.getUO_Handler();
-        File dirIn;
-        dirIn = files.getInputUnderOccupiedDir();
+        File dirIn = files.getInputUnderOccupiedDir();
         File dirOut;
         dirOut = new File(files.getGeneratedUnderOccupiedDir(), type);
         dirOut = new File(dirOut, YM3.toString());
@@ -86,7 +78,7 @@ public class DW_UO_Set extends DW_Object implements Serializable {
             loadDummy = (DW_UO_Set) Generic_IO.readObject(fOut);
             Map = loadDummy.Map;
         } else {
-            Map = UO_Handler.loadInputData(dirIn, filename);
+            Map = this.env.getUO_Handler().loadInputData(dirIn, filename);
             Generic_IO.writeObject(this, fOut);
         }
         this.env.ge.log("</" + methodName + ">", true);

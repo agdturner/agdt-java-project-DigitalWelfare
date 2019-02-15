@@ -1411,17 +1411,12 @@ public class DW_LineMapsLCC extends DW_Maps {
 //        tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
 //                "LSOA", targetPropertyNameLSOA, getShapefileDataStoreFactory());
 //    }
-    public void postcodeMaps(
-            TreeMap<String, ArrayList<ONSPD_YM3>> yearMonths,
-            String includeName,
-            ArrayList<Integer> include,
+    public void postcodeMaps(TreeMap<String, ArrayList<ONSPD_YM3>> yearMonths,
+            String includeName, ArrayList<Integer> include,
             ArrayList<ArrayList<String>> allTenancyTypeChanges,
-            boolean doTenancyTypeAndPostcodeChange,
-            boolean doUnderOccupancyData,
-            boolean doCouncil,
-            boolean doCheckedPreviousTenure,
-            boolean doCheckedPreviousPostcode,
-            boolean grouped) throws Exception {
+            boolean doTenancyTypeAndPostcodeChange, boolean doUnderOccupancyData,
+            boolean doCouncil, boolean doCheckedPreviousTenure,
+            boolean doCheckedPreviousPostcode, boolean grouped) throws Exception {
         File dirIn;
         File dirOut;
         if (doTenancyTypeAndPostcodeChange) {
@@ -1486,9 +1481,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                     String filename;
                     filename = "PostcodeChanges_Start_" + yM30 + "_End_" + yM31 + ".csv";
                     File f;
-                    f = new File(
-                            dirIn,
-                            filename);
+                    f = new File(dirIn, filename);
                     if (f.exists()) {
                         //System.out.println("Load " + f);
                         ArrayList<String> linesPart;
@@ -1503,9 +1496,7 @@ public class DW_LineMapsLCC extends DW_Maps {
                 if (!lines.isEmpty()) {
                     //name += "_TO_" + split1[0] + "_" + split1[1];
                     File dirOut2;
-                    dirOut2 = new File(
-                            dirOut,
-                            name);
+                    dirOut2 = new File(dirOut, name);
                     // Step 3.
                     SimpleFeatureType aLineSFT = DataUtilities.createType(
                             "LINE",
@@ -1691,42 +1682,28 @@ public class DW_LineMapsLCC extends DW_Maps {
                         TreeSetFeatureCollection tsfc;
                         name = getName(tenancyTypeChanges);
                         File dirOut3;
-                        dirOut3 = new File(
-                                dirOut2,
-                                name);
+                        dirOut3 = new File(dirOut2, name);
                         String nameM;
                         nameM = name + "M";
                         tsfc = tsfcMs.get(tenancyTypeChanges);
                         if (tsfc != null) {
-                            File f0 = geotools.getOutputShapefile(
-                                    dirOut3,
-                                    nameM);
-                            DW_Shapefile.transact(
-                                    f0,
-                                    aLineSFT,
-                                    tsfc,
+                            File f0;
+                            f0 = geotools.getOutputShapefile(dirOut3, nameM);
+                            DW_Shapefile.transact(f0, aLineSFT, tsfc,
                                     getShapefileDataStoreFactory());
                             String nameS;
                             nameS = name + "S";
                             tsfc = tsfcSs.get(tenancyTypeChanges);
-                            File f1 = geotools.getOutputShapefile(
-                                    dirOut3,
-                                    nameS);
-                            DW_Shapefile.transact(
-                                    f1,
-                                    aLineSFT,
-                                    tsfc,
+                            File f1;
+                            f1 = geotools.getOutputShapefile(dirOut3, nameS);
+                            DW_Shapefile.transact(f1, aLineSFT, tsfc,
                                     getShapefileDataStoreFactory());
                             String nameE;
                             nameE = name + "E";
                             tsfc = tsfcEs.get(tenancyTypeChanges);
-                            File f2 = geotools.getOutputShapefile(
-                                    dirOut3,
-                                    nameE);
-                            DW_Shapefile.transact(
-                                    f2,
-                                    aLineSFT,
-                                    tsfc,
+                            File f2;
+                            f2 = geotools.getOutputShapefile(dirOut3, nameE);
+                            DW_Shapefile.transact(f2, aLineSFT, tsfc,
                                     getShapefileDataStoreFactory());
 
 //            // Had Hoped to getting away with doing this once
@@ -1750,24 +1727,13 @@ public class DW_LineMapsLCC extends DW_Maps {
                                 }
                                 System.out.println(name2);
                                 File dirOut4;
-                                dirOut4 = new File(
-                                        dirOut3,
-                                        name2);
+                                dirOut4 = new File(dirOut3, name2);
                                 dirOut4.mkdirs();
-                                setStyleParameters(
-                                        i,
-                                        Color.RED,
-                                        Color.BLUE);
-                                geotools.outputToImage(
-                                        legendMessage,
-                                        name,
-                                        midgrounds,
-                                        foregrounds,
-                                        dirOut4,
+                                setStyleParameters(i, Color.RED, Color.BLUE);
+                                geotools.outputToImage(legendMessage, name,
+                                        midgrounds, foregrounds, dirOut4,
                                         _Geotools_Strings.png_String,
-                                        imageWidth,
-                                        styleParameters,
-                                        0,
+                                        imageWidth, styleParameters, 0,
                                         Double.POSITIVE_INFINITY,
                                         showMapsInJMapPane);
                             }

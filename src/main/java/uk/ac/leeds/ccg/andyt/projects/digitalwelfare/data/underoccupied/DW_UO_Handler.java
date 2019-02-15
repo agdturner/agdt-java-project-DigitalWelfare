@@ -161,7 +161,7 @@ public class DW_UO_Handler extends DW_Object {
     public DW_UO_Data loadUnderOccupiedReportData(boolean reload) {
         String methodName;
         methodName = "loadUnderOccupiedReportData(boolean)";
-        env.ge.log("<" + methodName + ">", true);
+        env.ge.log("<" + methodName + ">");
         DW_UO_Data r;
         TreeMap<ONSPD_YM3, DW_UO_Set> sc = new TreeMap<>();
         TreeMap<ONSPD_YM3, DW_UO_Set> sr = new TreeMap<>();
@@ -200,7 +200,7 @@ public class DW_UO_Handler extends DW_Object {
             sr.put(ym3, set);
         }
         r = new DW_UO_Data(env, sr, sc);
-        env.ge.log("</" + methodName + ">", true);
+        env.ge.log("</" + methodName + ">");
         return r;
     }
 

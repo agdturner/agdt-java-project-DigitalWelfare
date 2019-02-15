@@ -469,78 +469,92 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
     /**
      * What?
      *
-     * @param underOccupiedData
+     * @param mC A map of Council sets.
+     * @param mR A map of RSL sets.
      * @return
      */
     private TreeMap<String, DW_UO_Set> combineDW_UO_Sets(
-            TreeMap<String, DW_UO_Set> DW_UO_SetsCouncil,
-            TreeMap<String, DW_UO_Set> DW_UO_SetsRSL) {
-        TreeMap<String, DW_UO_Set> result;
-        result = new TreeMap<>();
-        String YM3;
-        DW_UO_Set DW_UO_SetAll;
-        DW_UO_Set DW_UO_SetCouncil;
-        DW_UO_Set DW_UO_SetRSL;
+            TreeMap<String, DW_UO_Set> mC, TreeMap<String, DW_UO_Set> mR) {
+        TreeMap<String, DW_UO_Set> r = new TreeMap<>();
+        String ym3;
+        // All
+        DW_UO_Set sa;
+        // Council
+        DW_UO_Set sc;
+        // RSL
+        DW_UO_Set sr;
 
         Iterator<String> ite;
-        ite = DW_UO_SetsCouncil.keySet().iterator();
+        ite = mC.keySet().iterator();
         while (ite.hasNext()) {
-            YM3 = ite.next();
-            DW_UO_SetAll = result.get(YM3);
-            if (DW_UO_SetAll == null) {
-                DW_UO_SetAll = new DW_UO_Set(env);
-                result.put(YM3, DW_UO_SetAll);
+            ym3 = ite.next();
+            sa = r.get(ym3);
+            if (sa == null) {
+                sa = new DW_UO_Set(env);
+                r.put(ym3, sa);
             }
-            DW_UO_SetCouncil = DW_UO_SetsCouncil.get(YM3);
-            DW_UO_SetAll.getMap().putAll(DW_UO_SetCouncil.getMap());
+            sc = mC.get(ym3);
+            sa.getMap().putAll(sc.getMap());
         }
-        ite = DW_UO_SetsRSL.keySet().iterator();
+        ite = mR.keySet().iterator();
         while (ite.hasNext()) {
-            YM3 = ite.next();
-            DW_UO_SetAll = result.get(YM3);
-            if (DW_UO_SetAll == null) {
-                DW_UO_SetAll = new DW_UO_Set(env);
-                result.put(YM3, DW_UO_SetAll);
+            ym3 = ite.next();
+            sa = r.get(ym3);
+            if (sa == null) {
+                sa = new DW_UO_Set(env);
+                r.put(ym3, sa);
             }
-            DW_UO_SetRSL = DW_UO_SetsRSL.get(YM3);
-            DW_UO_SetAll.getMap().putAll(DW_UO_SetRSL.getMap());
+            sr = mR.get(ym3);
+            sa.getMap().putAll(sr.getMap());
         }
-        return result;
+        return r;
     }
 
-    protected HashMap<SHBE_ID, Integer> loadClaimIDToTTLookup(
-            ONSPD_YM3 YM3, Integer key,
-            HashMap<Integer, HashMap<SHBE_ID, Integer>> ClaimIDToTTLookups) {
-        HashMap<SHBE_ID, Integer> result;
-        if (ClaimIDToTTLookups.containsKey(key)) {
-            return ClaimIDToTTLookups.get(key);
+    /**
+     *
+     * @param ym3
+     * @param key
+     * @param m A map of ClaimID To Tenancy Type Lookups.
+     * @return
+     */
+    protected HashMap<SHBE_ID, Integer> loadClaimIDToTTLookup(ONSPD_YM3 ym3,
+            Integer key, HashMap<Integer, HashMap<SHBE_ID, Integer>> m) {
+        HashMap<SHBE_ID, Integer> r;
+        if (m.containsKey(key)) {
+            r = m.get(key);
+        } else {
+            r = new HashMap<>();
+            SHBE_Records sr = SHBE_Handler.getRecords(ym3, env.HOOME);
+            HashMap<SHBE_ID, SHBE_Record> recs = sr.getRecords(env.HOOME);
+            Iterator<SHBE_ID> ite = recs.keySet().iterator();
+            while (ite.hasNext()) {
+                SHBE_ID claimID = ite.next();
+                r.put(claimID, recs.get(claimID).getDRecord().getTenancyType());
+            }
+            m.put(key, r);
         }
-        result = new HashMap<>();
-        SHBE_Records SHBE_Records;
-        SHBE_Records = SHBE_Handler.getRecords(YM3, env.HOOME);
-        HashMap<SHBE_ID, SHBE_Record> records;
-        records = SHBE_Records.getRecords(env.HOOME);
-        Iterator<SHBE_ID> ite;
-        ite = records.keySet().iterator();
-        SHBE_ID ClaimID;
-        while (ite.hasNext()) {
-            ClaimID = ite.next();
-            result.put(ClaimID,
-                    records.get(ClaimID).getDRecord().getTenancyType());
-        }
-        ClaimIDToTTLookups.put(key, result);
-        return result;
+        return r;
     }
 
+    /**
+     * Loads a ClaimID To PostcodeID Lookup.
+     *
+     * @param ym3
+     * @param key
+     * @param m ClaimID To PostcodeID Lookups
+     * @return a specific ClaimID To PostcodeID Lookup.
+     */
     protected HashMap<SHBE_ID, ONSPD_ID> loadClaimIDToPostcodeIDLookup(
-            ONSPD_YM3 YM3, Integer key,
-            HashMap<Integer, HashMap<SHBE_ID, ONSPD_ID>> ClaimIDToPostcodeIDLookups) {
+            ONSPD_YM3 ym3, Integer key, 
+            HashMap<Integer, HashMap<SHBE_ID, ONSPD_ID>> m) {
         HashMap<SHBE_ID, ONSPD_ID> r;
-        if (ClaimIDToPostcodeIDLookups.containsKey(key)) {
-            return ClaimIDToPostcodeIDLookups.get(key);
+        if (m.containsKey(key)) {
+            r = m.get(key);
+        } else {
+            SHBE_Records recs = env.getSHBE_Handler().getRecords(ym3, env.HOOME);
+            r = recs.getClaimIDToPostcodeIDLookup(env.HOOME);
+            m.put(key, r);
         }
-        r = env.getSHBE_Handler().getRecords(YM3, env.HOOME).getClaimIDToPostcodeIDLookup(env.HOOME);
-        ClaimIDToPostcodeIDLookups.put(key, r);
         return r;
     }
 
@@ -1533,18 +1547,18 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                             TreeMap<String, Integer> unexpectedCounts;
                             unexpectedCounts = levelUnexpectedCounts.get(level);
                             if (!unexpectedCounts.isEmpty()) {
-                                    env.ge.log("Unexpected Counts for:"
-                                            + " Claimant Type " + claimantType
-                                            + " Tenure " + TT
-                                            + " Level " + level, true);
-                                    env.ge.log("code,count", true);
-                                    Iterator<String> unexpectedCountsIte;
-                                    unexpectedCountsIte = unexpectedCounts.keySet().iterator();
-                                    while (unexpectedCountsIte.hasNext()) {
-                                        String code = unexpectedCountsIte.next();
-                                        Integer count = unexpectedCounts.get(code);
-                                        env.ge.log("" + code + ", " + count, true);
-                                    }
+                                env.ge.log("Unexpected Counts for:"
+                                        + " Claimant Type " + claimantType
+                                        + " Tenure " + TT
+                                        + " Level " + level, true);
+                                env.ge.log("code,count", true);
+                                Iterator<String> unexpectedCountsIte;
+                                unexpectedCountsIte = unexpectedCounts.keySet().iterator();
+                                while (unexpectedCountsIte.hasNext()) {
+                                    String code = unexpectedCountsIte.next();
+                                    Integer count = unexpectedCounts.get(code);
+                                    env.ge.log("" + code + ", " + count, true);
+                                }
                             }
                         }
                     }

@@ -52,8 +52,7 @@ import uk.ac.leeds.ccg.andyt.geotools.Geotools_StyleParameters;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 
 /**
- * A class for holding various useful methods for doing things with
- * Geotools_Environment Objects.
+ * For doing things with Geotools_Environment Objects.
  *
  * @author geoagdt
  */
@@ -62,7 +61,6 @@ public class DW_Geotools extends Geotools_Environment {
     public boolean doDebug = true;
 
     public DW_Environment Env;
-    
 
     protected DW_Geotools() {
     }
@@ -78,7 +76,7 @@ public class DW_Geotools extends Geotools_Environment {
         }
         return (DW_Style) Style;
     }
-    
+
     /**
      * Warning this will set g to null.
      *
@@ -98,31 +96,17 @@ public class DW_Geotools extends Geotools_Environment {
      */
     @Override
     public void outputToImageUsingGeoToolsAndSetCommonStyle(
-            double normalisation,
-            Geotools_StyleParameters styleParameters,
-            int index,
-            String outname,
-            Grids_AbstractGridNumber g,
+            double normalisation, Geotools_StyleParameters styleParameters,
+            int index, String outname, Grids_AbstractGridNumber g,
             GridCoverage2D gc,
             ArrayList<Geotools_Shapefile> foregroundDW_Shapefile0,
             Geotools_Shapefile foregroundDW_Shapefile1,
-            Geotools_Shapefile backgroundDW_Shapefile,
-            File outputDir,
-            int imageWidth,
-            boolean showMapsInJMapPane,
-            boolean scaleToFirst) {
-        Object[] mcAndNewImageWidthAndHeight = createMapContent(
-                normalisation,
-                outname,
-                g,
-                gc,
-                foregroundDW_Shapefile0,
-                foregroundDW_Shapefile1,
-                backgroundDW_Shapefile,
-                imageWidth,
-                styleParameters,
-                index,
-                scaleToFirst);
+            Geotools_Shapefile backgroundDW_Shapefile, File outputDir,
+            int imageWidth, boolean showMapsInJMapPane, boolean scaleToFirst) {
+        Object[] mcAndNewImageWidthAndHeight = createMapContent(normalisation,
+                outname, g, gc, foregroundDW_Shapefile0,
+                foregroundDW_Shapefile1, backgroundDW_Shapefile, imageWidth,
+                styleParameters, index, scaleToFirst);
         MapContent mc;
         mc = (MapContent) mcAndNewImageWidthAndHeight[0];
         // Set g to null as it is no longer needed. 
@@ -131,21 +115,11 @@ public class DW_Geotools extends Geotools_Environment {
         int newImageWidth = (Integer) mcAndNewImageWidthAndHeight[1];
         int newImageHeight = (Integer) mcAndNewImageWidthAndHeight[2];
         //int imageHeight = getMapContentImageHeight(mc, imageWidth);
-        File outputFile = getOutputFile(
-                outputDir,
-                outname,
-                gs.png_String);
-        File outputImageFile = Env.getMaps().getOutputImageFile(
-                outputFile,
-                gs.png_String);
+        File outputFile = getOutputFile(outputDir, outname, gs.png_String);
+        File outputImageFile = Env.getMaps().getOutputImageFile(outputFile, gs.png_String);
 
-        writeImageFile(
-                g.ge, // For handling OutOfMemoryErrors
-                mc,
-                newImageWidth,
-                newImageHeight,
-                outputImageFile,
-                gs.png_String);
+        writeImageFile(g.ge, // For handling OutOfMemoryErrors
+                mc, newImageWidth, newImageHeight, outputImageFile, gs.png_String);
 
 //Tried commenting this out as a workaround as somehow loosing the legends, but this was not the solution...
         // Dispose of MapContent to prevent memory leaks
@@ -188,22 +162,15 @@ public class DW_Geotools extends Geotools_Environment {
      * @param scaleToFirst
      * @return
      */
-    private Object[] createMapContent(
-            double normalisation,
-            String name,
-            Grids_AbstractGridNumber g,
-            GridCoverage2D gc,
+    private Object[] createMapContent(double normalisation, String name,
+            Grids_AbstractGridNumber g, GridCoverage2D gc,
             ArrayList<Geotools_Shapefile> foregroundShapefiles,
             Geotools_Shapefile foregroundDW_Shapefile1,
-            Geotools_Shapefile backgroundDW_Shapefile,
-            int imageWidth,
-            Geotools_StyleParameters styleParameters,
-            int index,
+            Geotools_Shapefile backgroundDW_Shapefile, int imageWidth,
+            Geotools_StyleParameters styleParameters, int index,
             boolean scaleToFirst) {
-        Object[] result;
-        result = new Object[3];
-        MapContent mc;
-        mc = new MapContent();
+        Object[] r = new Object[3];
+        MapContent mc = new MapContent();
         // Unbox styleParameters
         Style style;
         //style = styleParameters.getStyle(name, index);
@@ -226,18 +193,14 @@ public class DW_Geotools extends Geotools_Environment {
 //            styleAndLegendItems = DW_Style.getEqualIntervalStyleAndLegendItems(
             if (styleParameters.getPaletteName2() == null) {
                 styleAndLegendItems = getStyle().getStyleAndLegendItems(
-                        normalisation,
-                        g,
-                        gc,
+                        normalisation, g, gc,
                         styleParameters.getClassificationFunctionName(),
                         styleParameters.getnClasses(),
                         styleParameters.getPaletteName(),
                         styleParameters.isAddWhiteForZero());
             } else {
                 styleAndLegendItems = getStyle().getStyleAndLegendItems(
-                        normalisation,
-                        g,
-                        gc,
+                        normalisation, g, gc,
                         styleParameters.getClassificationFunctionName(),
                         styleParameters.getnClasses(),
                         styleParameters.getPaletteName(),
@@ -258,18 +221,14 @@ public class DW_Geotools extends Geotools_Environment {
 
         // Add foreground0
         // ---------------
-        addToMapContent(
-                mc,
-                styleParameters,
-                foregroundShapefiles);
+        addToMapContent(mc, styleParameters, foregroundShapefiles);
 
         // Add foreground1
         // ---------------
         if (foregroundDW_Shapefile1 != null) {
-            FeatureLayer foregroundFeatureLayer1;
-            foregroundFeatureLayer1 = foregroundDW_Shapefile1.getFeatureLayer(
+            FeatureLayer ffl = foregroundDW_Shapefile1.getFeatureLayer(
                     styleParameters.getForegroundStyle1());
-            mc.addLayer(foregroundFeatureLayer1);
+            mc.addLayer(ffl);
         }
 
         int imageHeight = getMapContentImageHeight(mc, imageWidth);
@@ -298,13 +257,8 @@ public class DW_Geotools extends Geotools_Environment {
             double heightoverimageHeight;
             heightoverimageHeight = height / (double) imageHeight;
 
-            Geotools_LegendLayer ll = new Geotools_LegendLayer(
-                    styleParameters,
-                    "Legend",
-                    legendItems,
-                    mc,
-                    imageWidth,
-                    imageHeight,
+            Geotools_LegendLayer ll = new Geotools_LegendLayer(styleParameters,
+                    "Legend", legendItems, mc, imageWidth, imageHeight,
                     addLegendToTheSide);
             mc.addLayer(ll);
 
@@ -325,23 +279,23 @@ public class DW_Geotools extends Geotools_Environment {
             if (newwidth > width) {
                 int newimageWidth;
                 newimageWidth = (int) Math.ceil(newwidth / widthoverimageWidth);
-                result[1] = newimageWidth;
+                r[1] = newimageWidth;
             } else {
-                result[1] = imageWidth;
+                r[1] = imageWidth;
             }
             if (newheight > height) {
                 int newimageheight;
                 newimageheight = (int) Math.ceil(newheight / heightoverimageHeight);
-                result[2] = newimageheight;
+                r[2] = newimageheight;
             } else {
-                result[2] = imageHeight;
+                r[2] = imageHeight;
             }
         } else {
-            result[1] = imageWidth;
-            result[2] = imageHeight;
+            r[1] = imageWidth;
+            r[2] = imageHeight;
         }
-        result[0] = mc;
-        return result;
+        r[0] = mc;
+        return r;
     }
 
     /**
@@ -350,9 +304,7 @@ public class DW_Geotools extends Geotools_Environment {
      * @param sp The style parameters for the style of the layer to be added.
      * @param shapefiles The shapefiles for creating the layers.
      */
-    private void addToMapContent(
-            MapContent mc,
-            Geotools_StyleParameters sp,
+    private void addToMapContent(MapContent mc, Geotools_StyleParameters sp,
             ArrayList<Geotools_Shapefile> shapefiles) {
         if (shapefiles != null) {
             Iterator<Geotools_Shapefile> ite;
@@ -361,8 +313,7 @@ public class DW_Geotools extends Geotools_Environment {
             while (ite.hasNext()) {
                 Geotools_Shapefile sf = ite.next();
                 FeatureLayer fl;
-                fl = sf.getFeatureLayer(
-                        sp.getForegroundStyle0().get(i));
+                fl = sf.getFeatureLayer(sp.getForegroundStyle0().get(i));
                 mc.addLayer(fl);
                 i++;
             }
@@ -389,56 +340,32 @@ public class DW_Geotools extends Geotools_Environment {
      * @param max
      * @param showMapsInJMapPane
      */
-    public void outputToImage(
-            String outname,
-            File outputShapefile,
+    public void outputToImage(String outname, File outputShapefile,
             ArrayList<Geotools_Shapefile> foregroundDW_Shapefile0,
             Geotools_Shapefile foregroundDW_Shapefile1,
-            Geotools_Shapefile backgroundDW_Shapefile,
-            String attributeName,
-            File outputDir,
-            String png_String,
-            int imageWidth,
-            Geotools_StyleParameters styleParameters,
-            int styleIndex,
-            double max,
-            boolean showMapsInJMapPane) {
+            Geotools_Shapefile backgroundDW_Shapefile, String attributeName,
+            File outputDir, String png_String, int imageWidth,
+            Geotools_StyleParameters styleParameters, int styleIndex,
+            double max, boolean showMapsInJMapPane) {
         //Style resultStyle;
         DW_Shapefile outputDW_Shapefile;
         outputDW_Shapefile = new DW_Shapefile(outputShapefile);
         String title = outname;
-        MapContent mc = createMapContent(
-                outputDW_Shapefile,
-                title,
-                attributeName,
-                foregroundDW_Shapefile0,
-                foregroundDW_Shapefile1,
-                backgroundDW_Shapefile,
-                imageWidth,
-                styleParameters,
-                styleIndex,
+        MapContent mc;
+        mc = createMapContent(outputDW_Shapefile, title, attributeName,
+                foregroundDW_Shapefile0, foregroundDW_Shapefile1,
+                backgroundDW_Shapefile, imageWidth, styleParameters, styleIndex,
                 max);
-        outputToImage(
-                mc,
-                outname,
-                outputShapefile,
-                outputDir,
-                imageWidth,
+        outputToImage(mc, outname, outputShapefile, outputDir, imageWidth,
                 showMapsInJMapPane);
     }
 
-    public void outputToImage(
-            String outname,
+    public void outputToImage(String outname,
             ArrayList<Geotools_Shapefile> midgrounds,
-            ArrayList<Geotools_Shapefile> foregrounds,
-            String attributeName,
-            File outputDir,
-            String png_String,
-            int imageWidth,
-            Geotools_StyleParameters styleParameters,
-            int styleIndex,
-            double max,
-            boolean showMapsInJMapPane) {
+            ArrayList<Geotools_Shapefile> foregrounds, String attributeName,
+            File outputDir, String png_String, int imageWidth,
+            Geotools_StyleParameters styleParameters, int styleIndex,
+            double max, boolean showMapsInJMapPane) {
 //        String title = outname;
 //        //Style resultStyle;
 //        MapContent mc = createMapContent(
@@ -1089,8 +1016,7 @@ public class DW_Geotools extends Geotools_Environment {
             ArrayList<Geotools_Shapefile> backgrounds,
             int imageWidth,
             DW_StyleParameters styleParameters) {
-        MapContent result;
-        result = new MapContent();
+        MapContent r = new MapContent();
         Iterator<Geotools_Shapefile> ite;
         int i;
         // Add backgrounds to mc
@@ -1098,17 +1024,9 @@ public class DW_Geotools extends Geotools_Environment {
         i = 0;
         ite = backgrounds.iterator();
         while (ite.hasNext()) {
-            Geotools_Shapefile sf;
-            sf = ite.next();
-            FeatureSource fs;
-            fs = sf.getFeatureSource();
-            FeatureLayer fl;
-            // Add the features and the associated Style object to mc as a new 
-            // Layer
-            Style style;
-            style = styleParameters.getBackgroundStyle(i);
-            fl = new FeatureLayer(fs, style);
-            result.addLayer(fl);
+            Geotools_Shapefile sf = ite.next();
+            Style style = styleParameters.getBackgroundStyle(i);
+            r.addLayer(new FeatureLayer(sf.getFeatureSource(), style));
             i++;
         }
         // Add midgrounds to mc
@@ -1116,34 +1034,18 @@ public class DW_Geotools extends Geotools_Environment {
         i = 0;
         ite = midgrounds.iterator();
         while (ite.hasNext()) {
-            Geotools_Shapefile sf;
-            sf = ite.next();
-            FeatureSource fs;
-            fs = sf.getFeatureSource();
-            FeatureLayer fl;
-            // Add the features and the associated Style object to mc as a new 
-            // Layer
-            Style style;
-            style = styleParameters.getMidgroundStyle(i);
-            fl = new FeatureLayer(fs, style);
-            result.addLayer(fl);
+            Geotools_Shapefile sf = ite.next();
+            Style style  = styleParameters.getMidgroundStyle(i);
+            r.addLayer(new FeatureLayer(sf.getFeatureSource(), style));
         }
         // Add foregrounds to mc
         // ---------------------
         i = 0;
         ite = foregrounds.iterator();
         while (ite.hasNext()) {
-            Geotools_Shapefile sf;
-            sf = ite.next();
-            FeatureSource fs;
-            fs = sf.getFeatureSource();
-            FeatureLayer fl;
-            // Add the features and the associated Style object to mc as a new 
-            // Layer
-            Style style;
-            style = styleParameters.getForegroundStyle(i);
-            fl = new FeatureLayer(fs, style);
-            result.addLayer(fl);
+            Geotools_Shapefile sf = ite.next();
+            Style style = styleParameters.getForegroundStyle(i);
+            r.addLayer(new FeatureLayer(sf.getFeatureSource(), style));
         }
 //        int imageHeight = getMapContentImageHeight(result, imageWidth);
 //        // Add a legend
@@ -1161,115 +1063,58 @@ public class DW_Geotools extends Geotools_Environment {
 //                    addLegendToTheSide);
 //            result.addLayer(ll);
 //        }
-        return result;
+        return r;
     }
-
+    
     /**
      * Here is a programmatic alternative to using JSimpleStyleDialog to get a
      * Style. This methods works out what sort of feature geometry we have in
      * the shapefile and then delegates to an appropriate style creating method.
      */
-    private Object[] getStyleAndLegendItems(
-            FeatureSource fs,
-            String attributeName,
-            Geotools_StyleParameters styleParameters) {
+    private Object[] getStyleAndLegendItems(FeatureSource fs,
+            String attributeName, Geotools_StyleParameters styleParameters) {
         SimpleFeatureType schema = (SimpleFeatureType) fs.getSchema();
         Class geomType = schema.getGeometryDescriptor().getType().getBinding();
-
         if (Polygon.class.isAssignableFrom(geomType)
                 || MultiPolygon.class.isAssignableFrom(geomType)) {
-            FeatureCollection fc = null;
+            FeatureCollection fc;
             try {
                 fc = fs.getFeatures();
             } catch (IOException ex) {
                 Logger.getLogger(Geotools_Environment.class.getName()).log(Level.SEVERE, null, ex);
                 return null;
             }
-            return getStyle().createPolygonStyle(
-                    fc,
-                    attributeName,
-                    styleParameters,
-                    doDebug);
+            return getStyle().createPolygonStyle(fc, attributeName, 
+                    styleParameters, doDebug);
         }
+        Object[] r = new Object[2];
         if (LineString.class.isAssignableFrom(geomType)
                 || MultiLineString.class.isAssignableFrom(geomType)) {
-            Object[] result = new Object[2];
-            result[0] = getStyle().createDefaultLineStyle();
-            return result;
+            r[0] = getStyle().createDefaultLineStyle();
         } else {
-            Object[] result = new Object[2];
-            result[0] = getStyle().createDefaultPointStyle();
-            getStyle().createDefaultPointStyle();
-            return result;
+            r[0] = getStyle().createDefaultPointStyle();
         }
-    }
-
-    private Object[] getStyleAndLegendItems(
-            FeatureSource fs,
-            String attributeName,
-            DW_StyleParameters styleParameters) {
-        SimpleFeatureType schema = (SimpleFeatureType) fs.getSchema();
-        Class geomType = schema.getGeometryDescriptor().getType().getBinding();
-
-        if (Polygon.class.isAssignableFrom(geomType)
-                || MultiPolygon.class.isAssignableFrom(geomType)) {
-            FeatureCollection fc = null;
-            try {
-                fc = fs.getFeatures();
-            } catch (IOException ex) {
-                Logger.getLogger(Geotools_Environment.class.getName()).log(Level.SEVERE, null, ex);
-                return null;
-            }
-            Object[] result;
-            result = new Object[2];
-            result[0] = getStyle().createDefaultPolygonStyle(Color.yellow, Color.yellow);
-            return result;
-        }
-        if (LineString.class.isAssignableFrom(geomType)
-                || MultiLineString.class.isAssignableFrom(geomType)) {
-            Object[] result = new Object[2];
-            result[0] = getStyle().createDefaultLineStyle();
-            return result;
-        } else {
-            Object[] result = new Object[2];
-            result[0] = getStyle().createDefaultPointStyle();
-            getStyle().createDefaultPointStyle();
-            return result;
-        }
+        return r;
     }
 
     /**
-     * Here is a programmatic alternative to using JSimpleStyleDialog to get a
-     * Style. This methods works out what sort of feature geometry we have in
-     * the shapefile and then delegates to an appropriate style creating method.
+     * Creates a directory called name in dir and returns a File within this
+     * with name.
+     *
+     * @param dir
+     * @param name
+     * @return
      */
-    private Object[] createStyle(
-            GridCoverage cov,
-            //String attributeName,
-            String classificationFunctionName,
-            int nClasses,
-            String paletteName,
-            StyleFactory sf,
-            boolean addWhiteForZero) {
-        return null;
-    }
-
-    public File getShapefile(
-            File dir,
-            String shapefileFilename) {
-        File result;
-        File shapefileDir;
-        shapefileDir = new File(
-                dir,
-                shapefileFilename);
+    public File getShapefile(File dir, String name) {
+        File r;
+        File dir2;
+        dir2 = new File(dir, name);
         // Could add extra logic here to deal with issues if directory or a file 
         // of this name already exists...
-        if (!shapefileDir.exists()) {
-            shapefileDir.mkdirs();
+        if (!dir2.exists()) {
+            dir2.mkdirs();
         }
-        result = new File(
-                shapefileDir,
-                shapefileFilename);
-        return result;
+        r = new File(dir2, name);
+        return r;
     }
 }
