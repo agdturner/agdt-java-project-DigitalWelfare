@@ -33,6 +33,7 @@ import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 
@@ -278,7 +279,9 @@ public class DW_UO_Handler extends DW_Object {
             TreeMap<ONSPD_YM3, String> fr, int minMonth, int maxMonth) {
         for (int i = minMonth; i <= maxMonth; i++) {
             String s = yearAll + uorfu + "Month " + i;
-            ONSPD_YM3 ym3 = new ONSPD_YM3(getYear(yearAll, i), getMonth3(i));
+            ONSPD_YM3 ym3;
+            ym3 = new ONSPD_YM3(Integer.valueOf(getYear(yearAll, i)),
+                    Generic_Time.getMonthInt(getMonth3(i)));
             fc.put(ym3, s + efc);
             fr.put(ym3, s + efr);
         }

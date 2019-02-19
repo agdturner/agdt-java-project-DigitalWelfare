@@ -102,7 +102,7 @@ public class DW_Files extends Generic_Files {
     }
     
     public DW_Strings getStrings() {
-        return (DW_Strings) Strings;
+        return (DW_Strings) strings;
     }
 
     public File getInputAdviceLeedsDir() {
