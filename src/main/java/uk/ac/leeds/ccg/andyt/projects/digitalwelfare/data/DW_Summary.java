@@ -29,7 +29,7 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_ID;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
-import uk.ac.leeds.ccg.andyt.math.Generic_BigDecimal;
+import uk.ac.leeds.ccg.andyt.math.Math_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
@@ -1459,16 +1459,15 @@ public class DW_Summary extends DW_Object {
         d = AllCount0;
         if (d > 0) {
             percentage = (TotalCount_AllTTChangeClaimant * 100.0d) / d;
-            summary.put(
-                    sAllPercentageOfAll_TTChangeClaimant,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sAllPercentageOfAll_TTChangeClaimant,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
 //            percentage = (TotalCount_AllTTChangeClaimantIgnoreMinus999 * 100.0d) / d;
 //            summary.put(
 //                    sAllPercentageOfAll_TTChangeClaimantIgnoreMinus999,
-//                    Generic_BigDecimal.roundIfNecessary(
+//                    Math_BigDecimal.roundIfNecessary(
 //                            BigDecimal.valueOf(percentage),
 //                            decimalPlacePrecisionForPercentage,
 //                            RoundingMode.HALF_UP).toPlainString());
@@ -1517,79 +1516,79 @@ public class DW_Summary extends DW_Object {
         if (d > 0) {
             percentage = (TotalCount_AllPostcode0ValidPostcode1Valid * 100.0d) / d;
             summary.put(sPercentageOfAllCount1_AllPostcode0ValidPostcode1Valid,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_AllPostcode0ValidPostcode1ValidPostcodeNotChanged * 100.0d) / d;
             summary.put(sPercentageOfAllCount1_AllPostcode0ValidPostcode1ValidPostcodeNotChanged,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_AllPostcode0ValidPostcode1ValidPostcodeChanged * 100.0d) / d;
             summary.put(sPercentageOfAllCount1_AllPostcode0ValidPostcode1ValidPostcodeChange,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_AllPostcode0ValidPostcode1NotValid * 100.0d) / d;
             summary.put(sPercentageOfAllCount1_AllPostcode0ValidPostcode1NotValid,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_AllPostcode0NotValidPostcode1Valid * 100.0d) / d;
             summary.put(sPercentageOfAllCount1_AllPostcode0NotValidPostcode1Valid,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_AllPostcode0NotValidPostcode1NotValid * 100.0d) / d;
             summary.put(sPercentageOfAllCount1_AllPostcode0NotValidPostcode1NotValid,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_AllPostcode0NotValidPostcode1NotValidPostcodeNotChanged * 100.0d) / d;
             summary.put(sPercentageOfAllCount1_AllPostcode0NotValidPostcode1NotValidPostcodeNotChanged,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_AllPostcode0NotValidPostcode1NotValidPostcodeChanged * 100.0d) / d;
             summary.put(sPercentageOfAllCount1_AllPostcode0NotValidPostcode1NotValidPostcodeChanged,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_AllPostcode0ValidPostcode1DNE * 100.0d) / d;
             summary.put(sPercentageOfAllCount1_AllPostcode0ValidPostcode1DNE,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_AllPostcode0DNEPostcode1Valid * 100.0d) / d;
             summary.put(sPercentageOfAllCount1_AllPostcode0DNEPostcode1Valid,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_AllPostcode0DNEPostcode1DNE * 100.0d) / d;
             summary.put(sPercentageOfAllCount1_AllPostcode0DNEPostcode1DNE,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_AllPostcode0DNEPostcode1NotValid * 100.0d) / d;
             summary.put(sPercentageOfAllCount1_AllPostcode0DNEPostcode1NotValid,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_AllPostcode0NotValidPostcode1DNE * 100.0d) / d;
             summary.put(sPercentageOfAllCount1_AllPostcode0NotValidPostcode1DNE,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -1623,32 +1622,32 @@ public class DW_Summary extends DW_Object {
         if (d > 0) {
             percentage = (TotalCount_HBTTChangeClaimant * 100.0d) / d;
             summary.put(sPercentageOfHBCount0_HBTTChangeClaimant,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
 //            percentage = (TotalCount_HBTTChangeClaimantIgnoreMinus999 * 100.0d) / d;
 //            summary.put(
 //                    sPercentageOfHB_HBTTChangeClaimantIgnoreMinus999,
-//                    Generic_BigDecimal.roundIfNecessary(
+//                    Math_BigDecimal.roundIfNecessary(
 //                            BigDecimal.valueOf(percentage),
 //                            decimalPlacePrecisionForPercentage,
 //                            RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_HBTTsToCTBTTs * 100.0d) / d;
             summary.put(sPercentageOfHBCount0_HBTTsToCTBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_HBTTsToHBTTs * 100.0d) / d;
             summary.put(sPercentageOfHBCount0_HBTTsToHBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_HBTTsToMinus999TT * 100.0d) / d;
             summary.put(sPercentageOfHBCount0_HBTTsToMinus999TT,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -1697,79 +1696,79 @@ public class DW_Summary extends DW_Object {
         if (d > 0) {
             percentage = (TotalCount_HBPostcode0ValidPostcode1Valid * 100.0d) / d;
             summary.put(sPercentageOfHBCount1_HBPostcode0ValidPostcode1Valid,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_HBPostcode0ValidPostcode1ValidPostcodeNotChanged * 100.0d) / d;
             summary.put(sPercentageOfHBCount1_HBPostcode0ValidPostcode1ValidPostcodeNotChanged,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_HBPostcode0ValidPostcode1ValidPostcodeChanged * 100.0d) / d;
             summary.put(sPercentageOfHBCount1_HBPostcode0ValidPostcode1ValidPostcodeChange,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_HBPostcode0ValidPostcode1NotValid * 100.0d) / d;
             summary.put(sPercentageOfHBCount1_HBPostcode0ValidPostcode1NotValid,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_HBPostcode0NotValidPostcode1Valid * 100.0d) / d;
             summary.put(sPercentageOfHBCount1_HBPostcode0NotValidPostcode1Valid,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_HBPostcode0NotValidPostcode1NotValid * 100.0d) / d;
             summary.put(sPercentageOfHBCount1_HBPostcode0NotValidPostcode1NotValid,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_HBPostcode0NotValidPostcode1NotValidPostcodeNotChanged * 100.0d) / d;
             summary.put(sPercentageOfHBCount1_HBPostcode0NotValidPostcode1NotValidPostcodeNotChanged,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_HBPostcode0NotValidPostcode1NotValidPostcodeChanged * 100.0d) / d;
             summary.put(sPercentageOfHBCount1_HBPostcode0NotValidPostcode1NotValidPostcodeChanged,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_HBPostcode0ValidPostcode1DNE * 100.0d) / d;
             summary.put(sPercentageOfHBCount1_HBPostcode0ValidPostcode1DNE,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_HBPostcode0DNEPostcode1Valid * 100.0d) / d;
             summary.put(sPercentageOfHBCount1_HBPostcode0DNEPostcode1Valid,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_HBPostcode0DNEPostcode1DNE * 100.0d) / d;
             summary.put(sPercentageOfHBCount1_HBPostcode0DNEPostcode1DNE,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_HBPostcode0DNEPostcode1NotValid * 100.0d) / d;
             summary.put(sPercentageOfHBCount1_HBPostcode0DNEPostcode1NotValid,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_HBPostcode0NotValidPostcode1DNE * 100.0d) / d;
             summary.put(sPercentageOfHBCount1_HBPostcode0NotValidPostcode1DNE,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -1796,44 +1795,38 @@ public class DW_Summary extends DW_Object {
         d = TotalCount_TTClaimant0[3] + TotalCount_TTClaimant0[6];
         if (d > 0) {
             percentage = (TotalCount_PrivateDeregulatedTTsToCTBTTs * 100.0d) / d;
-            summary.put(
-                    sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToCTBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_PrivateDeregulatedTTsToSocialTTs * 100.0d) / d;
-            summary.put(
-                    sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToSocialTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_PrivateDeregulatedTTsToTT1 * 100.0d) / d;
-            summary.put(
-                    sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT1,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_PrivateDeregulatedTTsToTT4 * 100.0d) / d;
-            summary.put(
-                    sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToTT4,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_PostcodeChangeWithinPrivateDeregulatedTTs * 100.0d) / d;
-            summary.put(
-                    sPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfPrivateDeregulatedTTs_PostcodeChangeWithinPrivateDeregulatedTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_PrivateDeregulatedTTsToMinus999TT * 100.0d) / d;
-            summary.put(
-                    sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToMinus999TT,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfPrivateDeregulatedTTs_PrivateDeregulatedTTsToMinus999TT,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -1857,30 +1850,26 @@ public class DW_Summary extends DW_Object {
                 Integer.toString(TotalCount_SocialTTsToMinus999TT));
         if (d > 0) {
             percentage = (TotalCount_SocialTTsToPrivateDeregulatedTTs * 100.0d) / d;
-            summary.put(
-                    sPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfSocialTTs_SocialTTsToPrivateDeregulatedTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_PostcodeChangeWithinSocialTTs * 100.0d) / d;
-            summary.put(
-                    sPercentageOfSocialTTs_PostcodeChangeWithinSocialTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfSocialTTs_PostcodeChangeWithinSocialTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_SocialTTsToCTBTTs * 100.0d) / d;
-            summary.put(
-                    sPercentageOfSocialTTs_SocialTTsToCTBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfSocialTTs_SocialTTsToCTBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_SocialTTsToMinus999TT * 100.0d) / d;
-            summary.put(
-                    sPercentageOfSocialTTs_SocialTTsToMinus999TT,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfSocialTTs_SocialTTsToMinus999TT,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -1901,30 +1890,26 @@ public class DW_Summary extends DW_Object {
                 Integer.toString(TotalCount_PostcodeChangeWithinTT1));
         if (d > 0) {
             percentage = (TotalCount_TT1ToCTBTTs * 100.0d) / d;
-            summary.put(
-                    sPercentageOfTT1_TT1ToCTBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfTT1_TT1ToCTBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_TT1ToPrivateDeregulatedTTs * 100.0d) / d;
-            summary.put(
-                    sPercentageOfTT1_TT1ToPrivateDeregulatedTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfTT1_TT1ToPrivateDeregulatedTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_PostcodeChangeWithinTT1 * 100.0d) / d;
-            summary.put(
-                    sPercentageOfTT1_PostcodeChangeWithinTT1,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfTT1_PostcodeChangeWithinTT1,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_TT1ToTT4 * 100.0d) / d;
-            summary.put(
-                    sPercentageOfTT1_TT1ToTT4,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfTT1_TT1ToTT4,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -1948,37 +1933,32 @@ public class DW_Summary extends DW_Object {
                 Integer.toString(TotalCount_PostcodeChangeWithinTT4));
         if (d > 0) {
             percentage = (TotalCount_TT4ToCTBTTs * 100.0d) / d;
-            summary.put(
-                    sPercentageOfTT4_TT4ToCTBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfTT4_TT4ToCTBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_TT4ToPrivateDeregulatedTTs * 100.0d) / d;
-            summary.put(
-                    sPercentageOfTT4_TT4ToPrivateDeregulatedTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfTT4_TT4ToPrivateDeregulatedTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_PostcodeChangeWithinTT1 * 100.0d) / d;
-            summary.put(
-                    sPercentageOfTT1_PostcodeChangeWithinTT1,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfTT1_PostcodeChangeWithinTT1,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_PostcodeChangeWithinTT4 * 100.0d) / d;
-            summary.put(
-                    sPercentageOfTT4_PostcodeChangeWithinTT4,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfTT4_PostcodeChangeWithinTT4,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_TT4ToTT1 * 100.0d) / d;
-            summary.put(
-                    sPercentageOfTT4_TT4ToTT1,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfTT4_TT4ToTT1,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2051,79 +2031,79 @@ public class DW_Summary extends DW_Object {
         if (d > 0) {
             percentage = (TotalCount_CTBPostcode0ValidPostcode1Valid * 100.0d) / d;
             summary.put(sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1Valid,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_CTBPostcode0ValidPostcode1ValidPostcodeNotChanged * 100.0d) / d;
             summary.put(sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1ValidPostcodeNotChanged,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_CTBPostcode0ValidPostcode1ValidPostcodeChanged * 100.0d) / d;
             summary.put(sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1ValidPostcodeChanged,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_CTBPostcode0ValidPostcode1NotValid * 100.0d) / d;
             summary.put(sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1NotValid,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_CTBPostcode0NotValidPostcode1Valid * 100.0d) / d;
             summary.put(sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1Valid,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_CTBPostcode0NotValidPostcode1NotValid * 100.0d) / d;
             summary.put(sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1NotValid,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_CTBPostcode0NotValidPostcode1NotValidPostcodeNotChanged * 100.0d) / d;
             summary.put(sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1NotValidPostcodeNotChanged,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_CTBPostcode0NotValidPostcode1NotValidPostcodeChanged * 100.0d) / d;
             summary.put(sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1NotValidPostcodeChanged,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_CTBPostcode0ValidPostcode1DNE * 100.0d) / d;
             summary.put(sPercentageOfCTBCount1_CTBPostcode0ValidPostcode1DNE,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_CTBPostcode0DNEPostcode1Valid * 100.0d) / d;
             summary.put(sPercentageOfCTBCount1_CTBPostcode0DNEPostcode1Valid,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_CTBPostcode0DNEPostcode1DNE * 100.0d) / d;
             summary.put(sPercentageOfCTBCount1_CTBPostcode0DNEPostcode1DNE,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_CTBPostcode0DNEPostcode1NotValid * 100.0d) / d;
             summary.put(sPercentageOfCTBCount1_CTBPostcode0DNEPostcode1NotValid,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_CTBPostcode0NotValidPostcode1DNE * 100.0d) / d;
             summary.put(sPercentageOfCTBCount1_CTBPostcode0NotValidPostcode1DNE,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2132,51 +2112,51 @@ public class DW_Summary extends DW_Object {
         if (d > 0) {
             percentage = (TotalCount_CTBTTChangeClaimant * 100.0d) / d;
             summary.put(PercentageOfCTBCount0_CTBTTChangeClaimant,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
 //            percentage = (TotalCount_CTBTTChangeClaimantIgnoreMinus999 * 100.0d) / d;
 //            summary.put(
 //                    sPercentageOfCTB_CTBTTChangeClaimantIgnoreMinus999,
-//                    Generic_BigDecimal.roundIfNecessary(
+//                    Math_BigDecimal.roundIfNecessary(
 //                            BigDecimal.valueOf(percentage),
 //                            decimalPlacePrecisionForPercentage,
 //                            RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_CTBTTsToSocialTTs * 100.0d) / d;
             summary.put(sPercentageOfCTBCount0_CTBTTsToSocialTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
 
             percentage = (TotalCount_CTBTTsToMinus999TT * 100.0d) / d;
             summary.put(sPercentageOfCTBCount0_CTBTTsToMinus999TT,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_CTBTTsToTT1 * 100.0d) / d;
             summary.put(sPercentageOfCTBCount0_CTBTTsToTT1,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_CTBTTsToTT4 * 100.0d) / d;
             summary.put(sPercentageOfCTBCount0_CTBTTsToTT4,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_CTBTTsToPrivateDeregulatedTTs * 100.0d) / d;
             summary.put(sPercentageOfCTBCount0_CTBTTsToPrivateDeregulatedTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
             percentage = (TotalCount_CTBTTsToHBTTs * 100.0d) / d;
             summary.put(sPercentageOfCTBCount0_CTBTTsToHBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2327,9 +2307,8 @@ public class DW_Summary extends DW_Object {
         n = AllTotalHouseholdSize;
         if (d > 0) {
             ave = n / d;
-            summary.put(
-                    sAllAverageHouseholdSize,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sAllAverageHouseholdSize,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2343,9 +2322,8 @@ public class DW_Summary extends DW_Object {
         n = HBTotalHouseholdSize;
         if (d > 0) {
             ave = n / d;
-            summary.put(
-                    sHBAverageHouseholdSize,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sHBAverageHouseholdSize,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2359,9 +2337,8 @@ public class DW_Summary extends DW_Object {
         n = CTBTotalHouseholdSize;
         if (d > 0) {
             ave = n / d;
-            summary.put(
-                    sCTBAverageHouseholdSize,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sCTBAverageHouseholdSize,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2377,7 +2354,7 @@ public class DW_Summary extends DW_Object {
             if (d > 0) {
                 ave = n / d;
                 summary.put(sAverage_HouseholdSizeTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(ave),
                                 decimalPlacePrecisionForAverage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -2425,7 +2402,7 @@ public class DW_Summary extends DW_Object {
             if (d > 0) {
                 ave = (all * 100.0d) / d;
                 summary.put(sPercentageOfAll_AllPSI[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(ave),
                                 decimalPlacePrecisionForAverage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -2434,9 +2411,8 @@ public class DW_Summary extends DW_Object {
             d = HBCount1;
             if (d > 0) {
                 ave = (all * 100.0d) / d;
-                summary.put(
-                        sPercentageOfHB_HBPSI[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfHB_HBPSI[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(ave),
                                 decimalPlacePrecisionForAverage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -2445,9 +2421,8 @@ public class DW_Summary extends DW_Object {
             d = CTBCount1;
             if (d > 0) {
                 ave = (all * 100.0d) / d;
-                summary.put(
-                        sPercentageOfCTB_CTBPSI[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfCTB_CTBPSI[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(ave),
                                 decimalPlacePrecisionForAverage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -2457,9 +2432,8 @@ public class DW_Summary extends DW_Object {
                 d = AllCount1;
                 if (d > 0) {
                     ave = (all * 100.0d) / d;
-                    summary.put(
-                            sPercentageOfAll_PSITT[i][j],
-                            Generic_BigDecimal.roundIfNecessary(
+                    summary.put(sPercentageOfAll_PSITT[i][j],
+                            Math_BigDecimal.roundIfNecessary(
                                     BigDecimal.valueOf(ave),
                                     decimalPlacePrecisionForAverage,
                                     RoundingMode.HALF_UP).toPlainString());
@@ -2467,9 +2441,8 @@ public class DW_Summary extends DW_Object {
                 d = TotalCount_TTClaimant1[j];
                 if (d > 0) {
                     ave = (all * 100.0d) / d;
-                    summary.put(
-                            sPercentageOfTT_PSITT[i][j],
-                            Generic_BigDecimal.roundIfNecessary(
+                    summary.put(sPercentageOfTT_PSITT[i][j],
+                            Math_BigDecimal.roundIfNecessary(
                                     BigDecimal.valueOf(ave),
                                     decimalPlacePrecisionForAverage,
                                     RoundingMode.HALF_UP).toPlainString());
@@ -2477,9 +2450,8 @@ public class DW_Summary extends DW_Object {
                 d = HBCount1;
                 if (d > 0) {
                     ave = (all * 100.0d) / d;
-                    summary.put(
-                            sPercentageOfHB_PSITT[i][j],
-                            Generic_BigDecimal.roundIfNecessary(
+                    summary.put(sPercentageOfHB_PSITT[i][j],
+                            Math_BigDecimal.roundIfNecessary(
                                     BigDecimal.valueOf(ave),
                                     decimalPlacePrecisionForAverage,
                                     RoundingMode.HALF_UP).toPlainString());
@@ -2487,9 +2459,8 @@ public class DW_Summary extends DW_Object {
                 d = CTBCount1;
                 if (d > 0) {
                     ave = (all * 100.0d) / d;
-                    summary.put(
-                            sPercentageOfCTB_PSITT[i][j],
-                            Generic_BigDecimal.roundIfNecessary(
+                    summary.put(sPercentageOfCTB_PSITT[i][j],
+                            Math_BigDecimal.roundIfNecessary(
                                     BigDecimal.valueOf(ave),
                                     decimalPlacePrecisionForAverage,
                                     RoundingMode.HALF_UP).toPlainString());
@@ -2729,7 +2700,7 @@ public class DW_Summary extends DW_Object {
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(sPercentageOfAll_AllDisabilityAward,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2739,9 +2710,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_DisabilityAwardHBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_DisabilityAwardHBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2749,9 +2719,8 @@ public class DW_Summary extends DW_Object {
         d = HBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfHB_DisabilityAwardHBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfHB_DisabilityAwardHBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2761,9 +2730,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_DisabilityAwardCTBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_DisabilityAwardCTBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2771,9 +2739,8 @@ public class DW_Summary extends DW_Object {
         d = CTBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfCTB_DisabilityAwardCTBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfCTB_DisabilityAwardCTBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2783,9 +2750,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_DisabilityAwardSocialTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_DisabilityAwardSocialTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2793,9 +2759,8 @@ public class DW_Summary extends DW_Object {
         d = HBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfHB_DisabilityAwardSocialTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfHB_DisabilityAwardSocialTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2803,9 +2768,8 @@ public class DW_Summary extends DW_Object {
         d = TotalCount_TTClaimant0[1] + TotalCount_TTClaimant0[4];
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfSocialTTs_DisabilityAwardSocialTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfSocialTTs_DisabilityAwardSocialTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2815,9 +2779,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_DisabilityAwardPrivateDeregulatedTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2825,9 +2788,8 @@ public class DW_Summary extends DW_Object {
         d = HBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfHB_DisabilityAwardPrivateDeregulatedTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2835,9 +2797,8 @@ public class DW_Summary extends DW_Object {
         d = TotalCount_TTClaimant0[3] + TotalCount_TTClaimant0[6];
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfPrivateDeregulatedTTs_DisabilityAwardPrivateDeregulatedTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfPrivateDeregulatedTTs_DisabilityAwardPrivateDeregulatedTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2848,7 +2809,7 @@ public class DW_Summary extends DW_Object {
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(sPercentageOfAll_AllDisabilityPremiumAward,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2858,9 +2819,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_DisabilityPremiumAwardHBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_DisabilityPremiumAwardHBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2868,9 +2828,8 @@ public class DW_Summary extends DW_Object {
         d = HBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfHB_DisabilityPremiumAwardHBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfHB_DisabilityPremiumAwardHBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2880,9 +2839,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_DisabilityPremiumAwardCTBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_DisabilityPremiumAwardCTBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2890,9 +2848,8 @@ public class DW_Summary extends DW_Object {
         d = CTBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfCTB_DisabilityPremiumAwardCTBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfCTB_DisabilityPremiumAwardCTBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2902,9 +2859,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_DisabilityPremiumAwardSocialTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_DisabilityPremiumAwardSocialTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2912,9 +2868,8 @@ public class DW_Summary extends DW_Object {
         d = HBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfHB_DisabilityPremiumAwardSocialTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfHB_DisabilityPremiumAwardSocialTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2922,9 +2877,8 @@ public class DW_Summary extends DW_Object {
         d = TotalCount_TTClaimant0[1] + TotalCount_TTClaimant0[4];
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfSocialTTs_DisabilityPremiumAwardSocialTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfSocialTTs_DisabilityPremiumAwardSocialTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2934,9 +2888,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_DisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2944,9 +2897,8 @@ public class DW_Summary extends DW_Object {
         d = HBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfHB_DisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2954,9 +2906,8 @@ public class DW_Summary extends DW_Object {
         d = TotalCount_TTClaimant0[3] + TotalCount_TTClaimant0[6];
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfPrivateDeregulatedTTs_DisabilityPremiumAwardPrivateDeregulatedTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfPrivateDeregulatedTTs_DisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2967,7 +2918,7 @@ public class DW_Summary extends DW_Object {
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(sPercentageOfAll_AllSevereDisabilityPremiumAward,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2977,9 +2928,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_SevereDisabilityPremiumAwardHBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_SevereDisabilityPremiumAwardHBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2987,9 +2937,8 @@ public class DW_Summary extends DW_Object {
         d = HBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfHB_SevereDisabilityPremiumAwardHBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfHB_SevereDisabilityPremiumAwardHBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -2999,9 +2948,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_SevereDisabilityPremiumAwardCTBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_SevereDisabilityPremiumAwardCTBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3009,9 +2957,8 @@ public class DW_Summary extends DW_Object {
         d = CTBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfCTB_SevereDisabilityPremiumAwardCTBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfCTB_SevereDisabilityPremiumAwardCTBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3021,9 +2968,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_SevereDisabilityPremiumAwardSocialTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_SevereDisabilityPremiumAwardSocialTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3031,9 +2977,8 @@ public class DW_Summary extends DW_Object {
         d = HBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfHB_SevereDisabilityPremiumAwardSocialTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfHB_SevereDisabilityPremiumAwardSocialTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3041,9 +2986,8 @@ public class DW_Summary extends DW_Object {
         d = TotalCount_TTClaimant0[1] + TotalCount_TTClaimant0[4];
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfSocialTTs_SevereDisabilityPremiumAwardSocialTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfSocialTTs_SevereDisabilityPremiumAwardSocialTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3053,9 +2997,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_SevereDisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3063,9 +3006,8 @@ public class DW_Summary extends DW_Object {
         d = HBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfHB_SevereDisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3073,9 +3015,8 @@ public class DW_Summary extends DW_Object {
         d = TotalCount_TTClaimant0[3] + TotalCount_TTClaimant0[6];
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfPrivateDeregulatedTTs_SevereDisabilityPremiumAwardPrivateDeregulatedTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfPrivateDeregulatedTTs_SevereDisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3086,7 +3027,7 @@ public class DW_Summary extends DW_Object {
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(sPercentageOfAll_AllDisabledChildPremiumAward,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3096,9 +3037,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_DisabledChildPremiumAwardHBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_DisabledChildPremiumAwardHBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3106,9 +3046,8 @@ public class DW_Summary extends DW_Object {
         d = HBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfHB_DisabledChildPremiumAwardHBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfHB_DisabledChildPremiumAwardHBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3118,9 +3057,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_DisabledChildPremiumAwardCTBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_DisabledChildPremiumAwardCTBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3128,9 +3066,8 @@ public class DW_Summary extends DW_Object {
         d = CTBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfCTB_DisabledChildPremiumAwardCTBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfCTB_DisabledChildPremiumAwardCTBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3140,9 +3077,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_DisabledChildPremiumAwardSocialTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_DisabledChildPremiumAwardSocialTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3150,9 +3086,8 @@ public class DW_Summary extends DW_Object {
         d = HBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfHB_DisabledChildPremiumAwardSocialTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfHB_DisabledChildPremiumAwardSocialTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3160,9 +3095,8 @@ public class DW_Summary extends DW_Object {
         d = TotalCount_TTClaimant0[1] + TotalCount_TTClaimant0[4];
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfSocialTTs_DisabledChildPremiumAwardSocialTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfSocialTTs_DisabledChildPremiumAwardSocialTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3172,9 +3106,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_DisabledChildPremiumAwardPrivateDeregulatedTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3182,9 +3115,8 @@ public class DW_Summary extends DW_Object {
         d = HBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfHB_DisabledChildPremiumAwardPrivateDeregulatedTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3192,9 +3124,8 @@ public class DW_Summary extends DW_Object {
         d = TotalCount_TTClaimant0[3] + TotalCount_TTClaimant0[6];
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfPrivateDeregulatedTTs_DisabledChildPremiumAwardPrivateDeregulatedTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfPrivateDeregulatedTTs_DisabledChildPremiumAwardPrivateDeregulatedTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3205,7 +3136,7 @@ public class DW_Summary extends DW_Object {
         if (d > 0) {
             percentage = (t * 100.0d) / d;
             summary.put(sPercentageOfAll_AllEnhancedDisabilityPremiumAward,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3215,9 +3146,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_EnhancedDisabilityPremiumAwardHBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_EnhancedDisabilityPremiumAwardHBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3225,9 +3155,8 @@ public class DW_Summary extends DW_Object {
         d = HBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfHB_EnhancedDisabilityPremiumAwardHBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfHB_EnhancedDisabilityPremiumAwardHBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3237,9 +3166,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_EnhancedDisabilityPremiumAwardCTBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_EnhancedDisabilityPremiumAwardCTBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3247,9 +3175,8 @@ public class DW_Summary extends DW_Object {
         d = CTBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfCTB_EnhancedDisabilityPremiumAwardCTBTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfCTB_EnhancedDisabilityPremiumAwardCTBTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3259,9 +3186,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_EnhancedDisabilityPremiumAwardSocialTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_EnhancedDisabilityPremiumAwardSocialTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3269,9 +3195,8 @@ public class DW_Summary extends DW_Object {
         d = HBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfHB_EnhancedDisabilityPremiumAwardSocialTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfHB_EnhancedDisabilityPremiumAwardSocialTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3279,9 +3204,8 @@ public class DW_Summary extends DW_Object {
         d = TotalCount_TTClaimant0[1] + TotalCount_TTClaimant0[4];
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfSocialTTs_EnhancedDisabilityPremiumAwardSocialTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfSocialTTs_EnhancedDisabilityPremiumAwardSocialTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3291,9 +3215,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3301,9 +3224,8 @@ public class DW_Summary extends DW_Object {
         d = HBCount1;
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfHB_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3311,9 +3233,8 @@ public class DW_Summary extends DW_Object {
         d = TotalCount_TTClaimant0[1] + TotalCount_TTClaimant0[4];
         if (d > 0) {
             percentage = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfPrivateDeregulatedTTs_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfPrivateDeregulatedTTs_EnhancedDisabilityPremiumAwardPrivateDeregulatedTTs,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3325,9 +3246,8 @@ public class DW_Summary extends DW_Object {
             t = Integer.valueOf(summary.get(sTotalCount_DisabilityAwardTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
-                summary.put(
-                        sPercentageOfAll_DisabilityAwardTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfAll_DisabilityAwardTT[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -3335,9 +3255,8 @@ public class DW_Summary extends DW_Object {
             t = Integer.valueOf(summary.get(sTotalCount_DisabilityPremiumAwardTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
-                summary.put(
-                        sPercentageOfAll_DisabilityPremiumAwardTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfAll_DisabilityPremiumAwardTT[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -3345,9 +3264,8 @@ public class DW_Summary extends DW_Object {
             t = Integer.valueOf(summary.get(sTotalCount_SevereDisabilityPremiumAwardTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
-                summary.put(
-                        sPercentageOfAll_SevereDisabilityPremiumAwardTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfAll_SevereDisabilityPremiumAwardTT[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -3355,9 +3273,8 @@ public class DW_Summary extends DW_Object {
             t = Integer.valueOf(summary.get(sTotalCount_DisabledChildPremiumAwardTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
-                summary.put(
-                        sPercentageOfAll_DisabledChildPremiumAwardTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfAll_DisabledChildPremiumAwardTT[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -3365,9 +3282,8 @@ public class DW_Summary extends DW_Object {
             t = Integer.valueOf(summary.get(sTotalCount_EnhancedDisabilityPremiumAwardTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
-                summary.put(
-                        sPercentageOfAll_EnhancedDisabilityPremiumAwardTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfAll_EnhancedDisabilityPremiumAwardTT[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -3377,9 +3293,8 @@ public class DW_Summary extends DW_Object {
             t = Integer.valueOf(summary.get(sTotalCount_DisabilityAwardTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
-                summary.put(
-                        sPercentageOfHB_DisabilityAwardTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfHB_DisabilityAwardTT[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -3387,9 +3302,8 @@ public class DW_Summary extends DW_Object {
             t = Integer.valueOf(summary.get(sTotalCount_DisabilityPremiumAwardTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
-                summary.put(
-                        sPercentageOfHB_DisabilityPremiumAwardTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfHB_DisabilityPremiumAwardTT[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -3397,9 +3311,8 @@ public class DW_Summary extends DW_Object {
             t = Integer.valueOf(summary.get(sTotalCount_SevereDisabilityPremiumAwardTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
-                summary.put(
-                        sPercentageOfHB_SevereDisabilityPremiumAwardTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfHB_SevereDisabilityPremiumAwardTT[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -3407,9 +3320,8 @@ public class DW_Summary extends DW_Object {
             t = Integer.valueOf(summary.get(sTotalCount_DisabledChildPremiumAwardTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
-                summary.put(
-                        sPercentageOfHB_DisabledChildPremiumAwardTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfHB_DisabledChildPremiumAwardTT[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -3417,9 +3329,8 @@ public class DW_Summary extends DW_Object {
             t = Integer.valueOf(summary.get(sTotalCount_EnhancedDisabilityPremiumAwardTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
-                summary.put(
-                        sPercentageOfHB_EnhancedDisabilityPremiumAwardTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfHB_EnhancedDisabilityPremiumAwardTT[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -3429,9 +3340,8 @@ public class DW_Summary extends DW_Object {
             t = Integer.valueOf(summary.get(sTotalCount_DisabilityAwardTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
-                summary.put(
-                        sPercentageOfCTB_DisabilityAwardTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfCTB_DisabilityAwardTT[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -3439,9 +3349,8 @@ public class DW_Summary extends DW_Object {
             t = Integer.valueOf(summary.get(sTotalCount_DisabilityPremiumAwardTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
-                summary.put(
-                        sPercentageOfCTB_DisabilityPremiumAwardTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfCTB_DisabilityPremiumAwardTT[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -3449,9 +3358,8 @@ public class DW_Summary extends DW_Object {
             t = Integer.valueOf(summary.get(sTotalCount_SevereDisabilityPremiumAwardTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
-                summary.put(
-                        sPercentageOfCTB_SevereDisabilityPremiumAwardTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfCTB_SevereDisabilityPremiumAwardTT[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -3459,9 +3367,8 @@ public class DW_Summary extends DW_Object {
             t = Integer.valueOf(summary.get(sTotalCount_DisabledChildPremiumAwardTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
-                summary.put(
-                        sPercentageOfCTB_DisabledChildPremiumAwardTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfCTB_DisabledChildPremiumAwardTT[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -3469,9 +3376,8 @@ public class DW_Summary extends DW_Object {
             t = Integer.valueOf(summary.get(sTotalCount_EnhancedDisabilityPremiumAwardTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
-                summary.put(
-                        sPercentageOfCTB_EnhancedDisabilityPremiumAwardTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfCTB_EnhancedDisabilityPremiumAwardTT[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -3481,9 +3387,8 @@ public class DW_Summary extends DW_Object {
             t = Integer.valueOf(summary.get(sTotalCount_DisabilityAwardTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
-                summary.put(
-                        sPercentageOfTT_DisabilityAwardTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfTT_DisabilityAwardTT[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -3491,9 +3396,8 @@ public class DW_Summary extends DW_Object {
             t = Integer.valueOf(summary.get(sTotalCount_DisabilityPremiumAwardTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
-                summary.put(
-                        sPercentageOfTT_DisabilityPremiumAwardTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfTT_DisabilityPremiumAwardTT[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -3501,9 +3405,8 @@ public class DW_Summary extends DW_Object {
             t = Integer.valueOf(summary.get(sTotalCount_SevereDisabilityPremiumAwardTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
-                summary.put(
-                        sPercentageOfTT_SevereDisabilityPremiumAwardTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfTT_SevereDisabilityPremiumAwardTT[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -3511,9 +3414,8 @@ public class DW_Summary extends DW_Object {
             t = Integer.valueOf(summary.get(sTotalCount_DisabledChildPremiumAwardTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
-                summary.put(
-                        sPercentageOfTT_DisabledChildPremiumAwardTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfTT_DisabledChildPremiumAwardTT[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -3521,9 +3423,8 @@ public class DW_Summary extends DW_Object {
             t = Integer.valueOf(summary.get(sTotalCount_EnhancedDisabilityPremiumAwardTT[i]));
             if (d > 0) {
                 percentage = (t * 100.0d) / d;
-                summary.put(
-                        sPercentageOfTT_EnhancedDisabilityPremiumAwardTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfTT_EnhancedDisabilityPremiumAwardTT[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -3740,7 +3641,7 @@ public class DW_Summary extends DW_Object {
         if (d > 0) {
             ave = t / d;
             summary.put(strings.sAverage_NonZero_WeeklyHBEntitlement,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3753,7 +3654,7 @@ public class DW_Summary extends DW_Object {
         if (d > 0) {
             ave = t / d;
             summary.put(strings.sAverage_NonZero_HBWeeklyHBEntitlement,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3766,7 +3667,7 @@ public class DW_Summary extends DW_Object {
         if (d > 0) {
             ave = t / d;
             summary.put(strings.sAverage_NonZero_CTBWeeklyHBEntitlement,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3780,7 +3681,7 @@ public class DW_Summary extends DW_Object {
         if (d > 0) {
             ave = t / d;
             summary.put(strings.sAverage_NonZero_WeeklyCTBEntitlement,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3793,7 +3694,7 @@ public class DW_Summary extends DW_Object {
         if (d > 0) {
             ave = t / d;
             summary.put(strings.sAverage_NonZero_HBWeeklyCTBEntitlement,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3806,7 +3707,7 @@ public class DW_Summary extends DW_Object {
         if (d > 0) {
             ave = t / d;
             summary.put(strings.sAverage_NonZero_CTBWeeklyCTBEntitlement,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3820,7 +3721,7 @@ public class DW_Summary extends DW_Object {
         if (d > 0) {
             ave = t / d;
             summary.put(env.SHBE_Env.strings.sAverage_NonZero_WeeklyEligibleRentAmount,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3833,7 +3734,7 @@ public class DW_Summary extends DW_Object {
         if (d > 0) {
             ave = t / d;
             summary.put(strings.sAverage_NonZero_HBWeeklyEligibleRentAmount,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3846,7 +3747,7 @@ public class DW_Summary extends DW_Object {
         if (d > 0) {
             ave = t / d;
             summary.put(strings.sAverage_NonZero_CTBWeeklyEligibleRentAmount,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3859,9 +3760,8 @@ public class DW_Summary extends DW_Object {
         d = TotalCount_AllWeeklyEligibleCouncilTaxAmountNonZero;
         if (d > 0) {
             ave = t / d;
-            summary.put(
-                    sAllAverageWeeklyEligibleCouncilTaxAmount,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sAllAverageWeeklyEligibleCouncilTaxAmount,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3874,9 +3774,8 @@ public class DW_Summary extends DW_Object {
         d = TotalCount_HBWeeklyEligibleCouncilTaxAmountNonZero;
         if (d > 0) {
             ave = t / d;
-            summary.put(
-                    sHBAverageWeeklyEligibleCouncilTaxAmount,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sHBAverageWeeklyEligibleCouncilTaxAmount,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3889,9 +3788,8 @@ public class DW_Summary extends DW_Object {
         d = TotalCount_CTBWeeklyEligibleCouncilTaxAmountNonZero;
         if (d > 0) {
             ave = t / d;
-            summary.put(
-                    sCTBAverageWeeklyEligibleCouncilTaxAmount,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sCTBAverageWeeklyEligibleCouncilTaxAmount,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3905,9 +3803,8 @@ public class DW_Summary extends DW_Object {
         d = AllTotalContractualRentAmountNonZeroCount;
         if (d > 0) {
             ave = t / d;
-            summary.put(
-                    sAllAverageContractualRentAmount,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sAllAverageContractualRentAmount,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3920,9 +3817,8 @@ public class DW_Summary extends DW_Object {
         d = HBTotalContractualRentAmountNonZeroCount;
         if (d > 0) {
             ave = t / d;
-            summary.put(
-                    sHBAverageContractualRentAmount,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sHBAverageContractualRentAmount,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3935,9 +3831,8 @@ public class DW_Summary extends DW_Object {
         d = CTBTotalContractualRentAmountNonZeroCount;
         if (d > 0) {
             ave = t / d;
-            summary.put(
-                    sCTBAverageContractualRentAmount,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sCTBAverageContractualRentAmount,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3951,9 +3846,8 @@ public class DW_Summary extends DW_Object {
         d = AllTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
         if (d > 0) {
             ave = t / d;
-            summary.put(
-                    sAllAverageWeeklyAdditionalDiscretionaryPayment,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sAllAverageWeeklyAdditionalDiscretionaryPayment,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3966,9 +3860,8 @@ public class DW_Summary extends DW_Object {
         d = HBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
         if (d > 0) {
             ave = t / d;
-            summary.put(
-                    sHBAverageWeeklyAdditionalDiscretionaryPayment,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sHBAverageWeeklyAdditionalDiscretionaryPayment,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3981,9 +3874,8 @@ public class DW_Summary extends DW_Object {
         d = CTBTotalWeeklyAdditionalDiscretionaryPaymentNonZeroCount;
         if (d > 0) {
             ave = t / d;
-            summary.put(
-                    sCTBAverageWeeklyAdditionalDiscretionaryPayment,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sCTBAverageWeeklyAdditionalDiscretionaryPayment,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -3997,9 +3889,8 @@ public class DW_Summary extends DW_Object {
         d = AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
         if (d > 0) {
             ave = t / d;
-            summary.put(
-                    sAllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sAllAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -4012,9 +3903,8 @@ public class DW_Summary extends DW_Object {
         d = HBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
         if (d > 0) {
             ave = t / d;
-            summary.put(
-                    sHBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sHBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -4027,9 +3917,8 @@ public class DW_Summary extends DW_Object {
         d = CTBTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityNonZeroCount;
         if (d > 0) {
             ave = t / d;
-            summary.put(
-                    sCTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sCTBAverageWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -4043,9 +3932,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             ave = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_AllClaimantsEmployed,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_AllClaimantsEmployed,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -4058,9 +3946,8 @@ public class DW_Summary extends DW_Object {
         d = HBCount1;
         if (d > 0) {
             ave = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfHB_HBClaimantsEmployed,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfHB_HBClaimantsEmployed,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -4073,9 +3960,8 @@ public class DW_Summary extends DW_Object {
         d = CTBCount1;
         if (d > 0) {
             ave = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfCTB_CTBClaimantsEmployed,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfCTB_CTBClaimantsEmployed,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -4089,9 +3975,8 @@ public class DW_Summary extends DW_Object {
         d = HBCount1;
         if (d > 0) {
             ave = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfHB_HBClaimantsSelfEmployed,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfHB_HBClaimantsSelfEmployed,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -4104,9 +3989,8 @@ public class DW_Summary extends DW_Object {
         d = CTBCount1;
         if (d > 0) {
             ave = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfCTB_CTBClaimantsSelfEmployed,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfCTB_CTBClaimantsSelfEmployed,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -4120,9 +4004,8 @@ public class DW_Summary extends DW_Object {
         d = HBCount1;
         if (d > 0) {
             ave = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfHB_HBClaimantsStudents,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfHB_HBClaimantsStudents,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -4135,9 +4018,8 @@ public class DW_Summary extends DW_Object {
         d = CTBCount1;
         if (d > 0) {
             ave = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfCTB_CTBClaimantsStudents,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfCTB_CTBClaimantsStudents,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -4152,7 +4034,7 @@ public class DW_Summary extends DW_Object {
         if (d > 0) {
             ave = (t * 100.0d) / d;
             summary.put(sPercentageOfAll_AllLHACases,
-                    Generic_BigDecimal.roundIfNecessary(
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -4164,9 +4046,8 @@ public class DW_Summary extends DW_Object {
         d = HBCount1;
         if (d > 0) {
             ave = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfHB_HBLHACases,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfHB_HBLHACases,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -4179,9 +4060,8 @@ public class DW_Summary extends DW_Object {
         d = CTBCount1;
         if (d > 0) {
             ave = (t * 100.0d) / d;
-            summary.put(
-                    sPercentageOfCTB_CTBLHACases,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfCTB_CTBLHACases,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(ave),
                             decimalPlacePrecisionForAverage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -4236,7 +4116,7 @@ public class DW_Summary extends DW_Object {
             if (d > 0) {
                 percentage = (all * 100.0d) / d;
                 summary.put(sPercentageOfAll_EthnicGroupClaimant[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -4246,7 +4126,7 @@ public class DW_Summary extends DW_Object {
             if (d > 0) {
                 percentage = (all * 100.0d) / d;
                 summary.put(sPercentageOfHB_HBEthnicGroupClaimant[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -4256,7 +4136,7 @@ public class DW_Summary extends DW_Object {
             if (d > 0) {
                 percentage = (all * 100.0d) / d;
                 summary.put(sPercentageOfCTB_CTBEthnicGroupClaimant[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -4267,7 +4147,7 @@ public class DW_Summary extends DW_Object {
                 if (d > 0) {
                     percentage = (all * 100.0d) / d;
                     summary.put(sPercentageOfTT_EthnicGroupClaimantTT[i][j],
-                            Generic_BigDecimal.roundIfNecessary(
+                            Math_BigDecimal.roundIfNecessary(
                                     BigDecimal.valueOf(percentage),
                                     decimalPlacePrecisionForPercentage,
                                     RoundingMode.HALF_UP).toPlainString());
@@ -4276,7 +4156,7 @@ public class DW_Summary extends DW_Object {
                 if (d > 0) {
                     percentage = (all * 100.0d) / d;
                     summary.put(sPercentageOfEthnicGroup_EthnicGroupClaimantTT[i][j],
-                            Generic_BigDecimal.roundIfNecessary(
+                            Math_BigDecimal.roundIfNecessary(
                                     BigDecimal.valueOf(percentage),
                                     decimalPlacePrecisionForPercentage,
                                     RoundingMode.HALF_UP).toPlainString());
@@ -4287,7 +4167,7 @@ public class DW_Summary extends DW_Object {
             if (d > 0) {
                 percentage = (all * 100.0d) / d;
                 summary.put(sPercentageOfSocialTT_EthnicGroupSocialTTClaimant[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -4297,7 +4177,7 @@ public class DW_Summary extends DW_Object {
             if (d > 0) {
                 percentage = (all * 100.0d) / d;
                 summary.put(sPercentageOfPrivateDeregulatedTT_EthnicGroupPrivateDeregulatedTTClaimant[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -4347,9 +4227,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             percentage = (all * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_SocialTTsClaimant,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_SocialTTsClaimant,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -4357,9 +4236,8 @@ public class DW_Summary extends DW_Object {
         d = HBCount1;
         if (d > 0) {
             percentage = (all * 100.0d) / d;
-            summary.put(
-                    sPercentageOfHB_SocialTTsClaimant,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfHB_SocialTTsClaimant,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -4368,9 +4246,8 @@ public class DW_Summary extends DW_Object {
         d = AllCount1;
         if (d > 0) {
             percentage = (all * 100.0d) / d;
-            summary.put(
-                    sPercentageOfAll_PrivateDeregulatedTTsClaimant,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfAll_PrivateDeregulatedTTsClaimant,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -4378,9 +4255,8 @@ public class DW_Summary extends DW_Object {
         d = HBCount1;
         if (d > 0) {
             percentage = (all * 100.0d) / d;
-            summary.put(
-                    sPercentageOfHB_PrivateDeregulatedTTsClaimant,
-                    Generic_BigDecimal.roundIfNecessary(
+            summary.put(sPercentageOfHB_PrivateDeregulatedTTsClaimant,
+                    Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
                             decimalPlacePrecisionForPercentage,
                             RoundingMode.HALF_UP).toPlainString());
@@ -4391,9 +4267,8 @@ public class DW_Summary extends DW_Object {
             d = AllCount1;
             if (d > 0) {
                 percentage = (all * 100.0d) / d;
-                summary.put(
-                        sPercentageOfAll_ClaimantTT[i],
-                        Generic_BigDecimal.roundIfNecessary(
+                summary.put(sPercentageOfAll_ClaimantTT[i],
+                        Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
                                 decimalPlacePrecisionForPercentage,
                                 RoundingMode.HALF_UP).toPlainString());
@@ -4402,9 +4277,8 @@ public class DW_Summary extends DW_Object {
                 d = CTBCount1;
                 if (d > 0) {
                     percentage = (all * 100.0d) / d;
-                    summary.put(
-                            sPercentageOfCTB_ClaimantTT[i],
-                            Generic_BigDecimal.roundIfNecessary(
+                    summary.put(sPercentageOfCTB_ClaimantTT[i],
+                            Math_BigDecimal.roundIfNecessary(
                                     BigDecimal.valueOf(percentage),
                                     decimalPlacePrecisionForPercentage,
                                     RoundingMode.HALF_UP).toPlainString());
@@ -4413,9 +4287,8 @@ public class DW_Summary extends DW_Object {
                 d = HBCount1;
                 if (d > 0) {
                     percentage = (all * 100.0d) / d;
-                    summary.put(
-                            sPercentageOfHB_ClaimantTT[i],
-                            Generic_BigDecimal.roundIfNecessary(
+                    summary.put(sPercentageOfHB_ClaimantTT[i],
+                            Math_BigDecimal.roundIfNecessary(
                                     BigDecimal.valueOf(percentage),
                                     decimalPlacePrecisionForPercentage,
                                     RoundingMode.HALF_UP).toPlainString());
@@ -5893,7 +5766,7 @@ public class DW_Summary extends DW_Object {
             String name;
             name = incomeAndRentSummaryKeySetIte.next();
             String value;
-            value = Generic_BigDecimal.roundIfNecessary(
+            value = Math_BigDecimal.roundIfNecessary(
                     incomeAndRentSummary.get(name), 2, RoundingMode.HALF_UP).toPlainString();
             summary.put(
                     name,

@@ -16,7 +16,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
-import uk.ac.leeds.ccg.andyt.math.Generic_BigDecimal;
+import uk.ac.leeds.ccg.andyt.math.Math_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Handler;
@@ -934,9 +934,8 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             Integer maxArea = maxs.get(area);
             BigDecimal midminmax = new BigDecimal(
                     (double) (minArea + maxArea) / (double) 2);
-            midminmaxs.put(
-                    area,
-                    Generic_BigDecimal.roundIfNecessary(
+            midminmaxs.put(area,
+                    Math_BigDecimal.roundIfNecessary(
                             midminmax, 0, RoundingMode.HALF_EVEN).intValue());
         }
         String minArea = "";
@@ -958,9 +957,8 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             Integer sum = sums.get(area);
             BigDecimal mean;
             mean = new BigDecimal(((double) sum / (double) n));
-            sums.put(
-                    area,
-                    Generic_BigDecimal.roundIfNecessary(
+            sums.put(area,
+                    Math_BigDecimal.roundIfNecessary(
                             mean, 0, RoundingMode.HALF_EVEN).intValue());
             if (area.equalsIgnoreCase(maxArea)) {
                 sums.put(area, max);

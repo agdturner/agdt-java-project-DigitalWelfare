@@ -30,7 +30,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import uk.ac.leeds.ccg.andyt.chart.examples.Generic_BarChart;
+import uk.ac.leeds.ccg.andyt.chart.examples.Chart_Bar;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.execution.Generic_Execution;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
@@ -44,7 +44,7 @@ import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
  *
  * @author geoagdt
  */
-public class DW_BarChart extends Generic_BarChart {
+public class DW_BarChart extends Chart_Bar {
 
     protected final transient DW_Environment Env;
     protected final transient DW_Strings Strings;
@@ -298,7 +298,7 @@ public class DW_BarChart extends Generic_BarChart {
 
     private void generateBarChart(String level, File fout, File fin, String format, String title) {
         try {
-            Generic_BarChart chart = new Generic_BarChart(executorService,
+            Chart_Bar chart = new Chart_Bar(executorService,
                     fout, format, title, dataWidth, dataHeight, xAxisLabel,
                     yAxisLabel, false, barGap, xAxisIncrement, yMax, yPin,
                     yIncrement, numberOfYAxisTicks,

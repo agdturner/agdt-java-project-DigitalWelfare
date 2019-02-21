@@ -32,7 +32,7 @@ import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
-import uk.ac.leeds.ccg.andyt.math.Generic_BigDecimal;
+import uk.ac.leeds.ccg.andyt.math.Math_BigDecimal;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_PersonID;
@@ -2075,27 +2075,27 @@ public class DW_TenancyChangesUO extends DW_Object {
         double d;
         p = ((double) ReceivingDHPCount1) * 100.0d / (double) EndUOClaimIDs.size();
         GeneralStatistics.put(sPercentageOfUO_ReceivingDHPInLatestMonth,
-                Generic_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
+                Math_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
         d = (double) CouncilUOSetMap1.size();
         p = ((double) TotalCount_InArrears1) * 100.0d / d;
         GeneralStatistics.put(sPercentageOfCouncilUO_InArrearsInLatestMonth,
-                Generic_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
+                Math_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
         p = ((double) TotalCount_InArrears0To101) * 100.0d / d;
         GeneralStatistics.put(sPercentageOfCouncilUO_InArrears0To10InLatestMonth,
-                Generic_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
+                Math_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
         p = ((double) TotalCount_InArrears10To1001) * 100.0d / d;
         GeneralStatistics.put(sPercentageOfCouncilUO_InArrears10To100InLatestMonth,
-                Generic_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
+                Math_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
         p = ((double) TotalCount_InArrears100To5001) * 100.0d / d;
         GeneralStatistics.put(sPercentageOfCouncilUO_InArrears100To500InLatestMonth,
-                Generic_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
+                Math_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
         p = ((double) TotalCount_InArrearsOver5001) * 100.0d / d;
         GeneralStatistics.put(sPercentageOfCouncilUO_InArrearsOver500InLatestMonth,
-                Generic_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
+                Math_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
 
         p = ((double) InArrearsAndReceivingDHPCount1) * 100.0d / d;
         GeneralStatistics.put(sPercentageOfCouncilUO_InArrearsAndReceivingDHPInLatestMonth,
-                Generic_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
+                Math_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
 
         /*
         * Iterate over records in EndUOThatWereAlsoStartUOClaimRefs
@@ -2144,26 +2144,26 @@ public class DW_TenancyChangesUO extends DW_Object {
         }
         p = ((double) ReceivingDHPCount1) * 100.0d / (double) EndUOClaimIDs.size();
         GeneralStatistics.put(sPercentageOfUO_ReceivingDHPInLatestMonthThatWereUOInApril2013,
-                Generic_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
+                Math_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
         d = (double) CouncilUOSetMap1.size();
         p = ((double) TotalCount_InArrears1) * 100.0d / d;
         GeneralStatistics.put(sPercentageOfCouncilUO_InArrearsInLatestMonthThatWereUOInApril2013,
-                Generic_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
+                Math_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
         p = ((double) TotalCount_InArrears0To101) * 100.0d / d;
         GeneralStatistics.put(sPercentageOfCouncilUO_InArrears0To10InLatestMonthThatWereUOInApril2013,
-                Generic_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
+                Math_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
         p = ((double) TotalCount_InArrears10To1001) * 100.0d / d;
         GeneralStatistics.put(sPercentageOfCouncilUO_InArrears10To100InLatestMonthThatWereUOInApril2013,
-                Generic_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
+                Math_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
         p = ((double) TotalCount_InArrears100To5001) * 100.0d / d;
         GeneralStatistics.put(sPercentageOfCouncilUO_InArrears100To500InLatestMonthThatWereUOInApril2013,
-                Generic_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
+                Math_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
         p = ((double) TotalCount_InArrearsOver5001) * 100.0d / d;
         GeneralStatistics.put(sPercentageOfCouncilUO_InArrearsOver500InLatestMonthThatWereUOInApril2013,
-                Generic_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
+                Math_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
         p = ((double) InArrearsAndReceivingDHPCount1) * 100.0d / d;
         GeneralStatistics.put(sPercentageOfCouncilUO_InArrearsAndReceivingDHPInLatestMonthThatWereUOInApril2013,
-                Generic_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
+                Math_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
 
 //        TreeMap<String, ArrayList<Integer>> includes;
 //        includes = SHBE_Handler.getIncludes();

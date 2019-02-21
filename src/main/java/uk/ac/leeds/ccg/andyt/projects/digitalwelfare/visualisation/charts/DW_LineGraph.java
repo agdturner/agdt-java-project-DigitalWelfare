@@ -32,7 +32,7 @@ import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import uk.ac.leeds.ccg.andyt.chart.examples.Generic_LineGraph;
+import uk.ac.leeds.ccg.andyt.chart.examples.Chart_Line;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 //import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
@@ -52,7 +52,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  *
  * @author geoagdt
  */
-public class DW_LineGraph extends Generic_LineGraph {
+public class DW_LineGraph extends Chart_Line {
 
     protected final transient DW_Environment Env;
     protected final transient DW_Files Files;

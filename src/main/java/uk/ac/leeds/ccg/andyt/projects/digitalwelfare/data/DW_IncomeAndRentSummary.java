@@ -32,7 +32,7 @@ import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
-import uk.ac.leeds.ccg.andyt.math.Generic_BigDecimal;
+import uk.ac.leeds.ccg.andyt.math.Math_BigDecimal;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
@@ -365,7 +365,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                 r.put(ds.sTotalCount_IncomeZero + nameSuffix, zBD);
                 if (tBD.compareTo(BigDecimal.ZERO) == 1) {
                     r.put(strings.sAverage_NonZero_Income + nameSuffix,
-                            Generic_BigDecimal.divideRoundIfNecessary(
+                            Math_BigDecimal.divideRoundIfNecessary(
                                     TotalIncome, tBD, 2, RoundingMode.HALF_UP));
                 } else {
                     r.put(strings.sAverage_NonZero_Income + nameSuffix, BigDecimal.ZERO);
@@ -378,7 +378,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                 r.put(ds.sTotalCount_WeeklyEligibleRentAmountZero + nameSuffix, zBD);
                 if (tBD.compareTo(BigDecimal.ZERO) == 1) {
                     r.put(strings.sAverage_NonZero_WeeklyEligibleRentAmount + nameSuffix,
-                            Generic_BigDecimal.divideRoundIfNecessary(
+                            Math_BigDecimal.divideRoundIfNecessary(
                                     TotalWeeklyEligibleRentAmount,
                                     tBD, 2, RoundingMode.HALF_UP));
                 }
@@ -394,7 +394,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                     r.put(ds.sTotalCount_IncomeZeroTT[i] + nameSuffix, zBD);
                     if (tBD.compareTo(BigDecimal.ZERO) == 1) {
                         r.put(ds.sAverage_NonZero_IncomeTT[i] + nameSuffix,
-                                Generic_BigDecimal.divideRoundIfNecessary(
+                                Math_BigDecimal.divideRoundIfNecessary(
                                         TotalIncomeTT[i],
                                         tBD, 2, RoundingMode.HALF_UP));
                     } else {
@@ -411,7 +411,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                     r.put(ds.sTotalCount_WeeklyEligibleRentAmountZeroTT[i] + nameSuffix, zBD);
                     if (tBD.compareTo(BigDecimal.ZERO) == 1) {
                         r.put(ds.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix,
-                                Generic_BigDecimal.divideRoundIfNecessary(
+                                Math_BigDecimal.divideRoundIfNecessary(
                                         TotalTTWeeklyEligibleRentAmount[i],
                                         tBD, 2, RoundingMode.HALF_UP));
                     } else {

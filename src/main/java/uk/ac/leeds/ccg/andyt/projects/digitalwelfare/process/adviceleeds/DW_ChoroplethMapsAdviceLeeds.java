@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
-import uk.ac.leeds.ccg.andyt.math.Generic_BigDecimal;
+import uk.ac.leeds.ccg.andyt.math.Math_BigDecimal;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_ClientOutletEnquiryID;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
@@ -493,7 +493,7 @@ public class DW_ChoroplethMapsAdviceLeeds extends DW_ChoroplethMapsAbstract {
 //                    p = BigDecimal.valueOf(percentage);
 //                    int decimalPlaces = 3;
 //                    BigDecimal roundedp;
-//                    roundedp = Generic_BigDecimal.roundIfNecessary(
+//                    roundedp = Math_BigDecimal.roundIfNecessary(
 //                            p, decimalPlaces, RoundingMode.UP);
 //                    pw.println("," + roundedp.toPlainString());
 //                }
