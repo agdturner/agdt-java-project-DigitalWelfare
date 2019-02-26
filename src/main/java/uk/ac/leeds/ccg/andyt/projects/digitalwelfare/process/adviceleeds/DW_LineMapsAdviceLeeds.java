@@ -53,6 +53,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Ar
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_StyleParameters;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 
 /**
  *
@@ -1108,7 +1109,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
         File generatedCensus2011LUTsDir = files.getGeneratedCensus2011LUTsDir();
         File tLSOAToCentroidLookupTableFile = new File(
                 generatedCensus2011LUTsDir,
-                level + "ToCentroidLookupTable_TreeMap" + strings.sBinaryFileExtension);
+                level + "ToCentroidLookupTable_TreeMap" + DW_Strings.sBinaryFileExtension);
         if (tLSOAToCentroidLookupTableFile.exists()) {
             result = (TreeMap<String, Point>) Generic_IO.readObject(
                     tLSOAToCentroidLookupTableFile);

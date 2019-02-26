@@ -47,7 +47,6 @@ import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
 public class DW_BarChart extends Chart_Bar {
 
     protected final transient DW_Environment Env;
-    protected final transient DW_Strings Strings;
     private int numberOfBars;
     private BigDecimal yMax;
     private BigDecimal yIncrement;
@@ -58,7 +57,6 @@ public class DW_BarChart extends Chart_Bar {
 
     public DW_BarChart(DW_Environment env) {
         this.Env = env;
-        this.Strings = env.strings;
     }
 
     /**
@@ -98,7 +96,7 @@ public class DW_BarChart extends Chart_Bar {
         String[] SHBEFilenames;
         SHBEFilenames = Env.getSHBE_Handler().getSHBEFilenamesAll();
         ArrayList<String> claimantTypes;
-        claimantTypes = Strings.getHB_CTB();
+        claimantTypes = DW_Strings.getHB_CTB();
         ArrayList<String> levels;
         levels = new ArrayList<>();
         levels.add("OA");
@@ -429,14 +427,14 @@ public class DW_BarChart extends Chart_Bar {
                 dir = new File(Env.files.getGeneratedPostcodeDir(), "Leeds");
                 dir = new File(dir, level);
                 fin = new File(dir, "AreaCodes.csv");
-                fout = new File(dir, "AreaCodes_HashSetString" + Strings.sBinaryFileExtension);
+                fout = new File(dir, "AreaCodes_HashSetString" + DW_Strings.sBinaryFileExtension);
             } else {
                 dir = new File(Env.files.getInputCensus2011AttributeDataDir(level), "Leeds");
                 fin = new File(dir, "censusCodes.csv");
                 dir = new File(Env.files.getGeneratedCensus2011Dir(level), "AttributeData");
                 dir = new File(dir, "Leeds");
                 dir.mkdirs();
-                fout = new File(dir, "AreaCodes_HashSetString" + Strings.sBinaryFileExtension);
+                fout = new File(dir, "AreaCodes_HashSetString" + DW_Strings.sBinaryFileExtension);
             }
             HashSet<String> areaCodesForLevel;
             if (fout.exists()) {

@@ -10,8 +10,8 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.lang.Generic_String;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.generated.DW_Table;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc.DW_ChoroplethMapsLCC;
 import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc.DW_ChoroplethMapsLCC.getFilenames;
 
@@ -57,7 +57,7 @@ public class DW_Report extends DW_HTMLPage {
         mainDirectoryName = "Report";
         reportName = "Report1";
 
-        claimantTypes = env.strings.getHB_CTB();
+        claimantTypes = DW_Strings.getHB_CTB();
 
         tenureTypeGroups = new ArrayList<>();
         tenureTypeGroups.add("all");

@@ -32,11 +32,6 @@ public abstract class DW_Object implements Serializable {
      * For logging.
      */
     protected transient final int logID;
-    
-    /**
-     * {@link DW_Environment#strings} of {@link #env} for convenience.
-     */
-    protected transient DW_Strings strings;
 
     /**
      * {@link DW_Environment#files} of {@link #env} for convenience.
@@ -63,7 +58,6 @@ public abstract class DW_Object implements Serializable {
     public DW_Object(DW_Environment e, int i) {
         env = e;
         logID = i;
-        strings = e.strings;
         files = e.files;
     }
 }

@@ -11,7 +11,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_Summary;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_SummaryUO;
 
@@ -64,24 +66,24 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
 
         // Initialisation
         includes = SHBE_Handler.getIncludes();
-//        includes.remove(strings.sIncludeAll);
-//        includes.remove(strings.sIncludeYearly);
-//        includes.remove(strings.sInclude6Monthly);
-//        includes.remove(strings.sInclude3Monthly);
-//        includes.remove(strings.sIncludeMonthlySinceApril2013);
-//        includes.remove(strings.sInclude2MonthlySinceApril2013Offset0);
-//        includes.remove(strings.sInclude2MonthlySinceApril2013Offset1);
-//        includes.remove(strings.sIncludeStartEndSinceApril2013);
-//        includes.remove(strings.sIncludeMonthly);
-        //includes.remove(strings.sIncludeApril2013May2013);
-        PTs = env.SHBE_Env.strings.getPaymentTypes();
-//        PTs.remove(strings.sPaymentTypeAll); // No longer a PT
-//        PTs.remove(strings.sPaymentTypeIn);
-//        PTs.remove(strings.sPaymentTypeSuspended);
-//        PTs.remove(strings.sPaymentTypeOther);
+//        includes.remove(DW_Strings.sIncludeAll);
+//        includes.remove(DW_Strings.sIncludeYearly);
+//        includes.remove(DW_Strings.sInclude6Monthly);
+//        includes.remove(DW_Strings.sInclude3Monthly);
+//        includes.remove(DW_Strings.sIncludeMonthlySinceApril2013);
+//        includes.remove(DW_Strings.sInclude2MonthlySinceApril2013Offset0);
+//        includes.remove(DW_Strings.sInclude2MonthlySinceApril2013Offset1);
+//        includes.remove(DW_Strings.sIncludeStartEndSinceApril2013);
+//        includes.remove(DW_Strings.sIncludeMonthly);
+        //includes.remove(DW_Strings.sIncludeApril2013May2013);
+        PTs = SHBE_Strings.getPaymentTypes();
+//        PTs.remove(DW_Strings.sPaymentTypeAll); // No longer a PT
+//        PTs.remove(DW_Strings.sPaymentTypeIn);
+//        PTs.remove(DW_Strings.sPaymentTypeSuspended);
+//        PTs.remove(DW_Strings.sPaymentTypeOther);
 
         ArrayList<String> HB_CTB;
-        HB_CTB = strings.getHB_CTB();
+        HB_CTB = DW_Strings.getHB_CTB();
         //forceNewSummaries = false;
         forceNewSummaries = true;
         nTT = SHBE_Handler.getNumberOfTenancyTypes();

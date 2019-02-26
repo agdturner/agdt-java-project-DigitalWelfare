@@ -29,6 +29,7 @@ import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Shapefile;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_StyleParameters;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
@@ -733,8 +734,8 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         b.add(false);
 
         ArrayList<String> paymentTypes;
-        paymentTypes = env.SHBE_Env.strings.getPaymentTypes();
-        paymentTypes.remove(env.SHBE_Env.strings.sPaymentTypeAll);
+        paymentTypes = SHBE_Strings.getPaymentTypes();
+        paymentTypes.remove(SHBE_Strings.s_PaymentTypeAll);
 //        paymentTypes.remove(tSHBE_Handler.sPaymentTypeIn);
 //        paymentTypes.remove(tSHBE_Handler.sPaymentTypeSuspended);
 //        paymentTypes.remove(tSHBE_Handler.sPaymentTypeOther);

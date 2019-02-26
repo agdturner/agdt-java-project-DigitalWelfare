@@ -55,7 +55,6 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     //public String Directory = "C:/Users/geoagdt/projects/DigitalWelfare";
 
     // For convenience
-    public final DW_Strings strings;
     public final DW_Files files;
     public final transient Generic_Environment ge;
     public final transient SHBE_Environment SHBE_Env;
@@ -72,8 +71,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 
     public DW_Environment(Generic_Environment ge) {
         this.ge = ge;
-        this.strings = new DW_Strings();
-        this.files = new DW_Files(strings);
+        this.files = new DW_Files();
         this.files.setDataDirectory(ge.getFiles().getDataDir());
         SHBE_Env = new SHBE_Environment(ge);
         Grids_Env = new Grids_Environment(files.getGeneratedGridsDir());
@@ -284,7 +282,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
             UO_Handler = getUO_Handler();
             File f;
             f = new File(files.getGeneratedUnderOccupiedDir(),
-                    strings.sDW_UO_Data + strings.sBinaryFileExtension);
+                    DW_Strings.sDW_UO_Data + DW_Strings.sBinaryFileExtension);
             if (loadFromSource) {
                 UO_Data = UO_Handler.loadUnderOccupiedReportData(loadFromSource);
                 Generic_IO.writeObject(UO_Data, f);

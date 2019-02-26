@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
@@ -20,6 +21,7 @@ import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
 
@@ -36,12 +38,12 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
      * For convenience.
      */
     protected DW_UO_Handler UO_Handler;
-    
+
     boolean doHBGeneralAggregateStatistics = false;
 
     /**
      * For convenience SHBE_TenancyType_Handler =
- env.getSHBE_TenancyType_Handler().
+     * env.getSHBE_TenancyType_Handler().
      */
     protected SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
 
@@ -90,29 +92,29 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         int CensusYear = 2011;
         // Initialisiation
         levels = new ArrayList<>();
-//        levels.add(strings.sOA);
-        levels.add(strings.sLSOA);
-        levels.add(strings.sMSOA);
+//        levels.add(DW_Strings.sOA);
+        levels.add(DW_Strings.sLSOA);
+        levels.add(DW_Strings.sMSOA);
 //        levels.add("PostcodeUnit");
 //        levels.add("PostcodeSector");
 //        levels.add("PostcodeDistrict");
-        levels.add(strings.sParliamentaryConstituency);
-        levels.add(strings.sStatisticalWard);
+        levels.add(DW_Strings.sParliamentaryConstituency);
+        levels.add(DW_Strings.sStatisticalWard);
         includes = SHBE_Handler.getIncludes();
-//            includes.remove(env.SHBE_Env.strings.sIncludeAll);
-//            includes.remove(env.SHBE_Env.strings.sIncludeYearly);
-//            includes.remove(env.SHBE_Env.strings.sInclude6Monthly);
-//            includes.remove(env.SHBE_Env.strings.sInclude3Monthly);
-//            includes.remove(env.SHBE_Env.strings.sIncludeMonthlySinceApril2013);
-//            includes.remove(env.SHBE_Env.strings.sIncludeMonthly);
-        PTs = env.SHBE_Env.strings.getPaymentTypes();
-//            PTs.remove(strings.sPaymentTypeAll);
-//            PTs.remove(strings.sPaymentTypeIn);
-//            PTs.remove(strings.sPaymentTypeSuspended);
-//            PTs.remove(strings.sPaymentTypeOther);
+//            includes.remove(SHBE_Strings.s_.sIncludeAll);
+//            includes.remove(SHBE_Strings.s_.sIncludeYearly);
+//            includes.remove(SHBE_Strings.s_.sInclude6Monthly);
+//            includes.remove(SHBE_Strings.s_.sInclude3Monthly);
+//            includes.remove(SHBE_Strings.s_.sIncludeMonthlySinceApril2013);
+//            includes.remove(SHBE_Strings.s_.sIncludeMonthly);
+        PTs = SHBE_Strings.getPaymentTypes();
+//            PTs.remove(DW_Strings.sPaymentTypeAll);
+//            PTs.remove(DW_Strings.sPaymentTypeIn);
+//            PTs.remove(DW_Strings.sPaymentTypeSuspended);
+//            PTs.remove(DW_Strings.sPaymentTypeOther);
         outDir = new File(
                 files.getOutputSHBETablesDir(),
-                strings.sHBGeneralAggregateStatistics);
+                DW_Strings.sHBGeneralAggregateStatistics);
         // Load UOdata
         TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUOSets;
         DW_UO_Set CouncilUOSet;
@@ -127,10 +129,8 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         PTsIte = PTs.iterator();
         while (PTsIte.hasNext()) {
             PT = PTsIte.next();
-            includeName = env.SHBE_Env.strings.sIncludeAll;
-            outDir1 = new File(
-                    outDir,
-                    PT);
+            includeName = SHBE_Strings.s_IncludeAll;
+            outDir1 = new File(outDir, PT);
             include = includes.get(includeName);
             includeIte = include.iterator();
             while (includeIte.hasNext()) {
@@ -302,5 +302,5 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
             }
         }
     }
-    
+
 }

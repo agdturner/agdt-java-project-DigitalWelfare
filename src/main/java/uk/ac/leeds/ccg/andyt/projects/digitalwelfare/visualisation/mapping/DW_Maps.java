@@ -60,7 +60,6 @@ public class DW_Maps extends Geotools_Maps {
     protected final transient DW_Environment env;
     protected transient DW_Geotools geotools;
     protected final transient DW_Files files;
-    protected final transient DW_Strings strings;
     protected final transient ONSPD_Handler ONSPD_Handler;
 
     //private TreeMap<String, ONSPD_Point>[] ONSPDlookups;
@@ -79,7 +78,6 @@ public class DW_Maps extends Geotools_Maps {
         this.env = de;
         this.geotools = de.getGeotools();
         files = de.files;
-        strings = de.strings;
         ONSPD_Handler = de.getONSPD_Handler();
         //DW_Postcode_Handler = env.getDW_Postcode_Handler(); Stack overflow doing this here.
     }

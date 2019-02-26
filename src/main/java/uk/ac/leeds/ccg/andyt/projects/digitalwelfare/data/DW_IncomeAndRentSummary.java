@@ -364,11 +364,11 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                 r.put(ds.sTotalCount_IncomeNonZero + nameSuffix, tBD);
                 r.put(ds.sTotalCount_IncomeZero + nameSuffix, zBD);
                 if (tBD.compareTo(BigDecimal.ZERO) == 1) {
-                    r.put(strings.sAverage_NonZero_Income + nameSuffix,
+                    r.put(DW_Strings.sAverage_NonZero_Income + nameSuffix,
                             Math_BigDecimal.divideRoundIfNecessary(
                                     TotalIncome, tBD, 2, RoundingMode.HALF_UP));
                 } else {
-                    r.put(strings.sAverage_NonZero_Income + nameSuffix, BigDecimal.ZERO);
+                    r.put(DW_Strings.sAverage_NonZero_Income + nameSuffix, BigDecimal.ZERO);
                 }
                 tBD = BigDecimal.valueOf(TotalCount_WeeklyEligibleRentAmountNonZero);
                 zBD = BigDecimal.valueOf(TotalCount_WeeklyEligibleRentAmountZero);
@@ -377,7 +377,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                 r.put(ds.sTotalCount_WeeklyEligibleRentAmountNonZero + nameSuffix, tBD);
                 r.put(ds.sTotalCount_WeeklyEligibleRentAmountZero + nameSuffix, zBD);
                 if (tBD.compareTo(BigDecimal.ZERO) == 1) {
-                    r.put(strings.sAverage_NonZero_WeeklyEligibleRentAmount + nameSuffix,
+                    r.put(DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmount + nameSuffix,
                             Math_BigDecimal.divideRoundIfNecessary(
                                     TotalWeeklyEligibleRentAmount,
                                     tBD, 2, RoundingMode.HALF_UP));

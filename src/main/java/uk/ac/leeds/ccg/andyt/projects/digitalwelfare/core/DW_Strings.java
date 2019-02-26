@@ -31,164 +31,128 @@ import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
  */
 public class DW_Strings extends Generic_Strings {
 
-    /**
-     * Short code for BinaryFileExtension.
-     */
-    public String sBinaryFileExtension = ".dat";
+    public static final String sBinaryFileExtension = ".dat";
 
     /**
-     * Short code for All.
+     * Shortcode for Council
      */
-    public final String sA = "A";
-
-//    /**
-//     * Short code for All.
-//     */
-//    public final String sAll = "All";
-    /**
-     * Short code for Both.
-     */
-    public final String sB = "B";
-
-    /**
-     * Short code for Council.
-     */
-    public final String sCouncil = "C";
-    //public final String sCouncil = "Council";
+    public static final String sCouncil = "C";
 
     /**
      * Short code for CheckedPreviousPostcode.
      */
-    public final String sCheckedPreviousPostcode = "CPPY";
-    //public final String sCheckedPreviousPostcode = "CheckedPreviousPostcode";
+    public static final String sCheckedPreviousPostcode = "CPPY";
 
     /**
      * Short code for NotCheckedPreviousPostcode.
      */
-    public final String sCheckedPreviousPostcodeNo = "CPPN";
-    //public final String sCheckedPreviousPostcodeNo = "NotCheckedPreviousPostcode";
+    public static final String sCheckedPreviousPostcodeNo = "CPPN";
 
     /**
      * Short code for CheckedPreviousTenancyType.
      */
-    public final String sCheckedPreviousTenancyType = "CPTTY";
-    //public final String sCheckedPreviousTenancyType = "CheckedPreviousTenancyType";
+    public static final String sCheckedPreviousTenancyType = "CPTTY";
 
     /**
      * Short code for NotCheckedPreviousTenancyType.
      */
-    public final String sCheckedPreviousTenancyTypeNo = "CPTTN";
-    //public final String sCheckedPreviousTenancyTypeNo = "NotCheckedPreviousTenancyType";
+    public static final String sCheckedPreviousTenancyTypeNo = "CPTTN";
 
     /**
      * Short code for Council Tax Relief Benefit.
      */
-    public final String sCTB = "CR";
+    public static final String sCTB = "CR";
 
     /**
      * Short code for GroupedYes.
      */
-    public final String sGrouped = "GY";
-    //public final String sGrouped = "Grouped";
+    public static final String sGrouped = "GY";
 
     /**
      * Short code for GroupedNo.
      */
-    public final String sGroupedNo = "GN";
-    //public final String sGroupedNo = "Ungrouped";
+    public static final String sGroupedNo = "GN";
 
     /**
      * Short code for Housing Benefit.
      */
-    public final String sHB = "HB";
+    public static final String sHB = "HB";
 
     /**
      * Short code for Include999.
      */
-    public final String sInclude999 = "Include999";
+    public static final String sInclude999 = "Include999";
 
     /**
      * Short code for Exclude999.
      */
-    public final String sExclude999 = "Exclude999";
+    public static final String sExclude999 = "Exclude999";
 
     /**
      * Short code for HBGeneralAggregateStatistics.
      */
-    public final String sHBGeneralAggregateStatistics = "HBGeneralAggregateStatistics";
+    public static final String sHBGeneralAggregateStatistics = "HBGeneralAggregateStatistics";
 
     /**
      * Short code for PostcodeChanged.
      */
-    public final String sPostcodeChanged = "PCY";
+    public static final String sPostcodeChanged = "PCY";
     //public final String sPostcodeChanged = "PostcodeChanged";
 
     /**
      * Short code for PostcodeChanges.
      */
-    public final String sPostcodeChanges = "PCs";
-    //public final String sPostcodeChanges = "PostcodeChanges";
+    public static final String sPostcodeChanges = "PCs";
 
     /**
      * Short code for PostcodeUnchanged.
      */
-    public final String sPostcodeChangedNo = "PCN";
-    //public final String sPostcodeChangedNo = "PostcodeUnchanged";
+    public static final String sPostcodeChangedNo = "PCN";
 
     /**
      * Short code for Registered Social Landlord.
      */
-    public final String sRSL = "R";
-    //public final String sRSL = "RSL";
+    public static final String sRSL = "R";
 
     /**
      * Short code for StyleCommon.
      */
-    public final String sStyleCommon = "SC";
+    public static final String sStyleCommon = "SC";
 
     /**
      * Short code for StyleIndividual.
      */
-    public final String sStyleIndividual = "SI";
+    public static final String sStyleIndividual = "SI";
 
     /**
      * Short code for Tenancy.
      */
-    public final String sTenancy = "T";
-    //public final String sTenancy = "Tenancy";
+    public static final String sTenancy = "T";
 
     /**
      * Short code for TenancyType.
      */
-    public final String sTenancyType = "TT";
+    public static final String sTenancyType = "TT";
 
     /**
      * Short code for TenancyAndPostcodeChanges.
      */
-    public final String sTenancyAndPostcodeChanges = "TAPC";
-    //public final String sTenancyAndPostcodeChanges = "TenancyAndPostcodeChanges";
+    public static final String sTenancyAndPostcodeChanges = "TAPC";
 
     /**
      * Short code for TenancyTypeTransition.
      */
-    public final String sTenancyTypeTransition = sTenancyType + "T";
-    //public final String sTenancyTypeTransition = "TenancyTypeTransition";
+    public static final String sTenancyTypeTransition = sTenancyType + "T";
 
     /**
      * Short code for TenancyTypeTransitionLineGraph.
      */
-    public final String sTenancyTypeTransitionLineGraph = sTenancyTypeTransition + "LG";
-    //public final String sTenancyTypeTransitionLineGraph = "TenancyTypeTransitionLineGraph";
+    public static final String sTenancyTypeTransitionLineGraph = sTenancyTypeTransition + "LG";
 
     /**
      * Short code for UnderOccupied.
      */
-    public final String sU = "U";
-
-    /**
-     * "Data".
-     */
-    public final String sData = "Data";
+    public static final String sU = "U";
 
     /**
      * For storing sOA, sLSOA, sMSOA, sStatisticalWard.
@@ -198,346 +162,328 @@ public class DW_Strings extends Generic_Strings {
     /**
      * "OA" - Abbreviation of Output Area.
      */
-    public final String sOA = "OA";
+    public static final String sOA = "OA";
 
     /**
      * "LSOA" - Abbreviation of Lower-layer Super Output Area.
      */
-    public final String sLSOA = "LSOA";
+    public static final String sLSOA = "LSOA";
 
     /**
      * "MSOA" - Abbreviation of Middle-layer Super Output Area.
      */
-    public final String sMSOA = "MSOA";
+    public static final String sMSOA = "MSOA";
 
     /**
      * StatisticalWard
      */
-    public final String sStatisticalWard = "StatisticalWard";
+    public static final String sStatisticalWard = "StatisticalWard";
 
     /**
      * Parliamentary Constituency.
      */
-    public final String sParliamentaryConstituency = "ParliamentaryConstituency";
+    public static final String sParliamentaryConstituency = "ParliamentaryConstituency";
 
     /**
      * PostcodeUnit
      */
-    public final String sPostcodeUnit = "PostcodeUnit";
+    public static final String sPostcodeUnit = "PostcodeUnit";
 
     /**
      * PostcodeSector
      */
-    public final String sPostcodeSector = "PostcodeSector";
+    public static final String sPostcodeSector = "PostcodeSector";
 
     /**
      * PostcodeDistrict
      */
-    public final String sPostcodeDistrict = "PostcodeDistrict";
-
-    /**
-     * "BigDecimal"
-     */
-    public final String sBigDecimal = "BigDecimal";
-
-    /**
-     * "HashMap"
-     */
-    public final String sHashMap = "HashMap";
-
-    /**
-     * "String"
-     */
-    public final String sString = "String";
+    public static final String sPostcodeDistrict = "PostcodeDistrict";
 
     /**
      * "IncomeAndRentSummary"
      */
-    public final String sIncomeAndRentSummary = "IncomeAndRentSummary";
+    public static final String sIncomeAndRentSummary = "IncomeAndRentSummary";
 
     /**
      * "All".
      */
-    public String sAll = "All";
+    public static final String sAll = "All";
 
     /**
      * Short code for Maybe Postcode Changed.
      */
-    public final String sWithOrWithoutPostcodeChange = "MPC"; // Maybe postcode changed
+    public static final String sWithOrWithoutPostcodeChange = "MPC"; // Maybe postcode changed
 
     /**
      * "DW_UO_Data"
      */
-    public final String sDW_UO_Data = "DW_UO_Data";
+    public static final String sDW_UO_Data = "DW_UO_Data";
 
     /**
      * "DW_UO_Set"
      */
-    public final String sDW_UO_Set = "DW_UO_Set";
+    public static final String sDW_UO_Set = "DW_UO_Set";
 
     /**
      * "LineCount".
      */
-    public final String sLineCount = "LineCount";
+    public static final String sLineCount = "LineCount";
 
     /**
      * "Unit".
      */
-    public final String sUnit = "Unit";
+    public static final String sUnit = "Unit";
 
     /**
      * "ReturnFlow".
      */
-    public final String sReturnFlow = "ReturnFlow";
-    
+    public static final String sReturnFlow = "ReturnFlow";
+
     /**
      * "AAN_NAA".
      */
-    public final String sAAN_NAA = "AAN_NAA";
-    
+    public static final String sAAN_NAA = "AAN_NAA";
+
     /**
      * UnderOccupied in April 2013
      */
-    public final String sUOInApril2013 = "UInApr13";
-    
+    public static final String sUOInApril2013 = "UInApr13";
+
     /**
      * All
      */
-    public final String sAllClaimants = "All";
-    
+    public static final String sAllClaimants = "All";
+
     /**
      * OutDistanceChurn
      */
-    public final String sOutDistanceChurn = "OutDistanceChurn";
-    
+    public static final String sOutDistanceChurn = "OutDistanceChurn";
+
     /**
      * AllOutChurn
      */
-    public final String sAllOutChurn = "AllOutChurn";
-    
+    public static final String sAllOutChurn = "AllOutChurn";
+
     /**
      * Unknown
      */
-    public final String sUnknown = "Unknown";
-    
+    public static final String sUnknown = "Unknown";
+
     /**
      * WithinDistanceChurn
      */
-    public final String sWithinDistanceChurn = "WithinDistanceChurn";
-    
+    public static final String sWithinDistanceChurn = "WithinDistanceChurn";
+
     /**
      * InDistanceChurn
      */
-    public final String sInDistanceChurn = "InDistanceChurn";
-    
+    public static final String sInDistanceChurn = "InDistanceChurn";
+
     /**
      * AllInChurn
      */
-    public final String sAllInChurn = "AllInChurn";
-    
+    public static final String sAllInChurn = "AllInChurn";
+
     /**
      * -999
      */
-    public final String sMinus999 = "-999";
-    
+    public static final String sMinus999 = "-999";
+
     /**
      * Stable
      */
-    public final String sStable = "Stable";
-    
+    public static final String sStable = "Stable";
+
     /**
      * null
      */
-    public final String snull = "null";
-    
+    public static final String snull = "null";
+
     /**
      * OnFlow
      */
-    public final String sOnFlow = "OnFlow";
-    
+    public static final String sOnFlow = "OnFlow";
+
     /**
      * NewEntrant
      */
-    public final String sNewEntrant = "NewEntrant";
+    public static final String sNewEntrant = "NewEntrant";
     /**
      * Short code for Input.
      */
-    public final String sInput = "Input";
+    public static final String sInput = "Input";
     /**
      * Short code for CodePoint.
      */
-    public final String sCodePoint = "CodePoint";
+    public static final String sCodePoint = "CodePoint";
     /**
      * Short code for ONS Postcode Directory
      */
-    public final String S_ONSPD = "ONSPD";
+    public static final String S_ONSPD = "ONSPD";
     /**
      * Short code for sGrids.
      */
-    public final String sGrids = "Grids";
+    public static final String sGrids = "Grids";
     /**
      * Short code for sGrids.
      */
-    public final String sGridDoubleFactory = "GridDoubleFactory";
+    public static final String sGridDoubleFactory = "GridDoubleFactory";
     /**
      * Short code for SHBE.
      */
-    public final String sLogs = "Logs";
+    public static final String sLogs = "Logs";
     /**
      * Short code for Look Up Tables.
      */
-    public final String sLUTs = "LUTs";
+    public static final String sLUTs = "LUTs";
     /**
      * Short code for Line.
      */
-    public final String sLine = "Line";
+    public static final String sLine = "Line";
     /**
      * Short code for UnderOccupied.
      */
-    public final String sUnderOccupied = "UnderOccupied";
+    public static final String sUnderOccupied = "UnderOccupied";
     /**
      * Short code for Choropleth.
      */
-    public final String sChoropleth = "Choropleth";
+    public static final String sChoropleth = "Choropleth";
     /**
      * Short code for AttributeData.
      */
-    public final String sAttributeData = "AttributeData";
+    public static final String sAttributeData = "AttributeData";
     /**
      * Short code for Maps.
      */
-    public final String sMaps = "Maps";
+    public static final String sMaps = "Maps";
     /**
      * Short code for 2011.
      */
-    public final String s2011 = "2011";
+    public static final String s2011 = "2011";
     /**
      * Short code for BoundaryData.
      */
-    public final String sBoundaryData = "BoundaryData";
+    public static final String sBoundaryData = "BoundaryData";
     /**
      * Short code for Swap.
      */
-    public final String sSwap = "Swap";
+    public static final String sSwap = "Swap";
     /**
      * Short code for Output.
      */
-    public final String sOutput = "Output";
+    public static final String sOutput = "Output";
     /**
      * Short code for Generated.
      */
-    public final String sGenerated = "Generated";
+    public static final String sGenerated = "Generated";
     /**
      * Short code for AdviceLeeds.
      */
-    public final String sAdviceLeeds = "AdviceLeeds";
+    public static final String sAdviceLeeds = "AdviceLeeds";
     /**
      * Short code for Tables.
      */
-    public final String sTables = "Tables";
+    public static final String sTables = "Tables";
     /**
      * Short code for Density.
      */
-    public final String sDensity = "Density";
+    public static final String sDensity = "Density";
     /**
      * Short code for LeedsCityCouncil.
      */
-    public final String sLCC = "LCC";
+    public static final String sLCC = "LCC";
     /**
      * Short code for Census.
      */
-    public final String sCensus = "Census";
+    public static final String sCensus = "Census";
     /**
      * Short code for SHBE.
      */
-    public final String sSHBE = "SHBE";
+    public static final String sSHBE = "SHBE";
     /**
      * Short code for PostcodeChanged.
      */
-    public final String sPostcode = "Postcode";
+    public static final String sPostcode = "Postcode";
     /**
      * Short code for Plots.
      */
-    public final String sPlots = "Plots";
-    
-    public final String sTotal_Income = "Total_Income";
-    public final String sTotalCount_IncomeZero = "TotalCount_IncomeZero";
-    public final String sTotalCount_IncomeNonZero = "TotalCount_IncomeNonZero";
-    public final String sTotalCount_WeeklyEligibleRentAmountNonZero = "TotalCount_WeeklyEligibleRentAmountNonZero";
-    public final String sTotal_WeeklyEligibleRentAmount = "Total_WeeklyEligibleRentAmount";
-    public final String sTotalCount_WeeklyEligibleRentAmountZero = "TotalCount_WeeklyEligibleRentAmountZero";
-    public final String sAverage_NonZero_HBIncome = "Average_NonZero_HBIncome";
+    public static final String sPlots = "Plots";
+
+    public static final String sTotal_Income = "Total_Income";
+    public static final String sTotalCount_IncomeZero = "TotalCount_IncomeZero";
+    public static final String sTotalCount_IncomeNonZero = "TotalCount_IncomeNonZero";
+    public static final String sTotalCount_WeeklyEligibleRentAmountNonZero = "TotalCount_WeeklyEligibleRentAmountNonZero";
+    public static final String sTotal_WeeklyEligibleRentAmount = "Total_WeeklyEligibleRentAmount";
+    public static final String sTotalCount_WeeklyEligibleRentAmountZero = "TotalCount_WeeklyEligibleRentAmountZero";
+    public static final String sAverage_NonZero_HBIncome = "Average_NonZero_HBIncome";
     public String[] sTotal_IncomeTT;
     public String[] sTotalCount_IncomeZeroTT;
     public String[] sTotalCount_IncomeNonZeroTT;
     public String[] sAverage_NonZero_IncomeTT;
-    public final String sTotalCount_WeeklyHBEntitlementZero = "TotalCount_WeeklyHBEntitlementZero";
-    public final String sAverage_NonZero_WeeklyHBEntitlement = "Average_NonZero_WeeklyHBEntitlement";
-    public final String sTotal_WeeklyCTBEntitlement = "Total_WeeklyCTBEntitlement";
-    public final String sAverage_NonZero_WeeklyCTBEntitlement = "Average_NonZero_WeeklyCTBEntitlement";
-    public final String sTotalCount_WeeklyHBEntitlementNonZero = "TotalCount_WeeklyHBEntitlementNonZero";
+    public static final String sTotalCount_WeeklyHBEntitlementZero = "TotalCount_WeeklyHBEntitlementZero";
+    public static final String sAverage_NonZero_WeeklyHBEntitlement = "Average_NonZero_WeeklyHBEntitlement";
+    public static final String sTotal_WeeklyCTBEntitlement = "Total_WeeklyCTBEntitlement";
+    public static final String sAverage_NonZero_WeeklyCTBEntitlement = "Average_NonZero_WeeklyCTBEntitlement";
+    public static final String sTotalCount_WeeklyHBEntitlementNonZero = "TotalCount_WeeklyHBEntitlementNonZero";
     public String[] sTotal_WeeklyEligibleRentAmountTT;
     public String[] sTotalCount_WeeklyEligibleRentAmountNonZeroTT;
     public String[] sTotalCount_WeeklyEligibleRentAmountZeroTT;
     public String[] sAverage_NonZero_WeeklyEligibleRentAmountTT;
-    public final String sTotalCount_WeeklyCTBEntitlementZero = "TotalCount_WeeklyCTBEntitlementZero";
-    public final String sTotal_WeeklyHBEntitlement = "Total_WeeklyHBEntitlement";
+    public static final String sTotalCount_WeeklyCTBEntitlementZero = "TotalCount_WeeklyCTBEntitlementZero";
+    public static final String sTotal_WeeklyHBEntitlement = "Total_WeeklyHBEntitlement";
 
-    public final String sTotal_HBIncome = "Total_HBIncome";
-    public final String sTotalCount_HBIncomeZero = "TotalCount_HBIncomeZero";
+    public static final String sTotal_HBIncome = "Total_HBIncome";
+    public static final String sTotalCount_HBIncomeZero = "TotalCount_HBIncomeZero";
     public String[] sAverage_NonZero_HBIncomeTT;
     public String[] sTotalCount_HBIncomeNonZeroTT;
     public String[] sTotal_HBIncomeTT;
-    public final String sTotal_HBWeeklyCTBEntitlement = "Total_HBWeeklyCTBEntitlement";
-    public final String sTotalCount_HBIncomeNonZero = "TotalCount_HBIncomeNonZero";
+    public static final String sTotal_HBWeeklyCTBEntitlement = "Total_HBWeeklyCTBEntitlement";
+    public static final String sTotalCount_HBIncomeNonZero = "TotalCount_HBIncomeNonZero";
     public String[] sTotalCount_HBIncomeZeroTT;
-    public final String sTotalCount_HBWeeklyHBEntitlementNonZero = "TotalCount_HBWeeklyHBEntitlementNonZero";
-    public final String sTotalCount_HBWeeklyHBEntitlementZero = "TotalCount_HBWeeklyHBEntitlementZero";
+    public static final String sTotalCount_HBWeeklyHBEntitlementNonZero = "TotalCount_HBWeeklyHBEntitlementNonZero";
+    public static final String sTotalCount_HBWeeklyHBEntitlementZero = "TotalCount_HBWeeklyHBEntitlementZero";
     public String[] sTotal_HBWeeklyEligibleRentAmountTT;
-    public final String sAverage_NonZero_HBWeeklyHBEntitlement = "Average_NonZero_HBWeeklyHBEntitlement";
-    public final String sAverage_NonZero_HBWeeklyCTBEntitlement = "Average_NonZero_HBWeeklyCTBEntitlement";
+    public static final String sAverage_NonZero_HBWeeklyHBEntitlement = "Average_NonZero_HBWeeklyHBEntitlement";
+    public static final String sAverage_NonZero_HBWeeklyCTBEntitlement = "Average_NonZero_HBWeeklyCTBEntitlement";
     public String[] sAverage_NonZero_HBWeeklyEligibleRentAmountTT;
-    public final String sTotal_HBWeeklyEligibleRentAmount = "Total_HBWeeklyEligibleRentAmount";
-    public final String sTotalCount_HBWeeklyEligibleRentAmountZero = "TotalCount_HBWeeklyEligibleRentAmountZero";
-    public final String sTotalCount_HBWeeklyEligibleRentAmountNonZero = "TotalCount_HBWeeklyEligibleRentAmountNonZero";
-    public final String sAverage_NonZero_HBWeeklyEligibleRentAmount = "Average_NonZero_HBWeeklyEligibleRentAmount";
+    public static final String sTotal_HBWeeklyEligibleRentAmount = "Total_HBWeeklyEligibleRentAmount";
+    public static final String sTotalCount_HBWeeklyEligibleRentAmountZero = "TotalCount_HBWeeklyEligibleRentAmountZero";
+    public static final String sTotalCount_HBWeeklyEligibleRentAmountNonZero = "TotalCount_HBWeeklyEligibleRentAmountNonZero";
+    public static final String sAverage_NonZero_HBWeeklyEligibleRentAmount = "Average_NonZero_HBWeeklyEligibleRentAmount";
     public String[] sTotalCount_HBWeeklyEligibleRentAmountZeroTT;
     public String[] sTotalCount_HBWeeklyEligibleRentAmountNonZeroTT;
-    public final String sTotalCount_HBWeeklyCTBEntitlementZero = "TotalCount_HBWeeklyCTBEntitlementZero";
-    public final String sTotalCount_HBWeeklyCTBEntitlementNonZero = "TotalCount_HBWeeklyCTBEntitlementNonZero";
-    public final String sTotal_HBWeeklyHBEntitlement = "Total_HBWeeklyHBEntitlement";
+    public static final String sTotalCount_HBWeeklyCTBEntitlementZero = "TotalCount_HBWeeklyCTBEntitlementZero";
+    public static final String sTotalCount_HBWeeklyCTBEntitlementNonZero = "TotalCount_HBWeeklyCTBEntitlementNonZero";
+    public static final String sTotal_HBWeeklyHBEntitlement = "Total_HBWeeklyHBEntitlement";
 
-    public final String sTotal_CTBIncome = "Total_CTBIncome";
-    public final String sTotalCount_CTBIncomeZero = "TotalCount_CTBIncomeZero";
-    public final String sTotalCount_CTBIncomeNonZero = "TotalCount_CTBIncomeNonZero";
+    public static final String sTotal_CTBIncome = "Total_CTBIncome";
+    public static final String sTotalCount_CTBIncomeZero = "TotalCount_CTBIncomeZero";
+    public static final String sTotalCount_CTBIncomeNonZero = "TotalCount_CTBIncomeNonZero";
     public String[] sTotalCount_CTBIncomeZeroTT;
     public String[] sTotalCount_CTBIncomeNonZeroTT;
     public String[] sTotal_CTBIncomeTT;
     public String[] sAverage_Non_Zero_CTBIncomeTT;
-    public final String sAverage_NonZero_CTBIncome = "Average_NonZero_CTBIncome";
-    public final String sTotal_CTBWeeklyEligibleRentAmount = "Total_CTBWeeklyEligibleRentAmount";
-    public final String sAverage_NonZero_CTBWeeklyCTBEntitlement = "Average_NonZero_CTBWeeklyCTBEntitlement";
+    public static final String sAverage_NonZero_CTBIncome = "Average_NonZero_CTBIncome";
+    public static final String sTotal_CTBWeeklyEligibleRentAmount = "Total_CTBWeeklyEligibleRentAmount";
+    public static final String sAverage_NonZero_CTBWeeklyCTBEntitlement = "Average_NonZero_CTBWeeklyCTBEntitlement";
     public String[] sTotalCount_CTBWeeklyEligibleRentAmountNonZeroTT;
-    public final String sTotalCount_CTBWeeklyCTBEntitlementNonZero = "TotalCount_CTBWeeklyCTBEntitlementNonZero";
+    public static final String sTotalCount_CTBWeeklyCTBEntitlementNonZero = "TotalCount_CTBWeeklyCTBEntitlementNonZero";
     public String[] sTotal_CTBWeeklyEligibleRentAmountTT;
-    public final String sTotalCount_CTBWeeklyCTBEntitlementZero = "TotalCount_CTBWeeklyCTBEntitlementZero";
-    public final String sTotalCount_CTBWeeklyHBEntitlementNonZero = "TotalCount_CTBWeeklyHBEntitlementNonZero";
+    public static final String sTotalCount_CTBWeeklyCTBEntitlementZero = "TotalCount_CTBWeeklyCTBEntitlementZero";
+    public static final String sTotalCount_CTBWeeklyHBEntitlementNonZero = "TotalCount_CTBWeeklyHBEntitlementNonZero";
     public String[] sTotalCount_CTBWeeklyEligibleRentAmountZeroTT;
-    public final String sTotal_CTBWeeklyCTBEntitlement = "Total_CTBWeeklyCTBEntitlement";
-    public final String sAverage_NonZero_CTBWeeklyHBEntitlement = "Average_NonZero_CTBWeeklyHBEntitlement";
-    public final String sAverage_NonZero_CTBWeeklyEligibleRentAmount = "Average_NonZero_CTBWeeklyEligibleRentAmount";
+    public static final String sTotal_CTBWeeklyCTBEntitlement = "Total_CTBWeeklyCTBEntitlement";
+    public static final String sAverage_NonZero_CTBWeeklyHBEntitlement = "Average_NonZero_CTBWeeklyHBEntitlement";
+    public static final String sAverage_NonZero_CTBWeeklyEligibleRentAmount = "Average_NonZero_CTBWeeklyEligibleRentAmount";
     public String[] sAverage_NonZero_CTBWeeklyEligibleRentAmountTT;
-    public final String sTotal_CTBWeeklyHBEntitlement = "Total_CTBWeeklyHBEntitlement";
-    public final String sTotalCount_CTBWeeklyHBEntitlementZero = "TotalCount_CTBWeeklyHBEntitlementZero";
-    public final String sTotalCount_WeeklyCTBEntitlementNonZero = "TotalCount_WeeklyCTBEntitlementNonZero";
-    public final String sTotalCount_CTBWeeklyEligibleRentAmountZero = "TotalCount_CTBWeeklyEligibleRentAmountZero";
-    public final String sTotalCount_CTBWeeklyEligibleRentAmountNonZero = "TotalCount_CTBWeeklyEligibleRentAmountNonZero";
+    public static final String sTotal_CTBWeeklyHBEntitlement = "Total_CTBWeeklyHBEntitlement";
+    public static final String sTotalCount_CTBWeeklyHBEntitlementZero = "TotalCount_CTBWeeklyHBEntitlementZero";
+    public static final String sTotalCount_WeeklyCTBEntitlementNonZero = "TotalCount_WeeklyCTBEntitlementNonZero";
+    public static final String sTotalCount_CTBWeeklyEligibleRentAmountZero = "TotalCount_CTBWeeklyEligibleRentAmountZero";
+    public static final String sTotalCount_CTBWeeklyEligibleRentAmountNonZero = "TotalCount_CTBWeeklyEligibleRentAmountNonZero";
 
-//    /**
-//     * Short code for UnderOccupied.
-//     */
-//    public final String sUO = "UO";
-    public DW_Strings() {}
+    public DW_Strings() {
+    }
 
     /**
      * For getting an {@code ArrayList<String>} of PaymentTypes.
@@ -555,13 +501,12 @@ public class DW_Strings extends Generic_Strings {
         return CensusAreaAggregations;
     }
 
-
-    public ArrayList<String> getHB_CTB() {
-        ArrayList<String> result;
-        result = new ArrayList<>();
-        result.add(sHB);
-        result.add(sCTB);
-        return result;
+    public static ArrayList<String> getHB_CTB() {
+        ArrayList<String> r;
+        r = new ArrayList<>();
+        r.add(sHB);
+        r.add(sCTB);
+        return r;
     }
 
 }

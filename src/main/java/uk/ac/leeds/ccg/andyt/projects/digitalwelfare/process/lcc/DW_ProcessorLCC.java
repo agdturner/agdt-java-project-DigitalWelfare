@@ -30,6 +30,7 @@ import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ProcessorAbstract;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.reporting.DW_Report;
@@ -693,20 +694,20 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         if (postcode.trim().isEmpty()) {
             return result;
         }
-        if (level.equalsIgnoreCase(strings.sOA) || level.equalsIgnoreCase(strings.sLSOA) || level.equalsIgnoreCase(strings.sMSOA) || level.equalsIgnoreCase(strings.sStatisticalWard) || level.equalsIgnoreCase(strings.sParliamentaryConstituency)) {
+        if (level.equalsIgnoreCase(DW_Strings.sOA) || level.equalsIgnoreCase(DW_Strings.sLSOA) || level.equalsIgnoreCase(DW_Strings.sMSOA) || level.equalsIgnoreCase(DW_Strings.sStatisticalWard) || level.equalsIgnoreCase(DW_Strings.sParliamentaryConstituency)) {
             String formattedPostcode = Postcode_Handler.formatPostcode(postcode);
             result = LookupFromPostcodeToCensusCode.get(formattedPostcode);
             if (result == null) {
                 result = "";
             }
-        } else if (level.equalsIgnoreCase(strings.sPostcodeUnit) || level.equalsIgnoreCase(strings.sPostcodeSector) || level.equalsIgnoreCase(strings.sPostcodeDistrict)) {
-            if (level.equalsIgnoreCase(strings.sPostcodeUnit)) {
+        } else if (level.equalsIgnoreCase(DW_Strings.sPostcodeUnit) || level.equalsIgnoreCase(DW_Strings.sPostcodeSector) || level.equalsIgnoreCase(DW_Strings.sPostcodeDistrict)) {
+            if (level.equalsIgnoreCase(DW_Strings.sPostcodeUnit)) {
                 result = postcode;
             }
-            if (level.equalsIgnoreCase(strings.sPostcodeSector)) {
+            if (level.equalsIgnoreCase(DW_Strings.sPostcodeSector)) {
                 result = Postcode_Handler.getPostcodeSector(postcode);
             }
-            if (level.equalsIgnoreCase(strings.sPostcodeDistrict)) {
+            if (level.equalsIgnoreCase(DW_Strings.sPostcodeDistrict)) {
                 result = Postcode_Handler.getPostcodeDistrict(postcode);
             }
         } else {

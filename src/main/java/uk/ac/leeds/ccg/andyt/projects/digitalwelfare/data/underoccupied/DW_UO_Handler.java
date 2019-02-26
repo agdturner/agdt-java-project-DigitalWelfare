@@ -36,6 +36,7 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 
 /**
  *
@@ -185,7 +186,7 @@ public class DW_UO_Handler extends DW_Object {
         String filename;
         Iterator<ONSPD_YM3> ite;
         ite = fc.keySet().iterator();
-        type = strings.sCouncil;
+        type = DW_Strings.sCouncil;
         while (ite.hasNext()) {
             ym3 = ite.next();
             filename = fc.get(ym3);
@@ -193,7 +194,7 @@ public class DW_UO_Handler extends DW_Object {
             sc.put(ym3, set);
         }
         ite = fr.keySet().iterator();
-        type = strings.sRSL;
+        type = DW_Strings.sRSL;
         while (ite.hasNext()) {
             ym3 = ite.next();
             filename = fr.get(ym3);

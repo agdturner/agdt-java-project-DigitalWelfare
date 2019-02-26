@@ -27,6 +27,7 @@ import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 
 /**
  *
@@ -72,7 +73,7 @@ public class DW_UO_Set extends DW_Object implements Serializable {
             dirOut.mkdirs();
         }
         File fOut;
-        fOut = new File(dirOut, strings.sDW_UO_Set + strings.sBinaryFileExtension);
+        fOut = new File(dirOut, DW_Strings.sDW_UO_Set + DW_Strings.sBinaryFileExtension);
         if (fOut.exists() || !reload) {
             DW_UO_Set loadDummy;
             loadDummy = (DW_UO_Set) Generic_IO.readObject(fOut);

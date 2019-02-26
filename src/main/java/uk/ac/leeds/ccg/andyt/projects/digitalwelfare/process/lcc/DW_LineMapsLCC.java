@@ -35,6 +35,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Shapefile;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Style;
 import uk.ac.leeds.ccg.andyt.geotools.core.Geotools_Strings;
@@ -43,6 +44,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Ar
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.generated.DW_Table;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_StyleParameters;
 
 /**
@@ -647,52 +649,52 @@ public class DW_LineMapsLCC extends DW_Maps {
         //filename = "PostcodeChanges_Start_2008April_End_2008October.csv";
         File dirIn = new File(
                 files.getOutputSHBETablesDir(),
-                strings.sTenancy);
+                DW_Strings.sTenancy);
         dirIn = new File(
                 dirIn,
-                strings.sA);
+                DW_Strings.s_A);
         dirIn = new File(
                 dirIn,
-                strings.sTenancyTypeTransition);
+                DW_Strings.sTenancyTypeTransition);
         dirIn = new File(
                 dirIn,
-                strings.sCheckedPreviousTenancyType);
+                DW_Strings.sCheckedPreviousTenancyType);
         dirIn = new File(
                 dirIn,
-                strings.sTenancyAndPostcodeChanges);
+                DW_Strings.sTenancyAndPostcodeChanges);
         if (doUnderOccupancy) {
             dirIn = new File(
                     dirIn,
-                    strings.sU);
+                    DW_Strings.sU);
             if (doCouncil) {
                 dirIn = new File(
                         dirIn,
-                        strings.sCouncil);
+                        DW_Strings.sCouncil);
             } else {
                 dirIn = new File(
                         dirIn,
-                        strings.sRSL);
+                        DW_Strings.sRSL);
             }
         } else {
             dirIn = new File(
                     dirIn,
-                    strings.sA);
+                    DW_Strings.s_A);
         }
         dirIn = new File(
                 dirIn,
-                strings.sPostcodeChanged);
+                DW_Strings.sPostcodeChanged);
         dirIn = new File(
                 dirIn,
-                strings.sA);
+                DW_Strings.s_A);
         dirIn = new File(
                 dirIn,
-                strings.sGroupedNo);
+                DW_Strings.sGroupedNo);
         dirIn = new File(
                 dirIn,
-                strings.sPostcodeChanges);
+                DW_Strings.sPostcodeChanges);
         dirIn = new File(
                 dirIn,
-                strings.sCheckedPreviousPostcode);
+                DW_Strings.sCheckedPreviousPostcode);
 
         ArrayList<Integer> includes;
         //includes = SHBE_Handler.getSHBEFilenameIndexesExcept34();
@@ -782,7 +784,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         tDW_SHBE_Handler = env.getSHBE_Handler();
 
         ArrayList<String> paymentTypes;
-        paymentTypes = env.SHBE_Env.strings.getPaymentTypes();
+        paymentTypes = SHBE_Strings.getPaymentTypes();
 //        paymentTypes.remove(SHBE_Handler.sAllPT);
 //        paymentTypes.remove(SHBE_Handler.sInPayment);
 //        paymentTypes.remove(SHBE_Handler.sSuspended);
@@ -1421,39 +1423,39 @@ public class DW_LineMapsLCC extends DW_Maps {
         File dirOut;
         if (doTenancyTypeAndPostcodeChange) {
             dirIn = new File(files.getOutputSHBETablesDir(), "Tenancy");
-            dirOut = new File(mapDirectory, strings.sTenancyAndPostcodeChanges);
+            dirOut = new File(mapDirectory, DW_Strings.sTenancyAndPostcodeChanges);
             dirIn = files.getUODir(dirIn, doUnderOccupancyData, doCouncil);
             dirOut = files.getUODir(dirOut, doUnderOccupancyData, doCouncil);
-            dirIn = new File(dirIn, strings.sTenancyTypeTransition);
+            dirIn = new File(dirIn, DW_Strings.sTenancyTypeTransition);
             if (doCheckedPreviousTenure) {
-                dirIn = new File(dirIn, strings.sCheckedPreviousTenancyType);
-                dirOut = new File(dirOut, strings.sCheckedPreviousTenancyType);
+                dirIn = new File(dirIn, DW_Strings.sCheckedPreviousTenancyType);
+                dirOut = new File(dirOut, DW_Strings.sCheckedPreviousTenancyType);
             } else {
-                dirIn = new File(dirIn, strings.sCheckedPreviousTenancyTypeNo);
-                dirOut = new File(dirOut, strings.sCheckedPreviousTenancyTypeNo);
+                dirIn = new File(dirIn, DW_Strings.sCheckedPreviousTenancyTypeNo);
+                dirOut = new File(dirOut, DW_Strings.sCheckedPreviousTenancyTypeNo);
             }
-            dirIn = new File(dirIn, strings.sTenancyAndPostcodeChanges);
+            dirIn = new File(dirIn, DW_Strings.sTenancyAndPostcodeChanges);
         } else {
-            dirIn = new File(mapDirectory, strings.sPostcodeChanges);
-            dirOut = new File(mapDirectory, strings.sPostcodeChanges);
+            dirIn = new File(mapDirectory, DW_Strings.sPostcodeChanges);
+            dirOut = new File(mapDirectory, DW_Strings.sPostcodeChanges);
             dirIn = files.getUODir(dirIn, doUnderOccupancyData, doCouncil);
             dirOut = files.getUODir(dirOut, doUnderOccupancyData, doCouncil);
-            dirIn = new File(dirIn, strings.sPostcodeChanged);
+            dirIn = new File(dirIn, DW_Strings.sPostcodeChanged);
             dirIn = new File(dirIn, includeName);
             if (grouped) {
-                dirIn = new File(dirIn, strings.sGrouped);
-                dirOut = new File(dirOut, strings.sGrouped);
+                dirIn = new File(dirIn, DW_Strings.sGrouped);
+                dirOut = new File(dirOut, DW_Strings.sGrouped);
             } else {
-                dirIn = new File(dirIn, strings.sGroupedNo);
-                dirOut = new File(dirOut, strings.sGroupedNo);
+                dirIn = new File(dirIn, DW_Strings.sGroupedNo);
+                dirOut = new File(dirOut, DW_Strings.sGroupedNo);
             }
-            dirIn = new File(dirIn, strings.sPostcodeChanges);
+            dirIn = new File(dirIn, DW_Strings.sPostcodeChanges);
             if (doCheckedPreviousPostcode) {
-                dirIn = new File(dirIn, strings.sCheckedPreviousPostcode);
-                dirOut = new File(dirOut, strings.sCheckedPreviousPostcode);
+                dirIn = new File(dirIn, DW_Strings.sCheckedPreviousPostcode);
+                dirOut = new File(dirOut, DW_Strings.sCheckedPreviousPostcode);
             } else {
-                dirIn = new File(dirIn, strings.sCheckedPreviousPostcodeNo);
-                dirOut = new File(dirOut, strings.sCheckedPreviousPostcodeNo);
+                dirIn = new File(dirIn, DW_Strings.sCheckedPreviousPostcodeNo);
+                dirOut = new File(dirOut, DW_Strings.sCheckedPreviousPostcodeNo);
             }
         }
         //dirOut.mkdirs(); // done later
@@ -1782,49 +1784,49 @@ public class DW_LineMapsLCC extends DW_Maps {
         if (doTenancyTypeAndPostcodeChange) {
             dirIn = new File(
                     files.getOutputSHBETablesDir(),
-                    strings.sTenancy);
+                    DW_Strings.sTenancy);
             dirIn = new File(
                     dirIn,
                     paymentType);
             dirIn = new File(
                     dirIn,
-                    strings.sA);
+                    DW_Strings.s_A);
             dirOut = new File(
                     mapDirectory,
                     paymentType);
             dirOut = new File(
                     dirOut,
-                    strings.sTenancyAndPostcodeChanges);
+                    DW_Strings.sTenancyAndPostcodeChanges);
             dirOut = files.getUOFile(dirOut, doUnderOccupancyData, doCouncil, doRSL);
             dirIn = new File(
                     dirIn,
-                    strings.sTenancyTypeTransition);
+                    DW_Strings.sTenancyTypeTransition);
             if (doCheckedPreviousTenure) {
                 dirIn = new File(
                         dirIn,
-                        strings.sCheckedPreviousTenancyType);
+                        DW_Strings.sCheckedPreviousTenancyType);
                 dirOut = new File(
                         dirOut,
-                        strings.sCheckedPreviousTenancyType);
+                        DW_Strings.sCheckedPreviousTenancyType);
             } else {
                 dirIn = new File(
                         dirIn,
-                        strings.sCheckedPreviousTenancyTypeNo);
+                        DW_Strings.sCheckedPreviousTenancyTypeNo);
                 dirOut = new File(
                         dirOut,
-                        strings.sCheckedPreviousTenancyTypeNo);
+                        DW_Strings.sCheckedPreviousTenancyTypeNo);
             }
             dirIn = new File(
                     dirIn,
-                    strings.sTenancyAndPostcodeChanges);
+                    DW_Strings.sTenancyAndPostcodeChanges);
             dirInCouncil = files.getUODir(dirIn, doUnderOccupancyData, true);
             dirInRSL = files.getUODir(dirIn, doUnderOccupancyData, false);
             dirInCouncil = new File(
                     dirInCouncil,
-                    strings.sPostcodeChanged);
+                    DW_Strings.sPostcodeChanged);
             dirInRSL = new File(
                     dirInRSL,
-                    strings.sPostcodeChanged);
+                    DW_Strings.sPostcodeChanged);
             dirInCouncil = new File(
                     dirInCouncil,
                     includeName);
@@ -1834,22 +1836,22 @@ public class DW_LineMapsLCC extends DW_Maps {
         } else {
             dirIn = new File(
                     files.getOutputSHBETablesDir(),
-                    strings.sPostcodeChanges);
+                    DW_Strings.sPostcodeChanges);
             dirOut = new File(
                     mapDirectory,
                     paymentType);
             dirOut = new File(
                     dirOut,
-                    strings.sPostcodeChanges);
+                    DW_Strings.sPostcodeChanges);
             dirOut = files.getUOFile(dirOut, doUnderOccupancyData, doCouncil, doRSL);
             dirInCouncil = files.getUODir(dirIn, doUnderOccupancyData, true);
             dirInRSL = files.getUODir(dirIn, doUnderOccupancyData, false);
             dirInCouncil = new File(
                     dirInCouncil,
-                    strings.sPostcodeChanged);
+                    DW_Strings.sPostcodeChanged);
             dirInRSL = new File(
                     dirInRSL,
-                    strings.sPostcodeChanged);
+                    DW_Strings.sPostcodeChanged);
             dirInCouncil = new File(
                     dirInCouncil,
                     includeName);
@@ -1861,58 +1863,58 @@ public class DW_LineMapsLCC extends DW_Maps {
 //        // <Hack>
 //        dirInCouncil = new File(
 //                dirInCouncil,
-//                strings.sAll);
+//                DW_Strings.sAll);
 //        dirInRSL = new File(
 //                dirInRSL,
-//                strings.sAll);
+//                DW_Strings.sAll);
 //        // </Hack>
         if (grouped) {
             dirInCouncil = new File(
                     dirInCouncil,
-                    strings.sGrouped);
+                    DW_Strings.sGrouped);
             dirInRSL = new File(
                     dirInRSL,
-                    strings.sGrouped);
+                    DW_Strings.sGrouped);
             dirOut = new File(
                     dirOut,
-                    strings.sGrouped);
+                    DW_Strings.sGrouped);
         } else {
             dirInCouncil = new File(
                     dirInCouncil,
-                    strings.sGroupedNo);
+                    DW_Strings.sGroupedNo);
             dirInRSL = new File(
                     dirInRSL,
-                    strings.sGroupedNo);
+                    DW_Strings.sGroupedNo);
             dirOut = new File(
                     dirOut,
-                    strings.sGroupedNo);
+                    DW_Strings.sGroupedNo);
         }
         dirInCouncil = new File(
                 dirInCouncil,
-                strings.sPostcodeChanges);
+                DW_Strings.sPostcodeChanges);
         dirInRSL = new File(
                 dirInRSL,
-                strings.sPostcodeChanges);
+                DW_Strings.sPostcodeChanges);
         if (doCheckedPreviousPostcode) {
             dirInCouncil = new File(
                     dirInCouncil,
-                    strings.sCheckedPreviousPostcode);
+                    DW_Strings.sCheckedPreviousPostcode);
             dirInRSL = new File(
                     dirInRSL,
-                    strings.sCheckedPreviousPostcode);
+                    DW_Strings.sCheckedPreviousPostcode);
             dirOut = new File(
                     dirOut,
-                    strings.sCheckedPreviousPostcode);
+                    DW_Strings.sCheckedPreviousPostcode);
         } else {
             dirInCouncil = new File(
                     dirInCouncil,
-                    strings.sCheckedPreviousPostcodeNo);
+                    DW_Strings.sCheckedPreviousPostcodeNo);
             dirInRSL = new File(
                     dirInRSL,
-                    strings.sCheckedPreviousPostcodeNo);
+                    DW_Strings.sCheckedPreviousPostcodeNo);
             dirOut = new File(
                     dirOut,
-                    strings.sCheckedPreviousPostcodeNo);
+                    DW_Strings.sCheckedPreviousPostcodeNo);
         }
         Iterator<String> yearMonthsIte;
         yearMonthsIte = yearMonths.keySet().iterator();
@@ -2266,49 +2268,49 @@ public class DW_LineMapsLCC extends DW_Maps {
         if (doTenancyTypeAndPostcodeChange) {
             dirIn = new File(
                     files.getOutputSHBETablesDir(),
-                    strings.sTenancy);
+                    DW_Strings.sTenancy);
             dirIn = new File(
                     dirIn,
                     paymentType);
             dirIn = new File(
                     dirIn,
-                    strings.sA);
+                    DW_Strings.s_A);
             dirOut = new File(
                     mapDirectory,
                     paymentType);
             dirOut = new File(
                     dirOut,
-                    strings.sA + strings.sPostcodeChanges);
+                    DW_Strings.s_A + DW_Strings.sPostcodeChanges);
             dirOut = files.getUOFile(dirOut, doUnderOccupancyData, doCouncil, doRSL);
             dirIn = new File(
                     dirIn,
-                    strings.sTenancyTypeTransition);
+                    DW_Strings.sTenancyTypeTransition);
             if (doCheckedPreviousTenure) {
                 dirIn = new File(
                         dirIn,
-                        strings.sCheckedPreviousTenancyType);
+                        DW_Strings.sCheckedPreviousTenancyType);
                 dirOut = new File(
                         dirOut,
-                        strings.sCheckedPreviousTenancyType);
+                        DW_Strings.sCheckedPreviousTenancyType);
             } else {
                 dirIn = new File(
                         dirIn,
-                        strings.sCheckedPreviousTenancyTypeNo);
+                        DW_Strings.sCheckedPreviousTenancyTypeNo);
                 dirOut = new File(
                         dirOut,
-                        strings.sCheckedPreviousTenancyTypeNo);
+                        DW_Strings.sCheckedPreviousTenancyTypeNo);
             }
             dirIn = new File(
                     dirIn,
-                    strings.sTenancyAndPostcodeChanges);
+                    DW_Strings.sTenancyAndPostcodeChanges);
             dirInCouncil = files.getUODir(dirIn, doUnderOccupancyData, true);
             dirInRSL = files.getUODir(dirIn, doUnderOccupancyData, false);
             dirInCouncil = new File(
                     dirInCouncil,
-                    strings.sPostcodeChanged);
+                    DW_Strings.sPostcodeChanged);
             dirInRSL = new File(
                     dirInRSL,
-                    strings.sPostcodeChanged);
+                    DW_Strings.sPostcodeChanged);
             dirInCouncil = new File(
                     dirInCouncil,
                     includeName);
@@ -2318,22 +2320,22 @@ public class DW_LineMapsLCC extends DW_Maps {
         } else {
             dirIn = new File(
                     files.getOutputSHBETablesDir(),
-                    strings.sPostcodeChanges);
+                    DW_Strings.sPostcodeChanges);
             dirOut = new File(
                     mapDirectory,
                     paymentType);
             dirOut = new File(
                     dirOut,
-                    strings.sPostcodeChanges);
+                    DW_Strings.sPostcodeChanges);
             dirOut = files.getUOFile(dirOut, doUnderOccupancyData, doCouncil, doRSL);
             dirInCouncil = files.getUODir(dirIn, doUnderOccupancyData, true);
             dirInRSL = files.getUODir(dirIn, doUnderOccupancyData, false);
             dirInCouncil = new File(
                     dirInCouncil,
-                    strings.sPostcodeChanged);
+                    DW_Strings.sPostcodeChanged);
             dirInRSL = new File(
                     dirInRSL,
-                    strings.sPostcodeChanged);
+                    DW_Strings.sPostcodeChanged);
             dirInCouncil = new File(
                     dirInCouncil,
                     includeName);
@@ -2344,57 +2346,57 @@ public class DW_LineMapsLCC extends DW_Maps {
         if (grouped) {
             dirInCouncil = new File(
                     dirInCouncil,
-                    strings.sGrouped);
+                    DW_Strings.sGrouped);
             dirInRSL = new File(
                     dirInRSL,
-                    strings.sGrouped);
+                    DW_Strings.sGrouped);
             dirOut = new File(
                     dirOut,
-                    strings.sGrouped);
+                    DW_Strings.sGrouped);
         } else {
             dirInCouncil = new File(
                     dirInCouncil,
-                    strings.sGroupedNo);
+                    DW_Strings.sGroupedNo);
             dirInRSL = new File(
                     dirInRSL,
-                    strings.sGroupedNo);
+                    DW_Strings.sGroupedNo);
             dirOut = new File(
                     dirOut,
-                    strings.sGroupedNo);
+                    DW_Strings.sGroupedNo);
         }
         dirInCouncil = new File(
                 dirInCouncil,
-                strings.sPostcodeChanges);
+                DW_Strings.sPostcodeChanges);
         dirInRSL = new File(
                 dirInRSL,
-                strings.sPostcodeChanges);
+                DW_Strings.sPostcodeChanges);
         if (doCheckedPreviousPostcode) {
             dirInCouncil = new File(
                     dirInCouncil,
-                    strings.sCheckedPreviousPostcode);
+                    DW_Strings.sCheckedPreviousPostcode);
             dirInRSL = new File(
                     dirInRSL,
-                    strings.sCheckedPreviousPostcode);
+                    DW_Strings.sCheckedPreviousPostcode);
             dirOut = new File(
                     dirOut,
-                    strings.sCheckedPreviousPostcode);
+                    DW_Strings.sCheckedPreviousPostcode);
         } else {
             dirInCouncil = new File(
                     dirInCouncil,
-                    strings.sCheckedPreviousPostcodeNo);
+                    DW_Strings.sCheckedPreviousPostcodeNo);
             dirInRSL = new File(
                     dirInRSL,
-                    strings.sCheckedPreviousPostcodeNo);
+                    DW_Strings.sCheckedPreviousPostcodeNo);
             dirOut = new File(
                     dirOut,
-                    strings.sCheckedPreviousPostcodeNo);
+                    DW_Strings.sCheckedPreviousPostcodeNo);
         }
         File dirIn2;
         File dirInCouncil2;
         File dirInRSL2;
         dirIn2 = new File(
                 files.getOutputSHBETablesDir(),
-                strings.sPostcodeChanges);
+                DW_Strings.sPostcodeChanges);
         dirIn2 = new File(
                 dirIn2,
                 paymentType);
@@ -2402,10 +2404,10 @@ public class DW_LineMapsLCC extends DW_Maps {
         dirInRSL2 = files.getUODir(dirIn2, doUnderOccupancyData, false);
         dirInCouncil2 = new File(
                 dirInCouncil2,
-                strings.sPostcodeChanged);
+                DW_Strings.sPostcodeChanged);
         dirInRSL2 = new File(
                 dirInRSL2,
-                strings.sPostcodeChanged);
+                DW_Strings.sPostcodeChanged);
         dirInCouncil2 = new File(
                 dirInCouncil2,
                 includeName);
@@ -2415,38 +2417,38 @@ public class DW_LineMapsLCC extends DW_Maps {
         if (grouped) {
             dirInCouncil2 = new File(
                     dirInCouncil2,
-                    strings.sGrouped);
+                    DW_Strings.sGrouped);
             dirInRSL2 = new File(
                     dirInRSL2,
-                    strings.sGrouped);
+                    DW_Strings.sGrouped);
         } else {
             dirInCouncil2 = new File(
                     dirInCouncil2,
-                    strings.sGroupedNo);
+                    DW_Strings.sGroupedNo);
             dirInRSL2 = new File(
                     dirInRSL2,
-                    strings.sGroupedNo);
+                    DW_Strings.sGroupedNo);
         }
         dirInCouncil2 = new File(
                 dirInCouncil2,
-                strings.sPostcodeChanges);
+                DW_Strings.sPostcodeChanges);
         dirInRSL2 = new File(
                 dirInRSL2,
-                strings.sPostcodeChanges);
+                DW_Strings.sPostcodeChanges);
         if (doCheckedPreviousPostcode) {
             dirInCouncil2 = new File(
                     dirInCouncil2,
-                    strings.sCheckedPreviousPostcode);
+                    DW_Strings.sCheckedPreviousPostcode);
             dirInRSL2 = new File(
                     dirInRSL2,
-                    strings.sCheckedPreviousPostcode);
+                    DW_Strings.sCheckedPreviousPostcode);
         } else {
             dirInCouncil2 = new File(
                     dirInCouncil2,
-                    strings.sCheckedPreviousPostcodeNo);
+                    DW_Strings.sCheckedPreviousPostcodeNo);
             dirInRSL2 = new File(
                     dirInRSL2,
-                    strings.sCheckedPreviousPostcodeNo);
+                    DW_Strings.sCheckedPreviousPostcodeNo);
         }
         Iterator<String> yearMonthsIte;
         yearMonthsIte = yearMonths.keySet().iterator();
@@ -2820,7 +2822,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         File dirOut;
         dirIn = new File(
                 files.getOutputSHBETablesDir(),
-                strings.sPostcodeChanges);
+                DW_Strings.sPostcodeChanges);
         dirIn = new File(
                 dirIn,
                 paymentType);
@@ -2829,17 +2831,17 @@ public class DW_LineMapsLCC extends DW_Maps {
                 paymentType);
         dirOut = new File(
                 dirOut,
-                strings.sPostcodeChanges);
+                DW_Strings.sPostcodeChanges);
         dirOut = files.getUOFile(dirOut, doUnderOccupancyData, doCouncil, doRSL);
         //dirIn = files.getUODir(dirIn, doUnderOccupancyData, doCouncil, doRSL);
         dirInCouncil = files.getUODir(dirIn, doUnderOccupancyData, true);
         dirInRSL = files.getUODir(dirIn, doUnderOccupancyData, false);
         dirInCouncil = new File(
                 dirInCouncil,
-                strings.sPostcodeChanged);
+                DW_Strings.sPostcodeChanged);
         dirInRSL = new File(
                 dirInRSL,
-                strings.sPostcodeChanged);
+                DW_Strings.sPostcodeChanged);
         dirInCouncil = new File(
                 dirInCouncil,
                 includeName);
@@ -2849,50 +2851,50 @@ public class DW_LineMapsLCC extends DW_Maps {
         if (grouped) {
             dirInCouncil = new File(
                     dirInCouncil,
-                    strings.sGrouped);
+                    DW_Strings.sGrouped);
             dirInRSL = new File(
                     dirInRSL,
-                    strings.sGrouped);
+                    DW_Strings.sGrouped);
             dirOut = new File(
                     dirOut,
-                    strings.sGrouped);
+                    DW_Strings.sGrouped);
         } else {
             dirInCouncil = new File(
                     dirInCouncil,
-                    strings.sGroupedNo);
+                    DW_Strings.sGroupedNo);
             dirInRSL = new File(
                     dirInRSL,
-                    strings.sGroupedNo);
+                    DW_Strings.sGroupedNo);
             dirOut = new File(
                     dirOut,
-                    strings.sGroupedNo);
+                    DW_Strings.sGroupedNo);
         }
         dirInCouncil = new File(
                 dirInCouncil,
-                strings.sPostcodeChanges);
+                DW_Strings.sPostcodeChanges);
         dirInRSL = new File(
                 dirInRSL,
-                strings.sPostcodeChanges);
+                DW_Strings.sPostcodeChanges);
         if (doCheckedPreviousPostcode) {
             dirInCouncil = new File(
                     dirInCouncil,
-                    strings.sCheckedPreviousPostcode);
+                    DW_Strings.sCheckedPreviousPostcode);
             dirInRSL = new File(
                     dirInRSL,
-                    strings.sCheckedPreviousPostcode);
+                    DW_Strings.sCheckedPreviousPostcode);
             dirOut = new File(
                     dirOut,
-                    strings.sCheckedPreviousPostcode);
+                    DW_Strings.sCheckedPreviousPostcode);
         } else {
             dirInCouncil = new File(
                     dirInCouncil,
-                    strings.sCheckedPreviousPostcodeNo);
+                    DW_Strings.sCheckedPreviousPostcodeNo);
             dirInRSL = new File(
                     dirInRSL,
-                    strings.sCheckedPreviousPostcodeNo);
+                    DW_Strings.sCheckedPreviousPostcodeNo);
             dirOut = new File(
                     dirOut,
-                    strings.sCheckedPreviousPostcodeNo);
+                    DW_Strings.sCheckedPreviousPostcodeNo);
         }
         Iterator<String> yearMonthsIte;
         yearMonthsIte = yearMonths.keySet().iterator();

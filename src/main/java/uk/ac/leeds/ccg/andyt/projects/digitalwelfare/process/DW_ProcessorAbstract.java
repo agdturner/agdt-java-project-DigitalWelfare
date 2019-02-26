@@ -23,6 +23,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 
 public abstract class DW_ProcessorAbstract extends DW_Object {
 
@@ -85,7 +86,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
         File dir;
         outputFilename = "PostcodeTo" + level + "_" + YM3Nearest
                 + "_LookUp_TreeMap_String_Strings"
-                + strings.sBinaryFileExtension;
+                + DW_Strings.sBinaryFileExtension;
         dir = new File(files.getGeneratedONSPDDir(), YM3Nearest.toString());
 //        }
         File outfile = new File(dir, outputFilename);
