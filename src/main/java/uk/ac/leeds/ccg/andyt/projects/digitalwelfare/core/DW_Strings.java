@@ -419,6 +419,7 @@ public class DW_Strings extends Generic_Strings {
     public String[] sTotal_IncomeTT;
     public String[] sTotalCount_IncomeZeroTT;
     public String[] sTotalCount_IncomeNonZeroTT;
+    public static final String sAverage_NonZero_Income = "Average_NonZero_Income";
     public String[] sAverage_NonZero_IncomeTT;
     public static final String sTotalCount_WeeklyHBEntitlementZero = "TotalCount_WeeklyHBEntitlementZero";
     public static final String sAverage_NonZero_WeeklyHBEntitlement = "Average_NonZero_WeeklyHBEntitlement";
@@ -428,6 +429,7 @@ public class DW_Strings extends Generic_Strings {
     public String[] sTotal_WeeklyEligibleRentAmountTT;
     public String[] sTotalCount_WeeklyEligibleRentAmountNonZeroTT;
     public String[] sTotalCount_WeeklyEligibleRentAmountZeroTT;
+    public static final String sAverage_NonZero_WeeklyEligibleRentAmount = "Average_NonZero_WeeklyEligibleRentAmount";
     public String[] sAverage_NonZero_WeeklyEligibleRentAmountTT;
     public static final String sTotalCount_WeeklyCTBEntitlementZero = "TotalCount_WeeklyCTBEntitlementZero";
     public static final String sTotal_WeeklyHBEntitlement = "Total_WeeklyHBEntitlement";

@@ -53,6 +53,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 public class DW_Summary extends DW_Object {
 
     // For convenience.
+    protected final DW_Strings ds;
     protected SHBE_Handler SHBE_Handler;
     protected ONSPD_Handler Postcode_Handler;
     protected SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
@@ -824,6 +825,7 @@ public class DW_Summary extends DW_Object {
         this.SHBE_Handler = env.getSHBE_Handler();
         this.Postcode_Handler = env.getONSPD_Handler();
         this.SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
+        ds = new DW_Strings();
     }
 
     public DW_Summary(DW_Environment env, int nTT, int nEG, int nPSI, boolean hoome) {
@@ -853,30 +855,30 @@ public class DW_Summary extends DW_Object {
     }
 
     protected void initSingleTimeStrings(int nTT, int nEG, int nPSI) {
-        sTotal_IncomeTT = new String[nTT];
-        strings.sTotalCount_IncomeNonZeroTT = new String[nTT];
-        strings.sTotalCount_IncomeZeroTT = new String[nTT];
-        strings.sAverage_NonZero_IncomeTT = new String[nTT];
-        strings.sTotal_HBIncomeTT = new String[nTT];
-        strings.sTotalCount_HBIncomeNonZeroTT = new String[nTT];
-        strings.sTotalCount_HBIncomeZeroTT = new String[nTT];
-        strings.sAverage_NonZero_HBIncomeTT = new String[nTT];
-        strings.sTotal_CTBIncomeTT = new String[nTT];
-        strings.sTotalCount_CTBIncomeNonZeroTT = new String[nTT];
-        strings.sTotalCount_CTBIncomeZeroTT = new String[nTT];
-        strings.sAverage_Non_Zero_CTBIncomeTT = new String[nTT];
-        strings.sTotal_WeeklyEligibleRentAmountTT = new String[nTT];
-        strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT = new String[nTT];
-        strings.sTotalCount_WeeklyEligibleRentAmountZeroTT = new String[nTT];
-        strings.sAverage_NonZero_WeeklyEligibleRentAmountTT = new String[nTT];
-        strings.sTotal_HBWeeklyEligibleRentAmountTT = new String[nTT];
-        strings.sTotalCount_HBWeeklyEligibleRentAmountNonZeroTT = new String[nTT];
-        strings.sTotalCount_HBWeeklyEligibleRentAmountZeroTT = new String[nTT];
-        strings.sAverage_NonZero_HBWeeklyEligibleRentAmountTT = new String[nTT];
-        strings.sTotal_CTBWeeklyEligibleRentAmountTT = new String[nTT];
-        strings.sTotalCount_CTBWeeklyEligibleRentAmountNonZeroTT = new String[nTT];
-        strings.sTotalCount_CTBWeeklyEligibleRentAmountZeroTT = new String[nTT];
-        strings.sAverage_NonZero_CTBWeeklyEligibleRentAmountTT = new String[nTT];
+        ds.sTotal_IncomeTT = new String[nTT];
+        ds.sTotalCount_IncomeNonZeroTT = new String[nTT];
+        ds.sTotalCount_IncomeZeroTT = new String[nTT];
+        ds.sAverage_NonZero_IncomeTT = new String[nTT];
+        ds.sTotal_HBIncomeTT = new String[nTT];
+        ds.sTotalCount_HBIncomeNonZeroTT = new String[nTT];
+        ds.sTotalCount_HBIncomeZeroTT = new String[nTT];
+        ds.sAverage_NonZero_HBIncomeTT = new String[nTT];
+        ds.sTotal_CTBIncomeTT = new String[nTT];
+        ds.sTotalCount_CTBIncomeNonZeroTT = new String[nTT];
+        ds.sTotalCount_CTBIncomeZeroTT = new String[nTT];
+        ds.sAverage_Non_Zero_CTBIncomeTT = new String[nTT];
+        ds.sTotal_WeeklyEligibleRentAmountTT = new String[nTT];
+        ds.sTotalCount_WeeklyEligibleRentAmountNonZeroTT = new String[nTT];
+        ds.sTotalCount_WeeklyEligibleRentAmountZeroTT = new String[nTT];
+        ds.sAverage_NonZero_WeeklyEligibleRentAmountTT = new String[nTT];
+        ds.sTotal_HBWeeklyEligibleRentAmountTT = new String[nTT];
+        ds.sTotalCount_HBWeeklyEligibleRentAmountNonZeroTT = new String[nTT];
+        ds.sTotalCount_HBWeeklyEligibleRentAmountZeroTT = new String[nTT];
+        ds.sAverage_NonZero_HBWeeklyEligibleRentAmountTT = new String[nTT];
+        ds.sTotal_CTBWeeklyEligibleRentAmountTT = new String[nTT];
+        ds.sTotalCount_CTBWeeklyEligibleRentAmountNonZeroTT = new String[nTT];
+        ds.sTotalCount_CTBWeeklyEligibleRentAmountZeroTT = new String[nTT];
+        ds.sAverage_NonZero_CTBWeeklyEligibleRentAmountTT = new String[nTT];
         sTotal_HouseholdSizeTT = new String[nTT];
         sAverage_HouseholdSizeTT = new String[nTT];
         sTotalCount_AllPSI = new String[nPSI];
@@ -953,31 +955,31 @@ public class DW_Summary extends DW_Object {
             sPercentageOfHB_ClaimantTT[i] = "PercentageOfHB_ClaimantTT" + i;
             sPercentageOfCTB_ClaimantTT[i] = "PercentageOfCTB_ClaimantTT" + i;
             // Income
-            DW_Strings.sTotal_IncomeTT[i] = "Total_IncomeTT" + i;
-            DW_Strings.sTotalCount_IncomeNonZeroTT[i] = "TotalCount_IncomeNonZeroTT" + i;
-            DW_Strings.sTotalCount_IncomeZeroTT[i] = "TotalCount_IncomeZeroTT" + i;
-            DW_Strings.sAverage_NonZero_IncomeTT[i] = "Average_NonZero_IncomeTT" + i;
-            DW_Strings.sTotal_HBIncomeTT[i] = "Total_HBIncomeTT" + i;
-            DW_Strings.sTotalCount_HBIncomeNonZeroTT[i] = "TotalCount_HBIncomeNonZeroTT" + i;
-            DW_Strings.sTotalCount_HBIncomeZeroTT[i] = "TotalCount_HBIncomeZeroTT" + i;
-            DW_Strings.sAverage_NonZero_HBIncomeTT[i] = "Average_NonZero_HBIncomeTT" + i;
-            DW_Strings.sTotal_CTBIncomeTT[i] = "Total_CTBIncomeTT" + i;
-            DW_Strings.sTotalCount_CTBIncomeNonZeroTT[i] = "TotalCount_CTBIncomeNonZeroTT" + i;
-            DW_Strings.sTotalCount_CTBIncomeZeroTT[i] = "TotalCount_CTBIncomeZeroTT" + i;
-            DW_Strings.sAverage_Non_Zero_CTBIncomeTT[i] = "Average_Non_Zero_CTBIncomeTT" + i;
+            ds.sTotal_IncomeTT[i] = "Total_IncomeTT" + i;
+            ds.sTotalCount_IncomeNonZeroTT[i] = "TotalCount_IncomeNonZeroTT" + i;
+            ds.sTotalCount_IncomeZeroTT[i] = "TotalCount_IncomeZeroTT" + i;
+            ds.sAverage_NonZero_IncomeTT[i] = "Average_NonZero_IncomeTT" + i;
+            ds.sTotal_HBIncomeTT[i] = "Total_HBIncomeTT" + i;
+            ds.sTotalCount_HBIncomeNonZeroTT[i] = "TotalCount_HBIncomeNonZeroTT" + i;
+            ds.sTotalCount_HBIncomeZeroTT[i] = "TotalCount_HBIncomeZeroTT" + i;
+            ds.sAverage_NonZero_HBIncomeTT[i] = "Average_NonZero_HBIncomeTT" + i;
+            ds.sTotal_CTBIncomeTT[i] = "Total_CTBIncomeTT" + i;
+            ds.sTotalCount_CTBIncomeNonZeroTT[i] = "TotalCount_CTBIncomeNonZeroTT" + i;
+            ds.sTotalCount_CTBIncomeZeroTT[i] = "TotalCount_CTBIncomeZeroTT" + i;
+            ds.sAverage_Non_Zero_CTBIncomeTT[i] = "Average_Non_Zero_CTBIncomeTT" + i;
             // WeeklyEligibleRentAmountTT
-            DW_Strings.sTotal_WeeklyEligibleRentAmountTT[i] = "Total_WeeklyEligibleRentAmountTT" + i;
-            DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_WeeklyEligibleRentAmountNonZeroTT" + i;
-            DW_Strings.sTotalCount_WeeklyEligibleRentAmountZeroTT[i] = "TotalCount_WeeklyEligibleRentAmountZeroTT" + i;
-            DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] = "Average_NonZero_WeeklyEligibleRentAmountTT" + i;
-            DW_Strings.sTotal_HBWeeklyEligibleRentAmountTT[i] = "Total_HBWeeklyEligibleRentAmountTT" + i;
-            strings.sTotalCount_HBWeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_HBWeeklyEligibleRentAmountNonZeroTT" + i;
-            strings.sTotalCount_HBWeeklyEligibleRentAmountZeroTT[i] = "TotalCount_HBWeeklyEligibleRentAmountZeroTT" + i;
-            strings.sAverage_NonZero_HBWeeklyEligibleRentAmountTT[i] = "Average_NonZero_HBWeeklyEligibleRentAmountTT" + i;
-            strings.sTotal_CTBWeeklyEligibleRentAmountTT[i] = "Total_CTBWeeklyEligibleRentAmountTT" + i;
-            strings.sTotalCount_CTBWeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_CTBWeeklyEligibleRentAmountNonZeroTT" + i;
-            strings.sTotalCount_CTBWeeklyEligibleRentAmountZeroTT[i] = "TotalCount_CTBWeeklyEligibleRentAmountZeroTT" + i;
-            strings.sAverage_NonZero_CTBWeeklyEligibleRentAmountTT[i] = "Average_NonZero_CTBWeeklyEligibleRentAmountTT" + i;
+            ds.sTotal_WeeklyEligibleRentAmountTT[i] = "Total_WeeklyEligibleRentAmountTT" + i;
+            ds.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_WeeklyEligibleRentAmountNonZeroTT" + i;
+            ds.sTotalCount_WeeklyEligibleRentAmountZeroTT[i] = "TotalCount_WeeklyEligibleRentAmountZeroTT" + i;
+            ds.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] = "Average_NonZero_WeeklyEligibleRentAmountTT" + i;
+            ds.sTotal_HBWeeklyEligibleRentAmountTT[i] = "Total_HBWeeklyEligibleRentAmountTT" + i;
+            ds.sTotalCount_HBWeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_HBWeeklyEligibleRentAmountNonZeroTT" + i;
+            ds.sTotalCount_HBWeeklyEligibleRentAmountZeroTT[i] = "TotalCount_HBWeeklyEligibleRentAmountZeroTT" + i;
+            ds.sAverage_NonZero_HBWeeklyEligibleRentAmountTT[i] = "Average_NonZero_HBWeeklyEligibleRentAmountTT" + i;
+            ds.sTotal_CTBWeeklyEligibleRentAmountTT[i] = "Total_CTBWeeklyEligibleRentAmountTT" + i;
+            ds.sTotalCount_CTBWeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_CTBWeeklyEligibleRentAmountNonZeroTT" + i;
+            ds.sTotalCount_CTBWeeklyEligibleRentAmountZeroTT[i] = "TotalCount_CTBWeeklyEligibleRentAmountZeroTT" + i;
+            ds.sAverage_NonZero_CTBWeeklyEligibleRentAmountTT[i] = "Average_NonZero_CTBWeeklyEligibleRentAmountTT" + i;
             // DisabilityAwardTT
             sTotalCount_DisabilityAwardTT[i] = "TotalCount_DisabilityAwardTT" + i;
             sPercentageOfAll_DisabilityAwardTT[i] = "PercentageOfAll_DisabilityAwardTT" + i;
@@ -6977,7 +6979,7 @@ public class DW_Summary extends DW_Object {
     public void writeSummaryTableSingleTimeRentAndIncome(
             TreeMap<String, HashMap<String, String>> summaryTable,
             ArrayList<String> HB_CTB, ArrayList<String> PTs, String includeKey,
-            int nTT,            int nEG    ) {
+            int nTT, int nEG) {
         String name;
         name = "SingleTimeRentAndIncome";
         PrintWriter pw;
@@ -7011,36 +7013,36 @@ public class DW_Summary extends DW_Object {
                 header += SHBE_Strings.s_Average_NonZero_WeeklyEligibleRentAmount + nameSuffix + s;
                 if (sHB_CTB.equalsIgnoreCase(DW_Strings.sAll)) {
                     for (int i = 1; i < nTT; i++) {
-                        header += DW_Strings.sTotal_IncomeTT[i] + nameSuffix + s;
-                        header += DW_Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix + s;
-                        header += DW_Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix + s;
-                        header += DW_Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix + s;
-                        header += DW_Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix + s;
-                        header += DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix + s;
-                        header += DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix + s;
+                        header += ds.sTotal_IncomeTT[i] + nameSuffix + s;
+                        header += ds.sTotalCount_IncomeNonZeroTT[i] + nameSuffix + s;
+                        header += ds.sTotalCount_IncomeZeroTT[i] + nameSuffix + s;
+                        header += ds.sAverage_NonZero_IncomeTT[i] + nameSuffix + s;
+                        header += ds.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix + s;
+                        header += ds.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix + s;
+                        header += ds.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix + s;
                     }
                 } else if (sHB_CTB.equalsIgnoreCase(DW_Strings.sHB)) {
                     for (int i = 1; i < nTT; i++) {
                         if (!(i == 5 || i == 7)) {
-                            header += DW_Strings.sTotal_IncomeTT[i] + nameSuffix + s;
-                            header += DW_Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix + s;
-                            header += DW_Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix + s;
-                            header += DW_Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix + s;
-                            header += DW_Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix + s;
-                            header += DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix + s;
-                            header += DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix + s;
+                            header += ds.sTotal_IncomeTT[i] + nameSuffix + s;
+                            header += ds.sTotalCount_IncomeNonZeroTT[i] + nameSuffix + s;
+                            header += ds.sTotalCount_IncomeZeroTT[i] + nameSuffix + s;
+                            header += ds.sAverage_NonZero_IncomeTT[i] + nameSuffix + s;
+                            header += ds.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix + s;
+                            header += ds.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix + s;
+                            header += ds.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix + s;
                         }
                     }
                 } else {
                     for (int i = 1; i < nTT; i++) {
                         if (i == 5 || i == 7) {
-                            header += DW_Strings.sTotal_IncomeTT[i] + nameSuffix + s;
-                            header += DW_Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix + s;
-                            header += DW_Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix + s;
-                            header += DW_Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix + s;
-                            header += DW_Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix + s;
-                            header += DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix + s;
-                            header += DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix + s;
+                            header += ds.sTotal_IncomeTT[i] + nameSuffix + s;
+                            header += ds.sTotalCount_IncomeNonZeroTT[i] + nameSuffix + s;
+                            header += ds.sTotalCount_IncomeZeroTT[i] + nameSuffix + s;
+                            header += ds.sAverage_NonZero_IncomeTT[i] + nameSuffix + s;
+                            header += ds.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix + s;
+                            header += ds.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix + s;
+                            header += ds.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix + s;
                         }
                     }
                 }
@@ -7077,36 +7079,36 @@ public class DW_Summary extends DW_Object {
                     line += summary.get(SHBE_Strings.s_Average_NonZero_WeeklyEligibleRentAmount + nameSuffix) + s;
                     if (sHB_CTB.equalsIgnoreCase(DW_Strings.sAll)) {
                         for (int i = 1; i < nTT; i++) {
-                            line += summary.get(DW_Strings.sTotal_IncomeTT[i] + nameSuffix) + s;
-                            line += summary.get(DW_Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix) + s;
-                            line += summary.get(DW_Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix) + s;
-                            line += summary.get(DW_Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix) + s;
-                            line += summary.get(DW_Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix) + s;
-                            line += summary.get(DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix) + s;
-                            line += summary.get(DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix) + s;
+                            line += summary.get(ds.sTotal_IncomeTT[i] + nameSuffix) + s;
+                            line += summary.get(ds.sTotalCount_IncomeNonZeroTT[i] + nameSuffix) + s;
+                            line += summary.get(ds.sTotalCount_IncomeZeroTT[i] + nameSuffix) + s;
+                            line += summary.get(ds.sAverage_NonZero_IncomeTT[i] + nameSuffix) + s;
+                            line += summary.get(ds.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix) + s;
+                            line += summary.get(ds.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix) + s;
+                            line += summary.get(ds.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix) + s;
                         }
-                    } else if (sHB_CTB.equalsIgnoreCase(DW_Strings.sHB)) {
+                    } else if (sHB_CTB.equalsIgnoreCase(ds.sHB)) {
                         for (int i = 1; i < nTT; i++) {
                             if (!(i == 5 || i == 7)) {
-                                line += summary.get(DW_Strings.sTotal_IncomeTT[i] + nameSuffix) + s;
-                                line += summary.get(DW_Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix) + s;
-                                line += summary.get(DW_Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix) + s;
-                                line += summary.get(DW_Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix) + s;
-                                line += summary.get(DW_Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix) + s;
-                                line += summary.get(DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix) + s;
-                                line += summary.get(DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix) + s;
+                                line += summary.get(ds.sTotal_IncomeTT[i] + nameSuffix) + s;
+                                line += summary.get(ds.sTotalCount_IncomeNonZeroTT[i] + nameSuffix) + s;
+                                line += summary.get(ds.sTotalCount_IncomeZeroTT[i] + nameSuffix) + s;
+                                line += summary.get(ds.sAverage_NonZero_IncomeTT[i] + nameSuffix) + s;
+                                line += summary.get(ds.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix) + s;
+                                line += summary.get(ds.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix) + s;
+                                line += summary.get(ds.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix) + s;
                             }
                         }
                     } else {
                         for (int i = 5; i < nTT; i++) {
                             if (i == 5 || i == 7) {
-                                line += summary.get(DW_Strings.sTotal_IncomeTT[i] + nameSuffix) + s;
-                                line += summary.get(DW_Strings.sTotalCount_IncomeNonZeroTT[i] + nameSuffix) + s;
-                                line += summary.get(DW_Strings.sTotalCount_IncomeZeroTT[i] + nameSuffix) + s;
-                                line += summary.get(DW_Strings.sAverage_NonZero_IncomeTT[i] + nameSuffix) + s;
-                                line += summary.get(DW_Strings.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix) + s;
-                                line += summary.get(DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix) + s;
-                                line += summary.get(DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix) + s;
+                                line += summary.get(ds.sTotal_IncomeTT[i] + nameSuffix) + s;
+                                line += summary.get(ds.sTotalCount_IncomeNonZeroTT[i] + nameSuffix) + s;
+                                line += summary.get(ds.sTotalCount_IncomeZeroTT[i] + nameSuffix) + s;
+                                line += summary.get(ds.sAverage_NonZero_IncomeTT[i] + nameSuffix) + s;
+                                line += summary.get(ds.sTotal_WeeklyEligibleRentAmountTT[i] + nameSuffix) + s;
+                                line += summary.get(ds.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix) + s;
+                                line += summary.get(ds.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix) + s;
                             }
                         }
                     }
@@ -7132,6 +7134,7 @@ public class DW_Summary extends DW_Object {
                 //paymentType, 
                 includeKey, false);
         // Write headers
+        String s = DW_Strings.symbol_comma;
         String header;
         header = "";
         header += sSHBEFilename1 + s;
@@ -7217,6 +7220,7 @@ public class DW_Summary extends DW_Object {
                 //paymentType, 
                 includeKey, false);
         // Write headers
+        String s = DW_Strings.symbol_comma;
         String header;
         header = "";
         header += sSHBEFilename1 + s;
@@ -7299,6 +7303,7 @@ public class DW_Summary extends DW_Object {
                 //paymentType, 
                 includeKey, false);
         // Write headers
+        String s = DW_Strings.symbol_comma;
         String header;
         header = "";
         header += sSHBEFilename1 + s;
@@ -7386,6 +7391,7 @@ public class DW_Summary extends DW_Object {
                 //paymentType,
                 includeKey, false);
         // Write headers
+        String s = DW_Strings.symbol_comma;
         String header;
         header = "";
         header += sSHBEFilename1 + s;
@@ -7703,27 +7709,28 @@ public class DW_Summary extends DW_Object {
     }
 
     protected String getHeaderSingleTimeGeneric() {
-        String result;
-        result = "year-month" + s;
-        result += sAllCount1 + s;
-        result += sHBCount1 + s;
-        result += sCTBCount1 + s;
-        result += "Month Year" + s;
-        return result;
+        String r;
+        String s = DW_Strings.symbol_comma;
+        r = "year-month" + s;
+        r += sAllCount1 + s;
+        r += sHBCount1 + s;
+        r += sCTBCount1 + s;
+        r += "Month Year" + s;
+        return r;
     }
 
-    protected String getLineSingleTimeGeneric(
-            String key,
+    protected String getLineSingleTimeGeneric(String key,
             HashMap<String, String> summary) {
-        String result;
-        result = key + s;
-        result += summary.get(sAllCount1) + s;
-        result += summary.get(sHBCount1) + s;
-        result += summary.get(sCTBCount1) + s;
+        String r;
+        String s = DW_Strings.symbol_comma;
+        r = key + s;
+        r += summary.get(sAllCount1) + s;
+        r += summary.get(sHBCount1) + s;
+        r += summary.get(sCTBCount1) + s;
         String[] split;
         split = key.split("-");
-        result += Generic_Time.getMonth3Letters(split[1]);
-        result += sSpace + split[0] + s;
-        return result;
+        r += Generic_Time.getMonth3Letters(split[1]);
+        r += sSpace + split[0] + s;
+        return r;
     }
 }
