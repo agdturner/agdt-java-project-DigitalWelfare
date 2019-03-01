@@ -119,8 +119,8 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 ////                doPostcodeCheck = true;
 //                doLoadUnderOccupancyFromSource = true;
 //                doLoadUnderOccupancy = true;
-                doLCCSummary = true;
-//                doRentArrears = true;
+//                doLCCSummary = true;
+                doRentArrears = true;
 //                doRentArrearsNewData = true;
 //                doLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
 //                doLCCHBGeneralAggregateStatistics = true;

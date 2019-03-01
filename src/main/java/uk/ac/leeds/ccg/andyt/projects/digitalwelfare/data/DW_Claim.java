@@ -94,12 +94,17 @@ public class DW_Claim extends DW_Object {
      */
     public HashMap<Integer, String> PostcodeFs;
 
-    public DW_Claim(DW_Environment e, SHBE_ID claimID) {
-        this(e, e.ge.initLog("DW_Claim"), claimID);
-    }
-    
     public DW_Claim(DW_Environment e, int logID, SHBE_ID claimID) {
         super(e, logID);
+        init(claimID);
+    }
+    
+    public DW_Claim(DW_Environment e, SHBE_ID claimID) {
+        super(e);
+        init(claimID);
+    }
+        
+    private void init(SHBE_ID claimID){
         this.ClaimID = claimID;
         InSHBE = new HashMap<>();
         Suspended = new HashMap<>();
