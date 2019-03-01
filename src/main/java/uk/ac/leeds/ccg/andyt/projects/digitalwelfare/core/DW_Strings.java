@@ -487,6 +487,61 @@ public class DW_Strings extends Generic_Strings {
     public DW_Strings() {
     }
 
+    public void initSingleTimeStrings(int nTT) {
+        sTotal_IncomeTT = new String[nTT];
+        sTotalCount_IncomeNonZeroTT = new String[nTT];
+        sTotalCount_IncomeZeroTT = new String[nTT];
+        sAverage_NonZero_IncomeTT = new String[nTT];
+        sTotal_HBIncomeTT = new String[nTT];
+        sTotalCount_HBIncomeNonZeroTT = new String[nTT];
+        sTotalCount_HBIncomeZeroTT = new String[nTT];
+        sAverage_NonZero_HBIncomeTT = new String[nTT];
+        sTotal_CTBIncomeTT = new String[nTT];
+        sTotalCount_CTBIncomeNonZeroTT = new String[nTT];
+        sTotalCount_CTBIncomeZeroTT = new String[nTT];
+        sAverage_Non_Zero_CTBIncomeTT = new String[nTT];
+        sTotal_WeeklyEligibleRentAmountTT = new String[nTT];
+        sTotalCount_WeeklyEligibleRentAmountNonZeroTT = new String[nTT];
+        sTotalCount_WeeklyEligibleRentAmountZeroTT = new String[nTT];
+        sAverage_NonZero_WeeklyEligibleRentAmountTT = new String[nTT];
+        sTotal_HBWeeklyEligibleRentAmountTT = new String[nTT];
+        sTotalCount_HBWeeklyEligibleRentAmountNonZeroTT = new String[nTT];
+        sTotalCount_HBWeeklyEligibleRentAmountZeroTT = new String[nTT];
+        sAverage_NonZero_HBWeeklyEligibleRentAmountTT = new String[nTT];
+        sTotal_CTBWeeklyEligibleRentAmountTT = new String[nTT];
+        sTotalCount_CTBWeeklyEligibleRentAmountNonZeroTT = new String[nTT];
+        sTotalCount_CTBWeeklyEligibleRentAmountZeroTT = new String[nTT];
+        sAverage_NonZero_CTBWeeklyEligibleRentAmountTT = new String[nTT];
+        for (int i = 1; i < nTT; i++) {
+            // Income
+            sTotal_IncomeTT[i] = "Total_IncomeTT" + i;
+            sTotalCount_IncomeNonZeroTT[i] = "TotalCount_IncomeNonZeroTT" + i;
+            sTotalCount_IncomeZeroTT[i] = "TotalCount_IncomeZeroTT" + i;
+            sAverage_NonZero_IncomeTT[i] = "Average_NonZero_IncomeTT" + i;
+            sTotal_HBIncomeTT[i] = "Total_HBIncomeTT" + i;
+            sTotalCount_HBIncomeNonZeroTT[i] = "TotalCount_HBIncomeNonZeroTT" + i;
+            sTotalCount_HBIncomeZeroTT[i] = "TotalCount_HBIncomeZeroTT" + i;
+            sAverage_NonZero_HBIncomeTT[i] = "Average_NonZero_HBIncomeTT" + i;
+            sTotal_CTBIncomeTT[i] = "Total_CTBIncomeTT" + i;
+            sTotalCount_CTBIncomeNonZeroTT[i] = "TotalCount_CTBIncomeNonZeroTT" + i;
+            sTotalCount_CTBIncomeZeroTT[i] = "TotalCount_CTBIncomeZeroTT" + i;
+            sAverage_Non_Zero_CTBIncomeTT[i] = "Average_Non_Zero_CTBIncomeTT" + i;
+            // WeeklyEligibleRentAmountTT
+            sTotal_WeeklyEligibleRentAmountTT[i] = "Total_WeeklyEligibleRentAmountTT" + i;
+            sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_WeeklyEligibleRentAmountNonZeroTT" + i;
+            sTotalCount_WeeklyEligibleRentAmountZeroTT[i] = "TotalCount_WeeklyEligibleRentAmountZeroTT" + i;
+            sAverage_NonZero_WeeklyEligibleRentAmountTT[i] = "Average_NonZero_WeeklyEligibleRentAmountTT" + i;
+            sTotal_HBWeeklyEligibleRentAmountTT[i] = "Total_HBWeeklyEligibleRentAmountTT" + i;
+            sTotalCount_HBWeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_HBWeeklyEligibleRentAmountNonZeroTT" + i;
+            sTotalCount_HBWeeklyEligibleRentAmountZeroTT[i] = "TotalCount_HBWeeklyEligibleRentAmountZeroTT" + i;
+            sAverage_NonZero_HBWeeklyEligibleRentAmountTT[i] = "Average_NonZero_HBWeeklyEligibleRentAmountTT" + i;
+            sTotal_CTBWeeklyEligibleRentAmountTT[i] = "Total_CTBWeeklyEligibleRentAmountTT" + i;
+            sTotalCount_CTBWeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_CTBWeeklyEligibleRentAmountNonZeroTT" + i;
+            sTotalCount_CTBWeeklyEligibleRentAmountZeroTT[i] = "TotalCount_CTBWeeklyEligibleRentAmountZeroTT" + i;
+            sAverage_NonZero_CTBWeeklyEligibleRentAmountTT[i] = "Average_NonZero_CTBWeeklyEligibleRentAmountTT" + i;
+        }
+    }
+    
     /**
      * For getting an {@code ArrayList<String>} of PaymentTypes.
      *

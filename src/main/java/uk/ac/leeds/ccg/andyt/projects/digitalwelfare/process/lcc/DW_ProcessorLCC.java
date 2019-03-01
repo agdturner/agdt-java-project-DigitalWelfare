@@ -119,7 +119,7 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 ////                doPostcodeCheck = true;
 //                doLoadUnderOccupancyFromSource = true;
 //                doLoadUnderOccupancy = true;
-//                doLCCSummary = true;
+                doLCCSummary = true;
 //                doRentArrears = true;
 //                doRentArrearsNewData = true;
 //                doLCCTenancyChangesUO = true; //Under-Occupancy Group Tables
@@ -142,14 +142,14 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
 //                    LCCTTAndPT_DoTenancyAndPostcodeChanges = true;
 ////                    LCCTTAndPT_DoTenancyAndPostcodeChanges = false;
 //                }
-                doChoroplethMapping = true;
-                doLineMaps = true;
-                doReports = true;
-                doLineGraphs = true;
-                if (doLineGraphs) {
-                    doLineGraphTenancyTypeTransitions = true;
-                    //LineGraphAggregateData = true;
-                }
+//                doChoroplethMapping = true;
+//                doLineMaps = true;
+//                doReports = true;
+//                doLineGraphs = true;
+//                if (doLineGraphs) {
+//                    doLineGraphTenancyTypeTransitions = true;
+//                    //LineGraphAggregateData = true;
+//                }
 //                doDensityMaps = true;
 //                doLineDensityMaps = true;
             } else {

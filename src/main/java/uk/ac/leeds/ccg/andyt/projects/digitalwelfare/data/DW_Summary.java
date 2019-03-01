@@ -855,30 +855,7 @@ public class DW_Summary extends DW_Object {
     }
 
     protected void initSingleTimeStrings(int nTT, int nEG, int nPSI) {
-        ds.sTotal_IncomeTT = new String[nTT];
-        ds.sTotalCount_IncomeNonZeroTT = new String[nTT];
-        ds.sTotalCount_IncomeZeroTT = new String[nTT];
-        ds.sAverage_NonZero_IncomeTT = new String[nTT];
-        ds.sTotal_HBIncomeTT = new String[nTT];
-        ds.sTotalCount_HBIncomeNonZeroTT = new String[nTT];
-        ds.sTotalCount_HBIncomeZeroTT = new String[nTT];
-        ds.sAverage_NonZero_HBIncomeTT = new String[nTT];
-        ds.sTotal_CTBIncomeTT = new String[nTT];
-        ds.sTotalCount_CTBIncomeNonZeroTT = new String[nTT];
-        ds.sTotalCount_CTBIncomeZeroTT = new String[nTT];
-        ds.sAverage_Non_Zero_CTBIncomeTT = new String[nTT];
-        ds.sTotal_WeeklyEligibleRentAmountTT = new String[nTT];
-        ds.sTotalCount_WeeklyEligibleRentAmountNonZeroTT = new String[nTT];
-        ds.sTotalCount_WeeklyEligibleRentAmountZeroTT = new String[nTT];
-        ds.sAverage_NonZero_WeeklyEligibleRentAmountTT = new String[nTT];
-        ds.sTotal_HBWeeklyEligibleRentAmountTT = new String[nTT];
-        ds.sTotalCount_HBWeeklyEligibleRentAmountNonZeroTT = new String[nTT];
-        ds.sTotalCount_HBWeeklyEligibleRentAmountZeroTT = new String[nTT];
-        ds.sAverage_NonZero_HBWeeklyEligibleRentAmountTT = new String[nTT];
-        ds.sTotal_CTBWeeklyEligibleRentAmountTT = new String[nTT];
-        ds.sTotalCount_CTBWeeklyEligibleRentAmountNonZeroTT = new String[nTT];
-        ds.sTotalCount_CTBWeeklyEligibleRentAmountZeroTT = new String[nTT];
-        ds.sAverage_NonZero_CTBWeeklyEligibleRentAmountTT = new String[nTT];
+        ds.initSingleTimeStrings(nTT);
         sTotal_HouseholdSizeTT = new String[nTT];
         sAverage_HouseholdSizeTT = new String[nTT];
         sTotalCount_AllPSI = new String[nPSI];
@@ -954,32 +931,6 @@ public class DW_Summary extends DW_Object {
             sPercentageOfAll_ClaimantTT[i] = "PercentageOfAll_ClaimantTT" + i;
             sPercentageOfHB_ClaimantTT[i] = "PercentageOfHB_ClaimantTT" + i;
             sPercentageOfCTB_ClaimantTT[i] = "PercentageOfCTB_ClaimantTT" + i;
-            // Income
-            ds.sTotal_IncomeTT[i] = "Total_IncomeTT" + i;
-            ds.sTotalCount_IncomeNonZeroTT[i] = "TotalCount_IncomeNonZeroTT" + i;
-            ds.sTotalCount_IncomeZeroTT[i] = "TotalCount_IncomeZeroTT" + i;
-            ds.sAverage_NonZero_IncomeTT[i] = "Average_NonZero_IncomeTT" + i;
-            ds.sTotal_HBIncomeTT[i] = "Total_HBIncomeTT" + i;
-            ds.sTotalCount_HBIncomeNonZeroTT[i] = "TotalCount_HBIncomeNonZeroTT" + i;
-            ds.sTotalCount_HBIncomeZeroTT[i] = "TotalCount_HBIncomeZeroTT" + i;
-            ds.sAverage_NonZero_HBIncomeTT[i] = "Average_NonZero_HBIncomeTT" + i;
-            ds.sTotal_CTBIncomeTT[i] = "Total_CTBIncomeTT" + i;
-            ds.sTotalCount_CTBIncomeNonZeroTT[i] = "TotalCount_CTBIncomeNonZeroTT" + i;
-            ds.sTotalCount_CTBIncomeZeroTT[i] = "TotalCount_CTBIncomeZeroTT" + i;
-            ds.sAverage_Non_Zero_CTBIncomeTT[i] = "Average_Non_Zero_CTBIncomeTT" + i;
-            // WeeklyEligibleRentAmountTT
-            ds.sTotal_WeeklyEligibleRentAmountTT[i] = "Total_WeeklyEligibleRentAmountTT" + i;
-            ds.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_WeeklyEligibleRentAmountNonZeroTT" + i;
-            ds.sTotalCount_WeeklyEligibleRentAmountZeroTT[i] = "TotalCount_WeeklyEligibleRentAmountZeroTT" + i;
-            ds.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] = "Average_NonZero_WeeklyEligibleRentAmountTT" + i;
-            ds.sTotal_HBWeeklyEligibleRentAmountTT[i] = "Total_HBWeeklyEligibleRentAmountTT" + i;
-            ds.sTotalCount_HBWeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_HBWeeklyEligibleRentAmountNonZeroTT" + i;
-            ds.sTotalCount_HBWeeklyEligibleRentAmountZeroTT[i] = "TotalCount_HBWeeklyEligibleRentAmountZeroTT" + i;
-            ds.sAverage_NonZero_HBWeeklyEligibleRentAmountTT[i] = "Average_NonZero_HBWeeklyEligibleRentAmountTT" + i;
-            ds.sTotal_CTBWeeklyEligibleRentAmountTT[i] = "Total_CTBWeeklyEligibleRentAmountTT" + i;
-            ds.sTotalCount_CTBWeeklyEligibleRentAmountNonZeroTT[i] = "TotalCount_CTBWeeklyEligibleRentAmountNonZeroTT" + i;
-            ds.sTotalCount_CTBWeeklyEligibleRentAmountZeroTT[i] = "TotalCount_CTBWeeklyEligibleRentAmountZeroTT" + i;
-            ds.sAverage_NonZero_CTBWeeklyEligibleRentAmountTT[i] = "Average_NonZero_CTBWeeklyEligibleRentAmountTT" + i;
             // DisabilityAwardTT
             sTotalCount_DisabilityAwardTT[i] = "TotalCount_DisabilityAwardTT" + i;
             sPercentageOfAll_DisabilityAwardTT[i] = "PercentageOfAll_DisabilityAwardTT" + i;
@@ -5248,7 +5199,7 @@ public class DW_Summary extends DW_Object {
         summary = summaries.get(key);
         LoadSummary = SHBE_Records.getLoadSummary(env.HOOME);
         DW_IncomeAndRentSummary tIncomeAndRentSummary;
-        tIncomeAndRentSummary = new DW_IncomeAndRentSummary(env);
+        tIncomeAndRentSummary = new DW_IncomeAndRentSummary(env, ds);
         IncomeAndRentSummary = tIncomeAndRentSummary.getIncomeAndRentSummary(
                 SHBE_Records, HB_CTB, PTs, YM3, null, null, false, false,
                 false, forceNewSummaries);

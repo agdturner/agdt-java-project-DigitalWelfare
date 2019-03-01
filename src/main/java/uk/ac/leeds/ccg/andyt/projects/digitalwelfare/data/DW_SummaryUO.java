@@ -3705,7 +3705,7 @@ public class DW_SummaryUO extends DW_Summary {
         AllUOLinkedRecordCount1 = CouncilLinkedRecordCount1 + RSLLinkedRecordCount1;
         // Add to counts
         DW_IncomeAndRentSummary iars;
-        iars = new DW_IncomeAndRentSummary(env);
+        iars = new DW_IncomeAndRentSummary(env, ds);
         IncomeAndRentSummaryAllUO = iars.getIncomeAndRentSummary(
                 SHBE_Records, HB_CTB, PTs, YM3, CouncilUOSet, RSLUOSet, true,
                 true, true, forceNewSummaries);

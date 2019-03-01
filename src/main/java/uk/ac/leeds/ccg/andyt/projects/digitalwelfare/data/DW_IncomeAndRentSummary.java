@@ -49,11 +49,11 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
     public DW_Files df;
     public DW_Strings ds;
 
-    public DW_IncomeAndRentSummary(DW_Environment e) {
+    public DW_IncomeAndRentSummary(DW_Environment e, DW_Strings ds) {
         super(e.SHBE_Env);
         this.de = e;
         this.df = e.files;
-        this.ds = new DW_Strings();
+        this.ds = ds;
     }
 
     /**
@@ -69,9 +69,9 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
      * @param doRSL
      * @param forceNew
      * @return HashMap<String, BigDecimal> result where the keys are ds for
- Income and Rent Summary Statistics. An example key is:
- SHBE_Strings.sTotal_Income + nameSuffix , where; nameSuffix =
- AllOrHBOrCTB + PT. (AllOrHBOrCTB is given by HB_CTB, PT is given by PTs)
+     * Income and Rent Summary Statistics. An example key is:
+     * SHBE_Strings.sTotal_Income + nameSuffix , where; nameSuffix =
+     * AllOrHBOrCTB + PT. (AllOrHBOrCTB is given by HB_CTB, PT is given by PTs)
      */
     public HashMap<String, BigDecimal> getIncomeAndRentSummary(
             SHBE_Records DW_SHBE_Records, ArrayList<String> HB_CTB,
@@ -384,12 +384,9 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                 }
                 for (int i = 0; i < nTT; i++) {
                     // Income
-                    r.put(ds.sTotal_IncomeTT[i] + nameSuffix,
-                            TotalIncomeTT[i]);
-                    tBD = BigDecimal.valueOf(
-                            TotalCount_IncomeTTNonZero[i]);
-                    zBD = BigDecimal.valueOf(
-                            TotalCount_IncomeTTZero[i]);
+                    r.put(ds.sTotal_IncomeTT[i] + nameSuffix, TotalIncomeTT[i]);
+                    tBD = BigDecimal.valueOf(TotalCount_IncomeTTNonZero[i]);
+                    zBD = BigDecimal.valueOf(TotalCount_IncomeTTZero[i]);
                     r.put(ds.sTotalCount_IncomeNonZeroTT[i] + nameSuffix, tBD);
                     r.put(ds.sTotalCount_IncomeZeroTT[i] + nameSuffix, zBD);
                     if (tBD.compareTo(BigDecimal.ZERO) == 1) {
