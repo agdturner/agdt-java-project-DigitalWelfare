@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.math.Math_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Record;
@@ -889,7 +888,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
             String filenameOut = firstPartFilename + outlet + ".csv";
             File outFile = new File(dir, filenameOut);
             PrintWriter pw3;
-            pw3 = Generic_IO.getPrintWriter(outFile, false);
+            pw3 = env.ge.io.getPrintWriter(outFile, false);
             TreeMap<String, Integer> counts = tAdviceLeedsData.get(outlet);
             Iterator<String> ite = counts.keySet().iterator();
             System.out.println("Outlet " + outlet);
@@ -973,7 +972,7 @@ public class DW_DataProcessorAdviceLeeds extends DW_ProcessorAdviceLeeds {
         String filenameOut = firstPartFilename + outlet + ".csv";
         File outFile = new File(dir, filenameOut);
         PrintWriter pw3;
-        pw3 = Generic_IO.getPrintWriter(outFile, false);
+        pw3 = env.ge.io.getPrintWriter(outFile, false);
         System.out.println("Outlet " + outlet);
         line = "Area, Count";
         System.out.println(line);

@@ -187,7 +187,7 @@ public class DW_MapsAdviceLeeds extends DW_Maps {
                     tAdviceLeedsPointShapefileDir,
                     tAdviceLeedsPointShapefileFilename,
                     tAdviceLeedsPointName);
-            result.add(new Geotools_Shapefile(ge, tAdviceLeedsPointShapefile));
+            result.add(new Geotools_Shapefile(env.Geotools, tAdviceLeedsPointShapefile));
         }
         return result;
     }

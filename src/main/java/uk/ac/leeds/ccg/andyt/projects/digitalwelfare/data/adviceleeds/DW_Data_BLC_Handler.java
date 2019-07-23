@@ -25,16 +25,15 @@ import java.io.StreamTokenizer;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 
 /**
  * For handling data from the Burley Lodge Centre/Better Leeds Communities.
+ *
  * @author geoagdt
  */
 public class DW_Data_BLC_Handler extends DW_Data_AbstractRecord {
 
-    
     public DW_Data_BLC_Handler(DW_Environment env) {
         super(env);
     }
@@ -58,17 +57,13 @@ public class DW_Data_BLC_Handler extends DW_Data_AbstractRecord {
     public TreeMap<String, DW_Data_BLC_Record> loadInputData(
             String filename) {
         System.out.println("Loading " + filename);
-        TreeMap<String, DW_Data_BLC_Record> result;
-        result = new TreeMap<>();
-        File directory = new File(                env.files.getInputAdviceLeedsDir(),
+        TreeMap<String, DW_Data_BLC_Record> r = new TreeMap<>();
+        File directory = new File(env.files.getInputAdviceLeedsDir(),
                 "BurleyLodgeCentre");
-        File inputFile = new File(                directory,                filename);
-        try {
-            BufferedReader br;
-            br = Generic_IO.getBufferedReader(inputFile);
-            StreamTokenizer st;
-            st = new StreamTokenizer(br);
-            Generic_IO.setStreamTokenizerSyntax5(st);
+        File inputFile = new File(directory, filename);
+        try (BufferedReader br = env.ge.io.getBufferedReader(inputFile)) {
+            StreamTokenizer st = new StreamTokenizer(br);
+            env.ge.io.setStreamTokenizerSyntax5(st);
             st.wordChars('`', '`');
             st.wordChars('(', '(');
             st.wordChars(')', ')');
@@ -86,16 +81,15 @@ public class DW_Data_BLC_Handler extends DW_Data_AbstractRecord {
             st.wordChars(':', ':');
             st.wordChars('�', '�');
             st.wordChars('!', '!');
-            String line = "";
+            String line;
             long RecordID = 0;
             int recordsLoaded = 0;
             int additionalRecordsForClientsThatAreIgnored = 0;
             // Skip the header
             int headerLines = 8;
             for (int i = 0; i < headerLines; i++) {
-                Generic_IO.skipline(st);
-            }
-            // Read data
+                env.ge.io.skipline(st);
+            }   // Read data
             int tokenType;
             tokenType = st.nextToken();
             while (tokenType != StreamTokenizer.TT_EOF) {
@@ -119,11 +113,11 @@ public class DW_Data_BLC_Handler extends DW_Data_AbstractRecord {
                             record = new DW_Data_BLC_Record(env, RecordID, line, this);
                             String clientReference = record.getClientReference();
                             if (!clientReference.equalsIgnoreCase("")) {
-                                if (result.containsKey(clientReference)) {
+                                if (r.containsKey(clientReference)) {
 //                                System.out.println("Additional record for client " + aClient_Ref);
                                     additionalRecordsForClientsThatAreIgnored++;
                                 } else {
-                                    result.put(clientReference, record);
+                                    r.put(clientReference, record);
                                     recordsLoaded++;
                                 }
                             }
@@ -137,14 +131,13 @@ public class DW_Data_BLC_Handler extends DW_Data_AbstractRecord {
                 }
                 tokenType = st.nextToken();
             }
-            br.close();
             System.out.println("Number of records loaded " + recordsLoaded);
             System.out.println("Number of records not loaded " + (RecordID - recordsLoaded));
             System.out.println("Number of additional records for clients that are ignored " + additionalRecordsForClientsThatAreIgnored);
         } catch (IOException ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
         }
-        return result;
+        return r;
     }
 
 }

@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataHandler;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
+import uk.ac.leeds.ccg.andyt.census.core.Census_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB2_Record;
@@ -38,6 +39,7 @@ public class DW_Deprivation_DataHandler extends Census_DeprivationDataHandler {
     protected ONSPD_Handler Postcode_Handler;
     
     public DW_Deprivation_DataHandler(DW_Environment env) {
+        super(new Census_Environment());
         this.Env = env;
         this.Postcode_Handler = env.getONSPD_Handler();
     }

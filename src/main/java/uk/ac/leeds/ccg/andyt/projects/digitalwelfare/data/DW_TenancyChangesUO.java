@@ -32,7 +32,6 @@ import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.math.Math_BigDecimal;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
@@ -3041,10 +3040,10 @@ public class DW_TenancyChangesUO extends DW_Object {
         HashMap<ONSPD_YM3, Double> arrearsCounts;
         HashMap<ONSPD_YM3, Double> arrearsDiffs;
         HashMap<ONSPD_YM3, Double> arrearsDiffCounts;
-        arrears = new HashMap<ONSPD_YM3, Double>();
-        arrearsCounts = new HashMap<ONSPD_YM3, Double>();
-        arrearsDiffs = new HashMap<ONSPD_YM3, Double>();
-        arrearsDiffCounts = new HashMap<ONSPD_YM3, Double>();
+        arrears = new HashMap<>();
+        arrearsCounts = new HashMap<>();
+        arrearsDiffs = new HashMap<>();
+        arrearsDiffCounts = new HashMap<>();
         arrearsDiffs.put(YM30, 0.0d);
         arrearsDiffCounts.put(YM30, 0.0d);
 
@@ -6210,9 +6209,9 @@ public class DW_TenancyChangesUO extends DW_Object {
         key = ClaimRef + DW_Strings.symbol_underscore + sPDeath;
         aS = TableValues.get(key);
 
-        if (PDD1.equalsIgnoreCase(PDD0)) {
+        if (PDD1 == null) {
             aS += DW_Strings.special_commaSpace;
-        } else if (PDD1 == null) {
+        } else if (PDD1.equalsIgnoreCase(PDD0)) {
             aS += DW_Strings.special_commaSpace;
         } else if (PDD1.isEmpty()) {
             aS += DW_Strings.special_commaSpace;
@@ -6716,10 +6715,10 @@ public class DW_TenancyChangesUO extends DW_Object {
         result = new HashSet[2];
         result[0] = new HashSet<>();
         result[1] = new HashSet<>();
-        ONSPD_YM3 yM31 = null;
-        DW_UO_Set councilUnderOccupiedSet1 = null;
-        DW_UO_Set RSLUnderOccupiedSet1 = null;
-        String filename1 = null;
+        ONSPD_YM3 yM31 ;
+        DW_UO_Set councilUnderOccupiedSet1;
+        DW_UO_Set RSLUnderOccupiedSet1 ;
+        String filename1 ;
         Iterator<Integer> includeIte;
         includeIte = include.iterator();
         int i;
@@ -6759,10 +6758,10 @@ public class DW_TenancyChangesUO extends DW_Object {
         result = new HashSet[2];
         result[0] = new HashSet<>();
         result[1] = new HashSet<>();
-        ONSPD_YM3 yM31 = null;
-        DW_UO_Set councilUnderOccupiedSet1 = null;
-        DW_UO_Set RSLUnderOccupiedSet1 = null;
-        String filename1 = null;
+        ONSPD_YM3 yM31 ;
+        DW_UO_Set councilUnderOccupiedSet1 ;
+        DW_UO_Set RSLUnderOccupiedSet1 ;
+        String filename1 ;
         Iterator<Integer> includeIte;
         includeIte = include.iterator();
         int i;
@@ -6792,10 +6791,10 @@ public class DW_TenancyChangesUO extends DW_Object {
         result = new HashSet[2];
         result[0] = new HashSet<>();
         result[1] = new HashSet<>();
-        ONSPD_YM3 yM31 = null;
-        DW_UO_Set CouncilUnderOccupiedSet1 = null;
-        DW_UO_Set RSLUnderOccupiedSet1 = null;
-        String filename1 = null;
+        ONSPD_YM3 yM31;
+        DW_UO_Set CouncilUnderOccupiedSet1;
+        DW_UO_Set RSLUnderOccupiedSet1;
+        String filename1;
         Iterator<Integer> includeIte;
         includeIte = include.iterator();
         int i;
@@ -7529,7 +7528,7 @@ public class DW_TenancyChangesUO extends DW_Object {
 
         HashSet<SHBE_ID> ClaimIDsCheck;
         ClaimIDsCheck = new HashSet<>();
-        boolean check = true;
+        boolean check;
 
         String GroupName;
         PrintWriter pw;
@@ -8229,10 +8228,10 @@ public class DW_TenancyChangesUO extends DW_Object {
         env.ge.log("</WriteTenancyChangeTables>", true);
     }
 
-    protected void writeAggregateRecords(            TreeMap<String, BigDecimal> aggregateStatistics,
-            String ClaimRef,            PrintWriter pw) {
-String s2 = DW_Strings.special_commaSpace;
-String s_ = DW_Strings.symbol_underscore;
+    protected void writeAggregateRecords(TreeMap<String, BigDecimal> aggregateStatistics,
+            String ClaimRef, PrintWriter pw) {
+        String s2 = DW_Strings.special_commaSpace;
+        String s_ = DW_Strings.symbol_underscore;
         String line;
         line = "" + ClaimRef;
         line += s2 + decimalise(aggregateStatistics.get(ClaimRef + s_ + sTotal_DHP).intValue());
@@ -8296,54 +8295,37 @@ String s_ = DW_Strings.symbol_underscore;
         System.out.println();
     }
 
-    protected PrintWriter getPrintWriter(
-            String name,
-            String dirName) {
-        PrintWriter result;
-        File dirOut;
-        dirOut = new File(
-                files.getOutputSHBETablesDir(),
-                sUnderOccupancyGroupTables);
-        dirOut = new File(
-                dirOut,
-                dirName);
+    protected PrintWriter getPrintWriter(String name, String dirName) {
+        File dirOut = new File(files.getOutputSHBETablesDir(), sUnderOccupancyGroupTables);
+        dirOut = new File(dirOut, dirName);
         dirOut.mkdirs();
         String outFilename;
-        outFilename = "UO_";
+        //outFilename = "UO_";
         outFilename = name + ".csv";
-        File outFile;
-        outFile = new File(dirOut, outFilename);
-        result = Generic_IO.getPrintWriter(outFile, false);
-        return result;
+        File outFile = new File(dirOut, outFilename);
+        return env.ge.io.getPrintWriter(outFile, false);
     }
 
     public TreeMap<String, String> getGroupNameDescriptions(Set<String> GroupNames) {
-        TreeMap<String, String> result;
-        result = new TreeMap<>();
-        String GroupName;
-        Iterator<String> ite;
-        ite = GroupNames.iterator();
+        TreeMap<String, String> r = new TreeMap<>();
+        Iterator<String> ite = GroupNames.iterator();
         while (ite.hasNext()) {
-            GroupName = ite.next();
-            result.put(GroupName, "Type: " + GroupName);
+            String groupName = ite.next();
+            r.put(groupName, "Type: " + groupName);
         }
-        return result;
+        return r;
 
     }
 
-    protected void addToSets(
-            SHBE_ID ClaimID,
+    protected void addToSets(SHBE_ID ClaimID,
             HashSet<SHBE_PersonID> ClaimantPersonIDs,
             HashSet<SHBE_PersonID> PartnersPersonIDs,
             HashSet<SHBE_PersonID> DependentChildrenUnder10,
             HashSet<SHBE_PersonID> DependentChildrenOver10,
             HashSet<SHBE_PersonID> NonDependentPersonIDs,
             HashMap<SHBE_ID, Integer> MaxNumberOfDependentsInClaimWhenUO,
-            String year,
-            String month,
-            ONSPD_YM3 YM3,
-            ArrayList<SHBE_S_Record> SRecords,
-            SHBE_D_Record D_Record,
+            String year, String month, ONSPD_YM3 YM3, 
+            ArrayList<SHBE_S_Record> SRecords,            SHBE_D_Record D_Record,
             HashMap<SHBE_ID, SHBE_PersonID> ClaimIDToClaimantPersonIDLookup) {
         SHBE_PersonID ClaimantPersonID;
         ClaimantPersonID = ClaimIDToClaimantPersonIDLookup.get(ClaimID);

@@ -42,12 +42,10 @@ import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Maps;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataHandler;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 
@@ -311,49 +309,49 @@ public class DW_Maps extends Geotools_Maps {
                 area);
         File file = new File(dir, "pop.csv");
         try {
-            BufferedReader br = Generic_IO.getBufferedReader(file);
-            StreamTokenizer st = new StreamTokenizer(br);
-            Generic_IO.setStreamTokenizerSyntax1(st);
-            int token = st.nextToken();
+            try (BufferedReader br = env.ge.io.getBufferedReader(file)) {
+                StreamTokenizer st = new StreamTokenizer(br);
+                env.ge.io.setStreamTokenizerSyntax1(st);
+                int token = st.nextToken();
 //            //skip header (2 lines)
 //            st.nextToken();
 //            st.nextToken();
 //            st.nextToken();
 //            st.nextToken();
 //            long RecordID = 0;
-            String line = "";
-            while (!(token == StreamTokenizer.TT_EOF)) {
-                switch (token) {
-                    case StreamTokenizer.TT_EOL:
+String line;
+while (!(token == StreamTokenizer.TT_EOF)) {
+    switch (token) {
+        case StreamTokenizer.TT_EOL:
 //                        if (RecordID % 100 == 0) {
 //                            System.out.println(line);
 //                        }
 //                        RecordID++;
-                        break;
-                    case StreamTokenizer.TT_WORD:
-                        line = st.sval;
-                        String[] split = line.split(",");
-                        if (split.length == 2) {
+            break;
+        case StreamTokenizer.TT_WORD:
+            line = st.sval;
+            String[] split = line.split(",");
+            if (split.length == 2) {
 //                            if (!(split[1].equalsIgnoreCase("MSOAIZ") || 
 //                                    split[1].equalsIgnoreCase("Middle Super Output Areas and Intermediate Zones"))) {
-                            try {
-                                String censusArea = split[0];
-                                Integer pop = new Integer(split[1]);
-                                result.put(censusArea, pop);
+try {
+    String censusArea = split[0];
+    Integer pop = new Integer(split[1]);
+    result.put(censusArea, pop);
 //                            } else {
 //                                int debug = 1; //Wierdness for Scotland!
 //                            }
-                            } catch (NumberFormatException e) {
-                                // Carry on regardless
-                            }
-                        } else {
-                            int debug = 1; //Sometimes Scotland or other data is missing!
-                        }
-                        break;
-                }
-                token = st.nextToken();
+} catch (NumberFormatException e) {
+    // Carry on regardless
+}
+            } else {
+                int debug = 1; //Sometimes Scotland or other data is missing!
             }
-            br.close();
+            break;
+    }
+    token = st.nextToken();
+}
+            }
         } catch (IOException e) {
             System.err.println(e.getMessage() + "in DW_Maps.getPopData(String=" + level + ",String=" + area + ")");
         }

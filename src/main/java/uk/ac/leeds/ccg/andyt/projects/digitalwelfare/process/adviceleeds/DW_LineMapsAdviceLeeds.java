@@ -41,7 +41,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Record;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB0_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_Data_CAB2_Record;
@@ -52,6 +51,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.adviceleeds.DW_ID_Clie
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_StyleParameters;
+import uk.ac.leeds.ccg.andyt.geotools.core.Geotools_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 
@@ -614,7 +614,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                     BackgroundDW_Shapefile,
                     "",
                     spiderMapDirectory,
-                    geotools.getGeotools_Strings().png_String,
+                    Geotools_Strings.png_String,
                     imageWidth,
                     styleParameters,
                     0,
@@ -869,7 +869,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
             geotools.outputToImage(tCABOutlet, outputShapefile,
                     foregroundDW_Shapefile0, ForegroundDW_Shapefile1,
                     BackgroundDW_Shapefile, "", spiderMapDirectory,
-                    geotools.getGeotools_Strings().png_String, imageWidth,
+                    Geotools_Strings.png_String, imageWidth,
                     styleParameters, 0, Double.POSITIVE_INFINITY,
                     showMapsInJMapPane);
         }
@@ -1084,7 +1084,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                     BackgroundDW_Shapefile,
                     "",
                     spiderMapDirectory,
-                    geotools.getGeotools_Strings().png_String,
+                    Geotools_Strings.png_String,
                     imageWidth,
                     styleParameters,
                     0,
@@ -1111,7 +1111,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                 generatedCensus2011LUTsDir,
                 level + "ToCentroidLookupTable_TreeMap" + DW_Strings.sBinaryFileExtension);
         if (tLSOAToCentroidLookupTableFile.exists()) {
-            result = (TreeMap<String, Point>) Generic_IO.readObject(
+            result = (TreeMap<String, Point>) env.ge.io.readObject(
                     tLSOAToCentroidLookupTableFile);
         } else {
             result = new TreeMap<>();
@@ -1154,7 +1154,7 @@ public class DW_LineMapsAdviceLeeds extends DW_Maps {
                     }
                 }
             }
-            Generic_IO.writeObject(result, tLSOAToCentroidLookupTableFile);
+            env.ge.io.writeObject(result, tLSOAToCentroidLookupTableFile);
         }
         return result;
     }

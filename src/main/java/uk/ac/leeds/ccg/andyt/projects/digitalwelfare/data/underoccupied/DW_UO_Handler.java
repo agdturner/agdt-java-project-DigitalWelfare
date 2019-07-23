@@ -32,7 +32,6 @@ import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
@@ -79,9 +78,9 @@ public class DW_UO_Handler extends DW_Object {
         boolean addedNewClaimIDs;
         addedNewClaimIDs = false;
         String uorr = " Under-Occupied Report Record ";
-        try (BufferedReader br = Generic_IO.getBufferedReader(inputFile)) {
+        try (BufferedReader br = env.ge.io.getBufferedReader(inputFile)) {
             StreamTokenizer st = new StreamTokenizer(br);
-            Generic_IO.setStreamTokenizerSyntax5(st);
+            env.ge.io.setStreamTokenizerSyntax5(st);
             st.wordChars('`', '`');
             st.wordChars('*', '*');
             String line;
@@ -145,9 +144,9 @@ public class DW_UO_Handler extends DW_Object {
             Logger.getLogger(DW_UO_Handler.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (addedNewClaimIDs) {
-            Generic_IO.writeObject(ClaimIDToClaimRefLookup,
+            env.ge.io.writeObject(ClaimIDToClaimRefLookup,
                     env.getSHBE_Handler().getClaimIDToClaimRefLookupFile());
-            Generic_IO.writeObject(ClaimRefToClaimIDLookup,
+            env.ge.io.writeObject(ClaimRefToClaimIDLookup,
                     env.getSHBE_Handler().getClaimRefToClaimIDLookupFile());
         }
         env.ge.log("</" + methodName + ">", true);

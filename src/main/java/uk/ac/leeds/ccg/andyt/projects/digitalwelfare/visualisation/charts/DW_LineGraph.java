@@ -55,7 +55,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
  */
 public class DW_LineGraph extends Chart_Line {
 
-    protected final transient DW_Environment Env;
+    protected final transient DW_Environment env;
     protected final transient DW_Files Files;
     protected final transient SHBE_Handler SHBE_Handler;
     protected final transient DW_UO_Handler UO_Handler;
@@ -64,7 +64,7 @@ public class DW_LineGraph extends Chart_Line {
     HashMap<String, HashSet<String>> AreaCodes;
 
     public DW_LineGraph(DW_Environment de) {
-        this.Env = de;
+        this.env = de;
         this.Files = de.files;
         this.SHBE_Handler = de.getSHBE_Handler();
         this.UO_Data = de.getUO_Data();
@@ -81,7 +81,7 @@ public class DW_LineGraph extends Chart_Line {
                 yAxisLabel, yMax, yPin, yIncrement, numberOfYAxisTicks, 
                 true, decimalPlacePrecisionForCalculations, 
                 decimalPlacePrecisionForDisplay, rm);
-        this.Env = de;
+        this.env = de;
         this.Files = de.files;
         this.SHBE_Handler = de.getSHBE_Handler();
         this.UO_Data = de.getUO_Data();
@@ -102,7 +102,7 @@ public class DW_LineGraph extends Chart_Line {
     public void run(
             boolean doGraphTenancyTypeTransitions,
             boolean doGraphAggregateData) {
-        Env.ge.log("<run>");
+        env.ge.log("<run>");
         Generic_Visualisation.getHeadlessEnvironment();
         dataWidth = 1300;
         dataHeight = 500;
@@ -163,7 +163,7 @@ public class DW_LineGraph extends Chart_Line {
     }
 
     protected void graphAggregateData() {
-
+        DW_Table table = new DW_Table(env);
         ArrayList<String> AZs; // AggregatedZones
         AZs = new ArrayList<>();
 //        AZs.add(DW_Strings.sParliamentaryConstituency);
@@ -276,7 +276,7 @@ public class DW_LineGraph extends Chart_Line {
                                     YM3 + ".csv");
                             // readCSV
                             ArrayList<String> lines;
-                            lines = DW_Table.readCSV(f);
+                            lines = table.readCSV(f);
                             Iterator<String> ite;
                             ite = lines.iterator();
                             String line;
@@ -308,7 +308,7 @@ public class DW_LineGraph extends Chart_Line {
                                 dateValue.put(YM3, new BigDecimal(fields[stat]));
                             }
                         }
-                        DW_LineGraph chart = new DW_LineGraph(Env, executorService,
+                        DW_LineGraph chart = new DW_LineGraph(env, executorService,
                                 fout, format, title, getDataWidth(), getDataHeight(),
                                 xAxisLabel, yAxisLabel, yMax,
                                 yPin, yIncrement, numberOfYAxisTicks,
@@ -404,7 +404,7 @@ public class DW_LineGraph extends Chart_Line {
         iteB = b.iterator();
         while (iteB.hasNext()) {
             CheckPreviousTenancyType = iteB.next();
-            Env.ge.log("CheckPreviousTenancyType " + CheckPreviousTenancyType);
+            env.ge.log("CheckPreviousTenancyType " + CheckPreviousTenancyType);
 
             File dirIn;
             dirIn = Files.getOutputSHBETablesTenancyTypeTransitionDir(
@@ -975,7 +975,7 @@ public class DW_LineGraph extends Chart_Line {
             }
         }
         Generic_Execution.shutdownExecutorService(executorService, futures, this);
-        Env.ge.log("</run>");
+        env.ge.log("</run>");
     }
 
     private void doSumat(File dirIn, File dirOut, ArrayList<Integer> include,
@@ -1123,7 +1123,7 @@ public class DW_LineGraph extends Chart_Line {
                         + selections + ".PNG");
                 yAxisLabel = "Tenancy Changes Per Month";
                 title = "Tenancy Transition Line Graph";
-                DW_LineGraph chart = new DW_LineGraph(Env, executorService,
+                DW_LineGraph chart = new DW_LineGraph(env, executorService,
                         fout, format, title, getDataWidth(), getDataHeight(),
                         xAxisLabel, yAxisLabel, yMax, yPin, yIncrement,
                         numberOfYAxisTicks,
@@ -1139,7 +1139,7 @@ public class DW_LineGraph extends Chart_Line {
                     newMaxY = (BigDecimal) data[2];
                     if (newMaxY.compareTo(new BigDecimal(Double.MIN_VALUE)) != 1) {
                         if (newMinY.compareTo(newMaxY) == 1) {
-                            Env.ge.log("newMinY.compareTo(newMaxY) == 1 so no graph is produced.");
+                            env.ge.log("newMinY.compareTo(newMaxY) == 1 so no graph is produced.");
                         } else {
                             dirOut2.mkdirs();
                             chart.setData(data);
@@ -1148,7 +1148,7 @@ public class DW_LineGraph extends Chart_Line {
                             futures.add(future);
                         }
                     } else {
-                        Env.ge.log("No values, so no graph is produced.");
+                        env.ge.log("No values, so no graph is produced.");
                     }
                 } else {
                     //futures.add(chart.future);
@@ -1940,6 +1940,7 @@ public class DW_LineGraph extends Chart_Line {
     public TreeMap<String, TreeMap<String, BigDecimal>> getTenancyTypeTransitionMap(
             File f,
             double timeDiff) {
+        DW_Table table = new DW_Table(env);
 //        Object[] result;
 //        result = new Object[4];
         TreeMap<String, TreeMap<String, BigDecimal>> map;
@@ -1948,7 +1949,7 @@ public class DW_LineGraph extends Chart_Line {
 //        Double min = Double.MAX_VALUE;
 //        Double max = Double.MIN_VALUE;
 //        int size = 0;
-        ArrayList<String> lines = DW_Table.readCSV(f);
+        ArrayList<String> lines = table.readCSV(f);
         ArrayList<String> tenancyTypes;
         tenancyTypes = new ArrayList<>();
         boolean mapContainsNonZeroValues = false;
@@ -2028,6 +2029,7 @@ public class DW_LineGraph extends Chart_Line {
     public TreeMap<String, TreeMap<String, BigDecimal>> getTenancyTypeTransitionMapGrouped(
             File f,
             double timeDiff) {
+        DW_Table table = new DW_Table(env);
 //        Object[] result;
 //        result = new Object[4];
         TreeMap<String, TreeMap<String, BigDecimal>> map;
@@ -2036,7 +2038,7 @@ public class DW_LineGraph extends Chart_Line {
 //        Double min = Double.MAX_VALUE;
 //        Double max = Double.MIN_VALUE;
 //        int size = 0;
-        ArrayList<String> lines = DW_Table.readCSV(f);
+        ArrayList<String> lines = table.readCSV(f);
         ArrayList<String> tenancyTypes;
         tenancyTypes = new ArrayList<>();
         boolean mapContainsNonZeroValues = false;
@@ -2311,7 +2313,7 @@ public class DW_LineGraph extends Chart_Line {
 //        labels.addAll(maps.keySet()); // This does not work as maps is gc resulting in labels becoming null for some reason.
         // Declare nonZero2
         SHBE_TenancyType_Handler DW_SHBE_TenancyType_Handler;
-        DW_SHBE_TenancyType_Handler = Env.getSHBE_TenancyType_Handler();
+        DW_SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
         TreeMap<String, Boolean> nonZero2;
         nonZero2 = new TreeMap<>();
         Iterator<String> iteS;

@@ -25,7 +25,6 @@ import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
@@ -493,7 +492,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             TreeMap<ONSPD_YM3, DW_UO_Set> DW_UO_SetsCouncil,
             TreeMap<ONSPD_YM3, DW_UO_Set> DW_UO_SetsRSL) {
         TreeMap<ONSPD_YM3, DW_UO_Set> result;
-        result = new TreeMap<ONSPD_YM3, DW_UO_Set>();
+        result = new TreeMap<>();
         ONSPD_YM3 YM3;
         DW_UO_Set DW_UO_SetAll;
         DW_UO_Set DW_UO_SetCouncil;
@@ -670,9 +669,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             }
             if (doloop) {
                 HashMap<SHBE_ID, TreeMap<ONSPD_YM3, String>> TTCs;
-                TTCs = new HashMap<SHBE_ID, TreeMap<ONSPD_YM3, String>>();
+                TTCs = new HashMap<>();
                 HashMap<SHBE_ID, TreeMap<ONSPD_YM3, String>> GTTCs;
-                GTTCs = new HashMap<SHBE_ID, TreeMap<ONSPD_YM3, String>>();
+                GTTCs = new HashMap<>();
 //                HashMap<SHBE_ID, ArrayList<String>> TTCs;
 //                TTCs = new HashMap<SHBE_ID, ArrayList<String>>();
 //                HashMap<SHBE_ID, ArrayList<String>> GTTCs;
@@ -1047,9 +1046,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             if (doloop) {
                 // Init TTCs and GTTCs
                 HashMap<SHBE_ID, TreeMap<ONSPD_YM3, String>> TTCs;
-                TTCs = new HashMap<SHBE_ID, TreeMap<ONSPD_YM3, String>>();
+                TTCs = new HashMap<>();
                 HashMap<SHBE_ID, TreeMap<ONSPD_YM3, String>> GTTCs;
-                GTTCs = new HashMap<SHBE_ID, TreeMap<ONSPD_YM3, String>>();
+                GTTCs = new HashMap<>();
                 // Main loop
                 while (includeIte.hasNext()) {
                     i = includeIte.next();
@@ -1341,9 +1340,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             boolean doloop = true;
             // Init TTCs and GTTCs
             HashMap<SHBE_ID, TreeMap<ONSPD_YM3, String>> TTCs;
-            TTCs = new HashMap<SHBE_ID, TreeMap<ONSPD_YM3, String>>();
+            TTCs = new HashMap<>();
             HashMap<SHBE_ID, TreeMap<ONSPD_YM3, String>> GTTCs;
-            GTTCs = new HashMap<SHBE_ID, TreeMap<ONSPD_YM3, String>>();
+            GTTCs = new HashMap<>();
             // Main loop
             while (includeIte.hasNext()) {
                 i = includeIte.next();
@@ -1650,9 +1649,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             }
             // Init TenancyTypeChanges and GroupedTenancyTypeChanges
             HashMap<SHBE_ID, TreeMap<ONSPD_YM3, String>> TTCs;
-            TTCs = new HashMap<SHBE_ID, TreeMap<ONSPD_YM3, String>>();
+            TTCs = new HashMap<>();
             HashMap<SHBE_ID, TreeMap<ONSPD_YM3, String>> GTTCs;
-            GTTCs = new HashMap<SHBE_ID, TreeMap<ONSPD_YM3, String>>();
+            GTTCs = new HashMap<>();
             // Main loop
             while (includeIte.hasNext()) {
                 i = includeIte.next();
@@ -1941,7 +1940,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         File f;
         f = new File(dirOut2, name);
         env.ge.log("Write " + f, true);
-        result = Generic_IO.getPrintWriter(f, false);
+        result = env.ge.io.getPrintWriter(f, false);
         return result;
     }
 
@@ -2393,7 +2392,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         TreeMap<ONSPD_YM3, String> TTCs;
         TTCs = TTTs.get(ClaimID);
         if (TTCs == null) {
-            TTCs = new TreeMap<ONSPD_YM3, String>();
+            TTCs = new TreeMap<>();
             TTTs.put(ClaimID, TTCs);
         }
 
@@ -5561,7 +5560,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
 
         env.ge.log("Write " + f, true);
         PrintWriter pw;
-        pw = Generic_IO.getPrintWriter(f, false);
+        pw = env.ge.io.getPrintWriter(f, false);
         pw.println("SHBE_ID, StartTime, EndTime, TenancyTypeChange, StartPostcode, End Postcode");
         Iterator<String[]> ite;
         ite = postcodeChanges.iterator();

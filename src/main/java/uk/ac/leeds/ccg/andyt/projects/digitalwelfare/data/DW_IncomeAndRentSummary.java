@@ -31,7 +31,6 @@ import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.math.Math_BigDecimal;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
@@ -90,7 +89,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                 doUnderOccupancy, doCouncil, doRSL);
         if (IncomeAndRentSummaryFile.exists()) {
             if (!forceNew) {
-                return (HashMap<String, BigDecimal>) Generic_IO.readObject(
+                return (HashMap<String, BigDecimal>) env.ge.io.readObject(
                         IncomeAndRentSummaryFile);
             }
         }
@@ -159,7 +158,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
             // Do loop for Payment Types
             while (PTsIte.hasNext()) {
                 PT = PTsIte.next();
-                if (HBOrCTB.equalsIgnoreCase(ds.sHB)) {
+                if (HBOrCTB.equalsIgnoreCase(DW_Strings.sHB)) {
                     ClaimIDs = getClaimIDsWithStatusOfHBAtExtractDate(DW_SHBE_Records, PT);
                 } else {
                     ClaimIDs = getClaimIDsWithStatusOfCTBAtExtractDate(DW_SHBE_Records, PT);
@@ -184,7 +183,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                                     aDRecord = rec.getDRecord();
                                     TT = aDRecord.getTenancyType();
                                     income = BigDecimal.valueOf(getClaimantsAndPartnersIncomeTotal(aDRecord));
-                                    if (HBOrCTB.equalsIgnoreCase(ds.sHB)) {
+                                    if (HBOrCTB.equalsIgnoreCase(DW_Strings.sHB)) {
                                         // HB
                                         if (isHBClaim(TT)) {
                                             TotalIncome = TotalIncome.add(income);
@@ -246,7 +245,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                                     aDRecord = rec.getDRecord();
                                     TT = aDRecord.getTenancyType();
                                     income = BigDecimal.valueOf(getClaimantsAndPartnersIncomeTotal(aDRecord));
-                                    if (HBOrCTB.equalsIgnoreCase(ds.sHB)) {
+                                    if (HBOrCTB.equalsIgnoreCase(DW_Strings.sHB)) {
                                         // HB
                                         if (isHBClaim(TT)) {
                                             TotalIncome = TotalIncome.add(income);
@@ -308,7 +307,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                         aDRecord = rec.getDRecord();
                         TT = aDRecord.getTenancyType();
                         income = BigDecimal.valueOf(getClaimantsAndPartnersIncomeTotal(aDRecord));
-                        if (HBOrCTB.equalsIgnoreCase(ds.sHB)) {
+                        if (HBOrCTB.equalsIgnoreCase(DW_Strings.sHB)) {
                             // HB
                             if (isHBClaim(TT)) {
                                 TotalIncome = TotalIncome.add(income);
@@ -360,24 +359,24 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                 nameSuffix = HBOrCTB + PT;
                 tBD = BigDecimal.valueOf(TotalCount_IncomeNonZero);
                 zBD = BigDecimal.valueOf(TotalCount_IncomeZero);
-                r.put(ds.sTotal_Income + nameSuffix, TotalIncome);
-                r.put(ds.sTotalCount_IncomeNonZero + nameSuffix, tBD);
-                r.put(ds.sTotalCount_IncomeZero + nameSuffix, zBD);
+                r.put(DW_Strings.sTotal_Income + nameSuffix, TotalIncome);
+                r.put(DW_Strings.sTotalCount_IncomeNonZero + nameSuffix, tBD);
+                r.put(DW_Strings.sTotalCount_IncomeZero + nameSuffix, zBD);
                 if (tBD.compareTo(BigDecimal.ZERO) == 1) {
-                    r.put(ds.sAverage_NonZero_Income + nameSuffix,
+                    r.put(DW_Strings.sAverage_NonZero_Income + nameSuffix,
                             Math_BigDecimal.divideRoundIfNecessary(
                                     TotalIncome, tBD, 2, RoundingMode.HALF_UP));
                 } else {
-                    r.put(ds.sAverage_NonZero_Income + nameSuffix, BigDecimal.ZERO);
+                    r.put(DW_Strings.sAverage_NonZero_Income + nameSuffix, BigDecimal.ZERO);
                 }
                 tBD = BigDecimal.valueOf(TotalCount_WeeklyEligibleRentAmountNonZero);
                 zBD = BigDecimal.valueOf(TotalCount_WeeklyEligibleRentAmountZero);
-                r.put(ds.sTotal_WeeklyEligibleRentAmount + nameSuffix,
+                r.put(DW_Strings.sTotal_WeeklyEligibleRentAmount + nameSuffix,
                         TotalWeeklyEligibleRentAmount);
-                r.put(ds.sTotalCount_WeeklyEligibleRentAmountNonZero + nameSuffix, tBD);
-                r.put(ds.sTotalCount_WeeklyEligibleRentAmountZero + nameSuffix, zBD);
+                r.put(DW_Strings.sTotalCount_WeeklyEligibleRentAmountNonZero + nameSuffix, tBD);
+                r.put(DW_Strings.sTotalCount_WeeklyEligibleRentAmountZero + nameSuffix, zBD);
                 if (tBD.compareTo(BigDecimal.ZERO) == 1) {
-                    r.put(ds.sAverage_NonZero_WeeklyEligibleRentAmount + nameSuffix,
+                    r.put(DW_Strings.sAverage_NonZero_WeeklyEligibleRentAmount + nameSuffix,
                             Math_BigDecimal.divideRoundIfNecessary(
                                     TotalWeeklyEligibleRentAmount,
                                     tBD, 2, RoundingMode.HALF_UP));
@@ -418,7 +417,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                 }
             }
         }
-        Generic_IO.writeObject(r, IncomeAndRentSummaryFile);
+        env.ge.io.writeObject(r, IncomeAndRentSummaryFile);
         return r;
     }
 
@@ -437,33 +436,33 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
             if (doCouncil) {
                 if (doRSL) {
                     //partFilename = "IncomeAndRentSummaryUA_HashMap_String__BigDecimal.dat";
-                    partFilename = ds.sIncomeAndRentSummary
-                            + ds.sU + ds.s_A + ds.symbol_underscore
-                            + ds.s_HashMap + ds.symbol_underscore
-                            + ds.s_String + ds.symbol_underscore + ds.symbol_underscore
-                            + ds.s_BigDecimal + ds.sBinaryFileExtension;
+                    partFilename = DW_Strings.sIncomeAndRentSummary
+                            + DW_Strings.sU + DW_Strings.s_A + DW_Strings.symbol_underscore
+                            + DW_Strings.s_HashMap + DW_Strings.symbol_underscore
+                            + DW_Strings.s_String + DW_Strings.symbol_underscore + DW_Strings.symbol_underscore
+                            + DW_Strings.s_BigDecimal + DW_Strings.sBinaryFileExtension;
                 } else {
                     //partFilename = "IncomeAndRentSummaryUC_HashMap_String__BigDecimal.dat";
-                    partFilename = ds.sIncomeAndRentSummary
-                            + ds.sU + ds.sCouncil + ds.symbol_underscore
-                            + ds.s_HashMap + ds.symbol_underscore
-                            + ds.s_String + ds.symbol_underscore + ds.symbol_underscore
-                            + ds.s_BigDecimal + ds.sBinaryFileExtension;
+                    partFilename = DW_Strings.sIncomeAndRentSummary
+                            + DW_Strings.sU + DW_Strings.sCouncil + DW_Strings.symbol_underscore
+                            + DW_Strings.s_HashMap + DW_Strings.symbol_underscore
+                            + DW_Strings.s_String + DW_Strings.symbol_underscore + DW_Strings.symbol_underscore
+                            + DW_Strings.s_BigDecimal + DW_Strings.sBinaryFileExtension;
                 }
             } else {
                 //partFilename = "IncomeAndRentSummaryUR_HashMap_String__BigDecimal.dat";
-                partFilename = ds.sIncomeAndRentSummary
-                        + ds.sU + ds.sRSL + ds.symbol_underscore
-                        + ds.s_HashMap + ds.symbol_underscore
-                        + ds.s_String + ds.symbol_underscore + ds.symbol_underscore
-                        + ds.s_BigDecimal + ds.sBinaryFileExtension;
+                partFilename = DW_Strings.sIncomeAndRentSummary
+                        + DW_Strings.sU + DW_Strings.sRSL + DW_Strings.symbol_underscore
+                        + DW_Strings.s_HashMap + DW_Strings.symbol_underscore
+                        + DW_Strings.s_String + DW_Strings.symbol_underscore + DW_Strings.symbol_underscore
+                        + DW_Strings.s_BigDecimal + DW_Strings.sBinaryFileExtension;
             }
         } else {
             //partFilename = "IncomeAndRentSummary_HashMap_String__BigDecimal.dat";
-            partFilename = ds.sIncomeAndRentSummary
-                    + ds.s_HashMap + ds.symbol_underscore
-                    + ds.s_String + ds.symbol_underscore + ds.symbol_underscore
-                    + ds.s_BigDecimal + ds.sBinaryFileExtension;
+            partFilename = DW_Strings.sIncomeAndRentSummary
+                    + DW_Strings.s_HashMap + DW_Strings.symbol_underscore
+                    + DW_Strings.s_String + DW_Strings.symbol_underscore + DW_Strings.symbol_underscore
+                    + DW_Strings.s_BigDecimal + DW_Strings.sBinaryFileExtension;
         }
         File dir;
         dir = new File(df.getGeneratedSHBEDir(), YM3.toString());

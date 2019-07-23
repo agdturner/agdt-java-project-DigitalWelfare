@@ -22,9 +22,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.TreeMap;
+import uk.ac.leeds.ccg.andyt.census.core.Census_Environment;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_ErrorAndExceptionHandler;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.DW_Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
@@ -60,6 +60,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     public final transient SHBE_Environment SHBE_Env;
     public final transient Grids_Environment Grids_Env;
     public final transient Vector_Environment Vector_Env;
+    public final transient Census_Environment censusEnv;
     public transient DW_Geotools Geotools;
     public transient ONSPD_Handler ONSPD_Handler;
     public DW_UO_Handler UO_Handler;
@@ -72,10 +73,11 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     public DW_Environment(Generic_Environment ge) {
         this.ge = ge;
         this.files = new DW_Files();
-        this.files.setDataDirectory(ge.getFiles().getDataDir());
+        this.files.setDataDirectory(ge.files.getDataDir());
         SHBE_Env = new SHBE_Environment(ge);
         Grids_Env = new Grids_Environment(files.getGeneratedGridsDir());
         Vector_Env = new Vector_Environment();
+        censusEnv = new Census_Environment();
     }
 
     public int getDefaultMaximumNumberOfObjectsPerDirectory() {
@@ -285,9 +287,9 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
                     DW_Strings.sDW_UO_Data + DW_Strings.sBinaryFileExtension);
             if (loadFromSource) {
                 UO_Data = UO_Handler.loadUnderOccupiedReportData(loadFromSource);
-                Generic_IO.writeObject(UO_Data, f);
+                ge.io.writeObject(UO_Data, f);
             } else if (f.exists()) {
-                UO_Data = (DW_UO_Data) Generic_IO.readObject(f);
+                UO_Data = (DW_UO_Data) ge.io.readObject(f);
                 // For debugging/testing load
                 TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUOSets;
                 CouncilUOSets = UO_Data.getCouncilUOSets();
@@ -303,7 +305,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
                 }
             } else {
                 UO_Data = UO_Handler.loadUnderOccupiedReportData(true);
-                Generic_IO.writeObject(UO_Data, f);
+                ge.io.writeObject(UO_Data, f);
             }
         }
         return UO_Data;

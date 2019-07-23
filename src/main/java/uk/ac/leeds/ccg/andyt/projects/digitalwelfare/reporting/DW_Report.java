@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.lang.Generic_String;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
@@ -176,7 +175,7 @@ public class DW_Report extends DW_HTMLPage {
             String pageTitle = "Results";
             File f;
             f = new File(dirOut, pageTitle + ".html");
-            masterFOS = Generic_IO.getFileOutputStream(f);
+            masterFOS = env.ge.io.getFileOutputStream(f);
             writeHTMLHeader(projectName, pageTitle, masterFOS);
             writeStartOfBody(baseURLString0, pageTitle, masterFOS);
         } catch (IOException e) {
@@ -258,18 +257,18 @@ public class DW_Report extends DW_HTMLPage {
                 String reportFilename = tenure2 + ".html";
                 File f = new File(dirOut2, reportFilename);
                 int filePathDepth;
-                filePathDepth = Generic_IO.getFileDepth(dirOut2)
-                        - Generic_IO.getFileDepth(dirOut)
-                        + Generic_IO.getFileDepth(baseReportDir);
+                filePathDepth = env.ge.io.getFileDepth(dirOut2)
+                        - env.ge.io.getFileDepth(dirOut)
+                        + env.ge.io.getFileDepth(baseReportDir);
                 String relativeFilePath;
-                relativeFilePath = Generic_IO.getRelativeFilePath(
+                relativeFilePath = env.ge.io.getRelativeFilePath(
                         filePathDepth);
 //                String distanceRelativeFilePath;
-//                distanceRelativeFilePath = Generic_IO.getRelativeFilePath(
+//                distanceRelativeFilePath = env.ge.io.getRelativeFilePath(
 //                        filePathDepth + 1);
                 String definitionsPath;
                 definitionsPath = relativeFilePath + baseReportDir + "/Definitions/";
-                componentFOS = Generic_IO.getFileOutputStream(f);
+                componentFOS = env.ge.io.getFileOutputStream(f);
                 String pageTitle;
                 pageTitle = reportName + " " + claimantType2 + " " + tenure2;
                 write(doUnderOccupied, doCouncil, definitionsPath,
@@ -476,6 +475,7 @@ public class DW_Report extends DW_HTMLPage {
             String level,
             String year,
             String month) throws IOException {
+        DW_Table tab = new DW_Table(env);
         writeLine("", componentFOS);
         writeLine("<h5>Choropleth Map</h5>", componentFOS);
         writeLine("", componentFOS);
@@ -504,7 +504,7 @@ public class DW_Report extends DW_HTMLPage {
             writeLine("", componentFOS);
             writeLine("<h5>Total, In and Out Count Table</h5>", componentFOS);
             writeLine("", componentFOS);
-            table = DW_Table.readCSV(f);
+            table = tab.readCSV(f);
             writeTable(table, componentFOS);
         }
         // Counts By Tenure Table
@@ -518,7 +518,7 @@ public class DW_Report extends DW_HTMLPage {
             writeLine("", componentFOS);
             writeLine("<h5>Counts By Tenure Table</h5>", componentFOS);
             writeLine("", componentFOS);
-            table = DW_Table.readCSV(f);
+            table = tab.readCSV(f);
             writeTable(table, componentFOS);
         }
         // Top 10s
@@ -548,20 +548,21 @@ public class DW_Report extends DW_HTMLPage {
 
     protected void writeExtremeAreaTable(File dir, String year, String month)
             throws IOException {
-        File f;
-        f = new File(dir, "HighestClaimants" + year + month + ".csv");
+        DW_Table tab = new DW_Table(env);
+        File f = new File(dir, "HighestClaimants" + year + month + ".csv");
         if (f.exists()) {
             writeLine("", componentFOS);
             writeLine("<h5>Areas With The Highest Numbers of Claimants Table</h5>", componentFOS);
             writeLine("", componentFOS);
             ArrayList<String> table;
-            table = DW_Table.readCSV(f);
+            table = tab.readCSV(f);
             writeTable(table, componentFOS);
         }
     }
 
     protected void writeExtremeAreaChangesTable(File dir, String name,
             String type, String year, String month) throws IOException {
+        DW_Table tab = new DW_Table(env);
         File f;
         f = new File(dir, "ExtremeAreaChanges" + name + type + "LastYear" + year
                 + month + ".csv");
@@ -572,7 +573,7 @@ public class DW_Report extends DW_HTMLPage {
                     componentFOS);
             writeLine("", componentFOS);
             ArrayList<String> table;
-            table = DW_Table.readCSV(f);
+            table = tab.readCSV(f);
             writeTable(table, componentFOS);
         }
         f = new File(dir,
@@ -585,7 +586,7 @@ public class DW_Report extends DW_HTMLPage {
                     componentFOS);
             writeLine("", componentFOS);
             ArrayList<String> table;
-            table = DW_Table.readCSV(f);
+            table = tab.readCSV(f);
             writeTable(table, componentFOS);
         }
     }

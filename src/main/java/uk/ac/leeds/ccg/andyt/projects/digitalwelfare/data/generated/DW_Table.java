@@ -25,29 +25,33 @@ import java.io.StreamTokenizer;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 
 /**
  * A class for methods dealing with tables of data.
+ *
  * @author geoagdt
  */
-public class DW_Table {
+public class DW_Table extends DW_Object {
+
+    public DW_Table(DW_Environment e) {
+        super(e);
+    }
 
     /**
      * Reads a CSV file and returns each line as a String in the result.
+     *
      * @param f
-     * @return the contents of the file as an {@code ArrayList<String>} with 
-     * the elements being consecutive lines in the file.
+     * @return the contents of the file as an {@code ArrayList<String>} with the
+     * elements being consecutive lines in the file.
      */
-    public static ArrayList<String> readCSV(File f) {
+    public ArrayList<String> readCSV(File f) {
         ArrayList<String> result;
         result = new ArrayList<>();
-        try {
-            BufferedReader br;
-            br = Generic_IO.getBufferedReader(f);
-            StreamTokenizer st;
-            st = new StreamTokenizer(br);
-            Generic_IO.setStreamTokenizerSyntax1(st);
+        try (BufferedReader br = env.ge.io.getBufferedReader(f)) {
+            StreamTokenizer st = new StreamTokenizer(br);
+            env.ge.io.setStreamTokenizerSyntax1(st);
             String line = "";
             int tokenType;
             tokenType = st.nextToken();
@@ -63,7 +67,6 @@ public class DW_Table {
                 }
                 tokenType = st.nextToken();
             }
-            br.close();
         } catch (IOException ex) {
             Logger.getLogger(DW_Table.class.getName()).log(Level.SEVERE, null, ex);
         }

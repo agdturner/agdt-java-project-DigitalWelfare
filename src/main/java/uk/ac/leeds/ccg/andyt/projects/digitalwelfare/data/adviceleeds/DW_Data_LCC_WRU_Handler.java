@@ -26,7 +26,6 @@ import java.io.StreamTokenizer;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 
 public class DW_Data_LCC_WRU_Handler extends DW_Object {
@@ -77,14 +76,14 @@ public class DW_Data_LCC_WRU_Handler extends DW_Object {
         int countOfAdditionalRecordsThatAreIgnored = 0;
         BufferedReader br;
         try {
-            br = Generic_IO.getBufferedReader(inputFile);
+            br = env.ge.io.getBufferedReader(inputFile);
             StreamTokenizer st;
             st = getStreamTokenizer(br);
             String line;
             // Skip the header
             int headerLines = 3;
             for (int i = 0; i < headerLines; i++) {
-                Generic_IO.skipline(st);
+                env.ge.io.skipline(st);
             }
             // Read data
             int tokenType;
@@ -142,7 +141,7 @@ public class DW_Data_LCC_WRU_Handler extends DW_Object {
     public StreamTokenizer getStreamTokenizer(BufferedReader br) {
         StreamTokenizer result;
         result = new StreamTokenizer(br);
-        Generic_IO.setStreamTokenizerSyntax5(result);
+        env.ge.io.setStreamTokenizerSyntax5(result);
         result.wordChars('`', '`');
         result.wordChars('(', '(');
         result.wordChars(')', ')');

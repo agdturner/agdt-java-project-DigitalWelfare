@@ -14,7 +14,6 @@ import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
@@ -268,7 +267,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                     outFile = new File(
                             outDir2,
                             YM3 + ".csv");
-                    outPW = Generic_IO.getPrintWriter(outFile, false);
+                    outPW = env.ge.io.getPrintWriter(outFile, false);
                     outPW.println("AreaCode, NumberOfHBClaims, "
                             + "NumberOfChildDependentsInHBClaimingHouseholds, "
                             + "TotalPopulationInHBClaimingHouseholds, "

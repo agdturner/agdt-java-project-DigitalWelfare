@@ -20,7 +20,6 @@ import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
@@ -606,7 +605,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         File f;
         f = new File(                dirOut2,                name);
         env.ge.log("Write " + f, true);
-        result = Generic_IO.getPrintWriter(f, false);
+        result = env.ge.io.getPrintWriter(f, false);
         return result;
     }
 
@@ -919,10 +918,10 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 
             // Get Top 10 areas
             TreeMap<ONSPD_YM3, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>>>> yearMonthClaimantTypeTenureLevelTypeCountAreas;
-            yearMonthClaimantTypeTenureLevelTypeCountAreas = new TreeMap<ONSPD_YM3, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, TreeSet<String>>>>>>>();
+            yearMonthClaimantTypeTenureLevelTypeCountAreas = new TreeMap<>();
 
             TreeMap<ONSPD_YM3, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>>>> yearMonthClaimantTypeTenureLevelDistanceTypeDistanceCountAreas;
-            yearMonthClaimantTypeTenureLevelDistanceTypeDistanceCountAreas = new TreeMap<ONSPD_YM3, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Double, TreeMap<Integer, TreeSet<String>>>>>>>>();
+            yearMonthClaimantTypeTenureLevelDistanceTypeDistanceCountAreas = new TreeMap<>();
 
             // Initialise tIDIndexes
             ArrayList<ArrayList<SHBE_ID>> tIDIndexes;

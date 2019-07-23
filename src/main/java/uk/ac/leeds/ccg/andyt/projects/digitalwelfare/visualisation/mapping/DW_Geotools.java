@@ -39,9 +39,7 @@ import org.geotools.map.GridCoverageLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
 import org.geotools.swing.JMapFrame;
-import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.geotools.core.Geotools_Environment;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Shapefile;
@@ -49,6 +47,7 @@ import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGridNumber;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_LegendItem;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_LegendLayer;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_StyleParameters;
+import uk.ac.leeds.ccg.andyt.geotools.core.Geotools_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 
 /**
@@ -71,10 +70,10 @@ public class DW_Geotools extends Geotools_Environment {
 
     @Override
     public DW_Style getStyle() {
-        if (Style == null) {
-            Style = new DW_Style();
+        if (style == null) {
+            style = new DW_Style();
         }
-        return (DW_Style) Style;
+        return (DW_Style) style;
     }
 
     /**
@@ -115,11 +114,11 @@ public class DW_Geotools extends Geotools_Environment {
         int newImageWidth = (Integer) mcAndNewImageWidthAndHeight[1];
         int newImageHeight = (Integer) mcAndNewImageWidthAndHeight[2];
         //int imageHeight = getMapContentImageHeight(mc, imageWidth);
-        File outputFile = getOutputFile(outputDir, outname, gs.png_String);
-        File outputImageFile = Env.getMaps().getOutputImageFile(outputFile, gs.png_String);
+        File outputFile = getOutputFile(outputDir, outname, Geotools_Strings.png_String);
+        File outputImageFile = Env.getMaps().getOutputImageFile(outputFile, Geotools_Strings.png_String);
 
-        writeImageFile(g.ge, // For handling OutOfMemoryErrors
-                mc, newImageWidth, newImageHeight, outputImageFile, gs.png_String);
+        writeImageFile(g.env, // For handling OutOfMemoryErrors
+                mc, newImageWidth, newImageHeight, outputImageFile, Geotools_Strings.png_String);
 
 //Tried commenting this out as a workaround as somehow loosing the legends, but this was not the solution...
         // Dispose of MapContent to prevent memory leaks
@@ -493,14 +492,14 @@ public class DW_Geotools extends Geotools_Environment {
         File outputFile = getOutputFile(
                 outputDir,
                 outname,
-                gs.png_String);
-        File outputImageFile = Env.getMaps().getOutputImageFile(outputFile, gs.png_String);
+                Geotools_Strings.png_String);
+        File outputImageFile = Env.getMaps().getOutputImageFile(outputFile, Geotools_Strings.png_String);
         writeImageFile(
                 mc,
                 imageWidth,
                 imageHeight,
                 outputImageFile,
-                gs.png_String);
+                Geotools_Strings.png_String);
         System.out.println("Written " + outputImageFile.getAbsolutePath());
         // Dispose of MapContent to prevent memory leaks
         if (showMapsInJMapPane) {
@@ -564,14 +563,14 @@ public class DW_Geotools extends Geotools_Environment {
         File outputFile = getOutputFile(
                 outputDir,
                 outname,
-                gs.png_String);
-        File outputImageFile = Env.getMaps().getOutputImageFile(outputFile, gs.png_String);
+                Geotools_Strings.png_String);
+        File outputImageFile = Env.getMaps().getOutputImageFile(outputFile, Geotools_Strings.png_String);
         writeImageFile(
                 mc,
                 imageWidth,
                 imageHeight,
                 outputImageFile,
-                gs.png_String);
+                Geotools_Strings.png_String);
         System.out.println("Written " + outputImageFile.getAbsolutePath());
         // Dispose of MapContent to prevent memory leaks
         if (showMapsInJMapPane) {
@@ -623,14 +622,14 @@ public class DW_Geotools extends Geotools_Environment {
         File outputFile = getOutputFile(
                 outputDir,
                 outname,
-                gs.png_String);
-        File outputImageFile = Env.getMaps().getOutputImageFile(outputFile, gs.png_String);
+                Geotools_Strings.png_String);
+        File outputImageFile = Env.getMaps().getOutputImageFile(outputFile, Geotools_Strings.png_String);
         writeImageFile(
                 mc,
                 imageWidth,
                 imageHeight,
                 outputImageFile,
-                gs.png_String);
+                Geotools_Strings.png_String);
         System.out.println("Written " + outputImageFile.getAbsolutePath());
         // Dispose of MapContent to prevent memory leaks
         if (showMapsInJMapPane) {

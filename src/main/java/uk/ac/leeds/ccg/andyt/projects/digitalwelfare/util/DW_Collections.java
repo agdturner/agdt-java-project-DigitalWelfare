@@ -25,16 +25,22 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_PersonID;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 
 /**
  *
  * @author geoagdt
  */
 public class DW_Collections extends Generic_Collections {
+    
+    protected final DW_Environment env;
+    
+    public DW_Collections(DW_Environment e){
+        env = e;
+    }
     
     /**
      * Returns the count of all values in the map (the sum of all the number of
@@ -45,8 +51,7 @@ public class DW_Collections extends Generic_Collections {
      */
     public static int getCountHashMap_DW_PersonID__HashSet_DW_ID(HashMap<SHBE_PersonID, HashSet<DW_ID>> m) {
         int result = 0;
-        Collection<HashSet<DW_ID>> c;
-        c = m.values();
+        Collection<HashSet<DW_ID>> c = m.values();
         Iterator<HashSet<DW_ID>> ite;
         ite = c.iterator();
         while (ite.hasNext()) {
@@ -94,41 +99,41 @@ public class DW_Collections extends Generic_Collections {
         return null;
     }
 
-    public static HashMap<DW_ID, String> getHashMap_DW_ID__String(File f) {
+    public HashMap<DW_ID, String> getHashMap_DW_ID__String(File f) {
         HashMap<DW_ID, String> r;
         if (f.exists()) {
-            r = (HashMap<DW_ID, String>) Generic_IO.readObject(f);
+            r = (HashMap<DW_ID, String>) env.ge.io.readObject(f);
         } else {
             r = new HashMap<>();
         }
         return r;
     }
 
-    public static HashSet<DW_ID> getHashSet_DW_ID(File f) {
+    public HashSet<DW_ID> getHashSet_DW_ID(File f) {
         HashSet<DW_ID> result;
         if (f.exists()) {
-            result = (HashSet<DW_ID>) Generic_IO.readObject(f);
+            result = (HashSet<DW_ID>) env.ge.io.readObject(f);
         } else {
             result = new HashSet<>();
         }
         return result;
     }
     
-    public static HashSet<SHBE_PersonID> getHashSet_DW_PersonID(File f) {
+    public HashSet<SHBE_PersonID> getHashSet_DW_PersonID(File f) {
         HashSet<SHBE_PersonID> result;
         if (f.exists()) {
-            result = (HashSet<SHBE_PersonID>) Generic_IO.readObject(f);
+            result = (HashSet<SHBE_PersonID>) env.ge.io.readObject(f);
         } else {
             result = new HashSet<>();
         }
         return result;
     }
     
-    public static HashMap<SHBE_PersonID, HashSet<DW_ID>> getHashMap_DW_PersonID__HashSet_DW_ID(
+    public HashMap<SHBE_PersonID, HashSet<DW_ID>> getHashMap_DW_PersonID__HashSet_DW_ID(
             File f) {
         HashMap<SHBE_PersonID, HashSet<DW_ID>> result;
         if (f.exists()) {
-            result = (HashMap<SHBE_PersonID, HashSet<DW_ID>>) Generic_IO.readObject(f);
+            result = (HashMap<SHBE_PersonID, HashSet<DW_ID>>) env.ge.io.readObject(f);
         } else {
             result = new HashMap<>();
         }

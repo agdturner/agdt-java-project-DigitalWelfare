@@ -27,7 +27,9 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 
 /**
  * A simple class for aggregating data for Sarah Craven from unit postcodes to 
@@ -36,14 +38,17 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
  * Postcode Sector = "LS2 9"
  * @author geoagdt
  */
-public class SarahAggregator {
+public class SarahAggregator extends DW_Object {
 
+    public SarahAggregator(DW_Environment e){
+        super(e);
+    }
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         try {
-            new SarahAggregator().run();
+            new SarahAggregator(new DW_Environment(new Generic_Environment())).run();
         } catch (IOException ex) {
             Logger.getLogger(SarahAggregator.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -71,9 +76,9 @@ public class SarahAggregator {
     private TreeMap<String, DataRow> loadData(File directory) throws IOException {
         TreeMap<String, DataRow> result = new TreeMap<>();
         File infile = new File(directory, "total_pop.csv");
-        BufferedReader br = Generic_IO.getBufferedReader(infile);
+        BufferedReader br = env.ge.io.getBufferedReader(infile);
         StreamTokenizer st = new StreamTokenizer(br);
-        Generic_IO.setStreamTokenizerSyntax1(st);
+        env.ge.io.setStreamTokenizerSyntax1(st);
         int tokenType = st.nextToken();
         DataRow dr = null;
         while (tokenType != StreamTokenizer.TT_EOF) {

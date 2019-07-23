@@ -64,58 +64,59 @@ public class DW_Data_CAB0_Handler extends DW_Object {
                 "ChapeltownCAB");
         File inputFile = new File(directory, filename);
         try {
-            BufferedReader br;
-            br = Generic_IO.getBufferedReader(inputFile);
-            StreamTokenizer st;
-            st = getStreamTokenizer(br);
-            String line = "";
-            long RecordID = 0;
-            int recordsLoaded = 0;
-            int countOfAdditionalRecordsThatAreIgnored = 0;
-            // Skip the header
-            int headerLines = 1;
-            for (int i = 0; i < headerLines; i++) {
-                Generic_IO.skipline(st);
-            }
-            // Read data
-            int tokenType;
-            tokenType = st.nextToken();
-            while (tokenType != StreamTokenizer.TT_EOF) {
-                switch (tokenType) {
-                    case StreamTokenizer.TT_EOL:
-                        //System.out.println(line);
-                        break;
-                    case StreamTokenizer.TT_WORD:
-                        line = st.sval;
-                        try {
-                            DW_Data_CAB0_Record rec;
-                            if (type == 0) {
-                                rec = new DW_Data_CAB0_Record(env, RecordID, line, this);
-                            } else {
-                                rec = new DW_Data_CAB0_Record1(env, RecordID, line, this);
-                            }
-                            String client_ref;
-                            client_ref = rec.getClient_Ref();
-                            DW_ID_ClientID id;
-                            id = new DW_ID_ClientID(client_ref);
-                            if (result.containsKey(id)) {
-//                                System.out.println("Additional record for client " + aClient_Ref);
-                                countOfAdditionalRecordsThatAreIgnored++;
-                            } else {
-                                result.put(id, rec);
-                                recordsLoaded++;
-                            }
-                        } catch (Exception e) {
-                            System.err.println(line);
-                            System.err.println("RecordID " + RecordID);
-                            System.err.println(e.getLocalizedMessage());
-                        }
-                        RecordID++;
-                        break;
-                }
+            long RecordID;
+            int recordsLoaded;
+            int countOfAdditionalRecordsThatAreIgnored;
+            try (BufferedReader br = env.ge.io.getBufferedReader(inputFile)) {
+                StreamTokenizer st;
+                st = getStreamTokenizer(br);
+                String line;
+                RecordID = 0;
+                recordsLoaded = 0;
+                countOfAdditionalRecordsThatAreIgnored = 0;
+                // Skip the header
+                int headerLines = 1;
+                for (int i = 0; i < headerLines; i++) {
+                    env.ge.io.skipline(st);
+                }   // Read data
+                int tokenType;
                 tokenType = st.nextToken();
+                while (tokenType != StreamTokenizer.TT_EOF) {
+                    switch (tokenType) {
+                        case StreamTokenizer.TT_EOL:
+                            //System.out.println(line);
+                            break;
+                        case StreamTokenizer.TT_WORD:
+                            line = st.sval;
+                            try {
+                                DW_Data_CAB0_Record rec;
+                                if (type == 0) {
+                                    rec = new DW_Data_CAB0_Record(env, RecordID, line, this);
+                                } else {
+                                    rec = new DW_Data_CAB0_Record1(env, RecordID, line, this);
+                                }
+                                String client_ref;
+                                client_ref = rec.getClient_Ref();
+                                DW_ID_ClientID id;
+                                id = new DW_ID_ClientID(client_ref);
+                                if (result.containsKey(id)) {
+//                                System.out.println("Additional record for client " + aClient_Ref);
+countOfAdditionalRecordsThatAreIgnored++;
+                                } else {
+                                    result.put(id, rec);
+                                    recordsLoaded++;
+                                }
+                            } catch (Exception e) {
+                                System.err.println(line);
+                                System.err.println("RecordID " + RecordID);
+                                System.err.println(e.getLocalizedMessage());
+                            }
+                            RecordID++;
+                            break;
+                    }
+                    tokenType = st.nextToken();
+                }
             }
-            br.close();
             System.out.println("Number of records loaded " + recordsLoaded);
             System.out.println("Number of records not loaded " + (RecordID - recordsLoaded));
             System.out.println("Number of additional records for clients that are ignored " + countOfAdditionalRecordsThatAreIgnored);
@@ -128,7 +129,7 @@ public class DW_Data_CAB0_Handler extends DW_Object {
     public StreamTokenizer getStreamTokenizer(BufferedReader br) {
         StreamTokenizer result;
         result = new StreamTokenizer(br);
-        Generic_IO.setStreamTokenizerSyntax5(result);
+        env.ge.io.setStreamTokenizerSyntax5(result);
         result.wordChars('`', '`');
         result.wordChars('(', '(');
         result.wordChars(')', ')');

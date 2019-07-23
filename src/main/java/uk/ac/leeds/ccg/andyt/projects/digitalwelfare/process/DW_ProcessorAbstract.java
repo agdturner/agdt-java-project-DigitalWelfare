@@ -18,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataHandler;
 import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.andyt.census.core.Census_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
@@ -96,7 +96,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
             r = initLookupFromPostcodeToCensusCodes(infile, outfile, level,
                     CensusYear, YM3Nearest);
         } else {
-            r = (TreeMap<String, String>) Generic_IO.readObject(outfile);
+            r = (TreeMap<String, String>) env.ge.io.readObject(outfile);
         }
         return r;
     }
@@ -221,7 +221,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
         File depravationDir = new File(env.files.getInputCensus2011AttributeDataDir("LSOA"), "England/Deprivation");
         String deprivationFilename = "1871524.csv";
         Census_DeprivationDataHandler aDeprivation_DataHandler;
-        aDeprivation_DataHandler = new Census_DeprivationDataHandler();
+        aDeprivation_DataHandler = new Census_DeprivationDataHandler(new Census_Environment());
         TreeMap<String, Census_DeprivationDataRecord> tDeprivationData;
         tDeprivationData = aDeprivation_DataHandler.loadInputData(depravationDir, deprivationFilename);
         System.out.println(tDeprivationData.firstKey());

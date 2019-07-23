@@ -35,8 +35,6 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
-import uk.ac.leeds.ccg.andyt.census.core.Census_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 
@@ -146,17 +144,17 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
             LevelDW_Shapefile = new DW_Shapefile(levelShapefile);
 
             // Read area level Census Codes
-            LeedsAreaCodes = Census_Environment.getCensusCodes(
+            LeedsAreaCodes = env.censusEnv.getCensusCodes(
                     tLeedsString,
                     level,
                     censusDataDirectory);
             // Read Leeds and neighbouring District LADs Census Codes for level
-            LeedsAndNeighbouringLADAreaCodes = Census_Environment.getCensusCodes(
+            LeedsAndNeighbouringLADAreaCodes = env.censusEnv.getCensusCodes(
                     tLeedsAndNeighbouringLADsString,
                     level,
                     censusDataDirectory);
             // Read Leeds and neighbouring District LADs and Craven And York Census Codes
-            LeedsAndNearNeighbouringLADAreaCodes = Census_Environment.getCensusCodes(
+            LeedsAndNearNeighbouringLADAreaCodes = env.censusEnv.getCensusCodes(
                     tLeedsAndNearNeighbouringLADsString,
                     level,
                     censusDataDirectory);
@@ -208,7 +206,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
         if (level.equalsIgnoreCase("OA")
                 || level.equalsIgnoreCase("LSOA")
                 || level.equalsIgnoreCase("MSOA")) {
-            result = Census_Environment.getCensusCodes(area, level, censusDataDirectory);
+            result = env.censusEnv.getCensusCodes(area, level, censusDataDirectory);
         } else {
             File tPostcodeShapefile;
             tPostcodeShapefile = getPostcodeShapefile(
@@ -358,10 +356,10 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
             try {
                 BufferedReader br;
                 StreamTokenizer st;
-                br = Generic_IO.getBufferedReader(file);
+                br = env.ge.io.getBufferedReader(file);
                 result = new TreeSet<>();
                 st = new StreamTokenizer(br);
-                Generic_IO.setStreamTokenizerSyntax1(st);
+                env.ge.io.setStreamTokenizerSyntax1(st);
                 int token = st.nextToken();
 //                    long RecordID = 0;
                 String line = "";

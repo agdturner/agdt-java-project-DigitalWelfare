@@ -5789,7 +5789,7 @@ public class DW_Summary extends DW_Object {
                 + DW_Strings.symbol_underscore + name + ".csv";
         File outFile;
         outFile = new File(dirOut, outFilename);
-        r = Generic_IO.getPrintWriter(outFile, false);
+        r = env.ge.io.getPrintWriter(outFile, false);
         return r;
     }
 
@@ -7038,7 +7038,7 @@ public class DW_Summary extends DW_Object {
                             line += summary.get(ds.sTotalCount_WeeklyEligibleRentAmountNonZeroTT[i] + nameSuffix) + s;
                             line += summary.get(ds.sAverage_NonZero_WeeklyEligibleRentAmountTT[i] + nameSuffix) + s;
                         }
-                    } else if (sHB_CTB.equalsIgnoreCase(ds.sHB)) {
+                    } else if (sHB_CTB.equalsIgnoreCase(DW_Strings.sHB)) {
                         for (int i = 1; i < nTT; i++) {
                             if (!(i == 5 || i == 7)) {
                                 line += summary.get(ds.sTotal_IncomeTT[i] + nameSuffix) + s;

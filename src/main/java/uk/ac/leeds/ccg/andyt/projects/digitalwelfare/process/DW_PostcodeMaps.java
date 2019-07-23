@@ -216,16 +216,10 @@ public class DW_PostcodeMaps extends DW_Maps {
 
     }
 
-    public Grids_GridDouble toGrid(
-            DW_Shapefile polyGrid,
-            long nrows,
-            long ncols,
-            double xllcorner,
-            double yllcorner,
-            double cellsize,
-            DW_Shapefile postcodeUnitPoly_DW_Shapefile,
-            Grids_GridDoubleFactory f) {
-        Grids_GridDouble result;
+    public Grids_GridDouble toGrid(DW_Shapefile polyGrid, long nrows, long ncols,
+            double xllcorner, double yllcorner, double cellsize,
+            DW_Shapefile postcodeUnitPoly_DW_Shapefile, Grids_GridDoubleFactory f) {
+        Grids_GridDouble r;
         Grids_Dimensions dimensions;
         dimensions = new Grids_Dimensions(
                 new BigDecimal(xllcorner),
@@ -233,10 +227,9 @@ public class DW_PostcodeMaps extends DW_Maps {
                 new BigDecimal(xllcorner + cellsize * ncols),
                 new BigDecimal(yllcorner + cellsize * nrows),
                 new BigDecimal(cellsize));
-        Grids_Files gf;
-        gf = ge.getGrids_Environment().getFiles();
+        Grids_Files gf = env.Grids_Env.getFiles();
         File dir = gf.createNewFile(gf.getGeneratedGridDoubleDir());
-        result = (Grids_GridDouble) f.create(dir, nrows, ncols, dimensions);
+        r = (Grids_GridDouble) f.create(dir, nrows, ncols, dimensions);
 
         FeatureCollection cells;
         cells = polyGrid.getFeatureCollection();
@@ -253,7 +246,7 @@ public class DW_PostcodeMaps extends DW_Maps {
 //            Geometry intersection;
 //            intersection = sf.i
 //        }
-        return result;
+        return r;
     }
 
     public DW_Shapefile getPolyGrid(long nrows, long ncols, double xllcorner,

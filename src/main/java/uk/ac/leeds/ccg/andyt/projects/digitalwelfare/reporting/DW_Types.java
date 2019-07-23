@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 
@@ -193,7 +192,7 @@ public class DW_Types extends DW_HTMLPage {
         String reportFilename = type + ".html";
         String baseURLString1 = baseURLString0 + reportFilename;
         File f = new File(dir, reportFilename);
-        componentFOS = Generic_IO.getFileOutputStream(f);
+        componentFOS = env.ge.io.getFileOutputStream(f);
         write(type, definitions, projectName, reportName, reportFilename,
                 baseReportDir, baseURLString0, baseURLString1);
         try {

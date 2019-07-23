@@ -18,7 +18,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_Claim;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_RentArrearsUO;
@@ -55,9 +54,9 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
         DW_RentArrearsUO RentArrearsUO;
         if (newData) {
             RentArrearsUO = new DW_RentArrearsUO(env);
-            Generic_IO.writeObject(RentArrearsUO, f);
+            env.ge.io.writeObject(RentArrearsUO, f);
         } else if (f.exists()) {
-            RentArrearsUO = (DW_RentArrearsUO) Generic_IO.readObject(f);
+            RentArrearsUO = (DW_RentArrearsUO) env.ge.io.readObject(f);
             RentArrearsUO.SHBE_Handler = env.getSHBE_Handler();
             RentArrearsUO.UO_Data = env.getUO_Data();
 // The following code was an attempt to automatically detect if a reload was 
@@ -68,11 +67,11 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
 //            int nUOFiles = files.getInputUnderOccupiedDir().listFiles().length / 2;
 //            if (nUOSets < nUOFiles) {
 //                DW_RentArrearsUO = new DW_RentArrearsUO(env);
-//                Generic_IO.writeObject(DW_RentArrearsUO, f);
+//                env.ge.io.writeObject(DW_RentArrearsUO, f);
 //            }
         } else {
             RentArrearsUO = new DW_RentArrearsUO(env);
-            Generic_IO.writeObject(RentArrearsUO, f);
+            env.ge.io.writeObject(RentArrearsUO, f);
         }
 
         HashMap<ONSPD_YM3, SHBE_Records> AllSHBE;

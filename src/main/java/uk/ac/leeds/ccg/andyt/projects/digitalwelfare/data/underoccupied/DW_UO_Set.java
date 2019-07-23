@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.Set;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
@@ -76,11 +75,11 @@ public class DW_UO_Set extends DW_Object implements Serializable {
         fOut = new File(dirOut, DW_Strings.sDW_UO_Set + DW_Strings.sBinaryFileExtension);
         if (fOut.exists() || !reload) {
             DW_UO_Set loadDummy;
-            loadDummy = (DW_UO_Set) Generic_IO.readObject(fOut);
+            loadDummy = (DW_UO_Set) env.ge.io.readObject(fOut);
             Map = loadDummy.Map;
         } else {
             Map = this.env.getUO_Handler().loadInputData(dirIn, filename);
-            Generic_IO.writeObject(this, fOut);
+            env.ge.io.writeObject(this, fOut);
         }
         this.env.ge.log("</" + methodName + ">", true);
     }
