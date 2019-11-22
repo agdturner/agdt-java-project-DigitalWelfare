@@ -274,30 +274,32 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
         return r;
     }
 
+    /**
+     * 
+     * @param name
+     * @param tLADCensusCodes The Local Authority District Census Area Codes. 
+     * @param sdsf
+     * @return 
+     */
     public final DW_Shapefile getLADShapefile(String name,
             TreeSet<String> tLADCensusCodes, ShapefileDataStoreFactory sdsf) {
-        DW_Shapefile r;
-        // Get LAD shapefiles
-        String levelLAD = "LAD";
         // Read LAD Census Boundary Data
-        File tLADShapefile = Maps.getAreaBoundaryShapefile(levelLAD);
-        DW_Shapefile tLAD_DW_Shapefile;
-        tLAD_DW_Shapefile = new DW_Shapefile(tLADShapefile);
-        r = getLADShapefile(name, tLADCensusCodes, tLAD_DW_Shapefile, sdsf);
-        return r;
+        File tLADShapefile = Maps.getAreaBoundaryShapefile("LAD");
+        DW_Shapefile sf = new DW_Shapefile(tLADShapefile);
+        return getLADShapefile(name, tLADCensusCodes, sf, sdsf);
     }
 
     public DW_Shapefile getLADShapefile(String name,
-            TreeSet<String> tLADCensusCodes, DW_Shapefile tLAD_DW_Shapefile,
+            TreeSet<String> tLADCensusCodes, DW_Shapefile sf,
             ShapefileDataStoreFactory sdsf) {
         DW_Shapefile r;
-        FeatureCollection tLAD_FC = tLAD_DW_Shapefile.getFeatureCollection();
-        SimpleFeatureType tLAD_SFT = tLAD_DW_Shapefile.getSimpleFeatureType();
+        FeatureCollection fc = sf.getFeatureCollection();
+        SimpleFeatureType sft = sf.getSimpleFeatureType();
         // Select tLADCensusCodes from LAD Census Boundary Data
         File tLADShapefile = Maps.getCensusBoundaryShapefile(name, "LAD");
         r = new DW_Shapefile(tLADShapefile);
         if (!tLADShapefile.exists()) {
-            Maps.selectAndCreateNewShapefile(sdsf, tLAD_FC, tLAD_SFT, 
+            Maps.selectAndCreateNewShapefile(sdsf, fc, sft, 
                     tLADCensusCodes, "CODE", tLADShapefile);
         }
         return r;

@@ -132,12 +132,12 @@ public class DW_Maps extends Geotools_Maps {
         String year;
         year = "2012";
         File generatedCodePointDir;
-        generatedCodePointDir = new File(env.files.getGeneratedCodePointDir(), 
+        generatedCodePointDir = new File(env.files.getGeneratedCodePointDir(),
                 year);
         File polyShapefile = new File(generatedCodePointDir, polyShapefilename);
         polyShapefile.mkdirs();
         polyShapefile = new File(polyShapefile, polyShapefilename);
-        r = getPostcodeUnitPoly_DW_Shapefile(sdsf, polyShapefile, 
+        r = getPostcodeUnitPoly_DW_Shapefile(sdsf, polyShapefile,
                 generatedCodePointDir, postcodes);
         return r;
     }
@@ -199,16 +199,16 @@ public class DW_Maps extends Geotools_Maps {
      * @param level
      * @return
      */
-    public DW_Shapefile getPostcodePoly_DW_Shapefile(            DW_Environment env,            String level) {
+    public DW_Shapefile getPostcodePoly_DW_Shapefile(DW_Environment env, String level) {
         DW_Shapefile r;
         File dir;
-        dir = new File(                env.files.getInputPostcodeDir(),                "BoundaryData");
-        dir = new File(                dir,                "GBPostcodeAreaSectorDistrict");
-        dir = new File(                dir,                "GB_Postcodes");
+        dir = new File(env.files.getInputPostcodeDir(), "BoundaryData");
+        dir = new File(dir, "GBPostcodeAreaSectorDistrict");
+        dir = new File(dir, "GB_Postcodes");
         String name;
         name = "Postal" + level + ".shp";
-        dir = new File(                dir,                name);
-        File file = new File(                dir,                name);
+        dir = new File(dir, name);
+        File file = new File(dir, name);
         r = new DW_Shapefile(file);
         return r;
     }
@@ -303,7 +303,7 @@ public class DW_Maps extends Geotools_Maps {
             String area) {
         TreeMap<String, Integer> result;
         result = new TreeMap<>();
-        File dir = new File(                env.files.getInputCensus2011AttributeDataDir(level),
+        File dir = new File(env.files.getInputCensus2011AttributeDataDir(level),
                 area);
         File file = new File(dir, "pop.csv");
         try {
@@ -317,38 +317,38 @@ public class DW_Maps extends Geotools_Maps {
 //            st.nextToken();
 //            st.nextToken();
 //            long RecordID = 0;
-String line;
-while (!(token == StreamTokenizer.TT_EOF)) {
-    switch (token) {
-        case StreamTokenizer.TT_EOL:
+                String line;
+                while (!(token == StreamTokenizer.TT_EOF)) {
+                    switch (token) {
+                        case StreamTokenizer.TT_EOL:
 //                        if (RecordID % 100 == 0) {
 //                            System.out.println(line);
 //                        }
 //                        RecordID++;
-            break;
-        case StreamTokenizer.TT_WORD:
-            line = st.sval;
-            String[] split = line.split(",");
-            if (split.length == 2) {
+                            break;
+                        case StreamTokenizer.TT_WORD:
+                            line = st.sval;
+                            String[] split = line.split(",");
+                            if (split.length == 2) {
 //                            if (!(split[1].equalsIgnoreCase("MSOAIZ") || 
 //                                    split[1].equalsIgnoreCase("Middle Super Output Areas and Intermediate Zones"))) {
-try {
-    String censusArea = split[0];
-    Integer pop = new Integer(split[1]);
-    result.put(censusArea, pop);
+                                try {
+                                    String censusArea = split[0];
+                                    Integer pop = new Integer(split[1]);
+                                    result.put(censusArea, pop);
 //                            } else {
 //                                int debug = 1; //Wierdness for Scotland!
 //                            }
-} catch (NumberFormatException e) {
-    // Carry on regardless
-}
-            } else {
-                int debug = 1; //Sometimes Scotland or other data is missing!
-            }
-            break;
-    }
-    token = st.nextToken();
-}
+                                } catch (NumberFormatException e) {
+                                    // Carry on regardless
+                                }
+                            } else {
+                                int debug = 1; //Sometimes Scotland or other data is missing!
+                            }
+                            break;
+                    }
+                    token = st.nextToken();
+                }
             }
         } catch (IOException e) {
             System.err.println(e.getMessage() + "in DW_Maps.getPopData(String=" + level + ",String=" + area + ")");
@@ -396,8 +396,8 @@ try {
             }
             ///scratch02/DigitalWelfare/Input/Census/2011/LSOA/BoundaryData/
             File censusDirectory = env.files.getInputCensus2011Dir(level);
-            File boundaryDirectory = new File(                    censusDirectory,                    "/BoundaryData/");
-            File shapefileDirectory = new File(                    boundaryDirectory,                    name);
+            File boundaryDirectory = new File(censusDirectory, "/BoundaryData/");
+            File shapefileDirectory = new File(boundaryDirectory, name);
 //        File boundaryDirectory = new File(
 //                digitalWelfareDir,
 //                "/BoundaryData/" + level + "/" + name);
@@ -436,13 +436,11 @@ try {
      * @return File
      */
     protected File getLeedsPostcodeSectorShapefile() {
-        File r;
         String fileAndDirName = "LSPostalSector.shp";
-        File boundaryDirectory = new File(                env.files.getInputPostcodeDir(),
+        File boundaryDirectory = new File(env.files.getInputPostcodeDir(),
                 "BoundaryData");
-        File shapefileDir = new File(                boundaryDirectory,                fileAndDirName);
-        r = new File(                shapefileDir,                fileAndDirName);
-        return r;
+        File shapefileDir = new File(boundaryDirectory, fileAndDirName);
+        return new File(shapefileDir, fileAndDirName);
     }
 
     /*
@@ -560,23 +558,23 @@ try {
                     Object value = p.getValue();
                     //System.out.println("PropertyValue " + value);
                     String valueString = value.toString();
-                        sf = (SimpleFeature) inputFeature;
-                        id_int = calculate0(
-                                filter,
-                                areaCodes,
-                                levelData,
-                                keySet,
-                                attributeName,
-                                sf,
-                                sfb,
-                                tsfc,
-                                id_int,
-                                area,
-                                population,
-                                valueString,
-                                populationMultiplier,
-                                countClientsInAndOutOfRegion,
-                                inAndOutOfRegionCount);
+                    sf = (SimpleFeature) inputFeature;
+                    id_int = calculate0(
+                            filter,
+                            areaCodes,
+                            levelData,
+                            keySet,
+                            attributeName,
+                            sf,
+                            sfb,
+                            tsfc,
+                            id_int,
+                            area,
+                            population,
+                            valueString,
+                            populationMultiplier,
+                            countClientsInAndOutOfRegion,
+                            inAndOutOfRegionCount);
                 }
             }
         }

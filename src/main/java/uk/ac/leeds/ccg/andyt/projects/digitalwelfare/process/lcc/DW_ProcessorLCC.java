@@ -34,7 +34,7 @@ import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ProcessorAbstract;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.reporting.DW_Report;
 //import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_BarChart;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_LineGraph;
@@ -43,7 +43,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_Lin
  *
  * @author geoagdt
  */
-public class DW_ProcessorLCC extends DW_ProcessorAbstract {
+public class DW_ProcessorLCC extends DW_Processor {
 
     // For convenience
     protected transient SHBE_Handler SHBE_Handler;

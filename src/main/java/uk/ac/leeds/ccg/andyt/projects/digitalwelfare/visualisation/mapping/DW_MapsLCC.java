@@ -20,7 +20,7 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping;
 
 import java.io.IOException;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ProcessorAbstract;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_Processor;
 
 /**
  *
@@ -28,7 +28,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_ProcessorAbstrac
  */
 public class DW_MapsLCC extends DW_Maps {
 
-    protected DW_ProcessorAbstract Processor;
+    protected DW_Processor Processor;
     
     public DW_MapsLCC(DW_Environment env) throws IOException {
         super(env);

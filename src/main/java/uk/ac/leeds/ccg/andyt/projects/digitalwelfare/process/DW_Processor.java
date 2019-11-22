@@ -1,89 +1,218 @@
 /*
- * Copyright (C) 2015 geoagdt.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 
 import java.io.File;
-import uk.ac.leeds.ccg.andyt.data.core.Data_Environment;
-import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import uk.ac.leeds.ccg.andyt.generic.data.census.core.Census_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc.DW_ProcessorLCC;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
+import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
 
-/**
- * This is the main processing class for the project.
- *
- * @author Andy Turner
- */
-public class DW_Processor extends DW_ProcessorAbstract {
+public abstract class DW_Processor extends DW_Object {
 
-    public DW_Processor(DW_Environment env) {
-        super(env);
+    protected transient ONSPD_Handler Postcode_Handler;
+    private transient ArrayList<Boolean> b;
+
+    public DW_Processor(DW_Environment e) {
+        super(e);
+        this.Postcode_Handler = e.getONSPD_Handler();
+    }
+
+    public ArrayList<Boolean> getArrayListBoolean() {
+        if (b == null) {
+            b = new ArrayList<>();
+            b.add(true);
+            b.add(false);
+        }
+        return b;
     }
 
     /**
-     * @param args the command line arguments
+     * Initialises a PrintWriter for pushing output to.
+     *
+     * @param dir
+     * @param filename The name of the file to be initialised for writing to.
+     * @return PrintWriter for pushing output to.
      */
-    public static void main(String[] args) {
+    protected PrintWriter init_OutputTextFilePrintWriter(File dir,
+            String filename) {
+        PrintWriter r = null;
+        File f = new File(dir, filename);
         try {
-            if (args.length != 2) {
-                System.err.println("Expected an argument which is the location "
-                        + "of the directory containing the input data. "
-                        + "Aborting.");
-                System.exit(0);
-            } else {
-                File dataDir = new File(args[1]);
-                Generic_Environment ge = new Generic_Environment(dataDir);
-                Data_Environment de = new Data_Environment(ge);
-                DW_Environment env = new DW_Environment(de);
-                DW_Processor p;
-                p = new DW_Processor(env);
-//                p.env.SHBE_Env = new SHBE_Environment(p.files.getDataDir(), 
-//                SHBE_Environment.DEBUG_Level_NORMAL);
-//                p.env.ONSPD_Env = new ONSPD_Environment(p.files.getDataDir());
-                p.run();
-                env.ge.closeLog(0);
-            }
-        } catch (Exception | Error e) {
-            System.err.println(e.getLocalizedMessage());
-            e.printStackTrace(System.err);
-            StackTraceElement[] stes = e.getStackTrace();
-            for (StackTraceElement ste : stes) {
-                System.err.println(ste.toString());
-            }
+            f.createNewFile();
+            r = new PrintWriter(f);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(DW_Processor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(DW_Processor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return r;
+    }
+
+    /**
+     * @param YM3
+     * @param CensusYear
+     * @TODO Adapt to use the ONSPD for a particular time for the postcode look
+     * up returned.
+     * @param level If level is "OA" returns OutputArea codes. If level is
+     * "LSOA" returns Lower-layer Super Output Area codes. If level is "MSOA"
+     * returns Middle-layer Super Output Area codes.
+     * @return TreeMap<String, String> result where:--------------------------
+     * Keys are postcodes; values are census area codes.
+     */
+    public TreeMap<String, String> getClaimPostcodeF_To_LevelCode_Map(
+            String level, int CensusYear, ONSPD_YM3 YM3) {
+        ONSPD_YM3 YM3Nearest;
+        YM3Nearest = Postcode_Handler.getNearestYM3ForONSPDLookup(YM3);
+        TreeMap<String, String> r;
+        String outputFilename;
+        File dir;
+        outputFilename = "PostcodeTo" + level + "_" + YM3Nearest
+                + "_LookUp_TreeMap_String_Strings"
+                + DW_Strings.sBinaryFileExtension;
+        dir = new File(files.getGeneratedONSPDDir(), YM3Nearest.toString());
+//        }
+        File outfile = new File(dir, outputFilename);
+        if (!outfile.exists()) {
+            dir.mkdirs();
+            File infile = env.SHBE_Env.oe.files.getInputONSPDFile(YM3Nearest);
+            r = initLookupFromPostcodeToCensusCodes(infile, outfile, level,
+                    CensusYear, YM3Nearest);
+        } else {
+            r = (TreeMap<String, String>) env.ge.io.readObject(outfile);
+        }
+        return r;
+    }
+
+    /**
+     * Keys are postcodes; values are census codes:
+     *
+     * @param infile
+     * @param outFile
+     * @param level
+     * @param CensusYear // Expecting 2001 or 2011.
+     * @param YM3 // Expecting the nearest YM3 that is wanted.
+     * @return
+     */
+    private TreeMap<String, String> initLookupFromPostcodeToCensusCodes(
+            File infile, File outFile, String level, int CensusYear,
+            ONSPD_YM3 YM3) {
+        TreeMap<String, String> r;
+        r = Postcode_Handler.getPostcodeUnitCensusCodeLookup(infile, outFile,
+                level, CensusYear, YM3);
+        return r;
+    }
+
+    public String formatPostcodeDistrict(String postcodeDistrict) {
+        String formattedPostcode = formatOddPostcodes(postcodeDistrict);
+        if (getExpectedPostcodes().contains(formattedPostcode)) {
+            return formattedPostcode;
+        } else {
+            return "NotLS";
         }
     }
 
-    /**
-     * This is the main run method for the Digital welfare project.
-     *
-     * @throws Exception
-     */
-    public void run() throws Exception, Error {
-        /**
-         * Run Advice Leeds processing
-         */
+    protected String formatOddPostcodes(String postcodeDistrict) {
+        if (this.getOddPostcodes().contains(postcodeDistrict)) {
+            if (postcodeDistrict.equalsIgnoreCase("")) {
+                return "NotRecorded";
+            }
+            if (postcodeDistrict.equalsIgnoreCase("L1")) {
+                return "LS1";
+            }
+            if (postcodeDistrict.equalsIgnoreCase("LS06")) {
+                return "LS6";
+            }
+            if (postcodeDistrict.equalsIgnoreCase("LS08")) {
+                return "LS8";
+            }
+            if (postcodeDistrict.equalsIgnoreCase("LS09")) {
+                return "LS9";
+            }
+            if (postcodeDistrict.equalsIgnoreCase("LS104UH")) {
+                return "LS10";
+            }
+            if (postcodeDistrict.equalsIgnoreCase("LS83")) {
+                return "LS8";
+            }
+            if (postcodeDistrict.equalsIgnoreCase("LS97")) {
+                return "LS9";
+            }
+        }
+        return postcodeDistrict;
+    }
 
-        /**
-         * Run LCC SHBE data processing
-         */
-        DW_ProcessorLCC p;
-        p = new DW_ProcessorLCC(env);
-        p.run();
+    /**
+     * For storing the expected postcodes for analysis
+     */
+    private TreeSet<String> expectedPostcodes;
+
+    public TreeSet<String> getExpectedPostcodes() {
+        if (expectedPostcodes == null) {
+            init_ExpectedPostcodes();
+        }
+        return expectedPostcodes;
+    }
+
+    /**
+     * LS1 to LS29 other For the time being all the Bradford and Wakefield
+     * postcodes have been left out. The ones known about are as follows:
+     * (BD1,BD3,BD4,BD10,BD11,BD16 WF2,WF3,WF10,WF12,WF17)
+     *
+     * @return
+     */
+    public TreeSet<String> init_ExpectedPostcodes() {
+        expectedPostcodes = new TreeSet<>();
+        for (int i = 1; i < 30; i++) {
+            String postcode = "LS" + i;
+            expectedPostcodes.add(postcode);
+        }
+        expectedPostcodes.add("unknown");
+        expectedPostcodes.add("unknown_butPreviousClaimant");
+        return expectedPostcodes;
+    }
+
+    /**
+     * For storing a set of oddPostcodes that are identified and processed
+     */
+    private HashSet<String> oddPostcodes;
+
+    public void initOddPostcodes() {
+        oddPostcodes = new HashSet<>();
+        oddPostcodes.add("");
+        oddPostcodes.add("DL8");
+        oddPostcodes.add("G71");
+        oddPostcodes.add("L1");
+        oddPostcodes.add("LS06");
+        oddPostcodes.add("LS08");
+        oddPostcodes.add("LS09");
+        oddPostcodes.add("LS104UH");
+        oddPostcodes.add("LS83");
+        oddPostcodes.add("LS97");
+        oddPostcodes.add("TF9");
+        oddPostcodes.add("TW5");
+    }
+
+    public HashSet<String> getOddPostcodes() {
+        if (oddPostcodes == null) {
+            initOddPostcodes();
+        }
+        return oddPostcodes;
     }
 
 }
