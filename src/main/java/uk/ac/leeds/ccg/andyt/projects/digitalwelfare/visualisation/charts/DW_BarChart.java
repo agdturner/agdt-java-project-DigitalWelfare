@@ -55,6 +55,7 @@ public class DW_BarChart extends Chart_Bar {
     HashMap<String, HashSet<String>> areaCodes;
 
     public DW_BarChart(DW_Environment env) {
+        super(env.ge);
         this.env = env;
     }
 
@@ -70,7 +71,8 @@ public class DW_BarChart extends Chart_Bar {
      * @param args These are ignored!
      */
     public void run(String[] args) {
-        Generic_Visualisation.getHeadlessEnvironment();
+        Generic_Visualisation v = new Generic_Visualisation(env.ge);
+        v.getHeadlessEnvironment();
         dataWidth = 400;
         dataHeight = 200;
         xAxisLabel = "Claimant Count";
@@ -289,13 +291,12 @@ public class DW_BarChart extends Chart_Bar {
                 }
             }
         }
-        Generic_Execution.shutdownExecutorService(
-                executorService, future, this);
+        this.exec.shutdownExecutorService(executorService, future, this);
     }
 
     private void generateBarChart(String level, File fout, File fin, String format, String title) {
         try {
-            Chart_Bar chart = new Chart_Bar(executorService,
+            Chart_Bar chart = new Chart_Bar(env.ge, executorService,
                     fout, format, title, dataWidth, dataHeight, xAxisLabel,
                     yAxisLabel, false, barGap, xAxisIncrement, yMax, yPin,
                     yIncrement, numberOfYAxisTicks,
@@ -315,7 +316,7 @@ public class DW_BarChart extends Chart_Bar {
             time = 240000L;
             System.out.println("OutOfMemory, waiting " + time / 1000 + " secs "
                     + "before trying to generate bar chart again...");
-            Generic_Execution.waitSychronized(this, time); // wait a minute
+            exec.waitSychronized(env.ge, this, time); // wait a minute
             System.out.println("...on we go.");
             generateBarChart(level, fout, fin, format, title);
         }
@@ -329,7 +330,7 @@ public class DW_BarChart extends Chart_Bar {
         ArrayList<String> lines;
         lines = table.readCSV(f);
 
-        MathContext mc  = new MathContext(decimalPlacePrecisionForCalculations,
+        MathContext mc = new MathContext(decimalPlacePrecisionForCalculations,
                 getRoundingMode());
         HashSet<String> areaCodes2;
         areaCodes2 = areaCodes.get(level);
@@ -413,10 +414,10 @@ public class DW_BarChart extends Chart_Bar {
     }
 
     public void initAreaCodes(ArrayList<String> levels) {
-        
+
         areaCodes = new HashMap<>();
         DW_Table table = new DW_Table(env);
-        Iterator<String> ite  = levels.iterator();
+        Iterator<String> ite = levels.iterator();
         while (ite.hasNext()) {
             String level = ite.next();
             File dir;

@@ -82,7 +82,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
             DW_Environment env,
             String level,
             String targetPropertyName,
-            ShapefileDataStoreFactory sdsf) {
+            ShapefileDataStoreFactory sdsf) throws IOException {
         super(env);
         this.Maps = env.getMaps();
         String tLeedsString = "Leeds";
@@ -145,19 +145,13 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
 
             // Read area level Census Codes
             LeedsAreaCodes = env.censusEnv.getCensusCodes(
-                    tLeedsString,
-                    level,
-                    censusDataDirectory);
+                    tLeedsString, level);
             // Read Leeds and neighbouring District LADs Census Codes for level
             LeedsAndNeighbouringLADAreaCodes = env.censusEnv.getCensusCodes(
-                    tLeedsAndNeighbouringLADsString,
-                    level,
-                    censusDataDirectory);
+                    tLeedsAndNeighbouringLADsString, level);
             // Read Leeds and neighbouring District LADs and Craven And York Census Codes
             LeedsAndNearNeighbouringLADAreaCodes = env.censusEnv.getCensusCodes(
-                    tLeedsAndNearNeighbouringLADsString,
-                    level,
-                    censusDataDirectory);
+                    tLeedsAndNearNeighbouringLADsString, level);
 
             FeatureCollection levelFC;
             SimpleFeatureType levelSFT;
@@ -199,19 +193,17 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
     public final TreeSet<String> getAreaCodesAndShapefile(String area,
             String level, String targetPropertyName,
             DW_Shapefile tLeedsLADDW_Shapefile,
-            DW_Shapefile tLevelDW_Shapefile) {
+            DW_Shapefile tLevelDW_Shapefile) throws IOException {
         TreeSet<String> result;
         File censusDataDirectory = new File(
                 env.files.getInputCensus2011AttributeDataDir(level), area);
         if (level.equalsIgnoreCase("OA")
                 || level.equalsIgnoreCase("LSOA")
                 || level.equalsIgnoreCase("MSOA")) {
-            result = env.censusEnv.getCensusCodes(area, level, censusDataDirectory);
+            result = env.censusEnv.getCensusCodes(area, level);
         } else {
             File tPostcodeShapefile;
-            tPostcodeShapefile = getPostcodeShapefile(
-                    area,
-                    level);
+            tPostcodeShapefile = getPostcodeShapefile(                    area,                    level);
             result = new TreeSet<>();
             File postcodeAreaCodesFile = getPostcodeDataAreaCodesFile(
                     area,
@@ -219,9 +211,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
             if (tPostcodeShapefile.exists()
                     && postcodeAreaCodesFile.exists()) {
                 //Read files
-                result = getAreaCodes(
-                        area,
-                        level);
+                result = getAreaCodes(                        area,                        level);
             } else {
                 tPostcodeShapefile.getParentFile().mkdirs();
                 ShapefileDataStoreFactory sdsf;

@@ -19,15 +19,17 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.logging.Level;
+import uk.ac.leeds.ccg.andyt.data.core.Data_Environment;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
@@ -47,9 +49,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
     protected transient SHBE_Handler SHBE_Handler;
     protected transient DW_UO_Data UO_Data;
     protected transient String[] SHBEFilenames;
-    protected transient HashMap<SHBE_ID, String> ClaimIDToClaimRefLookup;
+    protected transient HashMap<SHBE_ClaimID, String> ClaimIDToClaimRefLookup;
 
-    public DW_ProcessorLCC(DW_Environment e) {
+    public DW_ProcessorLCC(DW_Environment e) throws IOException {
         super(e);
         SHBE_Handler = e.getSHBE_Handler();
         UO_Data = e.getUO_Data();
@@ -69,11 +71,9 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
                 System.exit(0);
             } else {
                 File dataDir = new File(args[1]);
-                Generic_Environment ge;
-                ge = new Generic_Environment(dataDir, Level.FINE);
-                DW_Environment env = new DW_Environment(ge);
-                DW_ProcessorLCC p;
-                p = new DW_ProcessorLCC(env);
+                 DW_Environment env = new DW_Environment(new Data_Environment(
+                        new Generic_Environment(dataDir, Level.FINE)));
+                DW_ProcessorLCC p = new DW_ProcessorLCC(env);
                 p.run();
                 /**
                  * Not done this way as this would first load UnderOccupancy
@@ -86,10 +86,6 @@ public class DW_ProcessorLCC extends DW_ProcessorAbstract {
         } catch (Exception | Error e) {
             System.err.println(e.getLocalizedMessage());
             e.printStackTrace(System.err);
-//            StackTraceElement[] stes = e.getStackTrace();
-//            for (StackTraceElement ste : stes) {
-//                System.err.println(ste.toString());
-//            }
         }
     }
 

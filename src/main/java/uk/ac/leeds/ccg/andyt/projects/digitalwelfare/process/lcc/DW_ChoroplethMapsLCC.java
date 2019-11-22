@@ -20,11 +20,11 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc;
 
 import java.awt.Color;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Style;
@@ -41,7 +41,7 @@ public class DW_ChoroplethMapsLCC extends DW_ChoroplethMapsAbstract {
 
     private double distanceThreshold;
 
-    public DW_ChoroplethMapsLCC(DW_Environment env) {
+    public DW_ChoroplethMapsLCC(DW_Environment env) throws IOException {
         super(env);
     }
 
@@ -51,20 +51,9 @@ public class DW_ChoroplethMapsLCC extends DW_ChoroplethMapsAbstract {
     public static void main(String[] args) {
         try {
             new DW_ChoroplethMapsLCC(null).run();
-        } catch (Exception e) {
+        } catch (Exception | Error e) {
             System.err.println(e.getLocalizedMessage());
-            e.printStackTrace();
-//            StackTraceElement[] stes = e.getStackTrace();
-//            for (StackTraceElement ste : stes) {
-//                System.err.println(ste.toString());
-//            }
-        } catch (Error e) {
-            System.err.println(e.getLocalizedMessage());
-            e.printStackTrace();
-//            StackTraceElement[] stes = e.getStackTrace();
-//            for (StackTraceElement ste : stes) {
-//                System.err.println(ste.toString());
-//            }
+            e.printStackTrace(System.err);
         }
     }
 
@@ -737,7 +726,6 @@ public class DW_ChoroplethMapsLCC extends DW_ChoroplethMapsAbstract {
     public void runSHBE(
             boolean doUnderOccupied,
             boolean doCouncil,
-            TreeMap<String, Census_DeprivationDataRecord> deprivationRecords,
             DW_AreaCodesAndShapefiles tAreaCodesAndShapefiles,
             String[] tFilenames,
             ArrayList<Integer> include,

@@ -19,6 +19,7 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeMap;
@@ -95,20 +96,20 @@ public class DW_Files extends Generic_Files {
     private File outputAdviceLeedsTablesDir;
     private File outputUnderOccupiedDir;
 
-    public DW_Files() {
-        super();
+    public DW_Files(File dataDir) throws IOException {
+        super(dataDir);
     }
 
     public File getInputAdviceLeedsDir() {
         if (inputAdviceLeedsDir == null) {
-            inputAdviceLeedsDir = new File(getInputDataDir(), DW_Strings.sAdviceLeeds);
+            inputAdviceLeedsDir = new File(getInputDir(), DW_Strings.sAdviceLeeds);
         }
         return inputAdviceLeedsDir;
     }
 
     public File getInputCensusDir() {
         if (inputCensusDir == null) {
-            inputCensusDir = new File(getInputDataDir(), DW_Strings.sCensus);
+            inputCensusDir = new File(getInputDir(), DW_Strings.sCensus);
         }
         return inputCensusDir;
     }
@@ -146,14 +147,14 @@ public class DW_Files extends Generic_Files {
 
     public File getInputPostcodeDir() {
         if (inputPostcodeDir == null) {
-            inputPostcodeDir = new File(getInputDataDir(), DW_Strings.sPostcode);
+            inputPostcodeDir = new File(getInputDir(), DW_Strings.sPostcode);
         }
         return inputPostcodeDir;
     }
 
     public File getInputLCCDir() {
         if (inputLCCDir == null) {
-            inputLCCDir = new File(getInputDataDir(), DW_Strings.sLCC);
+            inputLCCDir = new File(getInputDir(), DW_Strings.sLCC);
         }
         return inputLCCDir;
     }
@@ -175,7 +176,7 @@ public class DW_Files extends Generic_Files {
 
     public File getSwapDir() {
         if (swapDir == null) {
-            swapDir = new File(getGeneratedDataDir(), DW_Strings.sSwap);
+            swapDir = new File(getGeneratedDir(), DW_Strings.sSwap);
             swapDir.mkdirs();
         }
         return swapDir;
@@ -199,7 +200,7 @@ public class DW_Files extends Generic_Files {
 
     public File getGeneratedAdviceLeedsDir() {
         if (generatedAdviceLeedsDir == null) {
-            generatedAdviceLeedsDir = new File(getGeneratedDataDir(),
+            generatedAdviceLeedsDir = new File(getGeneratedDir(),
                     DW_Strings.sAdviceLeeds);
             generatedAdviceLeedsDir.mkdirs();
         }
@@ -208,7 +209,7 @@ public class DW_Files extends Generic_Files {
 
     public File getGeneratedGridsDir() {
         if (generatedGridsDir == null) {
-            generatedGridsDir = new File(getGeneratedDataDir(),
+            generatedGridsDir = new File(getGeneratedDir(),
                     DW_Strings.sGrids);
             generatedGridsDir.mkdirs();
         }
@@ -226,7 +227,7 @@ public class DW_Files extends Generic_Files {
 
     public File getGeneratedCensusDir() {
         if (generatedCensusDir == null) {
-            generatedCensusDir = new File(getGeneratedDataDir(), DW_Strings.sCensus);
+            generatedCensusDir = new File(getGeneratedDir(), DW_Strings.sCensus);
             generatedCensusDir.mkdirs();
         }
         return generatedCensusDir;
@@ -256,7 +257,7 @@ public class DW_Files extends Generic_Files {
 
     public File getGeneratedPostcodeDir() {
         if (generatedPostcodeDir == null) {
-            generatedPostcodeDir = new File(getGeneratedDataDir(),
+            generatedPostcodeDir = new File(getGeneratedDir(),
                     DW_Strings.sPostcode);
             generatedPostcodeDir.mkdirs();
         }
@@ -285,7 +286,7 @@ public class DW_Files extends Generic_Files {
 
     public File getGeneratedLCCDir() {
         if (generatedLCCDir == null) {
-            generatedLCCDir = new File(getGeneratedDataDir(), DW_Strings.sLCC);
+            generatedLCCDir = new File(getGeneratedDir(), DW_Strings.sLCC);
             generatedLCCDir.mkdirs();
         }
         return generatedLCCDir;
@@ -425,7 +426,7 @@ public class DW_Files extends Generic_Files {
 
     public File getOutputAdviceLeedsDir() {
         if (outputAdviceLeedsDir == null) {
-            outputAdviceLeedsDir = new File(getOutputDataDir(),
+            outputAdviceLeedsDir = new File(getOutputDir(),
                     DW_Strings.sAdviceLeeds);
             outputAdviceLeedsDir.mkdirs();
         }
@@ -453,7 +454,7 @@ public class DW_Files extends Generic_Files {
 
     public File getOutputCensusDir() {
         if (outputCensusDir == null) {
-            outputCensusDir = new File(getOutputDataDir(), DW_Strings.sCensus);
+            outputCensusDir = new File(getOutputDir(), DW_Strings.sCensus);
             outputCensusDir.mkdirs();
         }
         return outputCensusDir;
@@ -476,7 +477,7 @@ public class DW_Files extends Generic_Files {
 
     public File getOutputLCCDir() {
         if (outputLCCDir == null) {
-            outputLCCDir = new File(getOutputDataDir(), DW_Strings.sLCC);
+            outputLCCDir = new File(getOutputDir(), DW_Strings.sLCC);
             outputLCCDir.mkdirs();
         }
         return outputLCCDir;

@@ -20,6 +20,7 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc;
 
 import java.awt.Color;
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +29,7 @@ import java.util.List;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Shapefile;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_StyleParameters;
@@ -42,7 +43,6 @@ import uk.ac.leeds.ccg.andyt.grids.core.grid.stats.Grids_GridDoubleStatsNotUpdat
 import uk.ac.leeds.ccg.andyt.grids.io.Grids_ESRIAsciiGridExporter;
 import uk.ac.leeds.ccg.andyt.grids.io.Grids_Files;
 import uk.ac.leeds.ccg.andyt.grids.io.Grids_ImageExporter;
-import uk.ac.leeds.ccg.andyt.grids.process.Grids_Processor;
 import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorGWS;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
@@ -60,7 +60,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Ma
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Shapefile;
 //import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMaps_LCC.getAllTenancyTypeGroups;
 //import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.Maps.initONSPDLookups;
-import uk.ac.leeds.ccg.andyt.vector.core.Vector_Environment;
 
 /**
  *
@@ -70,8 +69,8 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 
     protected DW_MapsLCC MapsLCC;
 
-    protected Vector_Environment ve;
     protected DW_Geotools Geotools;
+    protected Grids_Environment ge;
 
     private static final String targetPropertyNameLSOA = "LSOA11CD";
 
@@ -80,14 +79,12 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
     protected ArrayList<Geotools_Shapefile> midgrounds;
     protected ArrayList<Geotools_Shapefile> foregrounds;
 
-    public DW_DensityMapsLCC(DW_Environment de) {
+    public DW_DensityMapsLCC(DW_Environment de) throws IOException {
         super(de);
-        ve = de.Vector_Env;
         Geotools = de.getGeotools();
     }
 
     public void run() throws Exception, Error {
-        ve = new Vector_Environment();
         // If showMapsInJMapPane is true, the maps are presented in individual 
         // JMapPanes
 //        Maps.setShowMapsInJMapPane(false);
@@ -107,8 +104,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //        for (int i = 0; i < paletteNames.length; i++) {
 //            System.out.println(paletteNames[i]);
 //        }
-        Geotools_StyleParameters sp;
-        sp = new Geotools_StyleParameters();
+        Geotools_StyleParameters sp  = new Geotools_StyleParameters();
         sp.setnClasses(9);
         sp.setPaletteName("Reds");
         sp.setAddWhiteForZero(true);
@@ -123,9 +119,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         sp.setForegroundStyleTitle1("Foreground Style 1");
         MapsLCC.setStyleParameters(sp);
 
-        File generatedGridsDirectory;
-        generatedGridsDirectory = new File(
-                files.getGeneratedGridsDir(),
+        File generatedGridsDirectory  = new File( files.getGeneratedGridsDir(),
                 "Density");
 //        MapsLCC.setMapDirectory(mapDirectory);
 
@@ -140,7 +134,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
          * Grid Parameters
          */
         handleOutOfMemoryErrors = true;
-        ge = new Grids_Environment(generatedGridsDirectory);
+        ge = new Grids_Environment(env.ge, generatedGridsDirectory);
         eage = new Grids_ESRIAsciiGridExporter(ge);
         ie = new Grids_ImageExporter(ge);
         gp = new Grids_ProcessorGWS(ge);
@@ -166,7 +160,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //        styleParameters.setStylesNull();
 //        commonStyling = true;
 //        individualStyling = true;
-//        runAll(tSHBE_ID_ClientTypes);
+//        runAll(tSHBE_ClaimID_ClientTypes);
         // Equal Interval runs
         sp.setClassificationFunctionName("EqualInterval");
         sp.setStylesNull();
@@ -185,7 +179,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //        }
     }
 
-    private void init() {
+    private void init() throws IOException {
         //initStyleParameters();
         File mapDirectory;
         mapDirectory = files.getOutputSHBELineMapsDir();
@@ -204,11 +198,8 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
     }
 
-    public void runRateMaps() {
-        File dirOut;
-        dirOut = new File(
-                files.getOutputSHBEMapsDir(),
-                "Density");
+    public void runRateMaps() throws IOException {
+        File dirOut  = new File( files.getOutputSHBEMapsDir(),  "Density");
 
         String[] SHBEFilenames;
         SHBEFilenames = env.getSHBE_Handler().getSHBEFilenamesAll();
@@ -271,13 +262,12 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         Grids_ProcessorGWS p;
         p = new Grids_ProcessorGWS(ge);
 
-        Grids_GridDouble numerator = null;
+        Grids_GridDouble numerator;
         Grids_GridDouble denominator1;
         Grids_GridDouble denominator2;
         Grids_GridDouble rate;
-        Grids_Files gfiles;
-        gfiles = ge.getFiles();
-        File dir = gfiles.createNewFile(gfiles.getGeneratedGridDoubleDir());
+        Grids_Files gfiles  = ge.files;
+        File dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
         rate = (Grids_GridDouble) f.create(dir, nrows, ncols);
 
         int index;
@@ -293,7 +283,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         File denominatorFile;
         if (false) {
             numeratorFile = new File(dirIn, "2013_AprMinus2015_Oct.asc");
-            dir = gfiles.createNewFile(gfiles.getGeneratedGridDoubleDir());
+            dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
             if (numeratorFile.exists()) {
                 numerator = (Grids_GridDouble) f.create(dir, numeratorFile);
                 System.out.println(numerator.toString());
@@ -418,12 +408,12 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 numeratorFile = new File(
                         dirIn,
                         year + "_" + month + "/Density" + year + "_" + month + "_554_ncols_680_cellsize_50.0.asc");
-                dir = gfiles.createNewFile(gfiles.getGeneratedGridDoubleDir());
+                dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
                 numerator = (Grids_GridDouble) f.create(dir, numeratorFile);
                 denominatorFile = new File(
                         dirIn2,
                         year + "_" + month + "/Density" + year + "_" + month + "_554_ncols_680_cellsize_50.0.asc");
-                dir = gfiles.createNewFile(gfiles.getGeneratedGridDoubleDir());
+                dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
                 denominator2 = (Grids_GridDouble) f.create(dir, denominatorFile);
                 System.out.println(denominator2.toString());
                 //p.addToGrid(denominator1, denominator2);
@@ -511,12 +501,12 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 numeratorFile = new File(
                         dirOut2,
                         year0 + "_" + month0 + "UO_Over_All_" + type + "_Rate.asc");
-                dir = gfiles.createNewFile(gfiles.getGeneratedGridDoubleDir());
+                dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
                 numerator = (Grids_GridDouble) f.create(dir, numeratorFile);
                 denominatorFile = new File(
                         dirOut2,
                         year + "_" + month + "UO_Over_All_" + type + "_Rate.asc");
-                dir = gfiles.createNewFile(gfiles.getGeneratedGridDoubleDir());
+                dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
                 denominator2 = (Grids_GridDouble) f.create(dir, denominatorFile);
                 System.out.println(denominator2.toString());
                 //p.addToGrid(denominator1, denominator2, handleOutOfMemoryErrors);
@@ -581,12 +571,12 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 
             numeratorFile = new File(dirOut2,
                     year00 + "_" + month00 + "UO_Over_All_" + type + "_Rate.asc");
-            dir = gfiles.createNewFile(gfiles.getGeneratedGridDoubleDir());
+            dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
             numerator = (Grids_GridDouble) f.create(dir, numeratorFile);
             denominatorFile = new File(
                     dirOut2,
                     year0 + "_" + month0 + "UO_Over_All_" + type + "_Rate.asc");
-            dir = gfiles.createNewFile(gfiles.getGeneratedGridDoubleDir());
+            dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
             denominator2 = (Grids_GridDouble) f.create(dir, denominatorFile);
             System.out.println(denominator2.toString());
             //p.addToGrid(denominator1, denominator2, handleOutOfMemoryErrors);
@@ -1181,7 +1171,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
             DW_UO_Set underOccupiedSetRSL,
             boolean doCouncil,
             boolean doRSL,
-            boolean scaleToFirst) {
+            boolean scaleToFirst) throws IOException {
 
         File dirOut2 = new File(
                 dirOut,
@@ -1206,16 +1196,15 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         TreeMap<String, ONSPD_Point> lookup;
         lookup = lookups.get("Unit").get(Postcode_Handler.getNearestYM3ForONSPDLookup(yM3));
 
-        HashMap<SHBE_ID, SHBE_Record> records;
+        HashMap<SHBE_ClaimID, SHBE_Record> records;
         records = SHBEData.getRecords(env.HOOME);
 
         boolean nonZero = false;
 
         // Iterator over records
-        Iterator<SHBE_ID> recordsIte;
-        recordsIte = records.keySet().iterator();
+        Iterator<SHBE_ClaimID> recordsIte = records.keySet().iterator();
         while (recordsIte.hasNext()) {
-            SHBE_ID ClaimID = recordsIte.next();
+            SHBE_ClaimID ClaimID = recordsIte.next();
             SHBE_D_Record DRecord = records.get(ClaimID).getDRecord();
             String postcode = DRecord.getClaimantsPostcode();
 
@@ -1397,7 +1386,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
             File dirOut,
             String outputName,
             String name,
-            boolean scaleToFirst) {
+            boolean scaleToFirst) throws IOException {
 
         //styleParameters = new Geotools_StyleParameters();
         MapsLCC.getStyleParameters().setnClasses(5);

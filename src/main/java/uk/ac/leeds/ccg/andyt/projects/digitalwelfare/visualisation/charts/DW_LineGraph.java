@@ -19,6 +19,7 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 //import java.math.MathContext;
 import java.math.RoundingMode;
@@ -34,7 +35,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import uk.ac.leeds.ccg.andyt.chart.examples.Chart_Line;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
 //import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
 import uk.ac.leeds.ccg.andyt.generic.execution.Generic_Execution;
@@ -63,7 +64,8 @@ public class DW_LineGraph extends Chart_Line {
 
     HashMap<String, HashSet<String>> AreaCodes;
 
-    public DW_LineGraph(DW_Environment de) {
+    public DW_LineGraph(DW_Environment de) throws IOException {
+        super(de.ge);
         this.env = de;
         this.Files = de.files;
         this.SHBE_Handler = de.getSHBE_Handler();
@@ -76,8 +78,8 @@ public class DW_LineGraph extends Chart_Line {
             String xAxisLabel, String yAxisLabel, BigDecimal yMax,
             ArrayList<BigDecimal> yPin, BigDecimal yIncrement, int numberOfYAxisTicks,
             int decimalPlacePrecisionForCalculations,
-            int decimalPlacePrecisionForDisplay, RoundingMode rm) {
-        super(es, file, format, title, dataWidth, dataHeight, xAxisLabel,
+            int decimalPlacePrecisionForDisplay, RoundingMode rm) throws IOException {
+        super(de.ge, es, file, format, title, dataWidth, dataHeight, xAxisLabel,
                 yAxisLabel, yMax, yPin, yIncrement, numberOfYAxisTicks, 
                 true, decimalPlacePrecisionForCalculations, 
                 decimalPlacePrecisionForDisplay, rm);
@@ -101,9 +103,9 @@ public class DW_LineGraph extends Chart_Line {
      */
     public void run(
             boolean doGraphTenancyTypeTransitions,
-            boolean doGraphAggregateData) {
+            boolean doGraphAggregateData) throws IOException {
         env.ge.log("<run>");
-        Generic_Visualisation.getHeadlessEnvironment();
+        vis.getHeadlessEnvironment();
         dataWidth = 1300;
         dataHeight = 500;
         xAxisLabel = "Time Periods";
@@ -162,7 +164,7 @@ public class DW_LineGraph extends Chart_Line {
         }
     }
 
-    protected void graphAggregateData() {
+    protected void graphAggregateData() throws IOException {
         DW_Table table = new DW_Table(env);
         ArrayList<String> AZs; // AggregatedZones
         AZs = new ArrayList<>();
@@ -341,7 +343,7 @@ public class DW_LineGraph extends Chart_Line {
         }
     }
 
-    protected void graphTenancyTypeTransitions() {
+    protected void graphTenancyTypeTransitions() throws IOException {
         ArrayList<String> month3Letters;
         month3Letters = Generic_Time.getMonths3Letters();
 
@@ -395,7 +397,7 @@ public class DW_LineGraph extends Chart_Line {
             allSelectionsGrouped.put(do999, asssg);
         }
 
-        Set<SHBE_ID> UOApril2013ClaimIDs;
+        Set<SHBE_ClaimID> UOApril2013ClaimIDs;
         UOApril2013ClaimIDs = UO_Handler.getUOStartApril2013ClaimIDs(UO_Data);
 
         boolean CheckPreviousTenancyType;
@@ -459,7 +461,7 @@ public class DW_LineGraph extends Chart_Line {
 
 //                                boolean DoUOOnlyOnThoseOriginallyUO;
 //                                env.logO("<DoUOOnlyOnThoseOriginallyUO " + DoUOOnlyOnThoseOriginallyUO + ">", true);
-//                                            Set<SHBE_ID> UOApril2013ClaimIDsDummy;
+//                                            Set<SHBE_ClaimID> UOApril2013ClaimIDsDummy;
 //                                            if (DoUOOnlyOnThoseOriginallyUO) {
 //                                                UOApril2013ClaimIDsDummy = UOApril2013ClaimIDs;
 //                                            } else {
@@ -974,14 +976,14 @@ public class DW_LineGraph extends Chart_Line {
                 }
             }
         }
-        Generic_Execution.shutdownExecutorService(executorService, futures, this);
+        exec.shutdownExecutorService(executorService, futures, this);
         env.ge.log("</run>");
     }
 
     private void doSumat(File dirIn, File dirOut, ArrayList<Integer> include,
             String includeKey, TreeMap<String, HashSet<String>> allSelections,
             HashSet<Future> futures, String format, String[] SHBEFilenames,
-            boolean grouped, ArrayList<String> month3Letters) {
+            boolean grouped, ArrayList<String> month3Letters) throws IOException {
 //        Iterator<String> includesIte;
 //        includesIte = includes.keySet().iterator();
 //        while (includesIte.hasNext()) {

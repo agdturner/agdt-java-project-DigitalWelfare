@@ -27,10 +27,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
@@ -46,12 +44,12 @@ public class DW_UO_Handler extends DW_Object {
     /**
      * For convenience.
      */
-    private final HashMap<SHBE_ID, String> ClaimIDToClaimRefLookup;
-    private final HashMap<String, SHBE_ID> ClaimRefToClaimIDLookup;
+    private final HashMap<SHBE_ClaimID, String> ClaimIDToClaimRefLookup;
+    private final HashMap<String, SHBE_ClaimID> ClaimRefToClaimIDLookup;
 
     private HashSet<String> RecordTypes;
 
-    public DW_UO_Handler(DW_Environment env) {
+    public DW_UO_Handler(DW_Environment env) throws IOException {
         super(env);
         SHBE_Handler h = env.getSHBE_Handler();
         ClaimIDToClaimRefLookup = h.getClaimIDToClaimRefLookup();
@@ -69,14 +67,12 @@ public class DW_UO_Handler extends DW_Object {
      * @param fn Name of file from which data are loaded.
      * @return The loaded data.
      */
-    public HashMap<SHBE_ID, DW_UO_Record> loadInputData(File dir, String fn) {
-        String methodName;
-        methodName = "loadInputData(File,String)";
-        env.ge.log("<" + methodName + ">", true);
-        HashMap<SHBE_ID, DW_UO_Record> r = new HashMap<>();
+    public HashMap<SHBE_ClaimID, DW_UO_Record> loadInputData(File dir, String fn) {
+        String methodName = "loadInputData(File,String)";
+        env.ge.logStartTag(methodName);
+        HashMap<SHBE_ClaimID, DW_UO_Record> r = new HashMap<>();
         File inputFile = new File(dir, fn);
-        boolean addedNewClaimIDs;
-        addedNewClaimIDs = false;
+        boolean addedNewClaimIDs = false;
         String uorr = " Under-Occupied Report Record ";
         try (BufferedReader br = env.ge.io.getBufferedReader(inputFile)) {
             StreamTokenizer st = new StreamTokenizer(br);
@@ -106,10 +102,10 @@ public class DW_UO_Handler extends DW_Object {
                             rec = new DW_UO_Record(recID, line, fieldnames);
                             String claimRef;
                             claimRef = rec.getClaimRef();
-                            SHBE_ID claimID;
+                            SHBE_ClaimID claimID;
                             claimID = ClaimRefToClaimIDLookup.get(claimRef);
                             if (claimID == null) {
-                                claimID = new SHBE_ID(
+                                claimID = new SHBE_ClaimID(
                                         ClaimRefToClaimIDLookup.size());
                                 ClaimRefToClaimIDLookup.put(claimRef, claimID);
                                 ClaimIDToClaimRefLookup.put(claimID, claimRef);
@@ -140,16 +136,17 @@ public class DW_UO_Handler extends DW_Object {
                 tt = st.nextToken();
             }
             env.ge.log("Replacement Entries " + replacementEntriesCount);
+            if (addedNewClaimIDs) {
+                env.ge.io.writeObject(ClaimIDToClaimRefLookup,
+                        env.getSHBE_Handler().getClaimIDToClaimRefLookupFile());
+                env.ge.io.writeObject(ClaimRefToClaimIDLookup,
+                        env.getSHBE_Handler().getClaimRefToClaimIDLookupFile());
+            }
         } catch (IOException ex) {
-            Logger.getLogger(DW_UO_Handler.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace(System.err);
+            env.ge.log(ex.getMessage());
         }
-        if (addedNewClaimIDs) {
-            env.ge.io.writeObject(ClaimIDToClaimRefLookup,
-                    env.getSHBE_Handler().getClaimIDToClaimRefLookupFile());
-            env.ge.io.writeObject(ClaimRefToClaimIDLookup,
-                    env.getSHBE_Handler().getClaimRefToClaimIDLookupFile());
-        }
-        env.ge.log("</" + methodName + ">", true);
+        env.ge.logEndTag(methodName);
         return r;
     }
 
@@ -159,10 +156,9 @@ public class DW_UO_Handler extends DW_Object {
      * @param reload Iff true then the data is reloaded from source.
      * @return The loaded data.
      */
-    public DW_UO_Data loadUnderOccupiedReportData(boolean reload) {
-        String methodName;
-        methodName = "loadUnderOccupiedReportData(boolean)";
-        env.ge.log("<" + methodName + ">");
+    public DW_UO_Data loadUnderOccupiedReportData(boolean reload) throws IOException {
+        String methodName = "loadUnderOccupiedReportData(boolean)";
+        env.ge.logStartTag(methodName);
         DW_UO_Data r;
         TreeMap<ONSPD_YM3, DW_UO_Set> sc = new TreeMap<>();
         TreeMap<ONSPD_YM3, DW_UO_Set> sr = new TreeMap<>();
@@ -201,7 +197,7 @@ public class DW_UO_Handler extends DW_Object {
             sr.put(ym3, set);
         }
         r = new DW_UO_Data(env, sr, sc);
-        env.ge.log("</" + methodName + ">");
+        env.ge.logEndTag(methodName);
         return r;
     }
 
@@ -365,7 +361,7 @@ public class DW_UO_Handler extends DW_Object {
      * @param d The Under-Occupied Data.
      *
      */
-    public Set<SHBE_ID> getUOStartApril2013ClaimIDs(DW_UO_Data d) {
+    public Set<SHBE_ClaimID> getUOStartApril2013ClaimIDs(DW_UO_Data d) {
         return d.getClaimIDsInUO().get(d.getBaselineYM3());
     }
 
@@ -375,7 +371,7 @@ public class DW_UO_Handler extends DW_Object {
      *
      * @param d The Under-Occupied Data.
      */
-    public Set<SHBE_ID> getAllCouncilUOClaimIDs(DW_UO_Data d) {
+    public Set<SHBE_ClaimID> getAllCouncilUOClaimIDs(DW_UO_Data d) {
         return d.getClaimIDsInCouncilUO();
     }
 

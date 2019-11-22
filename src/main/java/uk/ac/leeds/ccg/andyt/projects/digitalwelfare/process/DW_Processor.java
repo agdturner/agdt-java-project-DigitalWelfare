@@ -19,7 +19,7 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 
 import java.io.File;
-import java.util.logging.Level;
+import uk.ac.leeds.ccg.andyt.data.core.Data_Environment;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc.DW_ProcessorLCC;
@@ -47,9 +47,9 @@ public class DW_Processor extends DW_ProcessorAbstract {
                 System.exit(0);
             } else {
                 File dataDir = new File(args[1]);
-                Generic_Environment ge;
-                ge = new Generic_Environment(dataDir);
-                DW_Environment env = new DW_Environment(ge);
+                Generic_Environment ge = new Generic_Environment(dataDir);
+                Data_Environment de = new Data_Environment(ge);
+                DW_Environment env = new DW_Environment(de);
                 DW_Processor p;
                 p = new DW_Processor(env);
 //                p.env.SHBE_Env = new SHBE_Environment(p.files.getDataDir(), 

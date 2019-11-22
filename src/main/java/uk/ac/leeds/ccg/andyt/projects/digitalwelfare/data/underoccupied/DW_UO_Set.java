@@ -19,11 +19,12 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Set;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
@@ -37,7 +38,7 @@ public class DW_UO_Set extends DW_Object implements Serializable {
     /**
      * DW_UO_Records indexed by ClaimID
      */
-    protected HashMap<SHBE_ID, DW_UO_Record> Map;
+    protected HashMap<SHBE_ClaimID, DW_UO_Record> Map;
 
     public DW_UO_Set(DW_Environment env) {
         super(env);
@@ -58,7 +59,7 @@ public class DW_UO_Set extends DW_Object implements Serializable {
      * @param reload If true this forces a reload of the data.
      */
     public DW_UO_Set(DW_Environment env, String type, String filename,
-            ONSPD_YM3 YM3, boolean reload) {
+            ONSPD_YM3 YM3, boolean reload) throws IOException {
         super(env);
         String methodName;
         methodName = "DW_UO_Set(...)";
@@ -88,7 +89,7 @@ public class DW_UO_Set extends DW_Object implements Serializable {
      *
      * @return Map
      */
-    public HashMap<SHBE_ID, DW_UO_Record> getMap() {
+    public HashMap<SHBE_ClaimID, DW_UO_Record> getMap() {
         return Map;
     }
 
@@ -97,7 +98,7 @@ public class DW_UO_Set extends DW_Object implements Serializable {
      *
      * @return
      */
-    public Set<SHBE_ID> getClaimIDs() {
+    public Set<SHBE_ClaimID> getClaimIDs() {
         return Map.keySet();
     }
 }

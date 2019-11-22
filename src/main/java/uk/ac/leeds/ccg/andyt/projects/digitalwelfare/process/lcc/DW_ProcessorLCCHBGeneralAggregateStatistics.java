@@ -6,13 +6,14 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
@@ -46,7 +47,8 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
      */
     protected SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
 
-    public DW_ProcessorLCCHBGeneralAggregateStatistics(DW_Environment env) {
+    public DW_ProcessorLCCHBGeneralAggregateStatistics(DW_Environment env) 
+            throws IOException {
         super(env);
         UO_Handler = env.getUO_Handler();
         SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
@@ -69,8 +71,8 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         Iterator<Integer> includeIte;
         int i;
         SHBE_Records SHBE_Records;
-        HashMap<SHBE_ID, SHBE_Record> ClaimIDToSHBE_RecordMap;
-        SHBE_ID SHBE_ID;
+        HashMap<SHBE_ClaimID, SHBE_Record> ClaimIDToSHBE_RecordMap;
+        SHBE_ClaimID SHBE_ClaimID;
         SHBE_D_Record DRecord;
         String ClaimPostcodeF;
         int NumberOfChildDependents;
@@ -117,10 +119,10 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         // Load UOdata
         TreeMap<ONSPD_YM3, DW_UO_Set> CouncilUOSets;
         DW_UO_Set CouncilUOSet;
-        HashMap<SHBE_ID, DW_UO_Record> CouncilUOMap = null;
+        HashMap<SHBE_ClaimID, DW_UO_Record> CouncilUOMap = null;
         TreeMap<ONSPD_YM3, DW_UO_Set> RSLUOSets;
         DW_UO_Set RSLUOSet;
-        HashMap<SHBE_ID, DW_UO_Record> RSLUOMap = null;
+        HashMap<SHBE_ClaimID, DW_UO_Record> RSLUOMap = null;
         CouncilUOSets = UO_Data.getCouncilUOSets();
         RSLUOSets = UO_Data.getRSLUOSets();
 
@@ -156,11 +158,11 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                 int[] resultValues;
 
                 // Iterate over records
-                Iterator<SHBE_ID> SHBE_IDIte = ClaimIDToSHBE_RecordMap.keySet().iterator();
-                while (SHBE_IDIte.hasNext()) {
-                    SHBE_ID = SHBE_IDIte.next();
+                Iterator<SHBE_ClaimID> SHBE_ClaimIDIte = ClaimIDToSHBE_RecordMap.keySet().iterator();
+                while (SHBE_ClaimIDIte.hasNext()) {
+                    SHBE_ClaimID = SHBE_ClaimIDIte.next();
                     SHBE_Record SHBE_Record;
-                    SHBE_Record = ClaimIDToSHBE_RecordMap.get(SHBE_ID);
+                    SHBE_Record = ClaimIDToSHBE_RecordMap.get(SHBE_ClaimID);
                     DRecord = SHBE_Record.getDRecord();
                     if (SHBE_Handler.isHBClaim(DRecord)) {
                         NumberOfChildDependents = DRecord.getNumberOfChildDependents();
@@ -169,12 +171,12 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                         boolean DoUO;
                         DW_UO_Record DW_UO_Record;
                         if (CouncilUOSet != null) {
-                            if (CouncilUOMap.containsKey(SHBE_ID)) {
-                                DW_UO_Record = CouncilUOMap.get(SHBE_ID);
+                            if (CouncilUOMap.containsKey(SHBE_ClaimID)) {
+                                DW_UO_Record = CouncilUOMap.get(SHBE_ClaimID);
                                 BedroomRequirement = DW_UO_Record.getBedroomRequirement();
                                 DoUO = true;
-                            } else if (RSLUOMap.containsKey(SHBE_ID)) {
-                                DW_UO_Record = RSLUOMap.get(SHBE_ID);
+                            } else if (RSLUOMap.containsKey(SHBE_ClaimID)) {
+                                DW_UO_Record = RSLUOMap.get(SHBE_ClaimID);
                                 BedroomRequirement = DW_UO_Record.getBedroomRequirement();
                                 DoUO = true;
                             } else {

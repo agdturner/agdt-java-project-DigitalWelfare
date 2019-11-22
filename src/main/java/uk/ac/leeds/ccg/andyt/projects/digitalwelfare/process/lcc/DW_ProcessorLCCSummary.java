@@ -5,12 +5,13 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Strings;
@@ -26,14 +27,14 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_SummaryUO;
  */
 public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
 
-    public DW_ProcessorLCCSummary(DW_Environment env) {
+    public DW_ProcessorLCCSummary(DW_Environment env) throws IOException {
         super(env);
     }
 
     @Override
     public void run() throws Exception, Error {
 
-        HashSet<SHBE_ID> Group;
+        HashSet<SHBE_ClaimID> Group;
         Group = new HashSet<>();
 
         boolean doAll;

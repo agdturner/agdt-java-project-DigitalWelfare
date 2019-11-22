@@ -22,16 +22,17 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.census.core.Census_Environment;
+import uk.ac.leeds.ccg.andyt.data.core.Data_Environment;
+import uk.ac.leeds.ccg.andyt.generic.data.census.core.Census_Environment;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_ErrorAndExceptionHandler;
 import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.census.DW_Deprivation_DataHandler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.andyt.generic.memory.Generic_MemoryManager;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
@@ -45,9 +46,9 @@ import uk.ac.leeds.ccg.andyt.vector.core.Vector_Environment;
  * Welfare program. It contains holders for commonly referred to objects that
  * might otherwise be constructed multiple times. It is also for handling memory
  * although for the time being, there has not been a need for convoluted
- * swapping of data from memory to disk.
+ * cacheping of data from memory to disk.
  */
-public class DW_Environment extends DW_OutOfMemoryErrorHandler
+public class DW_Environment extends Generic_MemoryManager
         implements Serializable {
 
     public String Directory;
@@ -56,6 +57,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 
     // For convenience
     public final DW_Files files;
+    public final transient Data_Environment de;
     public final transient Generic_Environment ge;
     public final transient SHBE_Environment SHBE_Env;
     public final transient Grids_Environment Grids_Env;
@@ -67,17 +69,18 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     public DW_UO_Data UO_Data;
     public SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
     public DW_Maps Maps;
-    public DW_Deprivation_DataHandler Deprivation_DataHandler;
     public SHBE_Handler SHBE_Handler;
 
-    public DW_Environment(Generic_Environment ge) {
-        this.ge = ge;
-        this.files = new DW_Files();
-        this.files.setDataDirectory(ge.files.getDataDir());
-        SHBE_Env = new SHBE_Environment(ge);
-        Grids_Env = new Grids_Environment(files.getGeneratedGridsDir());
-        Vector_Env = new Vector_Environment();
-        censusEnv = new Census_Environment();
+    public DW_Environment(Data_Environment de) throws IOException {
+        this.de = de;
+        this.ge = de.env;
+        this.files = new DW_Files(ge.files.getDir());
+        File shbeDir = null;
+        SHBE_Env = new SHBE_Environment(de, shbeDir);
+        Grids_Env = new Grids_Environment(ge, files.getGeneratedGridsDir());
+        Vector_Env = new Vector_Environment(Grids_Env);
+        File censusDir = null;
+        censusEnv = new Census_Environment(de, censusDir);
     }
 
     public int getDefaultMaximumNumberOfObjectsPerDirectory() {
@@ -99,7 +102,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 //            } else {
 //                if (Level < LOGGING_LEVEL_NORMAL) {
 //                    String message
-//                            = "Warning! No data to swap or clear in "
+//                            = "Warning! No data to cache or clear in "
 //                            + this.getClass().getName()
 //                            + ".tryToEnsureThereIsEnoughMemoryToContinue(boolean)";
 //                    System.out.println(message);
@@ -113,9 +116,9 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
 //                clearMemoryReserve();
 //                boolean createdRoom = false;
 //                while (!createdRoom) {
-//                    if (!swapDataAny()) {
+//                    if (!cacheDataAny()) {
 //                        if (Level < LOGGING_LEVEL_NORMAL) {
-//                            String message = "Warning! No data to swap or clear in "
+//                            String message = "Warning! No data to cache or clear in "
 //                                    + this.getClass().getName()
 //                                    + ".tryToEnsureThereIsEnoughMemoryToContinue(boolean)";
 //                            System.out.println(message);
@@ -146,11 +149,12 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * A method to try to ensure there is enough memory to continue.
      *
      * @return
+     * @throws java.io.IOException
      */
     @Override
-    public boolean checkAndMaybeFreeMemory() {
+    public boolean checkAndMaybeFreeMemory() throws IOException {
         while (getTotalFreeMemory() < Memory_Threshold) {
-            if (!swapDataAny()) {
+            if (!cacheDataAny()) {
                 return false;
             }
         }
@@ -158,15 +162,16 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     }
 
     @Override
-    public boolean swapDataAny(boolean handleOutOfMemoryError) {
+    public boolean cacheDataAny(boolean handleOutOfMemoryError)
+            throws IOException {
         try {
-            boolean result = swapDataAny();
+            boolean result = cacheDataAny();
             checkAndMaybeFreeMemory();
             return result;
         } catch (OutOfMemoryError e) {
             if (handleOutOfMemoryError) {
                 clearMemoryReserve();
-                boolean result = swapDataAny(HOOMEF);
+                boolean result = cacheDataAny(HOOMEF);
                 initMemoryReserve();
                 return result;
             } else {
@@ -176,21 +181,18 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
     }
 
     /**
-     * Currently this just tries to swap a SHBE collection.
+     * Currently this just tries to cache a SHBE collection.
      *
      * @return
      */
     @Override
-    public boolean swapDataAny() {
-        boolean clearedSomeSHBECache;
-        clearedSomeSHBECache = clearSomeSHBECache();
-        if (clearedSomeSHBECache) {
-            return clearedSomeSHBECache;
-        } else {
-            System.out.println("No SHBE data to clear. Do some coding to try "
+    public boolean cacheDataAny() throws IOException {
+        boolean c = clearSomeSHBECache();
+        if (!c) {
+            ge.log("No SHBE data to clear. Do some coding to try "
                     + "to arrange to clear something else if needs be!!!");
-            return clearedSomeSHBECache;
         }
+        return c;
     }
 
     /**
@@ -198,16 +200,16 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      *
      * @return The number of sets of records cleared.
      */
-    public int clearAllSHBECache() {
+    public int clearAllSHBECache() throws IOException {
         return getSHBE_Handler().clearAll();
     }
 
     /**
      * Swaps to file a collection.
      *
-     * @return True iff a collection is swapped.
+     * @return True iff a collection is cacheped.
      */
-    public boolean clearSomeSHBECache() {
+    public boolean clearSomeSHBECache() throws IOException {
         return getSHBE_Handler().clearSome();
     }
 
@@ -215,13 +217,13 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      * Swaps to file a collection.
      *
      * @param YM3
-     * @return True iff a collection is swapped.
+     * @return True iff a collection is cacheped.
      */
-    public boolean clearSomeSHBECacheExcept(ONSPD_YM3 YM3) {
+    public boolean clearSomeSHBECacheExcept(ONSPD_YM3 YM3) throws IOException {
         return getSHBE_Handler().clearSomeExcept(YM3);
     }
 
-    public DW_Geotools getGeotools() {
+    public DW_Geotools getGeotools() throws IOException {
         if (Geotools == null) {
             Geotools = new DW_Geotools(this);
             //Geotools = new DW_Geotools(df.getGeneratedGeotoolsDir());
@@ -234,7 +236,7 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      *
      * @return
      */
-    public DW_UO_Handler getUO_Handler() {
+    public DW_UO_Handler getUO_Handler() throws IOException {
         if (UO_Handler == null) {
             UO_Handler = new DW_UO_Handler(this);
         }
@@ -330,7 +332,12 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      */
     public SHBE_Handler getSHBE_Handler() {
         if (SHBE_Env.handler == null) {
+            try {
             SHBE_Env.handler = new SHBE_Handler(SHBE_Env);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                ge.log(ex.getMessage());
+            }
         }
         return SHBE_Env.handler;
     }
@@ -361,22 +368,10 @@ public class DW_Environment extends DW_OutOfMemoryErrorHandler
      *
      * @return
      */
-    public DW_Maps getMaps() {
+    public DW_Maps getMaps() throws IOException {
         if (Maps == null) {
             Maps = new DW_Maps(this);
         }
         return Maps;
-    }
-
-    /**
-     * For returning an instance of Deprivation_DataHandler for convenience.
-     *
-     * @return
-     */
-    public DW_Deprivation_DataHandler getDeprivation_DataHandler() {
-        if (Deprivation_DataHandler == null) {
-            Deprivation_DataHandler = new DW_Deprivation_DataHandler(this);
-        }
-        return Deprivation_DataHandler;
     }
 }

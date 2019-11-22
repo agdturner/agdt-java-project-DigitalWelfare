@@ -5,6 +5,7 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
@@ -17,7 +18,7 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_TenancyChangesUO;
  */
 public class DW_ProcessorLCCTenancyChangesUO extends DW_ProcessorLCC {
 
-    public DW_ProcessorLCCTenancyChangesUO(DW_Environment env) {
+    public DW_ProcessorLCCTenancyChangesUO(DW_Environment env) throws IOException {
         super(env);
     }
 

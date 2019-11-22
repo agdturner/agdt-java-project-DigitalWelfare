@@ -19,7 +19,7 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data;
 
 import java.util.HashMap;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 
@@ -32,7 +32,7 @@ public class DW_Claim extends DW_Object {
     /**
      * The ClaimID of the claim.
      */
-    SHBE_ID ClaimID;
+    SHBE_ClaimID ClaimID;
 
     /**
      * Keys are SHBE indexes, values are (at the index time): true if claim is
@@ -94,17 +94,17 @@ public class DW_Claim extends DW_Object {
      */
     public HashMap<Integer, String> PostcodeFs;
 
-    public DW_Claim(DW_Environment e, int logID, SHBE_ID claimID) {
+    public DW_Claim(DW_Environment e, int logID, SHBE_ClaimID claimID) {
         super(e, logID);
         init(claimID);
     }
     
-    public DW_Claim(DW_Environment e, SHBE_ID claimID) {
+    public DW_Claim(DW_Environment e, SHBE_ClaimID claimID) {
         super(e);
         init(claimID);
     }
         
-    private void init(SHBE_ID claimID){
+    private void init(SHBE_ClaimID claimID){
         this.ClaimID = claimID;
         InSHBE = new HashMap<>();
         Suspended = new HashMap<>();

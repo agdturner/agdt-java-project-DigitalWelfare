@@ -24,6 +24,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import java.awt.Color;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -63,7 +64,7 @@ public class DW_LineMapsLCC extends DW_Maps {
 
     protected Geotools_Style Style;
 
-    public DW_LineMapsLCC(DW_Environment de) {
+    public DW_LineMapsLCC(DW_Environment de) throws IOException {
         super(de);
         Style = geotools.getStyle();
     }
@@ -587,13 +588,10 @@ public class DW_LineMapsLCC extends DW_Maps {
     }
 
     protected TreeMap<String, ArrayList<ONSPD_YM3>> getYM3s(
-            ArrayList<Integer> includes) {
-        TreeMap<String, ArrayList<ONSPD_YM3>> result;
-        result = new TreeMap<>();
-        SHBE_Handler tDW_SHBE_Handler;
-        tDW_SHBE_Handler = env.getSHBE_Handler();
-        String[] tSHBEFilenamesAll;
-        tSHBEFilenamesAll = tDW_SHBE_Handler.getSHBEFilenamesAll();
+            ArrayList<Integer> includes) throws IOException {
+        TreeMap<String, ArrayList<ONSPD_YM3>> r = new TreeMap<>();
+        SHBE_Handler h  = env.getSHBE_Handler();
+        String[] tSHBEFilenamesAll = h.getSHBEFilenamesAll();
         ArrayList<ONSPD_YM3> yMs;
         // All
         Iterator<Integer> includesIte;
@@ -605,7 +603,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         int i;
         while (includesIte.hasNext()) {
             i = includesIte.next();
-            yM3 = tDW_SHBE_Handler.getYM3(tSHBEFilenamesAll[i]);
+            yM3 = h.getYM3(tSHBEFilenamesAll[i]);
             if (first) {
                 name = yM3.toString();
                 first = false;
@@ -614,23 +612,23 @@ public class DW_LineMapsLCC extends DW_Maps {
         }
         name += "_TO_" + yM3;
         //result.put("All", yearMonths1);
-        result.put(name, yMs);
+        r.put(name, yMs);
         // Individual
         includesIte = includes.iterator();
         i = includesIte.next();
-        ONSPD_YM3 yM30 = tDW_SHBE_Handler.getYM3(tSHBEFilenamesAll[i]);
+        ONSPD_YM3 yM30 = h.getYM3(tSHBEFilenamesAll[i]);
         while (includesIte.hasNext()) {
             i = includesIte.next();
             yMs = new ArrayList<>();
             ONSPD_YM3 yM31;
-            yM31 = tDW_SHBE_Handler.getYM3(tSHBEFilenamesAll[i]);
+            yM31 = h.getYM3(tSHBEFilenamesAll[i]);
             yMs.add(yM30);
             yMs.add(yM31);
 //            result.put(yM, yearMonths1);
-            result.put(yM30 + "_TO_" + yM31, yMs);
+            r.put(yM30 + "_TO_" + yM31, yMs);
             yM30 = yM31;
         }
-        return result;
+        return r;
     }
 
     public void run2(
@@ -1321,7 +1319,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         }
     }
 
-    private void init(boolean doCommunityAreasOverlay) {
+    private void init(boolean doCommunityAreasOverlay) throws IOException {
         initStyleParameters();
         foregrounds = new ArrayList<>();
         mapDirectory = files.getOutputSHBELineMapsDir();
@@ -1345,7 +1343,7 @@ public class DW_LineMapsLCC extends DW_Maps {
 //        ForegroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
     }
 
-    private void initStyleParameters() {
+    private void initStyleParameters() throws IOException {
         styleParameters = new DW_StyleParameters();
         styleParameters.setForegroundStyle(
                 env.getGeotools().getStyle().createDefaultPolygonStyle(

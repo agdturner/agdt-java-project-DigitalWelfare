@@ -43,8 +43,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Maps;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
-import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataHandler;
-import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io.DW_Files;
@@ -72,7 +70,7 @@ public class DW_Maps extends Geotools_Maps {
 
     public boolean doDebug;
 
-    public DW_Maps(DW_Environment de) {
+    public DW_Maps(DW_Environment de) throws IOException {
         this.env = de;
         this.geotools = de.getGeotools();
         files = de.files;
@@ -494,7 +492,6 @@ try {
             File outputFile,
             int filter,
             TreeMap<Integer, Integer> deprivationClasses,
-            TreeMap<String, Census_DeprivationDataRecord> deprivationDataRecords,
             Integer deprivationClass,
             boolean countClientsInAndOutOfRegion) {
         TreeMap<Integer, Integer> inAndOutOfRegionCount = null;
@@ -563,38 +560,6 @@ try {
                     Object value = p.getValue();
                     //System.out.println("PropertyValue " + value);
                     String valueString = value.toString();
-                    if (deprivationDataRecords != null) {
-                        Census_DeprivationDataRecord aDeprivation_DataRecord;
-                        aDeprivation_DataRecord = deprivationDataRecords.get(valueString);
-                        // aDeprivation_DataRecord might be null as deprivation data comes from 2001 census...
-                        if (aDeprivation_DataRecord != null) {
-                            Integer thisDeprivationClass;
-                            thisDeprivationClass = Census_DeprivationDataHandler.getDeprivationClass(
-                                    deprivationClasses,
-                                    aDeprivation_DataRecord);
-                            if (thisDeprivationClass == deprivationClass.intValue()) {
-                                sf = (SimpleFeature) inputFeature;
-                                id_int = calculate0(
-                                        filter,
-                                        areaCodes,
-                                        levelData,
-                                        keySet,
-                                        attributeName,
-                                        sf,
-                                        sfb,
-                                        tsfc,
-                                        id_int,
-                                        area,
-                                        population,
-                                        valueString,
-                                        populationMultiplier,
-                                        countClientsInAndOutOfRegion,
-                                        inAndOutOfRegionCount);
-                            }
-                        } else {
-                            int debug = 1;
-                        }
-                    } else {
                         sf = (SimpleFeature) inputFeature;
                         id_int = calculate0(
                                 filter,
@@ -612,7 +577,6 @@ try {
                                 populationMultiplier,
                                 countClientsInAndOutOfRegion,
                                 inAndOutOfRegionCount);
-                    }
                 }
             }
         }
@@ -799,14 +763,11 @@ try {
     }
 
     public DW_Shapefile getCommunityAreasDW_Shapefile() {
-        DW_Shapefile r;
         String name = "communityareas_region.shp";
-        File dir = new File(env.files.getInputDataDir(), "CommunityAreas");
+        File dir = new File(env.files.getInputDir(), "CommunityAreas");
         dir = new File(dir, name);
-        File f;
-        f = new File(dir, name);
-        r = new DW_Shapefile(f);
-        return r;
+        File f = new File(dir, name);
+        return new DW_Shapefile(f);
     }
 
     public String getLevel() {

@@ -27,7 +27,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_ID;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_PersonID;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_PersonID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 
 /**

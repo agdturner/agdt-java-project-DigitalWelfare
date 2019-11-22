@@ -21,13 +21,13 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping;
 import java.util.ArrayList;
 import org.geotools.styling.Style;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_LegendItem;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_AbstractStyleParameters;
+import uk.ac.leeds.ccg.andyt.geotools.Geotools_StyleParameters;
 
 /**
  *
  * @author geoagdt
  */
-public class DW_StyleParameters extends Geotools_AbstractStyleParameters {
+public class DW_StyleParameters extends Geotools_StyleParameters {
     
     private ArrayList<Style> midgroundStyles;
     private ArrayList<Style> backgroundStyles;

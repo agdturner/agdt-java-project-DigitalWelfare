@@ -6,6 +6,7 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -16,9 +17,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.id.ONSPD_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
@@ -79,7 +80,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
     boolean doAggregation = false;
     boolean doHBGeneralAggregateStatistics = false;
 
-    public DW_ProcessorLCCAggregate(DW_Environment env) {
+    public DW_ProcessorLCCAggregate(DW_Environment env) throws IOException {
         super(env);
         UO_Handler = env.getUO_Handler();
         SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
@@ -226,7 +227,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             HashMap<Boolean, ArrayList<String>> TTsGrouped,
             HashMap<Boolean, ArrayList<Integer>> regulatedGroups,
             HashMap<Boolean, ArrayList<Integer>> unregulatedGroups,
-            TreeMap<String, ArrayList<Integer>> includes) {
+            TreeMap<String, ArrayList<Integer>> includes) throws IOException {
         env.ge.log("<doAggregation>", true);
         int CensusYear = 2011;
         // Get Lookup
@@ -353,9 +354,9 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
      * @return True iff claimantNINO1 is in tIDIndexes in any index from 0 to i
      * - 1.
      */
-    private boolean getHasClaimantBeenSeenBefore(SHBE_ID ID, int i,
+    private boolean getHasClaimantBeenSeenBefore(SHBE_ClaimID ID, int i,
             ArrayList<Integer> include,
-            ArrayList<ArrayList<SHBE_ID>> tIDIndexes) {
+            ArrayList<ArrayList<SHBE_ClaimID>> tIDIndexes) {
         boolean result = false;
         Iterator<Integer> iteInclude;
         iteInclude = include.iterator();
@@ -366,7 +367,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             if (i0 == i) {
                 break;
             }
-            ArrayList<SHBE_ID> tIDIndex;
+            ArrayList<SHBE_ClaimID> tIDIndex;
             tIDIndex = tIDIndexes.get(j);
             if (tIDIndex.contains(ID)) {
                 return true;
@@ -428,8 +429,8 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         TreeMap<String, DW_UO_Set> CouncilSets;
         CouncilSets = (TreeMap<String, DW_UO_Set>) UnderOccupiedData[0];
         Iterator<String> ite;
-        Iterator<SHBE_ID> ite2;
-        HashSet<SHBE_ID> totalCouncil;
+        Iterator<SHBE_ClaimID> ite2;
+        HashSet<SHBE_ClaimID> totalCouncil;
         totalCouncil = new HashSet<>();
         ite = CouncilSets.keySet().iterator();
         while (ite.hasNext()) {
@@ -439,7 +440,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             s = CouncilSets.get(YM3);
             ite2 = s.getMap().keySet().iterator();
             while (ite2.hasNext()) {
-                SHBE_ID CTBRefID;
+                SHBE_ClaimID CTBRefID;
                 CTBRefID = ite2.next();
                 totalCouncil.add(CTBRefID);
             }
@@ -447,7 +448,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         env.ge.log("Number of Council tenants effected by underoccupancy " + totalCouncil.size(), true);
         TreeMap<String, DW_UO_Set> tRSLSets;
         tRSLSets = (TreeMap<String, DW_UO_Set>) UnderOccupiedData[1];
-        HashSet<SHBE_ID> totalRSL;
+        HashSet<SHBE_ClaimID> totalRSL;
         totalRSL = new HashSet<>();
         ite = tRSLSets.keySet().iterator();
         while (ite.hasNext()) {
@@ -457,7 +458,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             s = tRSLSets.get(yM);
             ite2 = s.getMap().keySet().iterator();
             while (ite2.hasNext()) {
-                SHBE_ID CTBRefID;
+                SHBE_ClaimID CTBRefID;
                 CTBRefID = ite2.next();
                 totalRSL.add(CTBRefID);
             }
@@ -518,18 +519,18 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
      * @param m A map of ClaimID To Tenancy Type Lookups.
      * @return
      */
-    protected HashMap<SHBE_ID, Integer> loadClaimIDToTTLookup(ONSPD_YM3 ym3,
-            Integer key, HashMap<Integer, HashMap<SHBE_ID, Integer>> m) {
-        HashMap<SHBE_ID, Integer> r;
+    protected HashMap<SHBE_ClaimID, Integer> loadClaimIDToTTLookup(ONSPD_YM3 ym3,
+            Integer key, HashMap<Integer, HashMap<SHBE_ClaimID, Integer>> m) {
+        HashMap<SHBE_ClaimID, Integer> r;
         if (m.containsKey(key)) {
             r = m.get(key);
         } else {
             r = new HashMap<>();
             SHBE_Records sr = SHBE_Handler.getRecords(ym3, env.HOOME);
-            HashMap<SHBE_ID, SHBE_Record> recs = sr.getRecords(env.HOOME);
-            Iterator<SHBE_ID> ite = recs.keySet().iterator();
+            HashMap<SHBE_ClaimID, SHBE_Record> recs = sr.getRecords(env.HOOME);
+            Iterator<SHBE_ClaimID> ite = recs.keySet().iterator();
             while (ite.hasNext()) {
-                SHBE_ID claimID = ite.next();
+                SHBE_ClaimID claimID = ite.next();
                 r.put(claimID, recs.get(claimID).getDRecord().getTenancyType());
             }
             m.put(key, r);
@@ -545,10 +546,10 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
      * @param m ClaimID To PostcodeID Lookups
      * @return a specific ClaimID To PostcodeID Lookup.
      */
-    protected HashMap<SHBE_ID, ONSPD_ID> loadClaimIDToPostcodeIDLookup(
-            ONSPD_YM3 ym3, Integer key, 
-            HashMap<Integer, HashMap<SHBE_ID, ONSPD_ID>> m) {
-        HashMap<SHBE_ID, ONSPD_ID> r;
+    protected HashMap<SHBE_ClaimID, ONSPD_ID> loadClaimIDToPostcodeIDLookup(
+            ONSPD_YM3 ym3, Integer key,
+            HashMap<Integer, HashMap<SHBE_ClaimID, ONSPD_ID>> m) throws IOException {
+        HashMap<SHBE_ClaimID, ONSPD_ID> r;
         if (m.containsKey(key)) {
             r = m.get(key);
         } else {
@@ -560,17 +561,13 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
     }
 
     private void writeTransitionFrequencies(
-            TreeMap<String, Integer> transitions,
-            File dirOut,
-            String dirname,
-            String name,
-            boolean reportTenancyTransitionBreaks) {
+            TreeMap<String, Integer> transitions, File dirOut, String dirname, 
+            String name, boolean reportTenancyTransitionBreaks) 
+            throws IOException {
         if (transitions.size() > 0) {
-            File dirOut2;
-            dirOut2 = new File(dirOut, dirname);
-            dirOut2.mkdir();
-            PrintWriter pw;
-            pw = getFrequencyPrintWriter(dirOut2, name,
+            File d  = new File(dirOut, dirname);
+            d.mkdir();
+            PrintWriter pw  = getFrequencyPrintWriter(d, name,
                     reportTenancyTransitionBreaks);
             pw.println("Count, Type");
             Iterator<String> ite2;
@@ -587,26 +584,18 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         }
     }
 
-    private PrintWriter getFrequencyPrintWriter(
-            File dirOut,
-            String name,
-            boolean reportTenancyTransitionBreaks) {
-        PrintWriter result;
-        File dirOut2;
-        dirOut2 = new File(                dirOut,                "Frequencies");
+    private PrintWriter getFrequencyPrintWriter(File dirOut, String name,
+            boolean reportTenancyTransitionBreaks) throws IOException {
+        File d = new File(dirOut, "Frequencies");
         if (reportTenancyTransitionBreaks) {
-            dirOut2 = new File(                    dirOut2,
-                    SHBE_Strings.s_IncludingTenancyTransitionBreaks);
+            d = new File(d, SHBE_Strings.s_IncludingTenancyTransitionBreaks);
         } else {
-            dirOut2 = new File(                    dirOut2,
-                    SHBE_Strings.s_IncludingTenancyTransitionBreaksNo);
+            d = new File(d, SHBE_Strings.s_IncludingTenancyTransitionBreaksNo);
         }
-        dirOut2.mkdirs();
-        File f;
-        f = new File(                dirOut2,                name);
+        d.mkdirs();
+        File f = new File(d, name);
         env.ge.log("Write " + f, true);
-        result = env.ge.io.getPrintWriter(f, false);
-        return result;
+        return env.ge.io.getPrintWriter(f, false);
     }
 
     /**
@@ -645,7 +634,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             ArrayList<String> levels,
             ArrayList<String> types,
             ArrayList<String> distanceTypes,
-            ArrayList<Double> distances) {
+            ArrayList<Double> distances) throws IOException {
         TreeMap<String, File> outputDirs;
         outputDirs = files.getOutputSHBELevelDirsTreeMap(
                 levels,
@@ -688,7 +677,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             recs0 = env.getSHBE_Handler().getRecords(YM30, env.HOOME);
             ONSPD_YM3 YM30v;
             YM30v = recs0.getNearestYM3ForONSPDLookup();
-            HashMap<SHBE_ID, SHBE_Record> records0;
+            HashMap<SHBE_ClaimID, SHBE_Record> records0;
             TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, Integer>>>>> claimantTypeTenureLevelTypeAreaCounts;
             TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<Integer, Integer>>>>> claimantTypeTenureLevelTypeTenureCounts;
             TreeMap<String, TreeMap<String, TreeMap<String, TreeMap<String, File>>>> claimantTypeTenureLevelTypeDirs;
@@ -788,10 +777,10 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 }
             }
             // Iterator over records
-            Iterator<SHBE_ID> recordsIte;
+            Iterator<SHBE_ClaimID> recordsIte;
             recordsIte = records0.keySet().iterator();
             while (recordsIte.hasNext()) {
-                SHBE_ID ClaimID;
+                SHBE_ClaimID ClaimID;
                 ClaimID = recordsIte.next();
                 SHBE_Record SHBE_Record0;
                 SHBE_Record0 = records0.get(ClaimID);
@@ -924,10 +913,10 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             yearMonthClaimantTypeTenureLevelDistanceTypeDistanceCountAreas = new TreeMap<>();
 
             // Initialise tIDIndexes
-            ArrayList<ArrayList<SHBE_ID>> tIDIndexes;
+            ArrayList<ArrayList<SHBE_ClaimID>> tIDIndexes;
             tIDIndexes = new ArrayList<>();
             if (true) {
-//                ArrayList<SHBE_ID> tID_HashSet;
+//                ArrayList<SHBE_ClaimID> tID_HashSet;
 //                tID_HashSet = recs0.getClaimIDToClaimantPersonIDLookup(env.HOOME);
 //                tIDIndexes.add(tID_HashSet);
             }
@@ -939,9 +928,9 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 // Load next data
                 SHBE_Records recs1;
                 recs1 = env.getSHBE_Handler().getRecords(YM31, env.HOOME);
-                HashMap<SHBE_ID, String> ClaimIDToPostcodeIDLookup1;
-                ClaimIDToPostcodeIDLookup1 = null;//recs1.getClaimSHBE_IDToPostcodeLookup();
-                HashMap<SHBE_ID, Integer> ClaimIDToTTLookup1;
+                HashMap<SHBE_ClaimID, String> ClaimIDToPostcodeIDLookup1;
+                ClaimIDToPostcodeIDLookup1 = null;//recs1.getClaimSHBE_ClaimIDToPostcodeLookup();
+                HashMap<SHBE_ClaimID, Integer> ClaimIDToTTLookup1;
                 ClaimIDToTTLookup1 = null;//recs1.getClaimantIDToTenancyTypeLookup();
                 ONSPD_YM3 YM31v;
                 YM31v = recs1.getNearestYM3ForONSPDLookup();
@@ -977,12 +966,12 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 }
 
                 if (true) {
-//                    ArrayList<SHBE_ID> tID_HashSet;
+//                    ArrayList<SHBE_ClaimID> tID_HashSet;
 //                    tID_HashSet = recs1.getClaimantClaimIDs(env.HOOME);
 //                    tIDIndexes.add(tID_HashSet);
                 }
                 //records0 = (TreeMap<String, SHBE_Record>) SHBEData0[0];
-                HashMap<SHBE_ID, SHBE_Record> records1;
+                HashMap<SHBE_ClaimID, SHBE_Record> records1;
                 records1 = recs1.getRecords(env.HOOME);
                 /* Initialise A:
                  * output directories;
@@ -1170,10 +1159,10 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                     levelUnexpectedCounts.put(level, unexpectedCounts);
                 }
                 // Iterator over records
-                Iterator<SHBE_ID> SHBE_IDIte = records1.keySet().iterator();
-                while (SHBE_IDIte.hasNext()) {
-                    SHBE_ID ClaimID;
-                    ClaimID = SHBE_IDIte.next();
+                Iterator<SHBE_ClaimID> SHBE_ClaimIDIte = records1.keySet().iterator();
+                while (SHBE_ClaimIDIte.hasNext()) {
+                    SHBE_ClaimID ClaimID;
+                    ClaimID = SHBE_ClaimIDIte.next();
                     SHBE_Record Record1;
                     Record1 = records1.get(ClaimID);
                     SHBE_D_Record DRecord1 = Record1.getDRecord();
@@ -1198,10 +1187,10 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                 unexpectedCounts = levelUnexpectedCounts.get(level);
                                 String CTBRef1;
                                 CTBRef1 = DRecord1.getCouncilTaxBenefitClaimReferenceNumber();
-                                SHBE_ID claimID1;
+                                SHBE_ClaimID claimID1;
                                 claimID1 = SHBE_Handler.getClaimRefToClaimIDLookup().get(CTBRef1);
-                                SHBE_ID claimantSHBE_ID1;
-                                claimantSHBE_ID1 = null;//DW_PersonIDtoSHBE_IDLookup.get(claimantDW_PersonID1);
+                                SHBE_ClaimID claimantSHBE_ClaimID1;
+                                claimantSHBE_ClaimID1 = null;//DW_PersonIDtoSHBE_ClaimIDLookup.get(claimantDW_PersonID1);
                                 String claimantType;
                                 claimantType = SHBE_Handler.getClaimantType(DRecord1);
                                 boolean doAdd = true;
@@ -1272,7 +1261,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                     // If this claimantNINO has never been seen before it is an OnFlow
                                                     boolean hasBeenSeenBefore;
                                                     hasBeenSeenBefore = getHasClaimantBeenSeenBefore(
-                                                            claimantSHBE_ID1,
+                                                            claimantSHBE_ClaimID1,
                                                             i,
                                                             include,
                                                             tIDIndexes);

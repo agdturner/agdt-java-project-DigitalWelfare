@@ -19,6 +19,7 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
@@ -48,7 +49,8 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
     public DW_Files df;
     public DW_Strings ds;
 
-    public DW_IncomeAndRentSummary(DW_Environment e, DW_Strings ds) {
+    public DW_IncomeAndRentSummary(DW_Environment e, DW_Strings ds) 
+            throws IOException {
         super(e.SHBE_Env);
         this.de = e;
         this.df = e.files;
@@ -89,7 +91,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                 doUnderOccupancy, doCouncil, doRSL);
         if (IncomeAndRentSummaryFile.exists()) {
             if (!forceNew) {
-                return (HashMap<String, BigDecimal>) env.ge.io.readObject(
+                return (HashMap<String, BigDecimal>) env.env.io.readObject(
                         IncomeAndRentSummaryFile);
             }
         }
@@ -101,7 +103,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
         String nameSuffix;
         Iterator<String> HB_CTBIte;
         Iterator<String> PTsIte;
-        HashMap<SHBE_ID, SHBE_Record> recs;
+        HashMap<SHBE_ClaimID, SHBE_Record> recs;
         BigDecimal tBD;
         BigDecimal zBD;
         BigDecimal TotalIncome;
@@ -116,9 +118,9 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
         BigDecimal[] TotalTTWeeklyEligibleRentAmount;
         int[] TotalCount_TTWeeklyEligibleRentAmountNonZero;
         int[] TotalCount_TTWeeklyEligibleRentAmountZero;
-        Iterator<SHBE_ID> ite;
-        HashMap<SHBE_ID, DW_UO_Record> map;
-        SHBE_ID ClaimID;
+        Iterator<SHBE_ClaimID> ite;
+        HashMap<SHBE_ClaimID, DW_UO_Record> map;
+        SHBE_ClaimID ClaimID;
         int TT;
         BigDecimal income;
 
@@ -130,7 +132,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
         // Do loop for HB and CTB
         while (HB_CTBIte.hasNext()) {
             HBOrCTB = HB_CTBIte.next();
-            HashSet<SHBE_ID> ClaimIDs;
+            HashSet<SHBE_ClaimID> ClaimIDs;
 
             // Initialise variables
             TotalCount_IncomeNonZero = 0;
@@ -297,7 +299,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                         }
                     }
                 } else {
-                    Iterator<SHBE_ID> ClaimIDsIte;
+                    Iterator<SHBE_ClaimID> ClaimIDsIte;
                     ClaimIDsIte = ClaimIDs.iterator();
                     while (ClaimIDsIte.hasNext()) {
                         ClaimID = ClaimIDsIte.next();
@@ -417,7 +419,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                 }
             }
         }
-        env.ge.io.writeObject(r, IncomeAndRentSummaryFile);
+        env.env.io.writeObject(r, IncomeAndRentSummaryFile);
         return r;
     }
 

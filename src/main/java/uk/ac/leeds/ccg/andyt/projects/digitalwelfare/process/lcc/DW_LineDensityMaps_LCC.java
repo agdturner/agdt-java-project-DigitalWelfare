@@ -19,6 +19,7 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.geotools.Geotools_Shapefile;
@@ -44,7 +45,7 @@ protected DW_LineMapsLCC LineMaps_LCC;
     protected ArrayList<Geotools_Shapefile> midgrounds;
     protected ArrayList<Geotools_Shapefile> foregrounds;
 
-    public DW_LineDensityMaps_LCC(DW_Environment env) {
+    public DW_LineDensityMaps_LCC(DW_Environment env) throws IOException {
         super(env);
         LineMaps_LCC = new DW_LineMapsLCC(env);
     }

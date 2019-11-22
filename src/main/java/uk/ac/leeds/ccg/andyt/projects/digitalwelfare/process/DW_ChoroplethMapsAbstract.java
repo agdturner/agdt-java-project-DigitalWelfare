@@ -19,6 +19,7 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
@@ -39,7 +40,7 @@ public abstract class DW_ChoroplethMapsAbstract extends DW_Object {
     protected boolean doDeprivation;
     protected boolean[] doFilter;
     
-    public DW_ChoroplethMapsAbstract(DW_Environment env) {
+    public DW_ChoroplethMapsAbstract(DW_Environment env) throws IOException {
         super(env);
         Maps = env.getMaps();
     }

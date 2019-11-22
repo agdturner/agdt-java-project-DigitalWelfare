@@ -61,10 +61,8 @@ public class DW_Geotools extends Geotools_Environment {
 
     public DW_Environment Env;
 
-    protected DW_Geotools() {
-    }
-
-    public DW_Geotools(DW_Environment de) {
+    public DW_Geotools(DW_Environment de) throws IOException {
+        super(de.Vector_Env, de.ge.files.getDir());
         this.Env = de;
     }
 
@@ -101,7 +99,8 @@ public class DW_Geotools extends Geotools_Environment {
             ArrayList<Geotools_Shapefile> foregroundDW_Shapefile0,
             Geotools_Shapefile foregroundDW_Shapefile1,
             Geotools_Shapefile backgroundDW_Shapefile, File outputDir,
-            int imageWidth, boolean showMapsInJMapPane, boolean scaleToFirst) {
+            int imageWidth, boolean showMapsInJMapPane, boolean scaleToFirst) 
+            throws IOException {
         Object[] mcAndNewImageWidthAndHeight = createMapContent(normalisation,
                 outname, g, gc, foregroundDW_Shapefile0,
                 foregroundDW_Shapefile1, backgroundDW_Shapefile, imageWidth,
@@ -345,7 +344,7 @@ public class DW_Geotools extends Geotools_Environment {
             Geotools_Shapefile backgroundDW_Shapefile, String attributeName,
             File outputDir, String png_String, int imageWidth,
             Geotools_StyleParameters styleParameters, int styleIndex,
-            double max, boolean showMapsInJMapPane) {
+            double max, boolean showMapsInJMapPane) throws IOException {
         //Style resultStyle;
         DW_Shapefile outputDW_Shapefile;
         outputDW_Shapefile = new DW_Shapefile(outputShapefile);
@@ -396,7 +395,7 @@ public class DW_Geotools extends Geotools_Environment {
             DW_StyleParameters styleParameters,
             int styleIndex,
             double max,
-            boolean showMapsInJMapPane) {
+            boolean showMapsInJMapPane) throws IOException {
         String title = outname;
         //Style resultStyle;
         MapContent mc = createMapContent(
@@ -446,7 +445,7 @@ public class DW_Geotools extends Geotools_Environment {
             DW_StyleParameters styleParameters,
             //int styleIndex,
             //double max,
-            boolean showMapsInJMapPane) {
+            boolean showMapsInJMapPane) throws IOException {
         String title = outname;
         MapContent mc = createMapContent(
                 midgrounds,
@@ -487,7 +486,7 @@ public class DW_Geotools extends Geotools_Environment {
             ArrayList<Geotools_Shapefile> backgrounds,
             File outputDir,
             int imageWidth,
-            boolean showMapsInJMapPane) {
+            boolean showMapsInJMapPane) throws IOException {
         int imageHeight = getMapContentImageHeight(mc, imageWidth);
         File outputFile = getOutputFile(
                 outputDir,
@@ -556,7 +555,7 @@ public class DW_Geotools extends Geotools_Environment {
             File outputShapefile,
             File outputDir,
             int imageWidth,
-            boolean showMapsInJMapPane) {
+            boolean showMapsInJMapPane) throws IOException {
         DW_Shapefile outputDW_Shapefile;
         outputDW_Shapefile = new DW_Shapefile(outputShapefile);
         int imageHeight = getMapContentImageHeight(mc, imageWidth);
@@ -615,7 +614,7 @@ public class DW_Geotools extends Geotools_Environment {
             ArrayList<Geotools_Shapefile> midgrounds,
             File outputDir,
             int imageWidth,
-            boolean showMapsInJMapPane) {
+            boolean showMapsInJMapPane) throws IOException {
         //DW_Shapefile outputDW_Shapefile;
         //outputDW_Shapefile = new DW_Shapefile(outputShapefile);
         int imageHeight = getMapContentImageHeight(mc, imageWidth);

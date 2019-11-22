@@ -19,6 +19,7 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -35,7 +36,6 @@ import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Ar
 //import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
 //import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getYM3s;
 ////import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.Maps.initONSPDLookups;
-import uk.ac.leeds.ccg.andyt.vector.core.Vector_Environment;
 //import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
 //import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
 //import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getAllTenancyTypeChanges;
@@ -58,7 +58,6 @@ import uk.ac.leeds.ccg.andyt.vector.core.Vector_Environment;
  */
 public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
 
-    protected Vector_Environment ve;
     protected DW_LineMapsLCC LineMaps_LCC;
 
     private static final String targetPropertyNameLSOA = "LSOA11CD";
@@ -67,10 +66,9 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
     protected ArrayList<Geotools_Shapefile> midgrounds;
     protected ArrayList<Geotools_Shapefile> foregrounds;
 
-    public DW_LineDensityDifferenceMaps_LCC(DW_Environment env) {
+    public DW_LineDensityDifferenceMaps_LCC(DW_Environment env) throws IOException {
         super(env);
         LineMaps_LCC = new DW_LineMapsLCC(env);
-        ve = new Vector_Environment();
     }
 
     //DW_StyleParameters styleParameters;
@@ -80,20 +78,9 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
     public static void main(String[] args) {
         try {
             new DW_LineDensityDifferenceMaps_LCC(null).run();
-        } catch (Exception e) {
+        } catch (Exception | Error e) {
             System.err.println(e.getLocalizedMessage());
-            e.printStackTrace();
-//            StackTraceElement[] stes = e.getStackTrace();
-//            for (StackTraceElement ste : stes) {
-//                System.err.println(ste.toString());
-//            }
-        } catch (Error e) {
-            System.err.println(e.getLocalizedMessage());
-            e.printStackTrace();
-//            StackTraceElement[] stes = e.getStackTrace();
-//            for (StackTraceElement ste : stes) {
-//                System.err.println(ste.toString());
-//            }
+            e.printStackTrace(System.err);
         }
     }
 
@@ -307,7 +294,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
 //        }
     }
 
-    private void init() {
+    private void init() throws IOException {
         //initStyleParameters();
 //        Maps.setMapDirectory(DW_Files.getOutputSHBELineMapsDir());
 
@@ -316,9 +303,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
 //        backgrounds = new ArrayList<AGDT_Shapefile>();
         //initLSOACodesAndLeedsLSOAShapefile(targetPropertyNameLSOA);
         tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
-                env,
-                "LSOA",
-                targetPropertyNameLSOA,
+                env, "LSOA", targetPropertyNameLSOA, 
                 Maps.getShapefileDataStoreFactory());
         foregrounds.add(tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile());
 //        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
@@ -341,13 +326,11 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
             ArrayList<ArrayList<String>> allTenancyTypeChanges,
             boolean doUnderOccupancyData,
             boolean doCouncil,
-            boolean scaleToFirst) {
+            boolean scaleToFirst) throws IOException {
 
         // Single run
         File dirIn1 = new File("/scratch02/DigitalWelfare/Output/LCC/SHBE/Maps/Line/Tenancy/All/TenancyTypeTransition/CheckedPreviousTenure/TenancyAndPostcodeChanges/All/PostcodeChanged/Monthly/Ungrouped/PostcodeChanges/CheckedPreviousPostcode/2013_January_TO_2015_September/");
-        File dirOut1 = new File(
-                dirIn1,
-                "Density");
+        File dirOut1 = new File(dirIn1, "Density");
 //        grida File /scratch02/DigitalWelfare/Output/LCC/SHBE/Maps/Line/Tenancy/All/TenancyTypeTransition/CheckedPreviousTenure/TenancyAndPostcodeChanges/All/PostcodeChanged/Monthly/Ungrouped/PostcodeChanges/CheckedPreviousPostcode/2013_January_TO_2015_September/1-3/1-3E/Density/IndividualStyle/1-3EE/1-3EE_554_ncols_680_cellsize_50.0.asc does not exist!
 //grida File /scratch02/DigitalWelfare/Output/LCC/SHBE/Maps/Line/Tenancy/All/TenancyTypeTransition/CheckedPreviousTenure/TenancyAndPostcodeChanges/All/PostcodeChanged/Monthly/Ungrouped/PostcodeChanges/CheckedPreviousPostcode/2013_January_TO_2015_September/1-3/3E-1/Density/IndividualStyle/1-3ES/1-3ES_554_ncols_680_cellsize_50.0.asc does not exist!
         String name;
@@ -356,12 +339,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
         namea = "1-3";
         String nameb;
         nameb = getReverseName(namea);
-        doDensity(
-                dirIn1,
-                name,
-                namea,
-                nameb,
-                scaleToFirst);
+        doDensity(dirIn1, name, namea, nameb, scaleToFirst);
         System.exit(0);
 
 //        //        backgroundDW_Shapefile = tMSOACodesAndLeedsMSOAShapefile.getLeedsLevelDW_Shapefile();
@@ -466,74 +444,34 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
         return result;
     }
 
-    protected void doDensity(
-            File dirIn,
-            String name,
-            String namea,
-            String nameb,
-            boolean scaleToFirst) {
+    protected void doDensity(File dirIn, String name, String namea,
+            String nameb, boolean scaleToFirst) throws IOException {
         // /scratch02/DigitalWelfare/Output/LCC/SHBE/Maps/Line/Tenancy/All/TenancyTypeTransition/CheckedPreviousTenure/TenancyAndPostcodeChanges/All/PostcodeChanged/All/Ungrouped/PostcodeChanges/CheckedPreviousPostcode/2008_October
         // /scratch02/DigitalWelfare/Output/LCC/SHBE/Maps/Line/Tenancy/All/TenancyTypeTransition/CheckedPreviousTenure/TenancyAndPostcodeChanges/UnderOccupied/Council/PostcodeChanged/Monthly/Ungrouped/PostcodeChanges/CheckedPreviousPostcode/2008_October/1-3/1-3E.shp/1-3E.shp
         // /scratch02/DigitalWelfare/Output/LCC/SHBE/Maps/Line/Tenancy/All/TenancyTypeTransition/CheckedPreviousTenure/TenancyAndPostcodeChanges/UnderOccupied/Council/PostcodeChanged/Monthly/Ungrouped/PostcodeChanges/CheckedPreviousPostcode/2013_April_TO_2013_May_TO_2013_May/1-3/1-3S.shp/1-3S.shp
-        File dirIna;
-        dirIna = new File(
-                dirIn,
-                namea);
+        File dirIna = new File(dirIn, namea);
 
-        File dirInb;
-        dirInb = new File(
-                dirIn,
-                nameb);
+        File dirInb = new File(dirIn, nameb);
 
-        dirIna = new File(
-                dirIna,
-                "Density");
-        dirInb = new File(
-                dirInb,
-                "Density");
-        File dirOut;
-        dirOut = new File(
-                dirIn,
-                namea + "-" + nameb);
+        dirIna = new File(dirIna, "Density");
+        dirInb = new File(dirInb, "Density");
+        File dirOut = new File(dirIn, namea + "-" + nameb);
 
         if (scaleToFirst) {
-            dirIna = new File(
-                    dirIna,
-                    "CommonStyle");
-            dirInb = new File(
-                    dirInb,
-                    "CommonStyle");
+            dirIna = new File(dirIna, "CommonStyle");
+            dirInb = new File(dirInb, "CommonStyle");
         } else {
-            dirIna = new File(
-                    dirIna,
-                    "IndividualStyle");
-            dirInb = new File(
-                    dirInb,
-                    "IndividualStyle");
+            dirIna = new File(dirIna, "IndividualStyle");
+            dirInb = new File(dirInb, "IndividualStyle");
         }
         String name1;
         String name2;
         name1 = namea + "E";
         name2 = nameb + "S";
-        doDensity(
-                dirOut,
-                dirIna,
-                dirInb,
-                name,
-                name1,
-                name2,
-                scaleToFirst);
+        doDensity(dirOut, dirIna, dirInb, name, name1, name2, scaleToFirst);
         name1 = namea + "S";
         name2 = nameb + "E";
-        doDensity(
-                dirOut,
-                dirInb,
-                dirIna,
-                name,
-                name1,
-                name2,
-                scaleToFirst);
-
+        doDensity(dirOut, dirInb, dirIna, name, name1, name2, scaleToFirst);
     }
 
     protected void doDensity(
@@ -543,7 +481,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
             String name,
             String name1,
             String name2,
-            boolean scaleToFirst) {
+            boolean scaleToFirst) throws IOException {
         dirIna = new File(
                 dirIna,
                 name1);
@@ -606,12 +544,12 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
                     + "difference is all shown in grida File " + grida);
             return;
         }
-        Grids_Files gfiles = ge.getFiles();
-        File dir = gfiles.createNewFile(gfiles.getGeneratedGridDoubleDir());
+        Grids_Files gfiles = env.Grids_Env.files;
+        File dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
 
         Grids_GridDouble ga = (Grids_GridDouble) gf.create(dir, grida);
         System.out.println("ga " + ga.toString());
-        dir = gfiles.createNewFile(gfiles.getGeneratedGridDoubleDir());
+        dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
         Grids_GridDouble gb = (Grids_GridDouble) gf.create(dir, gridb);
         System.out.println("gb " + gb.toString());
         gp.addToGrid(ga, gb, -1.0d);

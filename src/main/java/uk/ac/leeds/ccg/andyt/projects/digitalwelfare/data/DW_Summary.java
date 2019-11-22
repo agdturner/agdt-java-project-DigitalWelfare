@@ -19,6 +19,7 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -27,17 +28,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_ID;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.id.ONSPD_ID;
 import uk.ac.leeds.ccg.andyt.math.Math_BigDecimal;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_PersonID;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_PersonID;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
 import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
@@ -820,7 +820,7 @@ public class DW_Summary extends DW_Object {
     protected int TotalCount_CTBPostcode0DNEPostcode1NotValid;
     protected int TotalCount_CTBPostcode0NotValidPostcode1DNE;
 
-    public DW_Summary(DW_Environment env) {
+    public DW_Summary(DW_Environment env) throws IOException {
         super(env);
         this.SHBE_Handler = env.getSHBE_Handler();
         this.Postcode_Handler = env.getONSPD_Handler();
@@ -828,7 +828,7 @@ public class DW_Summary extends DW_Object {
         ds = new DW_Strings();
     }
 
-    public DW_Summary(DW_Environment env, int nTT, int nEG, int nPSI, boolean hoome) {
+    public DW_Summary(DW_Environment env, int nTT, int nEG, int nPSI, boolean hoome) throws IOException {
         this(env);
         init(nTT, nEG, nPSI);
     }
@@ -5032,7 +5032,7 @@ public class DW_Summary extends DW_Object {
             String[] SHBEFilenames, ArrayList<Integer> include,
             boolean forceNewSummaries, ArrayList<String> HB_CTB,
             ArrayList<String> PTs, int nTT, int nEG, int nPSI, boolean hoome
-    ) {
+    ) throws IOException {
         String methodName = "getSummaryTable(...)";
         env.ge.log("<" + methodName + ">", true);
 
@@ -5049,18 +5049,18 @@ public class DW_Summary extends DW_Object {
         ONSPD_YM3 YM31;
         SHBE_Records SHBE_Records0;
         SHBE_Records SHBE_Records1;
-        HashSet<SHBE_ID> ClaimIDsWithStatusOfHBAtExtractDateInPayment0;
-        HashSet<SHBE_ID> ClaimIDsWithStatusOfHBAtExtractDateSuspended0;
-        HashSet<SHBE_ID> ClaimIDsWithStatusOfHBAtExtractDateOther0;
-        HashSet<SHBE_ID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment0;
-        HashSet<SHBE_ID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended0;
-        HashSet<SHBE_ID> ClaimIDsWithStatusOfCTBAtExtractDateOther0;
-        HashSet<SHBE_ID> ClaimIDsWithStatusOfHBAtExtractDateInPayment1;
-        HashSet<SHBE_ID> ClaimIDsWithStatusOfHBAtExtractDateSuspended1;
-        HashSet<SHBE_ID> ClaimIDsWithStatusOfHBAtExtractDateOther1;
-        HashSet<SHBE_ID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment1;
-        HashSet<SHBE_ID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended1;
-        HashSet<SHBE_ID> ClaimIDsWithStatusOfCTBAtExtractDateOther1;
+        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateInPayment0;
+        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateSuspended0;
+        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateOther0;
+        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment0;
+        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended0;
+        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateOther0;
+        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateInPayment1;
+        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateSuspended1;
+        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateOther1;
+        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment1;
+        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended1;
+        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateOther1;
 
         // Initialise counts
         initCounts(nTT, nEG, nPSI);
@@ -5176,7 +5176,7 @@ public class DW_Summary extends DW_Object {
 
     protected void doPartSummarySingleTime(
             SHBE_Records SHBE_Records,
-            HashMap<SHBE_ID, SHBE_Record> Records,
+            HashMap<SHBE_ClaimID, SHBE_Record> Records,
             ONSPD_YM3 YM3,
             String filename,
             boolean forceNewSummaries,
@@ -5186,13 +5186,13 @@ public class DW_Summary extends DW_Object {
             int nEG,
             int nPSI,
             TreeMap<String, HashMap<String, String>> summaries
-    ) {
+    ) throws IOException {
         // Declare variables
         String key;
         HashMap<String, String> summary;
         HashMap<String, Number> LoadSummary;
         HashMap<String, BigDecimal> IncomeAndRentSummary;
-        HashSet<SHBE_ID> ClaimIDsOfNewSHBEClaims;
+        HashSet<SHBE_ClaimID> ClaimIDsOfNewSHBEClaims;
 
         // Initialise variables
         key = SHBE_Handler.getYearMonthNumber(filename);
@@ -5210,7 +5210,7 @@ public class DW_Summary extends DW_Object {
         /**
          * Add things not quite added right from load summary
          */
-        HashSet<SHBE_ID> ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore;
+        HashSet<SHBE_ClaimID> ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore;
         ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = SHBE_Records.getClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore(env.HOOME);
         summary.put(SHBE_Strings.s_CountOfNewSHBEClaimsWhereClaimantWasPartnerBefore,
                 Integer.toString(ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore.size()));
@@ -5263,21 +5263,21 @@ public class DW_Summary extends DW_Object {
 
     protected void doPartSummaryCompare2Times(
             SHBE_Records SHBE_Records0,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfHBAtExtractDateInPayment0,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfHBAtExtractDateSuspended0,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfHBAtExtractDateOther0,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment0,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended0,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfCTBAtExtractDateOther0,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateInPayment0,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateSuspended0,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateOther0,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment0,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended0,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateOther0,
             ONSPD_YM3 YM30,
             String filename0,
             SHBE_Records SHBE_Records1,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfHBAtExtractDateInPayment1,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfHBAtExtractDateSuspended1,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfHBAtExtractDateOther1,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment1,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended1,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfCTBAtExtractDateOther1,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateInPayment1,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateSuspended1,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateOther1,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment1,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended1,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateOther1,
             ONSPD_YM3 YM31,
             String filename1,
             boolean forceNewSummaries,
@@ -5287,7 +5287,7 @@ public class DW_Summary extends DW_Object {
             int nTT,
             int nEG,
             int nPSI,
-            TreeMap<String, HashMap<String, String>> summaries) {
+            TreeMap<String, HashMap<String, String>> summaries) throws IOException {
 
         doPartSummarySingleTime(
                 SHBE_Records1,
@@ -5332,11 +5332,11 @@ public class DW_Summary extends DW_Object {
 
     protected void doPartSummaryCompare2Times(
             SHBE_Records SHBE_Records0,
-            HashMap<SHBE_ID, SHBE_Record> Records0,
+            HashMap<SHBE_ClaimID, SHBE_Record> Records0,
             ONSPD_YM3 YM30,
             String filename0,
             SHBE_Records SHBE_Records1,
-            HashMap<SHBE_ID, SHBE_Record> Records1,
+            HashMap<SHBE_ClaimID, SHBE_Record> Records1,
             ONSPD_YM3 YM31,
             String filename1,
             boolean forceNewSummaries,
@@ -5345,7 +5345,7 @@ public class DW_Summary extends DW_Object {
             int nTT,
             int nEG,
             int nPSI,
-            TreeMap<String, HashMap<String, String>> summaries) {
+            TreeMap<String, HashMap<String, String>> summaries) throws IOException {
 
         doPartSummarySingleTime(
                 SHBE_Records1,
@@ -5395,27 +5395,27 @@ public class DW_Summary extends DW_Object {
      */
     public void doCompare2TimesLoopOverSet(
             SHBE_Records SHBE_Records0,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfHBAtExtractDateInPayment0,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfHBAtExtractDateSuspended0,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfHBAtExtractDateOther0,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment0,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended0,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfCTBAtExtractDateOther0,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateInPayment0,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateSuspended0,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateOther0,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment0,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended0,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateOther0,
             SHBE_Records SHBE_Records1,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfHBAtExtractDateInPayment1,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfHBAtExtractDateSuspended1,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfHBAtExtractDateOther1,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment1,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended1,
-            HashSet<SHBE_ID> ClaimIDsWithStatusOfCTBAtExtractDateOther1) {
-        Iterator<SHBE_ID> ite;
-        SHBE_ID ClaimID;
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateInPayment1,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateSuspended1,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateOther1,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment1,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended1,
+            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateOther1) {
+        Iterator<SHBE_ClaimID> ite;
+        SHBE_ClaimID ClaimID;
         SHBE_Record Record0;
         SHBE_D_Record D_Record0;
         SHBE_Record Record1;
         SHBE_D_Record D_Record1;
 
-        HashMap<SHBE_ID, SHBE_Record> Records0;
+        HashMap<SHBE_ClaimID, SHBE_Record> Records0;
         Records0 = SHBE_Records0.getRecords(env.HOOME);
         // Go through previous records
         ite = Records0.keySet().iterator();
@@ -5510,7 +5510,7 @@ public class DW_Summary extends DW_Object {
                 }
             }
         }
-        HashMap<SHBE_ID, SHBE_Record> Records1;
+        HashMap<SHBE_ClaimID, SHBE_Record> Records1;
         Records1 = SHBE_Records1.getRecords(env.HOOME);
         // Go through current records
         ite = Records1.keySet().iterator();
@@ -5587,10 +5587,10 @@ public class DW_Summary extends DW_Object {
     }
 
     public void doCompare2TimesLoopOverSet(
-            HashMap<SHBE_ID, SHBE_Record> Records0,
-            HashMap<SHBE_ID, SHBE_Record> Records1) {
-        Iterator<SHBE_ID> ite;
-        SHBE_ID ClaimID;
+            HashMap<SHBE_ClaimID, SHBE_Record> Records0,
+            HashMap<SHBE_ClaimID, SHBE_Record> Records1) {
+        Iterator<SHBE_ClaimID> ite;
+        SHBE_ClaimID ClaimID;
         SHBE_Record Record0;
         SHBE_D_Record D_Record0;
         SHBE_Record Record1;
@@ -5648,11 +5648,11 @@ public class DW_Summary extends DW_Object {
      * @param Records
      */
     public void doSingleTimeLoopOverSet(
-            HashMap<SHBE_ID, SHBE_Record> Records) {
-        Iterator<SHBE_ID> ite;
+            HashMap<SHBE_ClaimID, SHBE_Record> Records) {
+        Iterator<SHBE_ClaimID> ite;
         ite = Records.keySet().iterator();
         while (ite.hasNext()) {
-            SHBE_ID ClaimID = ite.next();
+            SHBE_ClaimID ClaimID = ite.next();
             SHBE_Record Record = Records.get(ClaimID);
             SHBE_D_Record D_Record = Record.getDRecord();
             doSingleTimeCount(Record, D_Record);
@@ -5689,11 +5689,11 @@ public class DW_Summary extends DW_Object {
      */
     public void addToSummary(
             HashMap<String, String> summary,
-            HashSet<SHBE_ID> ClaimIDsOfNewSHBEClaims,
-            HashMap<SHBE_ID, SHBE_Record> Records) {
-        Iterator<SHBE_ID> ite;
+            HashSet<SHBE_ClaimID> ClaimIDsOfNewSHBEClaims,
+            HashMap<SHBE_ClaimID, SHBE_Record> Records) {
+        Iterator<SHBE_ClaimID> ite;
         ite = ClaimIDsOfNewSHBEClaims.iterator();
-        SHBE_ID ClaimID;
+        SHBE_ClaimID ClaimID;
         SHBE_Record SHBE_Record;
         int PSI;
         int nPSI;
@@ -5748,7 +5748,7 @@ public class DW_Summary extends DW_Object {
             int nTT,
             int nEG,
             int nPSI
-    ) {
+    ) throws IOException {
         env.ge.log("<writeSummaryTables>", true);
         writeSummaryTableCompare2TimesPaymentTypes(summaryTable, includeKey, nTT, nEG);
         writeSummaryTableCompare2TimesTT(summaryTable, includeKey, nTT, nEG);
@@ -5775,20 +5775,17 @@ public class DW_Summary extends DW_Object {
      */
     protected PrintWriter getPrintWriter(String name, String name2,
             TreeMap<String, HashMap<String, String>> summaryTable,
-            String includeKey, boolean underOccupancy) {
+            String includeKey, boolean underOccupancy) throws IOException {
         PrintWriter r;
-        File dirOut;
-        dirOut = env.files.getOutputSHBETableDir(name2, includeKey,
+        File dirOut = env.files.getOutputSHBETableDir(name2, includeKey,
                 underOccupancy);
-        String outFilename;
-        outFilename = includeKey + DW_Strings.symbol_underscore;
+        String outFilename = includeKey + DW_Strings.symbol_underscore;
         if (underOccupancy) {
             outFilename += DW_Strings.sU + DW_Strings.symbol_underscore;
         }
         outFilename += summaryTable.firstKey() + "_To_" + summaryTable.lastKey()
                 + DW_Strings.symbol_underscore + name + ".csv";
-        File outFile;
-        outFile = new File(dirOut, outFilename);
+        File outFile = new File(dirOut, outFilename);
         r = env.ge.io.getPrintWriter(outFile, false);
         return r;
     }
@@ -5806,13 +5803,12 @@ public class DW_Summary extends DW_Object {
             String includeKey,
             int nTT,
             int nEG
-    ) {
+    ) throws IOException {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = env.SHBE_Env.oe.Files.getInputONSPDFiles();
+        ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesPaymentTypes";
-        PrintWriter pw;
-        pw = getPrintWriter(name, sSummaryTables, summaryTable,
+        PrintWriter pw = getPrintWriter(name, sSummaryTables, summaryTable,
                 //paymentType, 
                 includeKey, false);
         // Write headers
@@ -6268,13 +6264,12 @@ public class DW_Summary extends DW_Object {
             String includeKey,
             int nTT,
             int nEG
-    ) {
+    ) throws IOException {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = env.SHBE_Env.oe.Files.getInputONSPDFiles();
+        ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesTT";
-        PrintWriter pw;
-        pw = getPrintWriter(name, sSummaryTables, summaryTable, includeKey, false);
+        PrintWriter pw  = getPrintWriter(name, sSummaryTables, summaryTable, includeKey, false);
         // Write headers
         String header;
         header = getHeaderCompare2TimesGeneric();
@@ -6394,13 +6389,12 @@ public class DW_Summary extends DW_Object {
     public void writeSummaryTableCompare2TimesPostcode(
             TreeMap<String, HashMap<String, String>> summaryTable,
             String includeKey, int nTT, int nEG
-    ) {
+    ) throws IOException {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = env.SHBE_Env.oe.Files.getInputONSPDFiles();
+        ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesPostcode";
-        PrintWriter pw;
-        pw = getPrintWriter(name, sSummaryTables, summaryTable, includeKey, false);
+        PrintWriter pw  = getPrintWriter(name, sSummaryTables, summaryTable, includeKey, false);
         // Write headers
         String header;
         header = getHeaderCompare2TimesGeneric();
@@ -6433,13 +6427,12 @@ public class DW_Summary extends DW_Object {
      */
     public void writeSummaryTableSingleTimeGenericCounts(
             TreeMap<String, HashMap<String, String>> summaryTable,
-            String includeKey, int nTT, int nEG, int nPSI) {
+            String includeKey, int nTT, int nEG, int nPSI) throws IOException {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = env.SHBE_Env.oe.Files.getInputONSPDFiles();
+        ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
         String name;
         name = "SingleTimeGenericCounts";
-        PrintWriter pw;
-        pw = getPrintWriter(name, sSummaryTables, summaryTable, includeKey,
+        PrintWriter pw  = getPrintWriter(name, sSummaryTables, summaryTable, includeKey,
                 false);
         // Write headers
         String s = DW_Strings.symbol_comma;
@@ -6598,9 +6591,9 @@ public class DW_Summary extends DW_Object {
             int nTT,
             int nEG,
             int nPSI
-    ) {
+    ) throws IOException {
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = env.SHBE_Env.oe.Files.getInputONSPDFiles();
+        ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
         String name;
         name = "SingleTimeHouseholdSizes";
         PrintWriter pw;
@@ -6663,7 +6656,7 @@ public class DW_Summary extends DW_Object {
             String includeKey,
             int nTT,
             int nEG
-    ) {
+    ) throws IOException {
         String name;
         name = "SingleTimeEntitlementEligibleAmountContractualAmount";
         PrintWriter pw;
@@ -6841,7 +6834,7 @@ public class DW_Summary extends DW_Object {
             String includeKey,
             int nTT,
             int nEG
-    ) {
+    ) throws IOException {
         String name;
         name = "SingleTimeEmploymentEducationTraining";
         PrintWriter pw;
@@ -6930,7 +6923,7 @@ public class DW_Summary extends DW_Object {
     public void writeSummaryTableSingleTimeRentAndIncome(
             TreeMap<String, HashMap<String, String>> summaryTable,
             ArrayList<String> HB_CTB, ArrayList<String> PTs, String includeKey,
-            int nTT, int nEG) {
+            int nTT, int nEG) throws IOException {
         String name;
         name = "SingleTimeRentAndIncome";
         PrintWriter pw;
@@ -7077,7 +7070,7 @@ public class DW_Summary extends DW_Object {
             String includeKey,
             int nTT,
             int nEG
-    ) {
+    ) throws IOException {
         String name;
         name = "SingleTimeEthnicity";
         PrintWriter pw;
@@ -7163,7 +7156,7 @@ public class DW_Summary extends DW_Object {
             String includeKey,
             int nTT,
             int nEG
-    ) {
+    )throws IOException {
         String name;
         name = "SingleTimeTT";
         PrintWriter pw;
@@ -7246,7 +7239,7 @@ public class DW_Summary extends DW_Object {
             int nTT,
             int nEG,
             int nPSI
-    ) {
+    ) throws IOException {
         String name;
         name = sSingleTimePSI;
         PrintWriter pw;
@@ -7334,7 +7327,7 @@ public class DW_Summary extends DW_Object {
             String includeKey,
             int nTT,
             int nEG
-    ) {
+    ) throws IOException {
         String name;
         name = "SingleTimeDisability";
         PrintWriter pw;

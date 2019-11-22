@@ -1,6 +1,8 @@
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.reporting;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,15 +34,19 @@ public class DW_Report extends DW_HTMLPage {
     protected String baseURLString0;
     protected String date;
 
-    public DW_Report(DW_Environment env) {
+    public DW_Report(DW_Environment env) throws IOException {
         super(env);
     }
 
     public static void main(String[] args) {
-        new DW_Report(null).run();
+        try {
+            new DW_Report(null).run();
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        }
     }
 
-    public void run() {
+    public void run() throws IOException {
         levels = new ArrayList<>();
         ArrayList<String> levelsCopy;
         levelsCopy = new ArrayList<>();
@@ -167,15 +173,15 @@ public class DW_Report extends DW_HTMLPage {
 
     public void writeStartOfMaster(
             boolean doUnderOccupied,
-            boolean doCouncil) {
+            boolean doCouncil) throws IOException {
         try {
-            File dirOut = new File(env.files.getOutputDataDir(), baseReportDir);
+            File dirOut = new File(env.files.getOutputDir(), baseReportDir);
             dirOut = env.files.getUODir(dirOut, doUnderOccupied, doCouncil);
             dirOut.mkdirs();
             String pageTitle = "Results";
             File f;
             f = new File(dirOut, pageTitle + ".html");
-            masterFOS = env.ge.io.getFileOutputStream(f);
+            masterFOS = env.ge.io.getBufferedOutputStream(f);
             writeHTMLHeader(projectName, pageTitle, masterFOS);
             writeStartOfBody(baseURLString0, pageTitle, masterFOS);
         } catch (IOException e) {
@@ -186,7 +192,7 @@ public class DW_Report extends DW_HTMLPage {
 
     public void writeToMaster() {
         try {
-            File dir0 = new File(env.files.getOutputDataDir(), baseReportDir);
+            File dir0 = new File(env.files.getOutputDir(), baseReportDir);
             File dir1 = new File(dir0, levelsString);
             writeLine("<div>", masterFOS);
             writeLine("<ul>", masterFOS);
@@ -235,8 +241,8 @@ public class DW_Report extends DW_HTMLPage {
 
     public void write(
             boolean doUnderOccupied,
-            boolean doCouncil) {
-        File dirOut = new File(env.files.getOutputDataDir(), baseReportDir);
+            boolean doCouncil) throws FileNotFoundException {
+        File dirOut = new File(env.files.getOutputDir(), baseReportDir);
         dirOut = new File(dirOut, levelsString);
         dirOut = env.files.getUODir(dirOut, doUnderOccupied, doCouncil);
         String[] tFilenames;
@@ -268,7 +274,7 @@ public class DW_Report extends DW_HTMLPage {
 //                        filePathDepth + 1);
                 String definitionsPath;
                 definitionsPath = relativeFilePath + baseReportDir + "/Definitions/";
-                componentFOS = env.ge.io.getFileOutputStream(f);
+                componentFOS = env.ge.io.getBufferedOutputStream(f);
                 String pageTitle;
                 pageTitle = reportName + " " + claimantType2 + " " + tenure2;
                 write(doUnderOccupied, doCouncil, definitionsPath,
@@ -593,7 +599,7 @@ public class DW_Report extends DW_HTMLPage {
 
     protected void writeTable(
             ArrayList<String> table,
-            FileOutputStream fos) throws IOException {
+            BufferedOutputStream fos) throws IOException {
         //writeLine("<table style=\"width:100%\">");
         //writeLine("<table border=\"1\">");
         writeLine("<table style=\"border:1px solid black\">", fos);
@@ -619,7 +625,7 @@ public class DW_Report extends DW_HTMLPage {
             String[] tFilenames,
             String claimantType,
             String claimantTypeLink,
-            FileOutputStream fos) throws IOException {
+            BufferedOutputStream fos) throws IOException {
         writeLine("<div><ul>", fos);
         writeLine("<li><h2>Contents</h2>", fos);
         writeLine("<ul>", fos);

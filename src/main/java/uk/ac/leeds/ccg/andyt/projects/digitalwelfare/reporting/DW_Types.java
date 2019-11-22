@@ -12,58 +12,39 @@ public class DW_Types extends DW_HTMLPage {
     protected String projectName;
     protected String mainDirectoryName;
 
-    public DW_Types(DW_Environment env) {
+    public DW_Types(DW_Environment env) throws IOException {
         super(env);
     }
 
     public static void main(String[] args) {
-        new DW_Types(null).run();
+        try {
+            new DW_Types(null).run();
+        } catch (Exception ex) {
+            ex.printStackTrace(System.err);
+        }
     }
 
-    public void run() {
+    public void run() throws IOException {
         lineSeparator = System.getProperty("line.separator").getBytes();
         projectName = "DigitalWelfare";
         mainDirectoryName = "Report";
         String reportName = "Report1";
         // Links
-        String OALink = getLink2(
-                "OA",
-                "./");
-        String LSOALink = getLink2(
-                "LSOA",
-                "./");
-        String MSOALink = getLink2(
-                "MSOA",
-                "./");
-        String PostcodeUnitLink = getLink2(
-                "PostcodeUnit",
-                "./");
-        String PostcodeSectorLink = getLink2(
-                "PostcodeSector",
-                "./");
-        String PostcodeDistrictLink = getLink2(
-                "PostcodeDistrict",
-                "./");
-        String HBClaimantsLink = getLink2(
-                "HBClaimants",
-                "./");
-        String CTBClaimantsLink = getLink2(
-                "CTBClaimants",
-                "./");
+        String OALink = getLink2("OA", "./");
+        String LSOALink = getLink2("LSOA", "./");
+        String MSOALink = getLink2("MSOA", "./");
+        String PostcodeUnitLink = getLink2("PostcodeUnit", "./");
+        String PostcodeSectorLink = getLink2("PostcodeSector", "./");
+        String PostcodeDistrictLink = getLink2("PostcodeDistrict", "./");
+        String HBClaimantsLink = getLink2("HBClaimants", "./");
+        String CTBClaimantsLink = getLink2("CTBClaimants", "./");
         // Definitions
         HashMap<String, String> definitions;
         definitions = new HashMap<>();
-        definitions.put(
-                "AllTenure",
-                "All Tenures");
-        definitions.put(
-                "RegulatedTenure",
-                "Regulated Tenures");
-        definitions.put(
-                "UnregulatedTenure",
-                "Unregulated Tenures");
-        definitions.put(
-                "OA",
+        definitions.put("AllTenure", "All Tenures");
+        definitions.put("RegulatedTenure", "Regulated Tenures");
+        definitions.put("UnregulatedTenure", "Unregulated Tenures");
+        definitions.put("OA",
                 "Output Area: The highest resolution census output area. Some "
                 + "of these have changed between the 2001 and 2011 "
                 + "censuses. In 1991 only Scotland had Output Areas "
@@ -181,18 +162,18 @@ public class DW_Types extends DW_HTMLPage {
     public void write(
             String reportName,
             String type,
-            HashMap<String, String> definitions) {
+            HashMap<String, String> definitions) throws IOException {
         String baseReportDir = mainDirectoryName + "/" + reportName + "/" + "Definitions/";
         String baseURLString0 = "http://www.geog.leeds.ac.uk/people/a.turner/"
                 + projectName + "/" + baseReportDir;
         String date = Generic_Time.getDate();
 
-        File dir = new File(env.files.getOutputDataDir(), baseReportDir);
+        File dir = new File(env.files.getOutputDir(), baseReportDir);
         dir.mkdirs();
         String reportFilename = type + ".html";
         String baseURLString1 = baseURLString0 + reportFilename;
         File f = new File(dir, reportFilename);
-        componentFOS = env.ge.io.getFileOutputStream(f);
+        componentFOS = env.ge.io.getBufferedOutputStream(f);
         write(type, definitions, projectName, reportName, reportFilename,
                 baseReportDir, baseURLString0, baseURLString1);
         try {

@@ -7,6 +7,7 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.lcc;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_ID;
+import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_Claim;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.data.DW_RentArrearsUO;
@@ -36,7 +37,7 @@ import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
  */
 public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
 
-    public DW_ProcessorLCCRentArrears(DW_Environment env) {
+    public DW_ProcessorLCCRentArrears(DW_Environment env) throws IOException {
         super(env);
     }
 
@@ -80,7 +81,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
         DecimalFormat df;
         df = new DecimalFormat("0.00");
 
-        HashMap<SHBE_ID, DW_Claim> ClaimData;
+        HashMap<SHBE_ClaimID, DW_Claim> ClaimData;
         ClaimData = RentArrearsUO.ClaimData;
 
         int AllSHBECount;
@@ -141,11 +142,11 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
         DHPTotal = 0;
         DHPCount = 0;
 
-        SHBE_ID ClaimID;
+        SHBE_ClaimID ClaimID;
         String ClaimRef;
         DW_Claim DW_Claim;
         Iterator<Integer> ite;
-        Iterator<SHBE_ID> ite2;
+        Iterator<SHBE_ClaimID> ite2;
         Integer i;
         Double BT;
         Double DHP;
@@ -433,7 +434,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
 //                YM3 = SHBE_Handler.getYM3(SHBEFilenames[j]);
 //                env.ge.log("YM3 " + YM3, true);
 //                SHBE_Records = SHBE_Handler.getRecords(YM3);
-//                HashMap<SHBE_ID, SHBE_Record> Records;
+//                HashMap<SHBE_ClaimID, SHBE_Record> Records;
 //                Records = SHBE_Records.getRecords(env.HOOME);
 //                if (Records.keySet().contains(ClaimID)) {
 //                    SHBECountPriorToApril2013++;
@@ -809,7 +810,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     if (SHBE_Records == null) {
                         env.ge.log("AllSHBE.get(YM3) is null!");
                     }
-                    HashMap<SHBE_ID, SHBE_Record> Records;
+                    HashMap<SHBE_ClaimID, SHBE_Record> Records;
                     Records = SHBE_Records.getRecords(env.HOOME);
                     if (Records == null) {
                         env.ge.log("AllSHBE.get(YM3).getRecords(true) is null!");

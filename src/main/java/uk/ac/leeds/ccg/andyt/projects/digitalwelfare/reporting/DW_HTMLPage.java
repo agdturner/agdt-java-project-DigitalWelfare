@@ -18,7 +18,7 @@
  */
 package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.reporting;
 
-import java.io.FileOutputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
@@ -31,8 +31,8 @@ public abstract class DW_HTMLPage extends DW_Object {
 
     protected byte[] lineSeparator;
 
-    protected FileOutputStream componentFOS;
-    protected FileOutputStream masterFOS;
+    protected BufferedOutputStream componentFOS;
+    protected BufferedOutputStream masterFOS;
 
     public DW_HTMLPage(DW_Environment env) {
         super(env);
@@ -41,7 +41,7 @@ public abstract class DW_HTMLPage extends DW_Object {
     public void writeStartOfBody(
             String baseURLString0,
             String pageName,
-            FileOutputStream fos) {
+            BufferedOutputStream fos) {
         try {
             fos.write(lineSeparator);
             writeLine("<body>", fos);
@@ -60,7 +60,7 @@ public abstract class DW_HTMLPage extends DW_Object {
 
     public void writeLine(
             String line,
-            FileOutputStream fos) throws IOException {
+            BufferedOutputStream fos) throws IOException {
         fos.write(line.getBytes());
         fos.write(lineSeparator);
     }
@@ -68,7 +68,7 @@ public abstract class DW_HTMLPage extends DW_Object {
     public void writeHTMLHeader(
             String projectName,
             String pageName,
-            FileOutputStream fos) throws IOException {
+            BufferedOutputStream fos) throws IOException {
         writeLine("<!DOCTYPE html>", fos);
         fos.write(lineSeparator);
         writeLine("<html lang=en-GB>", fos);
@@ -91,7 +91,7 @@ public abstract class DW_HTMLPage extends DW_Object {
     public void writeStartOfSection(
             String sectionTitle,
             int headingLevel,
-            FileOutputStream fos) throws IOException {
+            BufferedOutputStream fos) throws IOException {
         String sectionTitleNoSpaces;
         sectionTitleNoSpaces = sectionTitle.replaceAll(" ", "_");
         writeLine("<div id=\"" + sectionTitleNoSpaces + "\">", fos);
@@ -100,7 +100,7 @@ public abstract class DW_HTMLPage extends DW_Object {
 
     public void writeHTMLFooter(
             String date,
-            FileOutputStream fos) throws IOException {
+            BufferedOutputStream fos) throws IOException {
         writeLine("<div id=\"Validation_and_Metadata\">", fos);
         writeLine("<!-- Begin Footer -->", fos);
         writeLine("<ul>", fos);

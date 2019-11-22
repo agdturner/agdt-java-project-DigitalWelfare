@@ -16,9 +16,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataHandler;
-import uk.ac.leeds.ccg.andyt.census.Census_DeprivationDataRecord;
-import uk.ac.leeds.ccg.andyt.census.core.Census_Environment;
+import uk.ac.leeds.ccg.andyt.generic.data.census.core.Census_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Object;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
@@ -92,7 +90,7 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
         File outfile = new File(dir, outputFilename);
         if (!outfile.exists()) {
             dir.mkdirs();
-            File infile = env.SHBE_Env.oe.Files.getInputONSPDFile(YM3Nearest);
+            File infile = env.SHBE_Env.oe.files.getInputONSPDFile(YM3Nearest);
             r = initLookupFromPostcodeToCensusCodes(infile, outfile, level,
                     CensusYear, YM3Nearest);
         } else {
@@ -216,37 +214,5 @@ public abstract class DW_ProcessorAbstract extends DW_Object {
         }
         return oddPostcodes;
     }
-
-    public TreeMap<String, Census_DeprivationDataRecord> getDeprivation_Data() {
-        File depravationDir = new File(env.files.getInputCensus2011AttributeDataDir("LSOA"), "England/Deprivation");
-        String deprivationFilename = "1871524.csv";
-        Census_DeprivationDataHandler aDeprivation_DataHandler;
-        aDeprivation_DataHandler = new Census_DeprivationDataHandler(new Census_Environment());
-        TreeMap<String, Census_DeprivationDataRecord> tDeprivationData;
-        tDeprivationData = aDeprivation_DataHandler.loadInputData(depravationDir, deprivationFilename);
-        System.out.println(tDeprivationData.firstKey());
-        System.out.println(tDeprivationData.firstEntry().getValue());
-        Iterator<String> ite;
-        double minIMDScore = Double.MAX_VALUE;
-        double maxIMDScore = Double.MIN_VALUE;
-        double sumIMDScore = 0;
-        ite = tDeprivationData.keySet().iterator();
-        while (ite.hasNext()) {
-            String SOACode = ite.next();
-            Census_DeprivationDataRecord aDeprivation_DataRecord = tDeprivationData.get(SOACode);
-            double aIMDScore = Double.parseDouble(aDeprivation_DataRecord.getIMDScore());
-            minIMDScore = Math.min(minIMDScore, aIMDScore);
-            maxIMDScore = Math.max(maxIMDScore, aIMDScore);
-            sumIMDScore += aIMDScore;
-        }
-        double meanIMDScore = sumIMDScore / (double) tDeprivationData.size();
-        System.out.println("minIMDScore " + minIMDScore);
-        System.out.println("maxIMDScore " + maxIMDScore);
-        System.out.println("msumIMDScore " + sumIMDScore);
-        System.out.println("meanIMDScore " + meanIMDScore);
-        return tDeprivationData;
-    }
-
-    
 
 }

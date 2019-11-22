@@ -20,6 +20,7 @@ package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process;
 
 import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.DW_Maps;
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -58,7 +59,7 @@ public class DW_PostcodeMaps extends DW_Maps {
      */
     private String targetPropertyName;
 
-    public DW_PostcodeMaps(DW_Environment de) {
+    public DW_PostcodeMaps(DW_Environment de) throws IOException {
         super(de);
     }
 
@@ -81,7 +82,7 @@ public class DW_PostcodeMaps extends DW_Maps {
     /**
      *
      */
-    public void run() {
+    public void run() throws IOException {
         showMapsInJMapPane = true;//false;//true;//false;
         imageWidth = 1000;
         mapDirectory = files.getGeneratedPostcodeDir();
@@ -218,7 +219,7 @@ public class DW_PostcodeMaps extends DW_Maps {
 
     public Grids_GridDouble toGrid(DW_Shapefile polyGrid, long nrows, long ncols,
             double xllcorner, double yllcorner, double cellsize,
-            DW_Shapefile postcodeUnitPoly_DW_Shapefile, Grids_GridDoubleFactory f) {
+            DW_Shapefile postcodeUnitPoly_DW_Shapefile, Grids_GridDoubleFactory f) throws IOException {
         Grids_GridDouble r;
         Grids_Dimensions dimensions;
         dimensions = new Grids_Dimensions(
@@ -227,8 +228,8 @@ public class DW_PostcodeMaps extends DW_Maps {
                 new BigDecimal(xllcorner + cellsize * ncols),
                 new BigDecimal(yllcorner + cellsize * nrows),
                 new BigDecimal(cellsize));
-        Grids_Files gf = env.Grids_Env.getFiles();
-        File dir = gf.createNewFile(gf.getGeneratedGridDoubleDir());
+        Grids_Files gf = env.Grids_Env.files;
+        File dir = env.ge.io.createNewFile(gf.getGeneratedGridDoubleDir());
         r = (Grids_GridDouble) f.create(dir, nrows, ncols, dimensions);
 
         FeatureCollection cells;
@@ -256,7 +257,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         filename = "Gridlines_" + nrows + "_" + ncols + "_" + xllcorner + "_"
                 + yllcorner + "_" + cellsize + "_" + ".shp";
         File dir;
-        dir = new File(files.getGeneratedDataDir(), "LineGrids");
+        dir = new File(files.getGeneratedDir(), "LineGrids");
         dir.mkdirs();
         File shapefile = createPolyGridShapefileIfItDoesNotExist(dir,
                 filename, nrows, ncols, xllcorner, yllcorner, cellsize);
@@ -271,7 +272,7 @@ public class DW_PostcodeMaps extends DW_Maps {
         filename = "Gridlines_" + nrows + "_" + ncols + "_" + xllcorner + "_"
                 + yllcorner + "_" + cellsize + "_" + ".shp";
         File dir;
-        dir = new File(files.getGeneratedDataDir(), "LineGrids");
+        dir = new File(files.getGeneratedDir(), "LineGrids");
         dir.mkdirs();
         File shapefile = createLineGridShapefileIfItDoesNotExist(dir, filename,
                 nrows, ncols, xllcorner, yllcorner, cellsize);
