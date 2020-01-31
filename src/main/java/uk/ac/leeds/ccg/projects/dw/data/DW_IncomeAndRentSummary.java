@@ -1,47 +1,33 @@
-/*
- * Copyright (C) 2019 Centre for Computational Geography, University of Leeds.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
- */
 package uk.ac.leeds.ccg.projects.dw.data;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
-import uk.ac.leeds.ccg.agdt.data.ukp.util.UKP_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
-import uk.ac.leeds.ccg.andyt.math.Math_BigDecimal;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import java.util.Map;
+import java.util.Set;
+import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
+import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_ClaimID;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_D_Record;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Record;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Records;
+import uk.ac.leeds.ccg.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.math.Math_BigDecimal;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Strings;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Record;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Set;
 import uk.ac.leeds.ccg.projects.dw.io.DW_Files;
 
 /**
- *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class DW_IncomeAndRentSummary extends SHBE_Handler {
 
@@ -50,7 +36,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
     public DW_Strings ds;
 
     public DW_IncomeAndRentSummary(DW_Environment e, DW_Strings ds) 
-            throws IOException {
+            throws IOException, Exception {
         super(e.SHBE_Env);
         this.de = e;
         this.df = e.files;
@@ -79,20 +65,17 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
             ArrayList<String> PTs, UKP_YM3 YM30,
             DW_UO_Set UOReportSetCouncil, DW_UO_Set UOReportSetRSL,
             boolean doUnderOccupancy, boolean doCouncil, boolean doRSL,
-            boolean forceNew) {
+            boolean forceNew) throws IOException, ClassNotFoundException {
 
         // Initialise result
-        HashMap<String, BigDecimal> r;
-        r = new HashMap<>();
+        HashMap<String, BigDecimal> r = new HashMap<>();
 
         // Initialise IncomeAndRentSummaryFile
-        File IncomeAndRentSummaryFile;
-        IncomeAndRentSummaryFile = getIncomeAndRentSummaryFile(YM30,
-                doUnderOccupancy, doCouncil, doRSL);
-        if (IncomeAndRentSummaryFile.exists()) {
+        Path p= getIncomeAndRentSummaryFile(YM30, doUnderOccupancy, doCouncil, doRSL);
+        if (Files.exists(p)) {
             if (!forceNew) {
-                return (HashMap<String, BigDecimal>) env.env.io.readObject(
-                        IncomeAndRentSummaryFile);
+                return (HashMap<String, BigDecimal>) Generic_IO.readObject(
+                        p);
             }
         }
 
@@ -103,7 +86,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
         String nameSuffix;
         Iterator<String> HB_CTBIte;
         Iterator<String> PTsIte;
-        HashMap<SHBE_ClaimID, SHBE_Record> recs;
+        Map<SHBE_ClaimID, SHBE_Record> recs;
         BigDecimal tBD;
         BigDecimal zBD;
         BigDecimal TotalIncome;
@@ -132,7 +115,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
         // Do loop for HB and CTB
         while (HB_CTBIte.hasNext()) {
             HBOrCTB = HB_CTBIte.next();
-            HashSet<SHBE_ClaimID> ClaimIDs;
+            Set<SHBE_ClaimID> claimIDs;
 
             // Initialise variables
             TotalCount_IncomeNonZero = 0;
@@ -161,9 +144,9 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
             while (PTsIte.hasNext()) {
                 PT = PTsIte.next();
                 if (HBOrCTB.equalsIgnoreCase(DW_Strings.sHB)) {
-                    ClaimIDs = getClaimIDsWithStatusOfHBAtExtractDate(DW_SHBE_Records, PT);
+                    claimIDs = getClaimIDsWithStatusOfHBAtExtractDate(DW_SHBE_Records, PT);
                 } else {
-                    ClaimIDs = getClaimIDsWithStatusOfCTBAtExtractDate(DW_SHBE_Records, PT);
+                    claimIDs = getClaimIDsWithStatusOfCTBAtExtractDate(DW_SHBE_Records, PT);
                 }
 //                Debugging code
 //                if (ClaimIDs == null) {
@@ -177,7 +160,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                         ite = map.keySet().iterator();
                         while (ite.hasNext()) {
                             ClaimID = ite.next();
-                            if (ClaimIDs.contains(ClaimID)) {
+                            if (claimIDs.contains(ClaimID)) {
                                 SHBE_Record rec;
                                 rec = recs.get(ClaimID);
                                 if (rec != null) {
@@ -239,7 +222,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                         ite = map.keySet().iterator();
                         while (ite.hasNext()) {
                             ClaimID = ite.next();
-                            if (ClaimIDs.contains(ClaimID)) {
+                            if (claimIDs.contains(ClaimID)) {
                                 SHBE_Record rec;
                                 rec = recs.get(ClaimID);
                                 if (rec != null) {
@@ -300,7 +283,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                     }
                 } else {
                     Iterator<SHBE_ClaimID> ClaimIDsIte;
-                    ClaimIDsIte = ClaimIDs.iterator();
+                    ClaimIDsIte = claimIDs.iterator();
                     while (ClaimIDsIte.hasNext()) {
                         ClaimID = ClaimIDsIte.next();
                         SHBE_Record rec;
@@ -419,7 +402,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                 }
             }
         }
-        env.env.io.writeObject(r, IncomeAndRentSummaryFile);
+        env.env.io.writeObject(r, p);
         return r;
     }
 
@@ -430,9 +413,9 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
      * @param doRSL
      * @return
      */
-    public File getIncomeAndRentSummaryFile(UKP_YM3 YM3, boolean doUnderOccupancy,
-            boolean doCouncil, boolean doRSL) {
-        File result;
+    public Path getIncomeAndRentSummaryFile(UKP_YM3 YM3, boolean doUnderOccupancy,
+            boolean doCouncil, boolean doRSL) throws IOException {
+        Path r;
         String partFilename;
         if (doUnderOccupancy) {
             if (doCouncil) {
@@ -466,11 +449,10 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
                     + DW_Strings.s_String + DW_Strings.symbol_underscore + DW_Strings.symbol_underscore
                     + DW_Strings.s_BigDecimal + DW_Strings.sBinaryFileExtension;
         }
-        File dir;
-        dir = new File(df.getGeneratedSHBEDir(), YM3.toString());
+        Path dir = Paths.get(df.getGeneratedSHBEDir().toString(), YM3.toString());
         dir = df.getUODir(dir, doUnderOccupancy, doCouncil);
-        dir.mkdirs();
-        result = new File(dir, partFilename);
-        return result;
+        Files.createDirectories(dir);
+        r = Paths.get(dir.toString(), partFilename);
+        return r;
     }
 }

@@ -1,33 +1,19 @@
-/*
- * Copyright (C) 2015 geoagdt.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
- */
+
 package uk.ac.leeds.ccg.projects.dw.process;
 
-import java.io.File;
-import uk.ac.leeds.ccg.andyt.data.core.Data_Environment;
-import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import uk.ac.leeds.ccg.data.core.Data_Environment;
+import uk.ac.leeds.ccg.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.generic.io.Generic_Defaults;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.process.lcc.DW_ProcessorLCC;
 
 /**
  * This is the main processing class for the project.
  *
  * @author Andy Turner
+ * @version 1.0.0
  */
 public class DW_Main extends DW_Processor {
 
@@ -46,8 +32,9 @@ public class DW_Main extends DW_Processor {
                         + "Aborting.");
                 System.exit(0);
             } else {
-                File dataDir = new File(args[1]);
-                Generic_Environment ge = new Generic_Environment(dataDir);
+                Path dataDir = Paths.get(args[1]);
+                Generic_Environment ge = new Generic_Environment(
+                        new Generic_Defaults(dataDir));
                 Data_Environment de = new Data_Environment(ge);
                 DW_Environment env = new DW_Environment(de);
                 DW_Main p;
@@ -81,8 +68,7 @@ public class DW_Main extends DW_Processor {
         /**
          * Run LCC SHBE data processing
          */
-        DW_ProcessorLCC p;
-        p = new DW_ProcessorLCC(env);
+        DW_ProcessorLCC p = new DW_ProcessorLCC(env);
         p.run();
     }
 

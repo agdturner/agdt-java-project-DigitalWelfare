@@ -1,21 +1,3 @@
-/*
- * Copyright (C) 2016 geoagdt.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
- */
 package uk.ac.leeds.ccg.projects.dw.data;
 
 import java.io.File;
@@ -23,26 +5,31 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.agdt.data.ukp.data.id.UKP_RecordID;
-import uk.ac.leeds.ccg.agdt.data.ukp.util.UKP_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
-import uk.ac.leeds.ccg.andyt.math.Math_BigDecimal;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.data.ukp.data.id.UKP_RecordID;
+import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
+import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_ClaimID;
+import uk.ac.leeds.ccg.data.shbe.core.SHBE_Strings;
+import uk.ac.leeds.ccg.math.Math_BigDecimal;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Object;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_PersonID;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_S_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_PersonID;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Records;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_D_Record;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Record;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_S_Record;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Strings;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Data;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Record;
@@ -50,19 +37,19 @@ import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Handler;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Set;
 
 /**
- *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class DW_TenancyChangesUO extends DW_Object {
 
     /**
      * For convenience;
      */
-    SHBE_Handler SHBE_Handler;
-    SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
-    HashMap<SHBE_ClaimID, String> ClaimIDToClaimRefLookup;
-    HashMap<String, SHBE_ClaimID> ClaimRefToClaimIDLookup;
-    HashMap<String, UKP_RecordID> PostcodeToPostcodeIDLookup;
+    SHBE_Handler shbeHandler;
+    SHBE_TenancyType_Handler ttHandler;
+    Map<SHBE_ClaimID, String> cid2c;
+    Map<String, SHBE_ClaimID> c2cid;
+    Map<String, UKP_RecordID> p2pid;
 
     HashSet<String> ValidPostcodes;
 
@@ -1249,13 +1236,14 @@ public class DW_TenancyChangesUO extends DW_Object {
         super(env);
     }
 
-    public DW_TenancyChangesUO(DW_Environment env, boolean hoome) throws IOException {
+    public DW_TenancyChangesUO(DW_Environment env, boolean hoome) 
+            throws IOException, Exception, ClassNotFoundException {
         this(env);
-        this.SHBE_Handler = env.getSHBE_Handler();
-        this.SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
-        //this.PostcodeToPostcodeIDLookup = tPostcodeToPostcodeIDLookup;
-        this.ClaimIDToClaimRefLookup = SHBE_Handler.getClaimIDToClaimRefLookup();
-        this.ClaimRefToClaimIDLookup = SHBE_Handler.getClaimRefToClaimIDLookup();
+        this.shbeHandler = env.getSHBE_Handler();
+        this.ttHandler = env.getSHBE_TenancyType_Handler();
+        //this.p2pid = tPostcodeToPostcodeIDLookup;
+        this.cid2c = shbeHandler.getCid2c();
+        this.c2cid = shbeHandler.getC2cid();
         initString();
     }
 
@@ -1263,7 +1251,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             HashSet<SHBE_ClaimID> ClaimIDs,
             String[] SHBEFilenames,
             ArrayList<Integer> NotMonthlyUO
-    ) {
+    ) throws IOException, ClassNotFoundException {
         TreeMap<String, String> r;
         r = new TreeMap<>();
         // Init result
@@ -1274,7 +1262,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         ite = ClaimIDs.iterator();
         while (ite.hasNext()) {
             ClaimID = ite.next();
-            ClaimRef = ClaimIDToClaimRefLookup.get(ClaimID);
+            ClaimRef = cid2c.get(ClaimID);
             r.put(ClaimRef + s_ + sTT, s);
             r.put(ClaimRef + s_ + sUnderOccupancy, s);
             r.put(ClaimRef + s_ + sP, s);
@@ -1318,32 +1306,32 @@ public class DW_TenancyChangesUO extends DW_Object {
         int j;
         String bS;
         boolean b;
-        HashMap<SHBE_ClaimID, SHBE_Record> records;
+        Map<SHBE_ClaimID, SHBE_Record> records;
         String year;
         String month;
         UKP_YM3 yM3;
         SHBE_Record record;
-        SHBE_D_Record dRecord;
+        SHBE_D_Record d;
         String s3 = DW_Strings.special_commaSpace;
         tNotMonthlyUOIte = NotMonthlyUO.iterator();
         while (tNotMonthlyUOIte.hasNext()) {
             i = tNotMonthlyUOIte.next();
-            year = SHBE_Handler.getYear(SHBEFilenames[i]);
-            month = SHBE_Handler.getMonthNumber(SHBEFilenames[i]);
-            yM3 = SHBE_Handler.getYM3(SHBEFilenames[i]);
-            SHBE_Records = SHBE_Handler.getRecords(yM3, env.HOOME);
+            year = shbeHandler.getYear(SHBEFilenames[i]);
+            month = shbeHandler.getMonthNumber(SHBEFilenames[i]);
+            yM3 = shbeHandler.getYM3(SHBEFilenames[i]);
+            SHBE_Records = shbeHandler.getRecords(yM3, env.HOOME);
             records = SHBE_Records.getRecords(env.HOOME);
             ite = ClaimIDs.iterator();
             while (ite.hasNext()) {
                 ClaimID = ite.next();
-                ClaimRef = ClaimIDToClaimRefLookup.get(ClaimID);
+                ClaimRef = cid2c.get(ClaimID);
                 record = records.get(ClaimID);
                 if (record != null) {
-                    dRecord = record.getDRecord();
+                    d = record.getDRecord();
                     // Tenancy Type
                     key = ClaimRef + s_ + sTT;
                     aS = r.get(key);
-                    j = dRecord.getTenancyType();
+                    j = d.getTenancyType();
                     aS += s3 + sTT_ + j;
                     r.put(key, aS);
                     // Under Occupancy
@@ -1354,37 +1342,37 @@ public class DW_TenancyChangesUO extends DW_Object {
                     // Postcode
                     key = ClaimRef + s_ + sP;
                     aS = r.get(key);
-                    bS = dRecord.getClaimantsPostcode();
+                    bS = d.getClaimantsPostcode();
                     aS += s3 + bS;
                     r.put(key, aS);
                     // Weekly Housing Benefit Entitlement
                     key = ClaimRef + s_ + sWHBE;
                     aS = r.get(key);
-                    j = dRecord.getWeeklyHousingBenefitEntitlement();
+                    j = d.getWeeklyHousingBenefitEntitlement();
                     aS += s3 + decimalise(j);
                     r.put(key, aS);
                     // Weekly Eligible Rent Amount
                     key = ClaimRef + s_ + sWERA;
                     aS = r.get(key);
-                    j = dRecord.getWeeklyEligibleRentAmount();
+                    j = d.getWeeklyEligibleRentAmount();
                     aS += s3 + decimalise(j);
                     r.put(key, aS);
                     // PassportedStandardIndicator
                     key = ClaimRef + s_ + sPSI;
                     aS = r.get(key);
-                    j = dRecord.getPassportedStandardIndicator();
+                    j = d.getPassportedStandardIndicator();
                     aS += s3 + j;
                     r.put(key, aS);
                     // StatusOfHBClaim
                     key = ClaimRef + s_ + sSHBC;
                     aS = r.get(key);
-                    j = dRecord.getStatusOfHBClaimAtExtractDate();
+                    j = d.getStatusOfHBClaimAtExtractDate();
                     aS += s3 + j;
                     r.put(key, aS);
                     // ReasonThatHBClaimClosed
                     key = ClaimRef + s_ + sRTHBCC;
                     aS = r.get(key);
-                    j = dRecord.getReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective();
+                    j = d.getReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective();
                     if (j == 0) {
                         aS += s3;
                     } else {
@@ -1395,19 +1383,19 @@ public class DW_TenancyChangesUO extends DW_Object {
                     key = ClaimRef + s_ + sCEG;
                     aS = r.get(key);
                     //j = dRecord.getClaimantsEthnicGroup();
-                    j = SHBE_Handler.getEthnicityGroup(dRecord);
+                    j = shbeHandler.getEthnicityGroup(d);
                     aS += s3 + j;
                     r.put(key, aS);
                     // Household Size
                     key = ClaimRef + s_ + sHS;
                     aS = r.get(key);
-                    j = (int) SHBE_Handler.getHouseholdSize(dRecord);
+                    j = (int) shbeHandler.getHouseholdSize(d);
                     aS += s3 + j;
                     r.put(key, aS);
                     // NonDependents
                     key = ClaimRef + s_ + sND;
                     aS = r.get(key);
-                    j = dRecord.getNumberOfNonDependents();
+                    j = d.getNumberOfNonDependents();
                     if (j == 0) {
                         aS += s3;
                     } else {
@@ -1417,7 +1405,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                     // Child Dependents
                     key = ClaimRef + s_ + sCD;
                     aS = r.get(key);
-                    j = dRecord.getNumberOfChildDependents();
+                    j = d.getNumberOfChildDependents();
                     if (j == 0) {
                         aS += s3;
                     } else {
@@ -1467,43 +1455,43 @@ public class DW_TenancyChangesUO extends DW_Object {
                     // Claimants Date Of Birth
                     key = ClaimRef + s_ + sCDoB;
                     aS = r.get(key);
-                    bS = dRecord.getClaimantsDateOfBirth();
+                    bS = d.getClaimantsDateOfBirth();
                     aS += s3 + bS;
                     r.put(key, aS);
                     // ClaimantsAge
                     key = ClaimRef + s_ + sCA;
                     aS = r.get(key);
-                    bS = SHBE_Handler.getClaimantsAge(year, month, dRecord);
+                    bS = shbeHandler.getClaimantsAge(year, month, d);
                     aS += s3 + bS;
                     r.put(key, aS);
                     // Partners Date Of Birth
                     key = ClaimRef + s_ + sPDoB;
                     aS = r.get(key);
-                    bS = dRecord.getPartnersDateOfBirth();
+                    bS = d.getPartnersDateOfBirth();
                     aS += s3 + bS;
                     r.put(key, aS);
                     // PartnersAge
                     key = ClaimRef + s_ + sPA;
                     aS = r.get(key);
-                    bS = SHBE_Handler.getPartnersAge(year, month, dRecord);
+                    bS = shbeHandler.getPartnersAge(year, month, d);
                     aS += s3 + bS;
                     r.put(key, aS);
                     // ClaimantsGender
                     key = ClaimRef + s_ + sCG;
                     aS = r.get(key);
-                    bS = dRecord.getClaimantsGender();
+                    bS = d.getClaimantsGender();
                     aS += s3 + bS;
                     r.put(key, aS);
                     // PartnersGender
                     key = ClaimRef + s_ + sPG;
                     aS = r.get(key);
-                    bS = dRecord.getPartnersGender();
+                    bS = d.getPartnersGender();
                     aS += s3 + bS;
                     r.put(key, aS);
                     // Disability
                     key = ClaimRef + s_ + sDisability;
                     aS = r.get(key);
-                    b = SHBE_Handler.getDisability(dRecord);
+                    b = shbeHandler.getDisability(d);
                     if (b == true) {
                         aS += s3 + sDisability;
                     } else {
@@ -1513,7 +1501,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                     // Disability Premium
                     key = ClaimRef + s_ + sDisabilityPremium;
                     aS = r.get(key);
-                    j = dRecord.getDisabilityPremiumAwarded();
+                    j = d.getDisabilityPremiumAwarded();
                     if (j == 1) {
                         aS += s3 + sDP;
                     } else {
@@ -1523,7 +1511,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                     // Disability Severe
                     key = ClaimRef + s_ + sDisabilitySevere;
                     aS = r.get(key);
-                    j = dRecord.getSevereDisabilityPremiumAwarded();
+                    j = d.getSevereDisabilityPremiumAwarded();
                     if (j == 1) {
                         aS += s3 + sDS;
                     } else {
@@ -1533,7 +1521,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                     // Disability Enhanced
                     key = ClaimRef + s_ + sDisabilityEnhanced;
                     aS = r.get(key);
-                    j = dRecord.getEnhancedDisabilityPremiumAwarded();
+                    j = d.getEnhancedDisabilityPremiumAwarded();
                     if (j == 1) {
                         aS += s3 + sDE;
                     } else {
@@ -1543,7 +1531,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                     // Child Disability
                     key = ClaimRef + s_ + sDisabledChild;
                     aS = r.get(key);
-                    j = dRecord.getDisabledChildPremiumAwarded();
+                    j = d.getDisabledChildPremiumAwarded();
                     if (j == 1) {
                         aS += s3 + sDC;
                     } else {
@@ -1553,7 +1541,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                     // Partner Death
                     key = ClaimRef + s_ + sPDeath;
                     aS = r.get(key);
-                    bS = dRecord.getPartnersDateOfDeath();
+                    bS = d.getPartnersDateOfDeath();
                     if (bS == null) {
                         aS += s3;
                     } else if (bS.isEmpty()) {
@@ -1565,7 +1553,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                     // HB Discretionary Payment
                     key = ClaimRef + s_ + sHBDP;
                     aS = r.get(key);
-                    j = dRecord.getWeeklyAdditionalDiscretionaryPayment();
+                    j = d.getWeeklyAdditionalDiscretionaryPayment();
                     aS += s3 + decimalise(j);
                     r.put(key, aS);
                     // Arrears
@@ -1795,7 +1783,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             String[] SHBEFilenames,
             ArrayList<Integer> include,
             boolean includePreUnderOccupancyValues
-    ) {
+    ) throws IOException, ClassNotFoundException {
         env.ge.log("<getTable>", true);
         Object[] result;
         result = new Object[12];
@@ -1964,27 +1952,22 @@ public class DW_TenancyChangesUO extends DW_Object {
         EndUOThatWereAlsoStartUOClaimRefs.addAll(EndUOClaimIDs);
         EndUOThatWereAlsoStartUOClaimRefs.retainAll(StartUOClaimIDs);
 
-        TreeMap<String, ArrayList<Integer>> includes;
-        includes = SHBE_Handler.getIncludes();
+        TreeMap<String, ArrayList<Integer>> includes = shbeHandler.getIncludes();
         ArrayList<Integer> MonthlyUO;
         MonthlyUO = includes.get(SHBE_Strings.s_IncludeMonthlySinceApril2013);
-        ArrayList<Integer> All;
-        All = includes.get(SHBE_Strings.s_IncludeAll);
-        ArrayList<Integer> NotMonthlyUO;
-        NotMonthlyUO = new ArrayList<>();
+        ArrayList<Integer> All = includes.get(SHBE_Strings.s_IncludeAll);
+        ArrayList<Integer> NotMonthlyUO = new ArrayList<>();
         NotMonthlyUO.addAll(All);
         NotMonthlyUO.removeAll(MonthlyUO);
 
-        TreeMap<String, String> preUnderOccupancyValues;
-        preUnderOccupancyValues = null;
+        TreeMap<String, String> preUnderOccupancyValues = null;
         if (includePreUnderOccupancyValues) {
             preUnderOccupancyValues = getPreUnderOccupancyValues(ClaimIDs,
-                    SHBEFilenames,
-                    NotMonthlyUO);
+                    SHBEFilenames,                    NotMonthlyUO);
             result[4] = preUnderOccupancyValues;
         }
 
-        SHBE_Records SHBE_Records1;
+        SHBE_Records shbeRecs1;
         UKP_YM3 YM3Start = null;
         UKP_YM3 YM30 = null;
         String year0 = s;
@@ -2005,19 +1988,17 @@ public class DW_TenancyChangesUO extends DW_Object {
             j = iteX.next();
             if (YM3Start == null) {
                 SHBEFilename1 = SHBEFilenames[j];
-                YM3Start = SHBE_Handler.getYM3(SHBEFilename1);
+                YM3Start = shbeHandler.getYM3(SHBEFilename1);
             }
         }
         SHBEFilename1 = SHBEFilenames[j];
-        YM31 = SHBE_Handler.getYM3(SHBEFilename1);
-        year1 = SHBE_Handler.getYear(SHBEFilename1);
-        month1 = SHBE_Handler.getMonthNumber(SHBEFilename1);
+        YM31 = shbeHandler.getYM3(SHBEFilename1);
+        year1 = shbeHandler.getYear(SHBEFilename1);
+        month1 = shbeHandler.getMonthNumber(SHBEFilename1);
         CouncilUOSet1 = CouncilUOSets.get(YM31);
         RSLUOSet1 = RSLUOSets.get(YM31);
-        SHBE_Records1 = SHBE_Handler.getRecords(YM31, env.HOOME);
-        HashMap<SHBE_ClaimID, SHBE_Record> Records1;
-        Records1 = SHBE_Records1.getRecords(env.HOOME);
-        SHBE_Record Record1;
+        shbeRecs1 = shbeHandler.getRecords(YM31, env.HOOME);
+        Map<SHBE_ClaimID, SHBE_Record> recs1 = shbeRecs1.getRecords(env.HOOME);
         HashMap<SHBE_ClaimID, DW_UO_Record> CouncilUOSetMap1;
         CouncilUOSetMap1 = CouncilUOSet1.getMap();
 
@@ -2044,9 +2025,9 @@ public class DW_TenancyChangesUO extends DW_Object {
         while (ite.hasNext()) {
             SHBE_ClaimID ClaimID;
             ClaimID = ite.next();
-            Record1 = Records1.get(ClaimID);
-            if (Record1 != null) {
-                DRecord1 = Record1.getDRecord();
+           SHBE_Record r1 = recs1.get(ClaimID);
+            if (r1 != null) {
+                DRecord1 = r1.getDRecord();
                 int DHP1;
                 DHP1 = DRecord1.getWeeklyAdditionalDiscretionaryPayment();
                 if (DHP1 > 0) {
@@ -2115,9 +2096,9 @@ public class DW_TenancyChangesUO extends DW_Object {
         while (ite.hasNext()) {
             SHBE_ClaimID ClaimID;
             ClaimID = ite.next();
-            Record1 = Records1.get(ClaimID);
-            if (Record1 != null) {
-                DRecord1 = Record1.getDRecord();
+            SHBE_Record r1 = recs1.get(ClaimID);
+            if (r1 != null) {
+                DRecord1 = r1.getDRecord();
                 int DHP1;
                 DHP1 = DRecord1.getWeeklyAdditionalDiscretionaryPayment();
                 if (DHP1 > 0) {
@@ -2170,11 +2151,11 @@ public class DW_TenancyChangesUO extends DW_Object {
                 Math_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
 
 //        TreeMap<String, ArrayList<Integer>> includes;
-//        includes = SHBE_Handler.getIncludes();
+//        includes = shbeHandler.getIncludes();
 //        ArrayList<Integer> MonthlyUO;
-//        MonthlyUO = includes.get(SHBE_Handler.sIncludeMonthlySinceApril2013);
+//        MonthlyUO = includes.get(shbeHandler.sIncludeMonthlySinceApril2013);
 //        ArrayList<Integer> All;
-//        All = includes.get(SHBE_Handler.sIncludeAll);
+//        All = includes.get(shbeHandler.sIncludeAll);
 //        ArrayList<Integer> NotMonthlyUO;
 //        NotMonthlyUO = new ArrayList<Integer>();
 //        NotMonthlyUO.addAll(All);
@@ -2712,17 +2693,17 @@ public class DW_TenancyChangesUO extends DW_Object {
         TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs = new HashSet<>();
         Groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8,
                 TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs);
-        HashSet<SHBE_ClaimID> TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs;
-        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs
+                = new HashSet<>();
         Groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9,
                 TT4_To_UOTT4_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs);
 
-        HashSet<SHBE_ClaimID> TT4_To_UOTT4_PostcodeUnchangedButChangedAfter2MonthsClaimIDs;
-        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter2MonthsClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> TT4_To_UOTT4_PostcodeUnchangedButChangedAfter2MonthsClaimIDs
+                = new HashSet<>();
         Groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter2Months,
                 TT4_To_UOTT4_PostcodeUnchangedButChangedAfter2MonthsClaimIDs);
-        HashSet<SHBE_ClaimID> TT4_To_UOTT4_PostcodeUnchangedButChangedAfter3MonthsClaimIDs;
-        TT4_To_UOTT4_PostcodeUnchangedButChangedAfter3MonthsClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> TT4_To_UOTT4_PostcodeUnchangedButChangedAfter3MonthsClaimIDs
+                = new HashSet<>();
         Groups.put(sTT4_To_UOTT4_PostcodeUnchangedButChangedAfter3Months,
                 TT4_To_UOTT4_PostcodeUnchangedButChangedAfter3MonthsClaimIDs);
 
@@ -2736,203 +2717,197 @@ public class DW_TenancyChangesUO extends DW_Object {
         //UOTT4OrTT4_To_UOTT1InArrearsAndGettingDHP = new HashSet<SHBE_ClaimID>();
         //groups.put(sUOTT4OrTT4_To_UOTT1InArrearsAndGettingDHP,
         //        UOTT4OrTT4_To_UOTT1InArrearsAndGettingDHP);
-        HashSet<SHBE_ClaimID> UOTT4_To_UOTT1ClaimIDs;
-        UOTT4_To_UOTT1ClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT4_To_UOTT1ClaimIDs = new HashSet<>();
         Groups.put(sUOTT4_To_UOTT1, UOTT4_To_UOTT1ClaimIDs);
-        HashSet<SHBE_ClaimID> UOTT4_To_UOTT1InArrearsClaimIDs;
-        UOTT4_To_UOTT1InArrearsClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT4_To_UOTT1InArrearsClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT4_To_UOTT1InArrears, UOTT4_To_UOTT1InArrearsClaimIDs);
-        HashSet<SHBE_ClaimID> UOTT4_To_UOTT1GettingDHPClaimIDs;
-        UOTT4_To_UOTT1GettingDHPClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT4_To_UOTT1GettingDHPClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT4_To_UOTT1GettingDHP,
                 UOTT4_To_UOTT1GettingDHPClaimIDs);
-        HashSet<SHBE_ClaimID> UOTT4_To_UOTT1InArrearsAndGettingDHPClaimIDs;
-        UOTT4_To_UOTT1InArrearsAndGettingDHPClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT4_To_UOTT1InArrearsAndGettingDHPClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT4_To_UOTT1InArrearsAndGettingDHP,
                 UOTT4_To_UOTT1InArrearsAndGettingDHPClaimIDs);
-        HashSet<SHBE_ClaimID> TT4_To_UOTT1ClaimIDs;
-        TT4_To_UOTT1ClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> TT4_To_UOTT1ClaimIDs = new HashSet<>();
         Groups.put(sTT4_To_UOTT1, TT4_To_UOTT1ClaimIDs);
-        HashSet<SHBE_ClaimID> TT4_To_UOTT1InArrearsClaimIDs;
-        TT4_To_UOTT1InArrearsClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> TT4_To_UOTT1InArrearsClaimIDs = new HashSet<>();
         Groups.put(sTT4_To_UOTT1InArrears, TT4_To_UOTT1InArrearsClaimIDs);
-        HashSet<SHBE_ClaimID> TT4_To_UOTT1GettingDHPClaimIDs;
-        TT4_To_UOTT1GettingDHPClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> TT4_To_UOTT1GettingDHPClaimIDs = new HashSet<>();
         Groups.put(sTT4_To_UOTT1GettingDHP,
                 TT4_To_UOTT1GettingDHPClaimIDs);
-        HashSet<SHBE_ClaimID> TT4_To_UOTT1InArrearsAndGettingDHPClaimIDs;
-        TT4_To_UOTT1InArrearsAndGettingDHPClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> TT4_To_UOTT1InArrearsAndGettingDHPClaimIDs
+                = new HashSet<>();
         Groups.put(sTT4_To_UOTT1InArrearsAndGettingDHP,
                 TT4_To_UOTT1InArrearsAndGettingDHPClaimIDs);
 
-        HashSet<SHBE_ClaimID> InArrearsAtSomePointClaimIDs;
-        InArrearsAtSomePointClaimIDs = new HashSet<>();
-        HashSet<SHBE_ClaimID> DHPAtSomePoint;
-        DHPAtSomePoint = new HashSet<>();
-        HashSet<SHBE_ClaimID> InArrearsAtSomePoint_And_DHPAtSomePointClaimIDs;
-        InArrearsAtSomePoint_And_DHPAtSomePointClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> InArrearsAtSomePointClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> DHPAtSomePoint                = new HashSet<>();
+        HashSet<SHBE_ClaimID> InArrearsAtSomePoint_And_DHPAtSomePointClaimIDs
+                = new HashSet<>();
         Groups.put(sInArrearsAtSomePoint_And_DHPAtSomePoint,
                 InArrearsAtSomePoint_And_DHPAtSomePointClaimIDs);
 
-        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchangedClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeUnchanged, UOTT1_To_TT1_PostcodeUnchangedClaimIDs);
-//        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month;
-//        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month = new HashSet<SHBE_ClaimID>();
+//        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month
+//                = new HashSet<SHBE_ClaimID>();
 //        groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month,
 //                UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1Month);
-        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1,
                 UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs);
-        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1,
                 UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs);
-        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
                 UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs);
-        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4,
                 UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs);
-        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4,
                 UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs);
-        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
                 UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs);
-        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8,
                 UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs);
-        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9,
                 UOTT1_To_TT1_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs);
 
-        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter2MonthsClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter2MonthsClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter2MonthsClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter2Months,
                 UOTT1_To_TT1_PostcodeUnchangedButChangedAfter2MonthsClaimIDs);
-        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter3MonthsClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchangedButChangedAfter3MonthsClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedButChangedAfter3MonthsClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeUnchangedButChangedAfter3Months,
                 UOTT1_To_TT1_PostcodeUnchangedButChangedAfter3MonthsClaimIDs);
 
-        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchangedClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeUnchanged, UOTT4_To_TT4_PostcodeUnchangedClaimIDs);
-//        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month;
-//        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month = new HashSet<SHBE_ClaimID>();
+//        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month
+//                = new HashSet<SHBE_ClaimID>();
 //        groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month,
 //                UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1Month);
-        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1,
                 UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT1ClaimIDs);
-        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1,
                 UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT1ClaimIDs);
-        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6,
                 UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT3OrTT6ClaimIDs);
-        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4,
                 UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthUOTT4ClaimIDs);
-        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4,
                 UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT4ClaimIDs);
-        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7,
                 UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT5OrTT7ClaimIDs);
-        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8,
                 UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT8ClaimIDs);
-        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9,
                 UOTT4_To_TT4_PostcodeUnchangedButChangedAfter1MonthTT9ClaimIDs);
-        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter2MonthsClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter2MonthsClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter2MonthsClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter2Months,
                 UOTT4_To_TT4_PostcodeUnchangedButChangedAfter2MonthsClaimIDs);
-        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter3MonthsClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchangedButChangedAfter3MonthsClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedButChangedAfter3MonthsClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeUnchangedButChangedAfter3Months,
                 UOTT4_To_TT4_PostcodeUnchangedButChangedAfter3MonthsClaimIDs);
 
-        HashSet<SHBE_ClaimID> TT1_To_UOTT1_PostcodeUnchanged1MonthPreviousClaimIDs;
-        TT1_To_UOTT1_PostcodeUnchanged1MonthPreviousClaimIDs = new HashSet<>();
-        HashSet<SHBE_ClaimID> TT1_To_UOTT1_PostcodeUnchanged2MonthsPreviousClaimIDs;
-        TT1_To_UOTT1_PostcodeUnchanged2MonthsPreviousClaimIDs = new HashSet<>();
-        HashSet<SHBE_ClaimID> TT1_To_UOTT1_PostcodeUnchanged3MonthsPreviousClaimIDs;
-        TT1_To_UOTT1_PostcodeUnchanged3MonthsPreviousClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> TT1_To_UOTT1_PostcodeUnchanged1MonthPreviousClaimIDs
+                = new HashSet<>();
+        HashSet<SHBE_ClaimID> TT1_To_UOTT1_PostcodeUnchanged2MonthsPreviousClaimIDs
+                = new HashSet<>();
+        HashSet<SHBE_ClaimID> TT1_To_UOTT1_PostcodeUnchanged3MonthsPreviousClaimIDs
+                = new HashSet<>();
 
-        HashSet<SHBE_ClaimID> TT4_To_UOTT4_PostcodeUnchanged1MonthPreviousClaimIDs;
-        TT4_To_UOTT4_PostcodeUnchanged1MonthPreviousClaimIDs = new HashSet<>();
-        HashSet<SHBE_ClaimID> TT4_To_UOTT4_PostcodeUnchanged2MonthsPreviousClaimIDs;
-        TT4_To_UOTT4_PostcodeUnchanged2MonthsPreviousClaimIDs = new HashSet<>();
-        HashSet<SHBE_ClaimID> TT4_To_UOTT4_PostcodeUnchanged3MonthsPreviousClaimIDs;
-        TT4_To_UOTT4_PostcodeUnchanged3MonthsPreviousClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> TT4_To_UOTT4_PostcodeUnchanged1MonthPreviousClaimIDs
+                = new HashSet<>();
+        HashSet<SHBE_ClaimID> TT4_To_UOTT4_PostcodeUnchanged2MonthsPreviousClaimIDs
+                = new HashSet<>();
+        HashSet<SHBE_ClaimID> TT4_To_UOTT4_PostcodeUnchanged3MonthsPreviousClaimIDs
+                = new HashSet<>();
 
-        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchanged1MonthPreviousClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchanged1MonthPreviousClaimIDs = new HashSet<>();
-        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchanged2MonthsPreviousClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchanged2MonthsPreviousClaimIDs = new HashSet<>();
-        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchanged3MonthsPreviousClaimIDs;
-        UOTT1_To_TT1_PostcodeUnchanged3MonthsPreviousClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchanged1MonthPreviousClaimIDs
+                = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchanged2MonthsPreviousClaimIDs
+                = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchanged3MonthsPreviousClaimIDs
+                = new HashSet<>();
 
-        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchanged1MonthPreviousClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchanged1MonthPreviousClaimIDs = new HashSet<>();
-        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchanged2MonthsPreviousClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchanged2MonthsPreviousClaimIDs = new HashSet<>();
-        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchanged3MonthsPreviousClaimIDs;
-        UOTT4_To_TT4_PostcodeUnchanged3MonthsPreviousClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchanged1MonthPreviousClaimIDs
+                = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchanged2MonthsPreviousClaimIDs
+                = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchanged3MonthsPreviousClaimIDs
+                = new HashSet<>();
 
-        HashSet<SHBE_ClaimID> UOTT1_ToTT1_PostcodeChangedClaimIDs;
-        UOTT1_ToTT1_PostcodeChangedClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT1_ToTT1_PostcodeChangedClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT1_To_TT1_PostcodeChanged, UOTT1_ToTT1_PostcodeChangedClaimIDs);
 
-        HashSet<SHBE_ClaimID> UOTT1_ToUOTT1_PostcodeChangedClaimIDs;
-        UOTT1_ToUOTT1_PostcodeChangedClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT1_ToUOTT1_PostcodeChangedClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT1_To_UOTT1_PostcodeChanged, UOTT1_ToUOTT1_PostcodeChangedClaimIDs);
 
-        HashSet<SHBE_ClaimID> UOTT4_ToTT4_PostcodeChangedClaimIDs;
-        UOTT4_ToTT4_PostcodeChangedClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT4_ToTT4_PostcodeChangedClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT4_To_TT4_PostcodeChanged, UOTT4_ToTT4_PostcodeChangedClaimIDs);
 
-        HashSet<SHBE_ClaimID> UOTT4_ToUOTT4_PostcodeChangedClaimIDs;
-        UOTT4_ToUOTT4_PostcodeChangedClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT4_ToUOTT4_PostcodeChangedClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT4_To_UOTT4_PostcodeChanged, UOTT4_ToUOTT4_PostcodeChangedClaimIDs);
 
-        HashSet<SHBE_ClaimID> TT1_ToUOTT1_PostcodeChangedClaimIDs;
-        TT1_ToUOTT1_PostcodeChangedClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> TT1_ToUOTT1_PostcodeChangedClaimIDs
+                = new HashSet<>();
         Groups.put(sTT1_To_UOTT1_PostcodeChanged, TT1_ToUOTT1_PostcodeChangedClaimIDs);
 
-        HashSet<SHBE_ClaimID> TT4_ToUOTT4_PostcodeChangedClaimIDs;
-        TT4_ToUOTT4_PostcodeChangedClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> TT4_ToUOTT4_PostcodeChangedClaimIDs
+                = new HashSet<>();
         Groups.put(sTT4_To_UOTT4_PostcodeChanged, TT4_ToUOTT4_PostcodeChangedClaimIDs);
 
-        HashSet<SHBE_ClaimID> UOClaimsRecievingDHPClaimIDs;
-        UOClaimsRecievingDHPClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOClaimsRecievingDHPClaimIDs
+                = new HashSet<>();
         Groups.put(sUOClaimsRecievingDHP, UOClaimsRecievingDHPClaimIDs);
 
-        HashSet<SHBE_ClaimID> UOTT1ClaimsInRentArrearsAtSomePointClaimIDs;
-        UOTT1ClaimsInRentArrearsAtSomePointClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT1ClaimsInRentArrearsAtSomePointClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT1ClaimsInRentArrearsAtSomePoint, UOTT1ClaimsInRentArrearsAtSomePointClaimIDs);
 
-        HashSet<SHBE_ClaimID> UOTT1ClaimsInRentArrearsOver500AtSomePointClaimIDs;
-        UOTT1ClaimsInRentArrearsOver500AtSomePointClaimIDs = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT1ClaimsInRentArrearsOver500AtSomePointClaimIDs
+                = new HashSet<>();
         Groups.put(sUOTT1ClaimsInRentArrearsOver500AtSomePoint, UOTT1ClaimsInRentArrearsOver500AtSomePointClaimIDs);
 
         HashSet<SHBE_ClaimID> UOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePointClaimIDs;
@@ -2942,13 +2917,12 @@ public class DW_TenancyChangesUO extends DW_Object {
         SHBE_ClaimID ClaimID;
         String ClaimRef;
         // Initialise aggregateStatistics and generalStatistics
-        TreeMap<String, BigDecimal> AggregateStatistics;
-        AggregateStatistics = new TreeMap<>();
+        TreeMap<String, BigDecimal> AggregateStatistics = new TreeMap<>();
         String s_ = DW_Strings.symbol_underscore;
         ite = ClaimIDs.iterator();
         while (ite.hasNext()) {
             ClaimID = ite.next();
-            ClaimRef = ClaimIDToClaimRefLookup.get(ClaimID);
+            ClaimRef = cid2c.get(ClaimID);
             AggregateStatistics.put(ClaimRef + s_ + sTotal_DHP, BigDecimal.ZERO);
             AggregateStatistics.put(ClaimRef + s_ + sTotalCount_DHP, BigDecimal.ZERO);
             AggregateStatistics.put(ClaimRef + s_ + sTotal_HBLossDueToUO, BigDecimal.ZERO);
@@ -2975,7 +2949,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         ite = ClaimIDs.iterator();
         while (ite.hasNext()) {
             ClaimID = ite.next();
-            ClaimRef = ClaimIDToClaimRefLookup.get(ClaimID);
+            ClaimRef = cid2c.get(ClaimID);
             TableValues.put(ClaimRef + s_ + sTT, s);
             TableValues.put(ClaimRef + s_ + sUnderOccupancy, s);
             TableValues.put(ClaimRef + s_ + sP, s);
@@ -3013,19 +2987,15 @@ public class DW_TenancyChangesUO extends DW_Object {
             DHP_Totals.put(ClaimID, 0);
         }
 
-        Iterator<Integer> includeIte;
-        includeIte = include.iterator();
+        Iterator<Integer> includeIte = include.iterator();
         int i;
 
-        String header;
-        header = "ClaimRef, ";
+        String header = "ClaimRef, ";
         if (includePreUnderOccupancyValues) {
-            Iterator<Integer> ite2;
-            UKP_YM3 YM3;
-            ite2 = NotMonthlyUO.iterator();
+            Iterator<Integer> ite2 = NotMonthlyUO.iterator();
             while (ite2.hasNext()) {
                 i = ite2.next();
-                YM3 = SHBE_Handler.getYM3(SHBEFilenames[i]);
+                UKP_YM3 YM3 = shbeHandler.getYM3(SHBEFilenames[i]);
                 header += YM3 + DW_Strings.special_commaSpace;
             }
         }
@@ -3054,13 +3024,13 @@ public class DW_TenancyChangesUO extends DW_Object {
         while (!initFirst) {
             i = includeIte.next();
             SHBEFilename1 = SHBEFilenames[i];
-            YM31 = SHBE_Handler.getYM3(SHBEFilename1);
-            year1 = SHBE_Handler.getYear(SHBEFilename1);
-            month1 = SHBE_Handler.getMonthNumber(SHBEFilename1);
+            YM31 = shbeHandler.getYM3(SHBEFilename1);
+            year1 = shbeHandler.getYear(SHBEFilename1);
+            month1 = shbeHandler.getMonthNumber(SHBEFilename1);
             CouncilUOSet1 = CouncilUOSets.get(YM31);
             if (CouncilUOSet1 != null) {
                 RSLUOSet1 = RSLUOSets.get(YM31);
-                SHBE_Records1 = SHBE_Handler.getRecords(YM31, env.HOOME);
+                shbeRecs1 = shbeHandler.getRecords(YM31, env.HOOME);
                 initFirst = true;
                 //arrearsDiffs.put(YM3, 0.0d);
                 //arrearsDiffCounts.put(YM3, 0.0d);
@@ -3068,26 +3038,25 @@ public class DW_TenancyChangesUO extends DW_Object {
             header += YM31;
         }
         //TreeMap<String, SHBE_Record> aRecords;
-        Records1 = SHBE_Records1.getRecords(env.HOOME);
-        HashMap<SHBE_ClaimID, SHBE_Record> Records0;
-        Records0 = null;
+        recs1 = shbeRecs1.getRecords(env.HOOME);
+        Map<SHBE_ClaimID, SHBE_Record> recs0 = null;
 //        HashMap<SHBE_ClaimID, SHBE_Record> cRecords;
 //        cRecords = null;
 
         //SHBE_Record aSHBE_Record;
-        HashSet<SHBE_ClaimID> TT1_To_UOTT1_PostcodeUnchangedThisMonth;
-        TT1_To_UOTT1_PostcodeUnchangedThisMonth = new HashSet<>();
-        HashSet<SHBE_ClaimID> TT4_To_UOTT4_PostcodeUnchangedThisMonth;
-        TT4_To_UOTT4_PostcodeUnchangedThisMonth = new HashSet<>();
-        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedThisMonth;
-        UOTT1_To_TT1_PostcodeUnchangedThisMonth = new HashSet<>();
-        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedThisMonth;
-        UOTT4_To_TT4_PostcodeUnchangedThisMonth = new HashSet<>();
+        HashSet<SHBE_ClaimID> TT1_To_UOTT1_PostcodeUnchangedThisMonth
+                = new HashSet<>();
+        HashSet<SHBE_ClaimID> TT4_To_UOTT4_PostcodeUnchangedThisMonth
+                = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT1_To_TT1_PostcodeUnchangedThisMonth
+                = new HashSet<>();
+        HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedThisMonth
+                = new HashSet<>();
 
-        HashMap<SHBE_ClaimID, SHBE_PersonID> ClaimIDToClaimantPersonIDLookup;
-        HashMap<SHBE_ClaimID, SHBE_PersonID> ClaimIDToPartnerPersonIDLookup;
-        ClaimIDToClaimantPersonIDLookup = SHBE_Records1.getClaimIDToClaimantPersonIDLookup(env.HOOME);
-        ClaimIDToPartnerPersonIDLookup = SHBE_Records1.getClaimIDToPartnerPersonIDLookup(env.HOOME);
+        Map<SHBE_ClaimID, SHBE_PersonID> claimIDToClaimantPersonIDLookup
+                = shbeRecs1.getClaimIDToClaimantPersonIDLookup(env.HOOME);
+        Map<SHBE_ClaimID, SHBE_PersonID> claimIDToPartnerPersonIDLookup
+                = shbeRecs1.getClaimIDToPartnerPersonIDLookup(env.HOOME);
 
         // Add TT of all ClaimRefs to result
         Object[] processResult;
@@ -3107,16 +3076,16 @@ public class DW_TenancyChangesUO extends DW_Object {
         ite = ClaimIDs.iterator();
         while (ite.hasNext()) {
             ClaimID = ite.next();
-            ClaimRef = ClaimIDToClaimRefLookup.get(ClaimID);
-            Record1 = Records1.get(ClaimID);
+            ClaimRef = cid2c.get(ClaimID);
+           SHBE_Record r1 = recs1.get(ClaimID);
             processResult = process(
-                    ClaimIDToClaimantPersonIDLookup,
-                    ClaimIDToPartnerPersonIDLookup,
+                    claimIDToClaimantPersonIDLookup,
+                    claimIDToPartnerPersonIDLookup,
                     UOClaims, AggregateStatistics, GeneralStatistics,
                     ClaimID, ClaimRef,
                     year0, month0, YM30,
                     year1, month1, YM31,
-                    Record1, Records0,
+                    r1, recs0,
                     //cRecords,
                     TableValues,
                     CouncilUOSet0,
@@ -3429,34 +3398,34 @@ public class DW_TenancyChangesUO extends DW_Object {
             year0 = year1;
             month0 = month1;
             //SHBE_Records0 = SHBE_Records1;
-            Records0 = Records1;
+            recs0 = recs1;
             CouncilUOSet0 = CouncilUOSet1;
             RSLUOSet0 = RSLUOSet1;
 
             i = includeIte.next();
             SHBEFilename1 = SHBEFilenames[i];
-            YM31 = SHBE_Handler.getYM3(SHBEFilename1);
-            year1 = SHBE_Handler.getYear(SHBEFilename1);
-            month1 = SHBE_Handler.getMonthNumber(SHBEFilename1);
-            SHBE_Records1 = SHBE_Handler.getRecords(YM31, env.HOOME);
+            YM31 = shbeHandler.getYM3(SHBEFilename1);
+            year1 = shbeHandler.getYear(SHBEFilename1);
+            month1 = shbeHandler.getMonthNumber(SHBEFilename1);
+            shbeRecs1 = shbeHandler.getRecords(YM31, env.HOOME);
             //cRecords = Records0;
-            Records1 = SHBE_Records1.getRecords(env.HOOME);
+            recs1 = shbeRecs1.getRecords(env.HOOME);
             CouncilUOSet1 = CouncilUOSets.get(YM31);
             RSLUOSet1 = RSLUOSets.get(YM31);
             header += DW_Strings.special_commaSpace + YM31;
             ite = ClaimIDs.iterator();
             while (ite.hasNext()) {
                 ClaimID = ite.next();
-                ClaimRef = ClaimIDToClaimRefLookup.get(ClaimID);
-                Record1 = Records1.get(ClaimID);
+                ClaimRef = cid2c.get(ClaimID);
+               SHBE_Record r1 = recs1.get(ClaimID);
                 processResult = process(
-                        ClaimIDToClaimantPersonIDLookup,
-                        ClaimIDToPartnerPersonIDLookup,
+                        claimIDToClaimantPersonIDLookup,
+                        claimIDToPartnerPersonIDLookup,
                         UOClaims, AggregateStatistics, GeneralStatistics,
                         ClaimID, ClaimRef,
                         year0, month0, YM30,
                         year1, month1, YM31,
-                        Record1, Records0,
+                        r1, recs0,
                         //cRecords,
                         TableValues,
                         CouncilUOSet0,
@@ -3810,7 +3779,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         ite = ClaimIDs.iterator();
         while (ite.hasNext()) {
             ClaimID = ite.next();
-            ClaimRef = ClaimIDToClaimRefLookup.get(ClaimID);
+            ClaimRef = cid2c.get(ClaimID);
             key = ClaimRef + DW_Strings.symbol_underscore + sUnderOccupancy;
             aS = TableValues.get(key);
             if (aS.endsWith(DW_Strings.special_commaSpace)) {
@@ -3902,9 +3871,9 @@ public class DW_TenancyChangesUO extends DW_Object {
         iteS = AlwaysUOTT1FromStartClaimIDs.iterator();
         while (iteS.hasNext()) {
             ClaimID = iteS.next();
-            SHBE_Record rec = Records1.get(ClaimID);
+            SHBE_Record rec = recs1.get(ClaimID);
             if (rec != null) {
-                totalHouseholdSize += SHBE_Handler.getHouseholdSize(rec);
+                totalHouseholdSize += shbeHandler.getHouseholdSize(rec);
                 d += 1.0d;
             }
         }
@@ -3922,9 +3891,9 @@ public class DW_TenancyChangesUO extends DW_Object {
         iteS = AlwaysUOTT4FromStartClaimIDs.iterator();
         while (iteS.hasNext()) {
             ClaimID = iteS.next();
-            SHBE_Record rec = Records1.get(ClaimID);
+            SHBE_Record rec = recs1.get(ClaimID);
             if (rec != null) {
-                totalHouseholdSize += SHBE_Handler.getHouseholdSize(rec);
+                totalHouseholdSize += shbeHandler.getHouseholdSize(rec);
                 d += 1.0d;
             }
         }
@@ -4483,8 +4452,8 @@ public class DW_TenancyChangesUO extends DW_Object {
 
     /**
      *
-     * @param ClaimIDToClaimantPersonIDLookup
-     * @param ClaimIDToPartnerPersonIDLookup
+     * @param claimIDToClaimantPersonIDLookup
+     * @param claimIDToPartnerPersonIDLookup
      * @param tUOClaims
      * @param AggregateStatistics
      * @param generalStatistics
@@ -4497,7 +4466,7 @@ public class DW_TenancyChangesUO extends DW_Object {
      * @param month1
      * @param YM31
      * @param Record1
-     * @param Records0
+     * @param recs0
      * @param TableValues
      * @param CouncilUOSet0
      * @param RSLUOSet0
@@ -4711,14 +4680,14 @@ public class DW_TenancyChangesUO extends DW_Object {
      * result[8] = int household size from UO data + PartnerFlag from SHBE data
      */
     public Object[] process(
-            HashMap<SHBE_ClaimID, SHBE_PersonID> ClaimIDToClaimantPersonIDLookup,
-            HashMap<SHBE_ClaimID, SHBE_PersonID> ClaimIDToPartnerPersonIDLookup,
+            Map<SHBE_ClaimID, SHBE_PersonID> claimIDToClaimantPersonIDLookup,
+            Map<SHBE_ClaimID, SHBE_PersonID> claimIDToPartnerPersonIDLookup,
             HashSet<SHBE_ClaimID> tUOClaims,
             TreeMap<String, BigDecimal> AggregateStatistics,
             TreeMap<String, BigDecimal> generalStatistics,
             SHBE_ClaimID ClaimID, String ClaimRef, String year0, String month0,
             UKP_YM3 YM30, String year1, String month1, UKP_YM3 YM31,
-            SHBE_Record Record1, HashMap<SHBE_ClaimID, SHBE_Record> Records0,
+            SHBE_Record Record1, Map<SHBE_ClaimID, SHBE_Record> recs0,
             //HashMap<SHBE_ClaimID, SHBE_Record> cRecords,
             TreeMap<String, String> TableValues, DW_UO_Set CouncilUOSet0,
             DW_UO_Set RSLUOSet0, DW_UO_Set CouncilUOSet1,
@@ -4925,7 +4894,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             HashSet<SHBE_ClaimID> UOTT1ClaimsInRentArrearsAtSomePointClaimIDs,
             HashSet<SHBE_ClaimID> UOTT1ClaimsInRentArrearsOver500AtSomePointClaimIDs,
             HashSet<SHBE_ClaimID> UOTT1ClaimsInRentArrearsAndRecievingDHPAtSomePointClaimIDs
-    ) {
+    ) throws IOException, ClassNotFoundException {
         Object[] result = new Object[9];
         result[0] = false; // UnderOcuupied
         result[1] = false; // UnderOcuupied
@@ -4987,10 +4956,10 @@ public class DW_TenancyChangesUO extends DW_Object {
         String PA0;
         Double Arrears0;
         SHBE_Record Record0;
-        if (Records0 == null) {
+        if (recs0 == null) {
             Record0 = null;
         } else {
-            Record0 = Records0.get(ClaimID);
+            Record0 = recs0.get(ClaimID);
         }
 //        SHBE_D_Record cD_Record;
 //        int cTT;
@@ -5004,7 +4973,7 @@ public class DW_TenancyChangesUO extends DW_Object {
 //        }
         // Init
         if (Record1 == null) {
-            TT1 = SHBE_TenancyType_Handler.iMinus999;
+            TT1 = ttHandler.iMinus999;
             PC1 = defaultPostcode;
             Status1 = 0;
             WHBE1 = 0;
@@ -5043,12 +5012,12 @@ public class DW_TenancyChangesUO extends DW_Object {
             SHBC1 = DRecord1.getStatusOfHBClaimAtExtractDate();
             RTHBCC1 = DRecord1.getReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective();
             CEG1 = DRecord1.getClaimantsEthnicGroup();
-            HS1 = SHBE_Handler.getHouseholdSize(DRecord1);
+            HS1 = shbeHandler.getHouseholdSize(DRecord1);
             ND1 = DRecord1.getNumberOfNonDependents();
             CD1 = DRecord1.getNumberOfChildDependents();
             CDoB1 = DRecord1.getClaimantsDateOfBirth();
             PDoB1 = DRecord1.getPartnersDateOfBirth();
-            if (SHBE_Handler.getDisability(DRecord1)) {
+            if (shbeHandler.getDisability(DRecord1)) {
                 D1 = sDisability;
             } else {
                 D1 = s;
@@ -5077,15 +5046,15 @@ public class DW_TenancyChangesUO extends DW_Object {
             } else {
                 DC1 = s;
             }
-            CA1 = SHBE_Handler.getClaimantsAge(year1, month1, DRecord1);
-            PA1 = SHBE_Handler.getPartnersAge(year1, month1, DRecord1);
+            CA1 = shbeHandler.getClaimantsAge(year1, month1, DRecord1);
+            PA1 = shbeHandler.getPartnersAge(year1, month1, DRecord1);
             CG1 = DRecord1.getClaimantsGender();
             PG1 = DRecord1.getPartnersGender();
             PDD1 = DRecord1.getPartnersDateOfDeath();
             HBDP1 = DRecord1.getWeeklyAdditionalDiscretionaryPayment();
         }
         if (Record0 == null) {
-            TT0 = SHBE_TenancyType_Handler.iMinus999;
+            TT0 = ttHandler.iMinus999;
             PC0 = defaultPostcode;
             Status0 = 0;
             WHBE0 = 0;
@@ -5119,18 +5088,18 @@ public class DW_TenancyChangesUO extends DW_Object {
             SHBC0 = DRecord0.getStatusOfHBClaimAtExtractDate();
             RTHBCC0 = DRecord0.getReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective();
             //bCEG = bSHBE_D_Record.getClaimantsEthnicGroup();
-            CEG0 = SHBE_Handler.getEthnicityGroup(DRecord0);
-            HS0 = SHBE_Handler.getHouseholdSize(DRecord0);
+            CEG0 = shbeHandler.getEthnicityGroup(DRecord0);
+            HS0 = shbeHandler.getHouseholdSize(DRecord0);
             ND0 = DRecord0.getNumberOfNonDependents();
             CD0 = DRecord0.getNumberOfChildDependents();
             PDD0 = DRecord0.getPartnersDateOfDeath();
             CDoB0 = DRecord0.getClaimantsDateOfBirth();
             PDoB0 = DRecord0.getPartnersDateOfBirth();
-            CA0 = SHBE_Handler.getClaimantsAge(year0, month0, DRecord0);
-            PA0 = SHBE_Handler.getPartnersAge(year0, month0, DRecord0);
+            CA0 = shbeHandler.getClaimantsAge(year0, month0, DRecord0);
+            PA0 = shbeHandler.getPartnersAge(year0, month0, DRecord0);
         }
 //        if (cRecord == null) {
-//            cTT = SHBE_TenancyType_Handler.iMinus999;
+//            cTT = ttHandler.iMinus999;
 //            cPC = defaultPostcode;
 //            cStatus = 0;
 //        } else {
@@ -5174,9 +5143,9 @@ public class DW_TenancyChangesUO extends DW_Object {
         key = ClaimRef + DW_Strings.symbol_underscore + sTT;
         aS = TableValues.get(key);
         if (TT0 != TT1) {
-            if (TT0 == SHBE_TenancyType_Handler.iMinus999
-                    || TT1 == SHBE_TenancyType_Handler.iMinus999) {
-                if (TT0 == SHBE_TenancyType_Handler.iMinus999) {
+            if (TT0 == ttHandler.iMinus999
+                    || TT1 == ttHandler.iMinus999) {
+                if (TT0 == ttHandler.iMinus999) {
                     // Check if there is another TT in aS
                     boolean isAnotherTT;
                     isAnotherTT = isAnotherTT(TT1, aS);
@@ -5222,7 +5191,7 @@ public class DW_TenancyChangesUO extends DW_Object {
 //                            TT1_To_UOTT4ClaimIDs,
 //                            TT1_To_UOTT4GettingDHPClaimIDs);
                 }
-                if (TT1 == SHBE_TenancyType_Handler.iMinus999) {
+                if (TT1 == ttHandler.iMinus999) {
                     if (UOAtSomePointClaimIDs.contains(ClaimID)) {
                         UO_To_LeftSHBEAtSomePointClaimIDs.add(ClaimID);
                     }
@@ -5476,11 +5445,11 @@ public class DW_TenancyChangesUO extends DW_Object {
                             CouncilUniqueNonDependentsEffectedPersonIDs,
                             CouncilMaxNumberOfDependentsInClaimWhenUO,
                             year1, month1, YM31, Record1.getSRecords(),
-                            DRecord1, ClaimIDToClaimantPersonIDLookup);
+                            DRecord1, claimIDToClaimantPersonIDLookup);
                     DW_UO_Record rec = CouncilUOSet1.getMap().get(ClaimID);
                     int bedrooms = rec.getBedroomsInProperty();
                     int householdSizeSHBE;
-                    householdSizeSHBE = SHBE_Handler.getHouseholdSizeExcludingPartnersint(DRecord1);
+                    householdSizeSHBE = shbeHandler.getHouseholdSizeExcludingPartnersint(DRecord1);
                     result[5] = householdSizeSHBE;
                     if (householdSizeSHBE >= bedrooms) {
                         result[3] = true;
@@ -5513,11 +5482,11 @@ public class DW_TenancyChangesUO extends DW_Object {
                             YM31,
                             Record1.getSRecords(),
                             DRecord1,
-                            ClaimIDToClaimantPersonIDLookup);
+                            claimIDToClaimantPersonIDLookup);
                     DW_UO_Record rec = RSLUOSet1.getMap().get(ClaimID);
                     int bedrooms = rec.getBedroomsInProperty();
                     int householdSizeSHBE;
-                    householdSizeSHBE = SHBE_Handler.getHouseholdSizeExcludingPartnersint(DRecord1);
+                    householdSizeSHBE = shbeHandler.getHouseholdSizeExcludingPartnersint(DRecord1);
                     result[5] = householdSizeSHBE;
                     if (householdSizeSHBE >= bedrooms) {
                         result[3] = true;
@@ -5536,7 +5505,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                     result[8] = householdSizeUO;
                 }
             }
-            if (!(TT1 == 1 || TT1 == 4 || TT1 == SHBE_TenancyType_Handler.iMinus999)) {
+            if (!(TT1 == 1 || TT1 == 4 || TT1 == ttHandler.iMinus999)) {
                 TTNot1Or4AndUnderOccupyingClaimIDs.add(ClaimID);
             }
             if (!UO0) {
@@ -5607,7 +5576,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                     } else {
                         UO_NotUOClaimIDs.add(ClaimID);
                     }
-                    if (TT1 == SHBE_TenancyType_Handler.iMinus999) {
+                    if (TT1 == ttHandler.iMinus999) {
                         UO_To_LeftSHBETheVeryNextMonthClaimIDs.add(ClaimID);
                     } else {
                         PermanantlyLeftUOButRemainedInSHBEClaimIDs.add(ClaimID);
@@ -6725,7 +6694,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         int i;
         i = includeIte.next();
         filename1 = SHBEFilenames[i];
-        yM31 = SHBE_Handler.getYM3(filename1);
+        yM31 = shbeHandler.getYM3(filename1);
         councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(yM31);
         if (councilUnderOccupiedSet1 != null) {
             RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
@@ -6771,7 +6740,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             i = includeIte.next();
         }
         filename1 = SHBEFilenames[i];
-        yM31 = SHBE_Handler.getYM3(filename1);
+        yM31 = shbeHandler.getYM3(filename1);
         councilUnderOccupiedSet1 = CouncilUnderOccupiedSets.get(yM31);
         if (councilUnderOccupiedSet1 != null) {
             RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
@@ -6802,7 +6771,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         while (includeIte.hasNext()) {
             i = includeIte.next();
             filename1 = SHBEFilenames[i];
-            yM31 = SHBE_Handler.getYM3(filename1);
+            yM31 = shbeHandler.getYM3(filename1);
             CouncilUnderOccupiedSet1 = CouncilUnderOccupiedSets.get(yM31);
             if (CouncilUnderOccupiedSet1 != null) {
                 RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
@@ -7067,7 +7036,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                 averageHouseholdSizeRSLUO = totalHouseholdSizeRSLUO / (double) UORSLCount;
 
                 String YM3;
-                YM3 = SHBE_Handler.getYM3FromYearMonthNumber(date);
+                YM3 = shbeHandler.getYM3FromYearMonthNumber(date);
 
                 System.out.println("YM3 " + YM3);
 
@@ -7576,7 +7545,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             iteID = Group.iterator();
             while (iteID.hasNext()) {
                 ClaimID = iteID.next();
-                ClaimRef = ClaimIDToClaimRefLookup.get(ClaimID);
+                ClaimRef = cid2c.get(ClaimID);
                 check = ClaimIDsCheck.add(ClaimID);
                 if (check == false) {
                     String otherGroupName;
@@ -8217,7 +8186,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         iteID = remainder.iterator();
         while (iteID.hasNext()) {
             ClaimID = iteID.next();
-            ClaimRef = ClaimIDToClaimRefLookup.get(ClaimID);
+            ClaimRef = cid2c.get(ClaimID);
             writeRecordCollection(
                     tableValues,
                     includePreUnderOccupancyValues,
@@ -8296,15 +8265,14 @@ public class DW_TenancyChangesUO extends DW_Object {
         System.out.println();
     }
 
-    protected PrintWriter getPrintWriter(String name, String dirName) throws IOException {
-        File dirOut = new File(files.getOutputSHBETablesDir(), sUnderOccupancyGroupTables);
-        dirOut = new File(dirOut, dirName);
-        dirOut.mkdirs();
-        String outFilename;
-        //outFilename = "UO_";
-        outFilename = name + ".csv";
-        File outFile = new File(dirOut, outFilename);
-        return env.ge.io.getPrintWriter(outFile, false);
+    protected PrintWriter getPrintWriter(String name, String dirName)
+            throws IOException {
+        Path dirOut = Paths.get(files.getOutputSHBETablesDir().toString(),
+                sUnderOccupancyGroupTables, dirName);
+        Files.createDirectories(dirOut);
+        String outFilename = name + ".csv";
+        Path outFile = Paths.get(dirOut.toString(), outFilename);
+        return Generic_IO.getPrintWriter(outFile, false);
     }
 
     public TreeMap<String, String> getGroupNameDescriptions(Set<String> GroupNames) {
@@ -8326,13 +8294,14 @@ public class DW_TenancyChangesUO extends DW_Object {
             HashSet<SHBE_PersonID> NonDependentPersonIDs,
             HashMap<SHBE_ClaimID, Integer> MaxNumberOfDependentsInClaimWhenUO,
             String year, String month, UKP_YM3 YM3, 
-            ArrayList<SHBE_S_Record> SRecords,            SHBE_D_Record D_Record,
-            HashMap<SHBE_ClaimID, SHBE_PersonID> ClaimIDToClaimantPersonIDLookup) {
+            ArrayList<SHBE_S_Record> SRecords,            SHBE_D_Record d,
+            Map<SHBE_ClaimID, SHBE_PersonID> ClaimIDToClaimantPersonIDLookup) 
+            throws IOException, ClassNotFoundException {
         SHBE_PersonID ClaimantPersonID;
         ClaimantPersonID = ClaimIDToClaimantPersonIDLookup.get(ClaimID);
         ClaimantPersonIDs.add(ClaimantPersonID);
-        if (D_Record.getPartnerFlag() == 1) {
-            PartnersPersonIDs.add(SHBE_Handler.getPartnerPersonID(D_Record));
+        if (d.getPartnerFlag() == 1) {
+            PartnersPersonIDs.add(shbeHandler.getPartnerPersonID(d));
         }
         if (SRecords != null) {
             int index = 0;
@@ -8353,19 +8322,19 @@ public class DW_TenancyChangesUO extends DW_Object {
                         m = 0;
                     }
                     int numberOfChildDependents;
-                    numberOfChildDependents = D_Record.getNumberOfChildDependents();
+                    numberOfChildDependents = d.getNumberOfChildDependents();
                     int max;
                     max = Math.max(m, numberOfChildDependents);
                     MaxNumberOfDependentsInClaimWhenUO.put(ClaimID, max);
                     String DoB = SRecord.getSubRecordDateOfBirth();
-                    int age = Integer.valueOf(SHBE_Handler.getAge(year, month, DoB));
+                    int age = Integer.valueOf(shbeHandler.getAge(year, month, DoB));
                     if (age < 10) {
-                        DependentChildrenUnder10.add(SHBE_Handler.getDependentPersonID(SRecord, index));
+                        DependentChildrenUnder10.add(shbeHandler.getDependentPersonID(SRecord, index));
                     } else {
-                        DependentChildrenOver10.add(SHBE_Handler.getDependentPersonID(SRecord, index));
+                        DependentChildrenOver10.add(shbeHandler.getDependentPersonID(SRecord, index));
                     }
                 } else {
-                    NonDependentPersonIDs.add(SHBE_Handler.getNonDependentPersonID(SRecord));
+                    NonDependentPersonIDs.add(shbeHandler.getNonDependentPersonID(SRecord));
                 }
                 index++;
             }

@@ -1,26 +1,29 @@
 package uk.ac.leeds.ccg.projects.dw.core;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.data.core.Data_Environment;
-import uk.ac.leeds.ccg.agdt.data.census.core.Census_Environment;
+import uk.ac.leeds.ccg.data.census.core.Census_Environment;
 import uk.ac.leeds.ccg.generic.core.Generic_Environment;
-import uk.ac.leeds.ccg.generic.core.Generic_ErrorAndExceptionHandler;
 import uk.ac.leeds.ccg.grids.core.Grids_Environment;
-import uk.ac.leeds.ccg.agdt.data.ukp.data.UKP_Data;
-import uk.ac.leeds.ccg.agdt.data.ukp.util.UKP_YM3;
-import uk.ac.leeds.ccg.generic.data.shbe.core.SHBE_Environment;
-import uk.ac.leeds.ccg.generic.data.shbe.data.SHBE_Handler;
-import uk.ac.leeds.ccg.generic.data.shbe.data.SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.data.ukp.data.UKP_Data;
+import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
+import uk.ac.leeds.ccg.data.shbe.core.SHBE_Environment;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.generic.io.Generic_Path;
 import uk.ac.leeds.ccg.generic.memory.Generic_MemoryManager;
-import uk.ac.leeds.ccg.projects.digitalwelfare.data.underoccupied.DW_UO_Data;
-import uk.ac.leeds.ccg.projects.digitalwelfare.data.underoccupied.DW_UO_Handler;
-import uk.ac.leeds.ccg.projects.digitalwelfare.data.underoccupied.DW_UO_Set;
-import uk.ac.leeds.ccg.projects.digitalwelfare.io.DW_Files;
-import uk.ac.leeds.ccg.projects.digitalwelfare.visualisation.mapping.DW_Geotools;
-import uk.ac.leeds.ccg.projects.digitalwelfare.visualisation.mapping.DW_Maps;
+import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Data;
+import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Handler;
+import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Set;
+import uk.ac.leeds.ccg.projects.dw.io.DW_Files;
+import uk.ac.leeds.ccg.projects.dw.visualisation.mapping.DW_Geotools;
+import uk.ac.leeds.ccg.projects.dw.visualisation.mapping.DW_Maps;
 import uk.ac.leeds.ccg.vector.core.Vector_Environment;
 
 /**
@@ -53,14 +56,15 @@ public class DW_Environment extends Generic_MemoryManager
     public DW_Maps Maps;
     public SHBE_Handler SHBE_Handler;
 
-    public DW_Environment(Data_Environment de) throws IOException {
+    public DW_Environment(Data_Environment de) throws IOException, Exception {
         this.de = de;
         this.ge = de.env;
         this.files = new DW_Files(ge.files.getDir());
         SHBE_Env = new SHBE_Environment(de);
-        Grids_Env = new Grids_Environment(ge, files.getGeneratedGridsDir());
-        Vector_Env = new Vector_Environment(Grids_Env);
-        File censusDir = null;
+        Grids_Env = new Grids_Environment(ge, new Generic_Path(
+                files.getGeneratedGridsDir()));
+        Vector_Env = new Vector_Environment(de.env);
+        Path censusDir = null;
         censusEnv = new Census_Environment(de, censusDir);
     }
 
@@ -97,7 +101,7 @@ public class DW_Environment extends Generic_MemoryManager
 //                clearMemoryReserve();
 //                boolean createdRoom = false;
 //                while (!createdRoom) {
-//                    if (!cacheDataAny()) {
+//                    if (!swapSomeData()) {
 //                        if (Level < LOGGING_LEVEL_NORMAL) {
 //                            String message = "Warning! No data to cache or clear in "
 //                                    + this.getClass().getName()
@@ -133,9 +137,9 @@ public class DW_Environment extends Generic_MemoryManager
      * @throws java.io.IOException
      */
     @Override
-    public boolean checkAndMaybeFreeMemory() throws IOException {
+    public boolean checkAndMaybeFreeMemory() throws IOException, Exception {
         while (getTotalFreeMemory() < Memory_Threshold) {
-            if (!cacheDataAny()) {
+            if (!swapSomeData()) {
                 return false;
             }
         }
@@ -143,18 +147,18 @@ public class DW_Environment extends Generic_MemoryManager
     }
 
     @Override
-    public boolean cacheDataAny(boolean handleOutOfMemoryError)
-            throws IOException {
+    public boolean swapSomeData(boolean hoome)
+            throws IOException, Exception {
         try {
-            boolean result = cacheDataAny();
+            boolean r = swapSomeData();
             checkAndMaybeFreeMemory();
-            return result;
+            return r;
         } catch (OutOfMemoryError e) {
-            if (handleOutOfMemoryError) {
-                clearMemoryReserve();
-                boolean result = cacheDataAny(HOOMEF);
-                initMemoryReserve();
-                return result;
+            if (hoome) {
+                clearMemoryReserve(ge);
+                boolean r = swapSomeData(HOOMEF);
+                initMemoryReserve(ge);
+                return r;
             } else {
                 throw e;
             }
@@ -164,11 +168,12 @@ public class DW_Environment extends Generic_MemoryManager
     /**
      * Currently this just tries to cache a SHBE collection.
      *
-     * @return
+     * @return {@code true} if some data is cleared.
+     * @throws java.io.IOException If encountered
      */
     @Override
-    public boolean cacheDataAny() throws IOException {
-        boolean c = clearSomeSHBECache();
+    public boolean swapSomeData() throws IOException, Exception {
+        boolean c = clearSomeData();
         if (!c) {
             ge.log("No SHBE data to clear. Do some coding to try "
                     + "to arrange to clear something else if needs be!!!");
@@ -181,7 +186,7 @@ public class DW_Environment extends Generic_MemoryManager
      *
      * @return The number of sets of records cleared.
      */
-    public int clearAllSHBECache() throws IOException {
+    public int clearAllSHBECache() throws IOException, Exception {
         return getSHBE_Handler().clearAll();
     }
 
@@ -190,18 +195,18 @@ public class DW_Environment extends Generic_MemoryManager
      *
      * @return True iff a collection is cacheped.
      */
-    public boolean clearSomeSHBECache() throws IOException {
+    public boolean clearSomeData() throws IOException, Exception {
         return getSHBE_Handler().clearSome();
     }
 
     /**
      * Swaps to file a collection.
      *
-     * @param YM3
-     * @return True iff a collection is cacheped.
+     * @param ym3 ym3
+     * @return {@code true} if a collection is cleared.
      */
-    public boolean clearSomeSHBECacheExcept(UKP_YM3 YM3) throws IOException {
-        return getSHBE_Handler().clearSomeExcept(YM3);
+    public boolean clearSomeDataExcept(UKP_YM3 ym3) throws IOException, Exception {
+        return getSHBE_Handler().clearSomeExcept(ym3);
     }
 
     public DW_Geotools getGeotools() throws IOException {
@@ -239,11 +244,9 @@ public class DW_Environment extends Generic_MemoryManager
                 } catch (IOException e1) {
                     System.err.print(e1.getMessage());
                     e.printStackTrace(System.err);
-                    System.exit(Generic_ErrorAndExceptionHandler.IOException);
                 } catch (ClassNotFoundException e1) {
                     System.err.print(e1.getMessage());
                     e.printStackTrace(System.err);
-                    System.exit(Generic_ErrorAndExceptionHandler.ClassNotFoundException);
                 }
             }
         }
@@ -265,21 +268,17 @@ public class DW_Environment extends Generic_MemoryManager
     public DW_UO_Data getUO_Data(boolean loadFromSource) throws IOException, ClassNotFoundException {
         if (UO_Data == null || loadFromSource) {
             UO_Handler = getUO_Handler();
-            File f;
-            f = new File(files.getGeneratedUnderOccupiedDir(),
+            Path f = Paths.get(files.getGeneratedUnderOccupiedDir().toString(),
                     DW_Strings.sDW_UO_Data + DW_Strings.sBinaryFileExtension);
             if (loadFromSource) {
                 UO_Data = UO_Handler.loadUnderOccupiedReportData(loadFromSource);
-                ge.io.writeObject(UO_Data, f);
-            } else if (f.exists()) {
-                UO_Data = (DW_UO_Data) ge.io.readObject(f);
+                Generic_IO.writeObject(UO_Data, f);
+            } else if (Files.exists(f)) {
+                UO_Data = (DW_UO_Data) Generic_IO.readObject(f);
                 // For debugging/testing load
-                TreeMap<UKP_YM3, DW_UO_Set> CouncilUOSets;
-                CouncilUOSets = UO_Data.getCouncilUOSets();
-                TreeMap<UKP_YM3, DW_UO_Set> RSLUOSets;
-                RSLUOSets = UO_Data.getRSLUOSets();
-                int n;
-                n = CouncilUOSets.size() + RSLUOSets.size();
+                TreeMap<UKP_YM3, DW_UO_Set> CouncilUOSets = UO_Data.getCouncilUOSets();
+                TreeMap<UKP_YM3, DW_UO_Set> RSLUOSets = UO_Data.getRSLUOSets();
+                int n = CouncilUOSets.size() + RSLUOSets.size();
                 //logO("Number of UnderOccupancy data sets loaded " + n);
                 //logO("Number of Input files " + numberOfInputFiles);
                 if (n != UO_Handler.getNumberOfInputFiles()) {
@@ -311,10 +310,10 @@ public class DW_Environment extends Generic_MemoryManager
      *
      * @return
      */
-    public SHBE_Handler getSHBE_Handler() {
+    public SHBE_Handler getSHBE_Handler() throws Exception {
         if (SHBE_Env.handler == null) {
             try {
-            SHBE_Env.handler = new SHBE_Handler(SHBE_Env);
+                SHBE_Env.handler = new SHBE_Handler(SHBE_Env);
             } catch (IOException ex) {
                 ex.printStackTrace();
                 ge.log(ex.getMessage());

@@ -1,21 +1,3 @@
-/*
- * Copyright (C) 2015 geoagdt.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
- */
 package uk.ac.leeds.ccg.projects.dw.data;
 
 import java.io.IOException;
@@ -23,22 +5,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.agdt.data.ukp.util.UKP_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
+import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_ClaimID;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Object;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Records;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_D_Record;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Record;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Data;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Record;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Set;
 
 /**
- *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public final class DW_RentArrearsUO extends DW_Object {
 
@@ -51,7 +34,7 @@ public final class DW_RentArrearsUO extends DW_Object {
 
     public HashMap<SHBE_ClaimID, DW_Claim> ClaimData;
 
-    public DW_RentArrearsUO(DW_Environment env) throws IOException {
+    public DW_RentArrearsUO(DW_Environment env) throws IOException, Exception {
         super(env);
         this.SHBE_Handler = env.getSHBE_Handler();
         this.UO_Data = env.getUO_Data();
@@ -72,7 +55,7 @@ public final class DW_RentArrearsUO extends DW_Object {
      * @param handleOutOfMemoryError
      * @return
      */
-    void initClaimData() {
+    void initClaimData() throws IOException, ClassNotFoundException {
         String methodName = "initClaimData()";
         env.ge.log("<" + methodName + ">", true);
         // Declare and fill ClaimData with empty DW_Claims
@@ -80,11 +63,11 @@ public final class DW_RentArrearsUO extends DW_Object {
         HashSet<SHBE_ClaimID> AllCouncilUOClaimIDs = UO_Data.getClaimIDsInCouncilUO();
         env.ge.log("AllCouncilUOClaimIDs.size() " + AllCouncilUOClaimIDs.size(),
                 true);
-        SHBE_ClaimID ClaimID;
+        SHBE_ClaimID claimID;
         Iterator<SHBE_ClaimID> ite = AllCouncilUOClaimIDs.iterator();
         while (ite.hasNext()) {
-            ClaimID = ite.next();
-            ClaimData.put(ClaimID, new DW_Claim(env, ClaimID));
+            claimID = ite.next();
+            ClaimData.put(claimID, new DW_Claim(env, claimID));
         }
         // Loop through and add data to ClaimData
         // Declare variables
@@ -95,7 +78,7 @@ public final class DW_RentArrearsUO extends DW_Object {
         String filename;
         UKP_YM3 YM3;
         SHBE_Records SHBE_Records;
-        HashMap<SHBE_ClaimID, SHBE_Record> Records;
+        Map<SHBE_ClaimID, SHBE_Record> records;
         TreeMap<UKP_YM3, DW_UO_Set> CouncilUOSets;
         DW_UO_Set CouncilUOSet;
         SHBE_Record SHBE_Record;
@@ -113,7 +96,7 @@ public final class DW_RentArrearsUO extends DW_Object {
 
         CouncilUOSets = UO_Data.getCouncilUOSets();
 
-        SHBEFilenames = SHBE_Handler.getSHBEFilenamesAll();
+        SHBEFilenames = SHBE_Handler.getFilenames();
         //include = SHBE_Handler.getIncludeMonthlyUO();
         include = SHBE_Handler.getIncludeAll();
 
@@ -126,13 +109,13 @@ public final class DW_RentArrearsUO extends DW_Object {
             CouncilUOSet = CouncilUOSets.get(YM3);
             if (CouncilUOSet == null) {
                 SHBE_Records = SHBE_Handler.getRecords(YM3, env.HOOME);
-                Records = SHBE_Records.getRecords(env.HOOME);
+                records = SHBE_Records.getRecords(env.HOOME);
                 ite = AllCouncilUOClaimIDs.iterator();
                 while (ite.hasNext()) {
-                    ClaimID = ite.next();
-                    DW_Claim = ClaimData.get(ClaimID);
-                    if (Records.containsKey(ClaimID)) {
-                        SHBE_Record = Records.get(ClaimID);
+                    claimID = ite.next();
+                    DW_Claim = ClaimData.get(claimID);
+                    if (records.containsKey(claimID)) {
+                        SHBE_Record = records.get(claimID);
                         DRecord = SHBE_Record.getDRecord();
                         DHP = DRecord.getWeeklyAdditionalDiscretionaryPayment();
                         DW_Claim.DHP.put(i, DHP);
@@ -152,14 +135,14 @@ public final class DW_RentArrearsUO extends DW_Object {
                 CouncilUOMap = CouncilUOSet.getMap();
 
                 SHBE_Records = SHBE_Handler.getRecords(YM3, env.HOOME);
-                Records = SHBE_Records.getRecords(env.HOOME);
+                records = SHBE_Records.getRecords(env.HOOME);
 
                 ite = AllCouncilUOClaimIDs.iterator();
                 while (ite.hasNext()) {
-                    ClaimID = ite.next();
-                    DW_Claim = ClaimData.get(ClaimID);
-                    if (Records.containsKey(ClaimID)) {
-                        SHBE_Record = Records.get(ClaimID);
+                    claimID = ite.next();
+                    DW_Claim = ClaimData.get(claimID);
+                    if (records.containsKey(claimID)) {
+                        SHBE_Record = records.get(claimID);
                         DRecord = SHBE_Record.getDRecord();
                         DHP = DRecord.getWeeklyAdditionalDiscretionaryPayment();
                         DW_Claim.DHP.put(i, DHP);
@@ -168,9 +151,9 @@ public final class DW_RentArrearsUO extends DW_Object {
                         } else {
                             DW_Claim.Suspended.put(i, true);
                         }
-                        if (CouncilUOMap.keySet().contains(ClaimID)) {
+                        if (CouncilUOMap.keySet().contains(claimID)) {
                             DW_Claim.InUO.put(i, true);
-                            DW_UO_Record = CouncilUOMap.get(ClaimID);
+                            DW_UO_Record = CouncilUOMap.get(claimID);
                             RentArrears = DW_UO_Record.getTotalRentArrears();
                             DW_Claim.RentArrears.put(i, RentArrears);
                             BedroomRequirement = DW_UO_Record.getBedroomRequirement();
@@ -196,9 +179,9 @@ public final class DW_RentArrearsUO extends DW_Object {
                         PostcodeF = SHBE_Record.getClaimPostcodeF();
                         DW_Claim.PostcodeFs.put(i, PostcodeF);
                     } else {
-                        if (CouncilUOSet.getClaimIDs().contains(ClaimID)) {
+                        if (CouncilUOSet.getClaimIDs().contains(claimID)) {
                             DW_Claim.InUO.put(i, true);
-                            env.ge.log("ClaimID " + ClaimID + " Odd case where "
+                            env.ge.log("ClaimID " + claimID + " Odd case where "
                                     + "UO data exists, but claim in SHBE does "
                                     + "not.", true);
                         } else {

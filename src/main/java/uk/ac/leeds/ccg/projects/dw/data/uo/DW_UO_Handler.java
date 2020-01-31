@@ -1,59 +1,47 @@
-/*
- * Copyright (C) 2014 geoagdt.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
- */
+
 package uk.ac.leeds.ccg.projects.dw.data.uo;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.StreamTokenizer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.agdt.data.ukp.util.UKP_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
-import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
+import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_ClaimID;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.generic.util.Generic_Time;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Object;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Strings;
 
 /**
- *
  * @author Andy Turner
+ * @version 1.0.0
  */
 public class DW_UO_Handler extends DW_Object {
 
     /**
      * For convenience.
      */
-    private final HashMap<SHBE_ClaimID, String> ClaimIDToClaimRefLookup;
-    private final HashMap<String, SHBE_ClaimID> ClaimRefToClaimIDLookup;
+    private final Map<SHBE_ClaimID, String> ClaimIDToClaimRefLookup;
+    private final Map<String, SHBE_ClaimID> ClaimRefToClaimIDLookup;
 
     private HashSet<String> RecordTypes;
 
-    public DW_UO_Handler(DW_Environment env) throws IOException {
+    public DW_UO_Handler(DW_Environment env) throws IOException, ClassNotFoundException, Exception {
         super(env);
         SHBE_Handler h = env.getSHBE_Handler();
-        ClaimIDToClaimRefLookup = h.getClaimIDToClaimRefLookup();
-        ClaimRefToClaimIDLookup = h.getClaimRefToClaimIDLookup();
+        ClaimIDToClaimRefLookup = h.getCid2c();
+        ClaimRefToClaimIDLookup = h.getC2cid();
     }
 
     public HashSet<String> getRecordTypes() {
@@ -67,16 +55,17 @@ public class DW_UO_Handler extends DW_Object {
      * @param fn Name of file from which data are loaded.
      * @return The loaded data.
      */
-    public HashMap<SHBE_ClaimID, DW_UO_Record> loadInputData(File dir, String fn) {
+    public HashMap<SHBE_ClaimID, DW_UO_Record> loadInputData(Path dir, 
+            String fn) throws Exception {
         String methodName = "loadInputData(File,String)";
         env.ge.logStartTag(methodName);
         HashMap<SHBE_ClaimID, DW_UO_Record> r = new HashMap<>();
-        File inputFile = new File(dir, fn);
+        Path inputFile = Paths.get(dir.toString().toString(), fn);
         boolean addedNewClaimIDs = false;
         String uorr = " Under-Occupied Report Record ";
-        try (BufferedReader br = env.ge.io.getBufferedReader(inputFile)) {
+        try (BufferedReader br = Generic_IO.getBufferedReader(inputFile)) {
             StreamTokenizer st = new StreamTokenizer(br);
-            env.ge.io.setStreamTokenizerSyntax5(st);
+            Generic_IO.setStreamTokenizerSyntax5(st);
             st.wordChars('`', '`');
             st.wordChars('*', '*');
             String line;
@@ -137,10 +126,10 @@ public class DW_UO_Handler extends DW_Object {
             }
             env.ge.log("Replacement Entries " + replacementEntriesCount);
             if (addedNewClaimIDs) {
-                env.ge.io.writeObject(ClaimIDToClaimRefLookup,
-                        env.getSHBE_Handler().getClaimIDToClaimRefLookupFile());
-                env.ge.io.writeObject(ClaimRefToClaimIDLookup,
-                        env.getSHBE_Handler().getClaimRefToClaimIDLookupFile());
+                Generic_IO.writeObject(ClaimIDToClaimRefLookup,
+                        env.getSHBE_Handler().getCid2cFile());
+                Generic_IO.writeObject(ClaimRefToClaimIDLookup,
+                        env.getSHBE_Handler().getC2cidFile());
             }
         } catch (IOException ex) {
             ex.printStackTrace(System.err);
@@ -156,7 +145,7 @@ public class DW_UO_Handler extends DW_Object {
      * @param reload Iff true then the data is reloaded from source.
      * @return The loaded data.
      */
-    public DW_UO_Data loadUnderOccupiedReportData(boolean reload) throws IOException {
+    public DW_UO_Data loadUnderOccupiedReportData(boolean reload) throws IOException, ClassNotFoundException {
         String methodName = "loadUnderOccupiedReportData(boolean)";
         env.ge.logStartTag(methodName);
         DW_UO_Data r;
@@ -204,15 +193,15 @@ public class DW_UO_Handler extends DW_Object {
     /**
      * @return The number of input files of Under-Occupied Data
      */
-    public int getNumberOfInputFiles() {
-        return files.getInputUnderOccupiedDir().listFiles().length;
+    public int getNumberOfInputFiles() throws IOException {
+        return (int) Files.list(files.getInputUnderOccupiedDir()).count();
     }
 
     /**
      * @return The number of generated files of Under-Occupied Data
      */
-    public int getNumberOfGeneratedFiles() {
-        return files.getGeneratedUnderOccupiedDir().listFiles().length;
+    public int getNumberOfGeneratedFiles() throws IOException {
+        return (int) Files.list(files.getGeneratedUnderOccupiedDir()).count();
     }
 
     /**

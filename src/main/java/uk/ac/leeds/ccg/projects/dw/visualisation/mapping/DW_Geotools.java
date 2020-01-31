@@ -41,19 +41,20 @@ import org.geotools.map.MapContent;
 import org.geotools.styling.Style;
 import org.geotools.swing.JMapFrame;
 import org.opengis.feature.simple.SimpleFeatureType;
-import uk.ac.leeds.ccg.andyt.geotools.core.Geotools_Environment;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_Shapefile;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGridNumber;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_LegendItem;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_LegendLayer;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_StyleParameters;
-import uk.ac.leeds.ccg.andyt.geotools.core.Geotools_Strings;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.geotools.core.Geotools_Environment;
+import uk.ac.leeds.ccg.geotools.Geotools_Shapefile;
+import uk.ac.leeds.ccg.grids.d2.grid.Grids_GridNumber;
+import uk.ac.leeds.ccg.geotools.Geotools_LegendItem;
+import uk.ac.leeds.ccg.geotools.Geotools_LegendLayer;
+import uk.ac.leeds.ccg.geotools.Geotools_StyleParameters;
+import uk.ac.leeds.ccg.geotools.core.Geotools_Strings;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 
 /**
  * For doing things with Geotools_Environment Objects.
  *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class DW_Geotools extends Geotools_Environment {
 

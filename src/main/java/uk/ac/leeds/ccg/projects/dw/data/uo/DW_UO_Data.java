@@ -18,22 +18,21 @@
  */
 package uk.ac.leeds.ccg.projects.dw.data.uo;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.agdt.data.ukp.util.UKP_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
+import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_ClaimID;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Object;
 
 /**
  * Class for holds and referring to all the UnderOccupancy data.
- *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
-public class DW_UO_Data extends DW_Object implements Serializable {
+public class DW_UO_Data extends DW_Object {
 
     /**
      * For storing all DW_UO_Sets for RSL. Keys are YM3, values are the
@@ -112,22 +111,19 @@ public class DW_UO_Data extends DW_Object implements Serializable {
         ClaimIDsInUO = new TreeMap<>();
         ClaimIDsInCouncilBaseline = new HashSet<>();
         ClaimIDsInRSLBaseline = new HashSet<>();
-        UKP_YM3 YM3;
-        UKP_YM3 baselineYM3;
-        baselineYM3 = getBaselineYM3();
-        Iterator<UKP_YM3> ite;
-        ite = CouncilUOSets.keySet().iterator();
+        UKP_YM3 baselineYM3 = getBaselineYM3();
+        Iterator<UKP_YM3> ite = CouncilUOSets.keySet().iterator();
         while (ite.hasNext()) {
-            YM3 = ite.next();
-            if (YM3.equals(baselineYM3)) {
-                ClaimIDsInCouncilBaseline.addAll(CouncilUOSets.get(YM3).getClaimIDs());
-                ClaimIDsInRSLBaseline.addAll(RSLUOSets.get(YM3).getClaimIDs());
+            UKP_YM3 ym3 = ite.next();
+            if (ym3.equals(baselineYM3)) {
+                ClaimIDsInCouncilBaseline.addAll(CouncilUOSets.get(ym3).getClaimIDs());
+                ClaimIDsInRSLBaseline.addAll(RSLUOSets.get(ym3).getClaimIDs());
             } else {
                 HashSet<SHBE_ClaimID> ClaimIDsForYM3;
                 ClaimIDsForYM3 = new HashSet<>();
-                ClaimIDsForYM3.addAll(CouncilUOSets.get(YM3).getClaimIDs());
-                ClaimIDsForYM3.addAll(RSLUOSets.get(YM3).getClaimIDs());
-                ClaimIDsInUO.put(YM3, ClaimIDsForYM3);
+                ClaimIDsForYM3.addAll(CouncilUOSets.get(ym3).getClaimIDs());
+                ClaimIDsForYM3.addAll(RSLUOSets.get(ym3).getClaimIDs());
+                ClaimIDsInUO.put(ym3, ClaimIDsForYM3);
             }
         }
     }

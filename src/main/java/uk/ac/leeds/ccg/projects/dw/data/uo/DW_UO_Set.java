@@ -1,37 +1,24 @@
-/*
- * Copyright (C) 2015 geoagdt.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
- */
+
 package uk.ac.leeds.ccg.projects.dw.data.uo;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Set;
-import uk.ac.leeds.ccg.agdt.data.ukp.util.UKP_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
+import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_ClaimID;
+import uk.ac.leeds.ccg.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Object;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Strings;
 
 /**
  *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class DW_UO_Set extends DW_Object implements Serializable {
 
@@ -59,28 +46,28 @@ public class DW_UO_Set extends DW_Object implements Serializable {
      * @param reload If true this forces a reload of the data.
      */
     public DW_UO_Set(DW_Environment env, String type, String filename,
-            UKP_YM3 YM3, boolean reload) throws IOException {
+            UKP_YM3 YM3, boolean reload) throws IOException, ClassNotFoundException {
         super(env);
         String methodName;
         methodName = "DW_UO_Set(...)";
         this.env.ge.log("<" + methodName + ">", true);
         this.env.ge.log("filename " + filename, true);
-        File dirIn = files.getInputUnderOccupiedDir();
-        File dirOut;
-        dirOut = new File(files.getGeneratedUnderOccupiedDir(), type);
-        dirOut = new File(dirOut, YM3.toString());
-        if (!dirOut.exists()) {
-            dirOut.mkdirs();
+        Path dirIn = files.getInputUnderOccupiedDir();
+        Path dirOut;
+        dirOut = Paths.get(files.getGeneratedUnderOccupiedDir().toString(), type);
+        dirOut = Paths.get(dirOut.toString(), YM3.toString());
+        if (!Files.exists(dirOut)) {
+            Files.createDirectories(dirOut);
         }
-        File fOut;
-        fOut = new File(dirOut, DW_Strings.sDW_UO_Set + DW_Strings.sBinaryFileExtension);
-        if (fOut.exists() || !reload) {
+        Path fOut;
+        fOut = Paths.get(dirOut.toString(), DW_Strings.sDW_UO_Set + DW_Strings.sBinaryFileExtension);
+        if (Files.exists(fOut) || !reload) {
             DW_UO_Set loadDummy;
-            loadDummy = (DW_UO_Set) env.ge.io.readObject(fOut);
+            loadDummy = (DW_UO_Set) Generic_IO.readObject(fOut);
             Map = loadDummy.Map;
         } else {
             Map = this.env.getUO_Handler().loadInputData(dirIn, filename);
-            env.ge.io.writeObject(this, fOut);
+            Generic_IO.writeObject(this, fOut);
         }
         this.env.ge.log("</" + methodName + ">", true);
     }
@@ -94,9 +81,7 @@ public class DW_UO_Set extends DW_Object implements Serializable {
     }
 
     /**
-     * Returns a Set of ClaimIDs {@code return Map.keySet();}.
-     *
-     * @return
+     * @return {@link #Map} keySet.
      */
     public Set<SHBE_ClaimID> getClaimIDs() {
         return Map.keySet();

@@ -1,48 +1,34 @@
-/*
- * Copyright (C) 2015 geoagdt.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
- */
 package uk.ac.leeds.ccg.projects.dw.data;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.agdt.data.ukp.data.id.UKP_RecordID;
-import uk.ac.leeds.ccg.andyt.math.Math_BigDecimal;
-import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.data.ukp.data.id.UKP_RecordID;
+import uk.ac.leeds.ccg.math.Math_BigDecimal;
+import uk.ac.leeds.ccg.generic.util.Generic_Time;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Object;
-import uk.ac.leeds.ccg.agdt.data.ukp.data.UKP_Data;
-import uk.ac.leeds.ccg.agdt.data.ukp.util.UKP_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_PersonID;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.data.ukp.data.UKP_Data;
+import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
+import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_ClaimID;
+import uk.ac.leeds.ccg.data.shbe.core.SHBE_Strings;
+import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_PersonID;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Records;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_D_Record;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Record;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Strings;
 
 /**
@@ -820,7 +806,7 @@ public class DW_Summary extends DW_Object {
     protected int TotalCount_CTBPostcode0DNEPostcode1NotValid;
     protected int TotalCount_CTBPostcode0NotValidPostcode1DNE;
 
-    public DW_Summary(DW_Environment env) throws IOException {
+    public DW_Summary(DW_Environment env) throws IOException, Exception {
         super(env);
         this.SHBE_Handler = env.getSHBE_Handler();
         this.Postcode_Handler = env.getONSPD_Handler();
@@ -828,7 +814,8 @@ public class DW_Summary extends DW_Object {
         ds = new DW_Strings();
     }
 
-    public DW_Summary(DW_Environment env, int nTT, int nEG, int nPSI, boolean hoome) throws IOException {
+    public DW_Summary(DW_Environment env, int nTT, int nEG, int nPSI,
+            boolean hoome) throws IOException, Exception {
         this(env);
         init(nTT, nEG, nPSI);
     }
@@ -1308,16 +1295,9 @@ public class DW_Summary extends DW_Object {
         return result;
     }
 
-    protected void addToSummaryCompare2Times(
-            int nTT,
-            int nEG,
-            int nPSI,
-            HashMap<String, String> summary) {
-        addToSummarySingleTime(
-                nTT,
-                nEG,
-                nPSI,
-                summary);
+    protected void addToSummaryCompare2Times(int nTT, int nEG, int nPSI,
+            Map<String, String> summary) {
+        addToSummarySingleTime(nTT, nEG, nPSI, summary);
         // All
         if (AllCount0 == null) {
             summary.put(sAllCount0, "null");
@@ -2125,11 +2105,8 @@ public class DW_Summary extends DW_Object {
      * @param nPSI
      * @param summary
      */
-    protected void addToSummarySingleTime(
-            int nTT,
-            int nEG,
-            int nPSI,
-            HashMap<String, String> summary) {
+    protected void addToSummarySingleTime(int nTT, int nEG, int nPSI,
+            Map<String, String> summary) {
         // Add Counts
         addToSummarySingleTimeCounts0(nTT, summary);
         addToSummarySingleTimeDisabilityCounts(nTT, summary);
@@ -2146,34 +2123,22 @@ public class DW_Summary extends DW_Object {
         addToSummarySingleTimeRates1(summary);
     }
 
-    protected void addToSummarySingleTimeCounts0(
-            int nTT,
-            HashMap<String, String> summary) {
+    protected void addToSummarySingleTimeCounts0(int nTT,
+            Map<String, String> summary) {
         AllCount1 = HBCount1 + CTBCount1;
         summary.put(sAllCount1, Integer.toString(AllCount1));
         summary.put(sHBCount1, Integer.toString(HBCount1));
         summary.put(sCTBCount1, Integer.toString(CTBCount1));
-        summary.put(
-                sAllTotalHouseholdSize,
-                Long.toString(AllTotalHouseholdSize));
-        double d;
-        double n;
-        d = AllCount1;
+        summary.put(sAllTotalHouseholdSize, Long.toString(AllTotalHouseholdSize));
+        double d = AllCount1;
         if (d > 0) {
-            n = AllTotalHouseholdSize / d;
-            summary.put(
-                    sAllAverageHouseholdSize,
-                    Double.toString(n));
+            double n = AllTotalHouseholdSize / d;
+            summary.put(sAllAverageHouseholdSize, Double.toString(n));
         }
-        summary.put(
-                sHBTotalHouseholdSize,
-                Long.toString(HBTotalHouseholdSize));
-        summary.put(
-                sCTBTotalHouseholdSize,
-                Long.toString(CTBTotalHouseholdSize));
+        summary.put(sHBTotalHouseholdSize, Long.toString(HBTotalHouseholdSize));
+        summary.put(sCTBTotalHouseholdSize, Long.toString(CTBTotalHouseholdSize));
         for (int TT = 1; TT < nTT; TT++) {
-            summary.put(sTotal_HouseholdSizeTT[TT],
-                    Long.toString(AllTotalHouseholdSizeTT[TT]));
+            summary.put(sTotal_HouseholdSizeTT[TT], Long.toString(AllTotalHouseholdSizeTT[TT]));
         }
         TotalCount_AllPostcodeValidFormat = TotalCount_HBPostcodeValidFormat + TotalCount_CTBPostcodeValidFormat;
         TotalCount_AllPostcodeInvalidFormat = TotalCount_HBPostcodeInvalidFormat + TotalCount_CTBPostcodeInvalidFormat;
@@ -2218,42 +2183,35 @@ public class DW_Summary extends DW_Object {
 
         d = AllCount1;
         if (d > 0) {
-            n = (TotalCount_AllPostcodeValidFormat / d) * 100.0d;
-            summary.put(
-                    sPercentageOfAllCount1_AllPostcodeValidFormat,
+            double n = (TotalCount_AllPostcodeValidFormat / d) * 100.0d;
+            summary.put(sPercentageOfAllCount1_AllPostcodeValidFormat,
                     Double.toString(n));
             n = (TotalCount_AllPostcodeValid / d) * 100.0d;
-            summary.put(
-                    sPercentageOfAllCount1_AllPostcodeValid,
+            summary.put(sPercentageOfAllCount1_AllPostcodeValid,
                     Double.toString(n));
         }
         d = HBCount1;
         if (d > 0) {
-            n = (TotalCount_HBPostcodeValidFormat / d) * 100.0d;
-            summary.put(
-                    sPercentageOfHBCount1_HBPostcodeValidFormat,
+            double n = (TotalCount_HBPostcodeValidFormat / d) * 100.0d;
+            summary.put(sPercentageOfHBCount1_HBPostcodeValidFormat,
                     Double.toString(n));
             n = (TotalCount_HBPostcodeValid / d) * 100.0d;
-            summary.put(
-                    sPercentageOfHBCount1_HBPostcodeValid,
+            summary.put(sPercentageOfHBCount1_HBPostcodeValid,
                     Double.toString(n));
         }
         d = CTBCount1;
         if (d > 0) {
-            n = (TotalCount_CTBPostcodeValidFormat / d) * 100.0d;
-            summary.put(
-                    sPercentageOfCTBCount1_CTBPostcodeValidFormat,
+            double n = (TotalCount_CTBPostcodeValidFormat / d) * 100.0d;
+            summary.put(sPercentageOfCTBCount1_CTBPostcodeValidFormat,
                     Double.toString(n));
             n = (TotalCount_CTBPostcodeValid / d) * 100.0d;
-            summary.put(
-                    sPercentageOfCTBCount1_CTBPostcodeValid,
+            summary.put(sPercentageOfCTBCount1_CTBPostcodeValid,
                     Double.toString(n));
         }
     }
 
-    protected void addToSummarySingleTimeRates0(
-            int nTT,
-            HashMap<String, String> summary) {
+    protected void addToSummarySingleTimeRates0(int nTT,
+            Map<String, String> summary) {
         double ave;
         double d;
         double n;
@@ -2320,33 +2278,25 @@ public class DW_Summary extends DW_Object {
         }
     }
 
-    protected void addToSummarySingleTimePSICounts(
-            int nTT,
-            int nPSI,
-            HashMap<String, String> summary) {
+    protected void addToSummarySingleTimePSICounts(int nTT, int nPSI,
+            Map<String, String> summary) {
         // PassportStandardIndicator
         for (int i = 1; i < nPSI; i++) {
-            summary.put(
-                    sTotalCount_AllPSI[i],
+            summary.put(sTotalCount_AllPSI[i],
                     Long.toString(TotalCount_AllPSI[i]));
-            summary.put(
-                    sTotalCount_HBPSI[i],
+            summary.put(sTotalCount_HBPSI[i],
                     Long.toString(TotalCount_HBPSI[i]));
-            summary.put(
-                    sTotalCount_CTBPSI[i],
+            summary.put(sTotalCount_CTBPSI[i],
                     Long.toString(TotalCount_CTBPSI[i]));
             for (int j = 1; j < nTT; j++) {
-                summary.put(
-                        sTotalCount_PSITT[i][j],
+                summary.put(sTotalCount_PSITT[i][j],
                         Long.toString(TotalCount_AllPSITT[i][j]));
             }
         }
     }
 
-    protected void addToSummarySingleTimePSIRates(
-            int nTT,
-            int nPSI,
-            HashMap<String, String> summary) {
+    protected void addToSummarySingleTimePSIRates(int nTT, int nPSI,
+            Map<String, String> summary) {
         double ave;
         double d;
         double all;
@@ -2424,9 +2374,8 @@ public class DW_Summary extends DW_Object {
         }
     }
 
-    protected void addToSummarySingleTimeDisabilityCounts(
-            int nTT,
-            HashMap<String, String> summary) {
+    protected void addToSummarySingleTimeDisabilityCounts(int nTT,
+            Map<String, String> summary) {
         int t;
         // DisabilityAward
         t = TotalCount_DisabilityAwardTT[1]
@@ -2643,9 +2592,8 @@ public class DW_Summary extends DW_Object {
         }
     }
 
-    protected void addToSummarySingleTimeDisabilityRates(
-            int nTT,
-            HashMap<String, String> summary) {
+    protected void addToSummarySingleTimeDisabilityRates(int nTT,
+            Map<String, String> summary) {
         double percentage;
         double d;
         int t;
@@ -3387,8 +3335,7 @@ public class DW_Summary extends DW_Object {
         }
     }
 
-    protected void addToSummarySingleTimeCounts1(
-            HashMap<String, String> summary) {
+    protected void addToSummarySingleTimeCounts1(Map<String, String> summary) {
         // WeeklyHBEntitlement
         summary.put(DW_Strings.sTotal_WeeklyHBEntitlement,
                 BigDecimal.valueOf(AllTotalWeeklyHBEntitlement).toPlainString());
@@ -3585,8 +3532,7 @@ public class DW_Summary extends DW_Object {
                 Integer.toString(TotalCount_CTBLHACases));
     }
 
-    protected void addToSummarySingleTimeRates1(
-            HashMap<String, String> summary) {
+    protected void addToSummarySingleTimeRates1(Map<String, String> summary) {
         double ave;
         double d;
         double t;
@@ -4027,40 +3973,29 @@ public class DW_Summary extends DW_Object {
         }
     }
 
-    protected void addToSummarySingleTimeEthnicityCounts(
-            int nEG,
-            int nTT,
-            HashMap<String, String> summary) {
+    protected void addToSummarySingleTimeEthnicityCounts(int nEG, int nTT,
+            Map<String, String> summary) {
         for (int i = 1; i < nEG; i++) {
-            int all;
-            all = HBEthnicGroupCount[i] + CTBEthnicGroupCount[i];
-            summary.put(
-                    sTotalCount_AllEthnicGroupClaimant[i],
+            int all = HBEthnicGroupCount[i] + CTBEthnicGroupCount[i];
+            summary.put(sTotalCount_AllEthnicGroupClaimant[i],
                     Integer.toString(all));
-            summary.put(
-                    sTotalCount_HBEthnicGroupClaimant[i],
+            summary.put(sTotalCount_HBEthnicGroupClaimant[i],
                     Integer.toString(HBEthnicGroupCount[i]));
-            summary.put(
-                    sTotalCount_CTBEthnicGroupClaimant[i],
+            summary.put(sTotalCount_CTBEthnicGroupClaimant[i],
                     Integer.toString(CTBEthnicGroupCount[i]));
             for (int j = 0; j < nTT; j++) {
-                summary.put(
-                        sTotalCount_AllEthnicGroupClaimantTT[i][j],
+                summary.put(sTotalCount_AllEthnicGroupClaimantTT[i][j],
                         Integer.toString(TotalCount_AllEthnicGroupClaimantTT[i][j]));
             }
-            summary.put(
-                    sTotalCount_AllEthnicGroupSocialTTClaimant[i],
+            summary.put(sTotalCount_AllEthnicGroupSocialTTClaimant[i],
                     Integer.toString(TotalCount_AllEthnicGroupClaimantTT[i][1] + TotalCount_AllEthnicGroupClaimantTT[i][4]));
-            summary.put(
-                    sTotalCount_AllEthnicGroupPrivateDeregulatedTTClaimant[i],
+            summary.put(sTotalCount_AllEthnicGroupPrivateDeregulatedTTClaimant[i],
                     Integer.toString(TotalCount_AllEthnicGroupClaimantTT[i][3] + TotalCount_AllEthnicGroupClaimantTT[i][6]));
         }
     }
 
-    protected void addToSummarySingleTimeEthnicityRates(
-            int nEG,
-            int nTT,
-            HashMap<String, String> summary) {
+    protected void addToSummarySingleTimeEthnicityRates(int nEG, int nTT,
+            Map<String, String> summary) {
         // Ethnicity
         double percentage;
         double all;
@@ -4140,24 +4075,18 @@ public class DW_Summary extends DW_Object {
         }
     }
 
-    protected void addToSummarySingleTimeTTCounts(
-            int nTT,
-            HashMap<String, String> summary) {
-        int all;
-        all = TotalCount_TTClaimant1[1] + TotalCount_TTClaimant1[4];
-        summary.put(
-                sTotalCount_SocialTTsClaimant,
+    protected void addToSummarySingleTimeTTCounts(int nTT,
+            Map<String, String> summary) {
+        int all = TotalCount_TTClaimant1[1] + TotalCount_TTClaimant1[4];
+        summary.put(sTotalCount_SocialTTsClaimant,
                 Integer.toString(all));
         all = TotalCount_TTClaimant1[3] + TotalCount_TTClaimant1[6];
-        summary.put(
-                sTotalCount_PrivateDeregulatedTTsClaimant,
+        summary.put(sTotalCount_PrivateDeregulatedTTsClaimant,
                 Integer.toString(all));
         // TT
         for (int i = 1; i < nTT; i++) {
             all = TotalCount_TTClaimant1[i];
-            summary.put(
-                    sTotalCount_ClaimantTT[i],
-                    Integer.toString(all));
+            summary.put(sTotalCount_ClaimantTT[i], Integer.toString(all));
         }
         // HB
         summary.put(sHBCount1, Integer.toString(HBCount1));
@@ -4171,17 +4100,13 @@ public class DW_Summary extends DW_Object {
         summary.put(sCTBPTOCount1, Integer.toString(CTBPTOCount1));
     }
 
-    protected void addToSummarySingleTimeTTRates(
-            int nTT,
-            HashMap<String, String> summary) {
+    protected void addToSummarySingleTimeTTRates(int nTT,
+            Map<String, String> summary) {
         // Ethnicity
-        double percentage;
-        double d;
-        int all;
-        all = Integer.valueOf(summary.get(sTotalCount_SocialTTsClaimant));
-        d = AllCount1;
+        int all = Integer.valueOf(summary.get(sTotalCount_SocialTTsClaimant));
+        double d = AllCount1;
         if (d > 0) {
-            percentage = (all * 100.0d) / d;
+            double percentage = (all * 100.0d) / d;
             summary.put(sPercentageOfAll_SocialTTsClaimant,
                     Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
@@ -4190,7 +4115,7 @@ public class DW_Summary extends DW_Object {
         }
         d = HBCount1;
         if (d > 0) {
-            percentage = (all * 100.0d) / d;
+            double percentage = (all * 100.0d) / d;
             summary.put(sPercentageOfHB_SocialTTsClaimant,
                     Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
@@ -4200,7 +4125,7 @@ public class DW_Summary extends DW_Object {
         all = Integer.valueOf(summary.get(sTotalCount_PrivateDeregulatedTTsClaimant));
         d = AllCount1;
         if (d > 0) {
-            percentage = (all * 100.0d) / d;
+            double percentage = (all * 100.0d) / d;
             summary.put(sPercentageOfAll_PrivateDeregulatedTTsClaimant,
                     Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
@@ -4209,7 +4134,7 @@ public class DW_Summary extends DW_Object {
         }
         d = HBCount1;
         if (d > 0) {
-            percentage = (all * 100.0d) / d;
+            double percentage = (all * 100.0d) / d;
             summary.put(sPercentageOfHB_PrivateDeregulatedTTsClaimant,
                     Math_BigDecimal.roundIfNecessary(
                             BigDecimal.valueOf(percentage),
@@ -4221,7 +4146,7 @@ public class DW_Summary extends DW_Object {
             all = Integer.valueOf(summary.get(sTotalCount_ClaimantTT[i]));
             d = AllCount1;
             if (d > 0) {
-                percentage = (all * 100.0d) / d;
+                double percentage = (all * 100.0d) / d;
                 summary.put(sPercentageOfAll_ClaimantTT[i],
                         Math_BigDecimal.roundIfNecessary(
                                 BigDecimal.valueOf(percentage),
@@ -4231,7 +4156,7 @@ public class DW_Summary extends DW_Object {
             if (i == 5 || i == 7) {
                 d = CTBCount1;
                 if (d > 0) {
-                    percentage = (all * 100.0d) / d;
+                    double percentage = (all * 100.0d) / d;
                     summary.put(sPercentageOfCTB_ClaimantTT[i],
                             Math_BigDecimal.roundIfNecessary(
                                     BigDecimal.valueOf(percentage),
@@ -4241,7 +4166,7 @@ public class DW_Summary extends DW_Object {
             } else {
                 d = HBCount1;
                 if (d > 0) {
-                    percentage = (all * 100.0d) / d;
+                    double percentage = (all * 100.0d) / d;
                     summary.put(sPercentageOfHB_ClaimantTT[i],
                             Math_BigDecimal.roundIfNecessary(
                                     BigDecimal.valueOf(percentage),
@@ -4252,125 +4177,98 @@ public class DW_Summary extends DW_Object {
         }
     }
 
-    protected void doCompare2TimesCounts(
-            SHBE_Record Record0,
-            SHBE_D_Record D_Record0,
-            SHBE_Record Record1,
-            SHBE_D_Record D_Record1) {
-        boolean isHBClaim1;
-        isHBClaim1 = false;
-        boolean isCTBOnlyClaim1;
-        isCTBOnlyClaim1 = false;
-        int TT1;
-        TT1 = SHBE_TenancyType_Handler.iMinus999;
-        if (D_Record1 != null) {
+    protected void doCompare2TimesCounts(SHBE_Record r0, SHBE_D_Record dr0,
+            SHBE_Record r1, SHBE_D_Record dr1) {
+        boolean isHBClaim1 = false;
+        boolean isCTBOnlyClaim1 = false;
+        int tt1 = SHBE_TenancyType_Handler.iMinus999;
+        if (dr1 != null) {
             //doSingleTimeCount(Record1, D_Record1);
-            isHBClaim1 = SHBE_Handler.isHBClaim(D_Record1);
-            isCTBOnlyClaim1 = SHBE_Handler.isCTBOnlyClaim(D_Record1);
-            TT1 = D_Record1.getTenancyType();
+            isHBClaim1 = SHBE_Handler.isHBClaim(dr1);
+            isCTBOnlyClaim1 = SHBE_Handler.isCTBOnlyClaim(dr1);
+            tt1 = dr1.getTenancyType();
         }
 //        AllCount1 = HBCount1 + CTBCount1;
-        boolean isHBClaim0;
-        isHBClaim0 = false;
-        boolean isCTBOnlyClaim0;
-        isCTBOnlyClaim0 = false;
-        int TT0;
-        TT0 = SHBE_TenancyType_Handler.iMinus999;
-        if (D_Record0 != null) {
-            isHBClaim0 = SHBE_Handler.isHBClaim(D_Record0);
-            isCTBOnlyClaim0 = SHBE_Handler.isCTBOnlyClaim(D_Record0);
-            TT0 = D_Record0.getTenancyType();
+        boolean isHBClaim0 = false;
+        boolean isCTBOnlyClaim0 = false;
+        int tt0;
+        tt0 = SHBE_TenancyType_Handler.iMinus999;
+        if (dr0 != null) {
+            isHBClaim0 = SHBE_Handler.isHBClaim(dr0);
+            isCTBOnlyClaim0 = SHBE_Handler.isCTBOnlyClaim(dr0);
+            tt0 = dr0.getTenancyType();
         }
-        if (isHBClaim1 || D_Record1 == null) {
-            if (Record1 != null || Record0 != null) {
-                if (Record1 == null) {
+        if (isHBClaim1 || dr1 == null) {
+            if (r1 != null || r0 != null) {
+                if (r1 == null) {
                     if (isHBClaim0) {
-                        doCompare2TimesHBCount(
-                                TT0,
-                                Record0.getPostcodeID(),
-                                Record0.isClaimPostcodeFValidFormat(),
-                                Record0.isClaimPostcodeFMappable(),
-                                TT1,
-                                null,
-                                false,
-                                false);
-                    } else if (Record0 == null) {
-                        doCompare2TimesHBCount(
-                                TT0,
-                                null,
-                                false,
-                                false,
-                                TT1,
-                                null,
-                                false,
-                                false);
+                        doCompare2TimesHBCount(tt0, r0.getPostcodeID(),
+                                r0.isClaimPostcodeFValidFormat(),
+                                r0.isClaimPostcodeFMappable(),
+                                tt1, null, false, false);
+                    } else if (r0 == null) {
+                        doCompare2TimesHBCount(tt0, null, false, false, tt1,
+                                null, false, false);
                     }
-                } else if (Record0 == null) {
-                    doCompare2TimesHBCount(
-                            TT0,
-                            null,
-                            false,
-                            false,
-                            TT1,
-                            Record1.getPostcodeID(),
-                            Record1.isClaimPostcodeFValidFormat(),
-                            Record1.isClaimPostcodeFMappable());
+                } else if (r0 == null) {
+                    doCompare2TimesHBCount(tt0, null, false, false, tt1,
+                            r1.getPostcodeID(),
+                            r1.isClaimPostcodeFValidFormat(),
+                            r1.isClaimPostcodeFMappable());
                 } else if (isHBClaim0) {
-                    doCompare2TimesHBCount(
-                            TT0,
-                            Record0.getPostcodeID(),
-                            Record0.isClaimPostcodeFValidFormat(),
-                            Record0.isClaimPostcodeFMappable(),
-                            TT1,
-                            Record1.getPostcodeID(),
-                            Record1.isClaimPostcodeFValidFormat(),
-                            Record1.isClaimPostcodeFMappable());
+                    doCompare2TimesHBCount(tt0, r0.getPostcodeID(),
+                            r0.isClaimPostcodeFValidFormat(),
+                            r0.isClaimPostcodeFMappable(),
+                            tt1,
+                            r1.getPostcodeID(),
+                            r1.isClaimPostcodeFValidFormat(),
+                            r1.isClaimPostcodeFMappable());
                 }
             }
         }
-        if (isCTBOnlyClaim1 || D_Record1 == null) {
-            if (Record1 != null || Record0 != null) {
-                if (Record1 == null) {
+        if (isCTBOnlyClaim1 || dr1 == null) {
+            if (r1 != null || r0 != null) {
+                if (r1 == null) {
                     if (isCTBOnlyClaim0) {
-                        doCompare2TimesCTBCount(TT0,
-                                Record0.getPostcodeID(),
-                                Record0.isClaimPostcodeFValidFormat(),
-                                Record0.isClaimPostcodeFMappable(),
-                                TT1,
+                        doCompare2TimesCTBCount(tt0,
+                                r0.getPostcodeID(),
+                                r0.isClaimPostcodeFValidFormat(),
+                                r0.isClaimPostcodeFMappable(),
+                                tt1,
                                 null,
                                 false,
                                 false);
-                    } else if (Record0 == null) {
+                    } else if (r0 == null) {
                         doCompare2TimesCTBCount(
-                                TT0,
+                                tt0,
                                 null,
                                 false,
                                 false,
-                                TT1,
+                                tt1,
                                 null,
                                 false,
                                 false);
                     }
-                } else if (Record0 == null) {
+                } else if (r0 == null) {
                     doCompare2TimesCTBCount(
-                            TT0,
+                            tt0,
                             null,
                             false,
                             false,
-                            TT1,
-                            Record1.getPostcodeID(),
-                            Record1.isClaimPostcodeFValidFormat(),
-                            Record1.isClaimPostcodeFMappable());
+                            tt1,
+                            r1.getPostcodeID(),
+                            r1.isClaimPostcodeFValidFormat(),
+                            r1.isClaimPostcodeFMappable());
                 } else if (isCTBOnlyClaim0) {
                     doCompare2TimesCTBCount(
-                            TT0,
-                            Record0.getPostcodeID(),
-                            Record0.isClaimPostcodeFValidFormat(),
-                            Record0.isClaimPostcodeFMappable(),
-                            TT1,
-                            Record1.getPostcodeID(),
-                            Record1.isClaimPostcodeFValidFormat(),
-                            Record1.isClaimPostcodeFMappable());
+                            tt0,
+                            r0.getPostcodeID(),
+                            r0.isClaimPostcodeFValidFormat(),
+                            r0.isClaimPostcodeFMappable(),
+                            tt1,
+                            r1.getPostcodeID(),
+                            r1.isClaimPostcodeFValidFormat(),
+                            r1.isClaimPostcodeFMappable());
                 }
             }
         }
@@ -5028,17 +4926,17 @@ public class DW_Summary extends DW_Object {
      * OutOfMemoryErrors if they are encountered.
      * @return
      */
-    public TreeMap<String, HashMap<String, String>> getSummaryTable(
+    public TreeMap<String, Map<String, String>> getSummaryTable(
             String[] SHBEFilenames, ArrayList<Integer> include,
             boolean forceNewSummaries, ArrayList<String> HB_CTB,
             ArrayList<String> PTs, int nTT, int nEG, int nPSI, boolean hoome
-    ) throws IOException {
+    ) throws IOException, ClassNotFoundException, Exception {
         String methodName = "getSummaryTable(...)";
         env.ge.log("<" + methodName + ">", true);
 
         // Declare variables
         // Declare result
-        TreeMap<String, HashMap<String, String>> r;
+        TreeMap<String, Map<String, String>> r;
         int i;
         Iterator<Integer> includeIte;
         HashMap<String, String> summary;
@@ -5049,18 +4947,18 @@ public class DW_Summary extends DW_Object {
         UKP_YM3 YM31;
         SHBE_Records SHBE_Records0;
         SHBE_Records SHBE_Records1;
-        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateInPayment0;
-        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateSuspended0;
-        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateOther0;
-        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment0;
-        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended0;
-        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateOther0;
-        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateInPayment1;
-        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateSuspended1;
-        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateOther1;
-        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment1;
-        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended1;
-        HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateOther1;
+        Set<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateInPayment0;
+        Set<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateSuspended0;
+        Set<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateOther0;
+        Set<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment0;
+        Set<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended0;
+        Set<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateOther0;
+        Set<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateInPayment1;
+        Set<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateSuspended1;
+        Set<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateOther1;
+        Set<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment1;
+        Set<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended1;
+        Set<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateOther1;
 
         // Initialise counts
         initCounts(nTT, nEG, nPSI);
@@ -5174,58 +5072,51 @@ public class DW_Summary extends DW_Object {
         CTBPTOCount0 = CTBPTOCount1;
     }
 
-    protected void doPartSummarySingleTime(
-            SHBE_Records SHBE_Records,
-            HashMap<SHBE_ClaimID, SHBE_Record> Records,
-            UKP_YM3 YM3,
-            String filename,
-            boolean forceNewSummaries,
-            ArrayList<String> HB_CTB,
-            ArrayList<String> PTs,
-            int nTT,
-            int nEG,
-            int nPSI,
-            TreeMap<String, HashMap<String, String>> summaries
-    ) throws IOException {
+    protected void doPartSummarySingleTime(SHBE_Records shbeRecords,
+            Map<SHBE_ClaimID, SHBE_Record> records, UKP_YM3 ym3,
+            String filename, boolean forceNewSummaries,
+            ArrayList<String> HB_CTB, ArrayList<String> PTs, int nTT, int nEG,
+            int nPSI, TreeMap<String, Map<String, String>> summaries
+    ) throws IOException, ClassNotFoundException, Exception {
         // Declare variables
         String key;
-        HashMap<String, String> summary;
-        HashMap<String, Number> LoadSummary;
-        HashMap<String, BigDecimal> IncomeAndRentSummary;
-        HashSet<SHBE_ClaimID> ClaimIDsOfNewSHBEClaims;
+        Map<String, String> summary;
+        Map<String, Number> loadSummary;
+        Map<String, BigDecimal> incomeAndRentSummary;
+        Set<SHBE_ClaimID> claimIDsOfNewSHBEClaims;
 
         // Initialise variables
         key = SHBE_Handler.getYearMonthNumber(filename);
         summary = summaries.get(key);
-        LoadSummary = SHBE_Records.getLoadSummary(env.HOOME);
-        DW_IncomeAndRentSummary tIncomeAndRentSummary;
-        tIncomeAndRentSummary = new DW_IncomeAndRentSummary(env, ds);
-        IncomeAndRentSummary = tIncomeAndRentSummary.getIncomeAndRentSummary(
-                SHBE_Records, HB_CTB, PTs, YM3, null, null, false, false,
+        loadSummary = shbeRecords.getLoadSummary(env.HOOME);
+        DW_IncomeAndRentSummary tIncomeAndRentSummary
+                = new DW_IncomeAndRentSummary(env, ds);
+        incomeAndRentSummary = tIncomeAndRentSummary.getIncomeAndRentSummary(
+                shbeRecords, HB_CTB, PTs, ym3, null, null, false, false,
                 false, forceNewSummaries);
-        ClaimIDsOfNewSHBEClaims = SHBE_Records.getClaimIDsOfNewSHBEClaims(env.HOOME);
+        claimIDsOfNewSHBEClaims = shbeRecords.getClaimIDsOfNewSHBEClaims(env.HOOME);
         // Add load summary to summary
-        addToSummary(summary, LoadSummary);
+        addToSummary(summary, loadSummary);
 
         /**
          * Add things not quite added right from load summary
          */
-        HashSet<SHBE_ClaimID> ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore;
-        ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = SHBE_Records.getClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore(env.HOOME);
+        Set<SHBE_ClaimID> claimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore;
+        claimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore = shbeRecords.getClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore(env.HOOME);
         summary.put(SHBE_Strings.s_CountOfNewSHBEClaimsWhereClaimantWasPartnerBefore,
-                Integer.toString(ClaimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore.size()));
-        HashSet<SHBE_PersonID> set;
+                Integer.toString(claimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore.size()));
+        Set<SHBE_PersonID> set;
         // Add unique Partners
         set = SHBE_Handler.getUniquePersonIDs0(
-                SHBE_Records.getClaimIDToPartnerPersonIDLookup(env.HOOME));
+                shbeRecords.getClaimIDToPartnerPersonIDLookup(env.HOOME));
         summary.put(SHBE_Strings.s_CountOfUniquePartners, "" + set.size());
         // Add unique Dependents
         set = SHBE_Handler.getUniquePersonIDs(
-                SHBE_Records.getClaimIDToDependentPersonIDsLookup(env.HOOME));
+                shbeRecords.getClaimIDToDependentPersonIDsLookup(env.HOOME));
         summary.put(SHBE_Strings.s_CountOfUniqueDependents, "" + set.size());
         // Add unique NonDependents
         set = SHBE_Handler.getUniquePersonIDs(
-                SHBE_Records.getClaimIDToNonDependentPersonIDsLookup(env.HOOME));
+                shbeRecords.getClaimIDToNonDependentPersonIDsLookup(env.HOOME));
         summary.put(SHBE_Strings.s_CountOfUniqueNonDependents, "" + set.size());
         /**
          * Counts of: ClaimsWithClaimantsThatAreClaimantsInAnotherClaim
@@ -5236,48 +5127,46 @@ public class DW_Summary extends DW_Object {
          * NonDependentsInMultipleClaimsInAMonth
          */
         summary.put(SHBE_Strings.s_CountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim,
-                "" + SHBE_Records.getClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim(env.HOOME).size());
+                "" + shbeRecords.getClaimIDsOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim(env.HOOME).size());
         summary.put(SHBE_Strings.s_CountOfClaimsWithClaimantsThatArePartnersInAnotherClaim,
-                "" + SHBE_Records.getClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim(env.HOOME).size());
+                "" + shbeRecords.getClaimIDsOfClaimsWithClaimantsThatArePartnersInAnotherClaim(env.HOOME).size());
         summary.put(SHBE_Strings.s_CountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim,
-                "" + SHBE_Records.getClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim(env.HOOME).size());
+                "" + shbeRecords.getClaimIDsOfClaimsWithPartnersThatAreClaimantsInAnotherClaim(env.HOOME).size());
         summary.put(SHBE_Strings.s_CountOfClaimsWithPartnersThatArePartnersInAnotherClaim,
-                "" + SHBE_Records.getClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim(env.HOOME).size());
+                "" + shbeRecords.getClaimIDsOfClaimsWithPartnersThatArePartnersInAnotherClaim(env.HOOME).size());
         summary.put(SHBE_Strings.s_CountOfClaimantsInMultipleClaimsInAMonth,
-                "" + SHBE_Records.getClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(env.HOOME).size());
+                "" + shbeRecords.getClaimantsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(env.HOOME).size());
         summary.put(SHBE_Strings.s_CountOfPartnersInMultipleClaimsInAMonth,
-                "" + SHBE_Records.getPartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(env.HOOME).size());
+                "" + shbeRecords.getPartnersInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(env.HOOME).size());
         summary.put(SHBE_Strings.s_CountOfNonDependentsInMultipleClaimsInAMonth,
-                "" + SHBE_Records.getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(env.HOOME).size());
+                "" + shbeRecords.getNonDependentsInMultipleClaimsInAMonthPersonIDToClaimIDsLookup(env.HOOME).size());
 
-        addToSummary(summary, ClaimIDsOfNewSHBEClaims, Records);
+        addToSummary(summary, claimIDsOfNewSHBEClaims, records);
         // doSingleTimeLoopOverSet
-        doSingleTimeLoopOverSet(Records);
+        doSingleTimeLoopOverSet(records);
 //        AllCount1 = HBCount1 + CTBCount1;
         summary.put(sSHBEFilename1, filename);
-        addToSummarySingleTimeIncomeAndRent(
-                summary,
-                IncomeAndRentSummary);
+        addToSummarySingleTimeIncomeAndRent(summary, incomeAndRentSummary);
         addToSummarySingleTime(nTT, nEG, nPSI, summary);
     }
 
     protected void doPartSummaryCompare2Times(
             SHBE_Records SHBE_Records0,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateInPayment0,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateSuspended0,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateOther0,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment0,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended0,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateOther0,
+            Set<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateInPayment0,
+            Set<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateSuspended0,
+            Set<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateOther0,
+            Set<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment0,
+            Set<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended0,
+            Set<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateOther0,
             UKP_YM3 YM30,
             String filename0,
             SHBE_Records SHBE_Records1,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateInPayment1,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateSuspended1,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateOther1,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment1,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended1,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateOther1,
+            Set<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateInPayment1,
+            Set<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateSuspended1,
+            Set<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateOther1,
+            Set<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment1,
+            Set<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended1,
+            Set<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateOther1,
             UKP_YM3 YM31,
             String filename1,
             boolean forceNewSummaries,
@@ -5287,7 +5176,7 @@ public class DW_Summary extends DW_Object {
             int nTT,
             int nEG,
             int nPSI,
-            TreeMap<String, HashMap<String, String>> summaries) throws IOException {
+            TreeMap<String, Map<String, String>> summaries) throws IOException, Exception {
 
         doPartSummarySingleTime(
                 SHBE_Records1,
@@ -5320,8 +5209,7 @@ public class DW_Summary extends DW_Object {
 
         String key;
         key = SHBE_Handler.getYearMonthNumber(filename1);
-        HashMap<String, String> summary;
-        summary = summaries.get(key);
+        Map<String, String> summary = summaries.get(key);
 
         addToSummaryCompare2Times(nTT, nEG, nPSI, summary);
 
@@ -5330,47 +5218,20 @@ public class DW_Summary extends DW_Object {
         summary.put(sSHBEFilename1, filename1);
     }
 
-    protected void doPartSummaryCompare2Times(
-            SHBE_Records SHBE_Records0,
-            HashMap<SHBE_ClaimID, SHBE_Record> Records0,
-            UKP_YM3 YM30,
-            String filename0,
-            SHBE_Records SHBE_Records1,
-            HashMap<SHBE_ClaimID, SHBE_Record> Records1,
-            UKP_YM3 YM31,
-            String filename1,
-            boolean forceNewSummaries,
-            ArrayList<String> HB_CTB,
-            ArrayList<String> PTs,
-            int nTT,
-            int nEG,
-            int nPSI,
-            TreeMap<String, HashMap<String, String>> summaries) throws IOException {
-
-        doPartSummarySingleTime(
-                SHBE_Records1,
-                Records1,
-                YM31,
-                filename1,
-                forceNewSummaries,
-                HB_CTB,
-                PTs,
-                nTT,
-                nEG,
-                nPSI,
-                summaries);
-
-        doCompare2TimesLoopOverSet(
-                Records0,
-                Records1);
-
-        String key;
-        key = SHBE_Handler.getYearMonthNumber(filename1);
-        HashMap<String, String> summary;
-        summary = summaries.get(key);
-
+    protected void doPartSummaryCompare2Times(SHBE_Records sr0,
+            HashMap<SHBE_ClaimID, SHBE_Record> r0, UKP_YM3 ym30,
+            String filename0, SHBE_Records sr1,
+            HashMap<SHBE_ClaimID, SHBE_Record> r1, UKP_YM3 ym31,
+            String filename1, boolean forceNewSummaries,
+            ArrayList<String> HB_CTB, ArrayList<String> PTs, int nTT, int nEG,
+            int nPSI, TreeMap<String, Map<String, String>> summaries)
+            throws IOException, Exception {
+        doPartSummarySingleTime(sr1, r1, ym31, filename1, forceNewSummaries,
+                HB_CTB, PTs, nTT, nEG, nPSI, summaries);
+        doCompare2TimesLoopOverSet(r0, r1);
+        String key = SHBE_Handler.getYearMonthNumber(filename1);
+        Map<String, String> summary = summaries.get(key);
         addToSummaryCompare2Times(nTT, nEG, nPSI, summary);
-
         // All
         summary.put(sSHBEFilename0, filename0);
         summary.put(sSHBEFilename1, filename1);
@@ -5378,86 +5239,83 @@ public class DW_Summary extends DW_Object {
 
     /**
      *
-     * @param SHBE_Records0
-     * @param ClaimIDsWithStatusOfHBAtExtractDateInPayment0
-     * @param ClaimIDsWithStatusOfHBAtExtractDateSuspended0
-     * @param ClaimIDsWithStatusOfHBAtExtractDateOther0
-     * @param ClaimIDsWithStatusOfCTBAtExtractDateInPayment0
-     * @param ClaimIDsWithStatusOfCTBAtExtractDateSuspended0
-     * @param ClaimIDsWithStatusOfCTBAtExtractDateOther0
-     * @param SHBE_Records1
-     * @param ClaimIDsWithStatusOfHBAtExtractDateInPayment1
-     * @param ClaimIDsWithStatusOfHBAtExtractDateSuspended1
-     * @param ClaimIDsWithStatusOfHBAtExtractDateOther1
-     * @param ClaimIDsWithStatusOfCTBAtExtractDateInPayment1
-     * @param ClaimIDsWithStatusOfCTBAtExtractDateSuspended1
-     * @param ClaimIDsWithStatusOfCTBAtExtractDateOther1
+     * @param sRecs0
+     * @param claimIDsWithStatusOfHBAtExtractDateInPayment0
+     * @param claimIDsWithStatusOfHBAtExtractDateSuspended0
+     * @param claimIDsWithStatusOfHBAtExtractDateOther0
+     * @param claimIDsWithStatusOfCTBAtExtractDateInPayment0
+     * @param claimIDsWithStatusOfCTBAtExtractDateSuspended0
+     * @param claimIDsWithStatusOfCTBAtExtractDateOther0
+     * @param sRecs1
+     * @param claimIDsWithStatusOfHBAtExtractDateInPayment1
+     * @param claimIDsWithStatusOfHBAtExtractDateSuspended1
+     * @param claimIDsWithStatusOfHBAtExtractDateOther1
+     * @param claimIDsWithStatusOfCTBAtExtractDateInPayment1
+     * @param claimIDsWithStatusOfCTBAtExtractDateSuspended1
+     * @param claimIDsWithStatusOfCTBAtExtractDateOther1
      */
     public void doCompare2TimesLoopOverSet(
-            SHBE_Records SHBE_Records0,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateInPayment0,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateSuspended0,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateOther0,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment0,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended0,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateOther0,
-            SHBE_Records SHBE_Records1,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateInPayment1,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateSuspended1,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfHBAtExtractDateOther1,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateInPayment1,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateSuspended1,
-            HashSet<SHBE_ClaimID> ClaimIDsWithStatusOfCTBAtExtractDateOther1) {
+            SHBE_Records sRecs0,
+            Set<SHBE_ClaimID> claimIDsWithStatusOfHBAtExtractDateInPayment0,
+            Set<SHBE_ClaimID> claimIDsWithStatusOfHBAtExtractDateSuspended0,
+            Set<SHBE_ClaimID> claimIDsWithStatusOfHBAtExtractDateOther0,
+            Set<SHBE_ClaimID> claimIDsWithStatusOfCTBAtExtractDateInPayment0,
+            Set<SHBE_ClaimID> claimIDsWithStatusOfCTBAtExtractDateSuspended0,
+            Set<SHBE_ClaimID> claimIDsWithStatusOfCTBAtExtractDateOther0,
+            SHBE_Records sRecs1,
+            Set<SHBE_ClaimID> claimIDsWithStatusOfHBAtExtractDateInPayment1,
+            Set<SHBE_ClaimID> claimIDsWithStatusOfHBAtExtractDateSuspended1,
+            Set<SHBE_ClaimID> claimIDsWithStatusOfHBAtExtractDateOther1,
+            Set<SHBE_ClaimID> claimIDsWithStatusOfCTBAtExtractDateInPayment1,
+            Set<SHBE_ClaimID> claimIDsWithStatusOfCTBAtExtractDateSuspended1,
+            Set<SHBE_ClaimID> claimIDsWithStatusOfCTBAtExtractDateOther1)
+            throws IOException, ClassNotFoundException {
         Iterator<SHBE_ClaimID> ite;
-        SHBE_ClaimID ClaimID;
-        SHBE_Record Record0;
-        SHBE_D_Record D_Record0;
-        SHBE_Record Record1;
-        SHBE_D_Record D_Record1;
+        SHBE_D_Record d0;
+        SHBE_D_Record d1;
 
-        HashMap<SHBE_ClaimID, SHBE_Record> Records0;
-        Records0 = SHBE_Records0.getRecords(env.HOOME);
+        Map<SHBE_ClaimID, SHBE_Record> recs0 = sRecs0.getRecords(env.HOOME);
         // Go through previous records
-        ite = Records0.keySet().iterator();
+        ite = recs0.keySet().iterator();
         while (ite.hasNext()) {
-            ClaimID = ite.next();
+            SHBE_ClaimID cid = ite.next();
             // HB
-            if (ClaimIDsWithStatusOfHBAtExtractDateInPayment0.contains(ClaimID)) {
-                if (ClaimIDsWithStatusOfHBAtExtractDateInPayment1.contains(ClaimID)) {
+            if (claimIDsWithStatusOfHBAtExtractDateInPayment0.contains(cid)) {
+                if (claimIDsWithStatusOfHBAtExtractDateInPayment1.contains(cid)) {
                     TotalCount_HB_PTIToPTI++;
                     TotalCount_HB_NotSuspendedToNotSuspended++;
-                } else if (ClaimIDsWithStatusOfHBAtExtractDateSuspended1.contains(ClaimID)) {
+                } else if (claimIDsWithStatusOfHBAtExtractDateSuspended1.contains(cid)) {
                     TotalCount_HB_PTIToPTS++;
                     TotalCount_HB_NotSuspendedToSuspended++;
-                } else if (ClaimIDsWithStatusOfHBAtExtractDateOther1.contains(ClaimID)) {
+                } else if (claimIDsWithStatusOfHBAtExtractDateOther1.contains(cid)) {
                     TotalCount_HB_PTIToPTO++;
                     TotalCount_HB_NotSuspendedToNotSuspended++;
                 } else {
                     TotalCount_HB_PTIToNull++;
                     TotalCount_HB_NotSuspendedToNull++;
                 }
-            } else if (ClaimIDsWithStatusOfHBAtExtractDateSuspended0.contains(ClaimID)) {
-                if (ClaimIDsWithStatusOfHBAtExtractDateInPayment1.contains(ClaimID)) {
+            } else if (claimIDsWithStatusOfHBAtExtractDateSuspended0.contains(cid)) {
+                if (claimIDsWithStatusOfHBAtExtractDateInPayment1.contains(cid)) {
                     TotalCount_HB_PTSToPTI++;
                     TotalCount_HB_SuspendedToNotSuspended++;
-                } else if (ClaimIDsWithStatusOfHBAtExtractDateSuspended1.contains(ClaimID)) {
+                } else if (claimIDsWithStatusOfHBAtExtractDateSuspended1.contains(cid)) {
                     TotalCount_HB_PTSToPTS++;
                     TotalCount_HB_SuspendedToSuspended++;
-                } else if (ClaimIDsWithStatusOfHBAtExtractDateOther1.contains(ClaimID)) {
+                } else if (claimIDsWithStatusOfHBAtExtractDateOther1.contains(cid)) {
                     TotalCount_HB_PTSToPTO++;
                     TotalCount_HB_SuspendedToNotSuspended++;
                 } else {
                     TotalCount_HB_PTSToNull++;
                     TotalCount_HB_SuspendedToNull++;
                 }
-            } else if (ClaimIDsWithStatusOfHBAtExtractDateOther0.contains(ClaimID)) {
-                if (ClaimIDsWithStatusOfHBAtExtractDateInPayment1.contains(ClaimID)) {
+            } else if (claimIDsWithStatusOfHBAtExtractDateOther0.contains(cid)) {
+                if (claimIDsWithStatusOfHBAtExtractDateInPayment1.contains(cid)) {
                     TotalCount_HB_PTOToPTI++;
                     TotalCount_HB_NotSuspendedToNotSuspended++;
-                } else if (ClaimIDsWithStatusOfHBAtExtractDateSuspended1.contains(ClaimID)) {
+                } else if (claimIDsWithStatusOfHBAtExtractDateSuspended1.contains(cid)) {
                     TotalCount_HB_PTOToPTS++;
                     TotalCount_HB_NotSuspendedToSuspended++;
-                } else if (ClaimIDsWithStatusOfHBAtExtractDateOther1.contains(ClaimID)) {
+                } else if (claimIDsWithStatusOfHBAtExtractDateOther1.contains(cid)) {
                     TotalCount_HB_PTOToPTO++;
                     TotalCount_HB_NotSuspendedToNotSuspended++;
                 } else {
@@ -5466,42 +5324,42 @@ public class DW_Summary extends DW_Object {
                 }
             }
             // CTB
-            if (ClaimIDsWithStatusOfCTBAtExtractDateInPayment0.contains(ClaimID)) {
-                if (ClaimIDsWithStatusOfCTBAtExtractDateInPayment1.contains(ClaimID)) {
+            if (claimIDsWithStatusOfCTBAtExtractDateInPayment0.contains(cid)) {
+                if (claimIDsWithStatusOfCTBAtExtractDateInPayment1.contains(cid)) {
                     TotalCount_CTB_PTIToPTI++;
                     TotalCount_CTB_NotSuspendedToNotSuspended++;
-                } else if (ClaimIDsWithStatusOfCTBAtExtractDateSuspended1.contains(ClaimID)) {
+                } else if (claimIDsWithStatusOfCTBAtExtractDateSuspended1.contains(cid)) {
                     TotalCount_CTB_PTIToPTS++;
                     TotalCount_CTB_NotSuspendedToSuspended++;
-                } else if (ClaimIDsWithStatusOfCTBAtExtractDateOther1.contains(ClaimID)) {
+                } else if (claimIDsWithStatusOfCTBAtExtractDateOther1.contains(cid)) {
                     TotalCount_CTB_PTIToPTO++;
                     TotalCount_CTB_NotSuspendedToNotSuspended++;
                 } else {
                     TotalCount_CTB_PTIToNull++;
                     TotalCount_CTB_NotSuspendedToNull++;
                 }
-            } else if (ClaimIDsWithStatusOfCTBAtExtractDateSuspended0.contains(ClaimID)) {
-                if (ClaimIDsWithStatusOfCTBAtExtractDateInPayment1.contains(ClaimID)) {
+            } else if (claimIDsWithStatusOfCTBAtExtractDateSuspended0.contains(cid)) {
+                if (claimIDsWithStatusOfCTBAtExtractDateInPayment1.contains(cid)) {
                     TotalCount_CTB_PTSToPTI++;
                     TotalCount_CTB_SuspendedToNotSuspended++;
-                } else if (ClaimIDsWithStatusOfCTBAtExtractDateSuspended1.contains(ClaimID)) {
+                } else if (claimIDsWithStatusOfCTBAtExtractDateSuspended1.contains(cid)) {
                     TotalCount_CTB_PTSToPTS++;
                     TotalCount_CTB_SuspendedToSuspended++;
-                } else if (ClaimIDsWithStatusOfCTBAtExtractDateOther1.contains(ClaimID)) {
+                } else if (claimIDsWithStatusOfCTBAtExtractDateOther1.contains(cid)) {
                     TotalCount_CTB_PTSToPTO++;
                     TotalCount_CTB_SuspendedToNotSuspended++;
                 } else {
                     TotalCount_CTB_PTSToNull++;
                     TotalCount_CTB_SuspendedToNull++;
                 }
-            } else if (ClaimIDsWithStatusOfCTBAtExtractDateOther0.contains(ClaimID)) {
-                if (ClaimIDsWithStatusOfCTBAtExtractDateInPayment1.contains(ClaimID)) {
+            } else if (claimIDsWithStatusOfCTBAtExtractDateOther0.contains(cid)) {
+                if (claimIDsWithStatusOfCTBAtExtractDateInPayment1.contains(cid)) {
                     TotalCount_CTB_PTOToPTI++;
                     TotalCount_CTB_NotSuspendedToNotSuspended++;
-                } else if (ClaimIDsWithStatusOfCTBAtExtractDateSuspended1.contains(ClaimID)) {
+                } else if (claimIDsWithStatusOfCTBAtExtractDateSuspended1.contains(cid)) {
                     TotalCount_CTB_PTOToPTS++;
                     TotalCount_CTB_NotSuspendedToSuspended++;
-                } else if (ClaimIDsWithStatusOfCTBAtExtractDateOther1.contains(ClaimID)) {
+                } else if (claimIDsWithStatusOfCTBAtExtractDateOther1.contains(cid)) {
                     TotalCount_CTB_PTOToPTO++;
                     TotalCount_CTB_NotSuspendedToNotSuspended++;
                 } else {
@@ -5510,112 +5368,78 @@ public class DW_Summary extends DW_Object {
                 }
             }
         }
-        HashMap<SHBE_ClaimID, SHBE_Record> Records1;
-        Records1 = SHBE_Records1.getRecords(env.HOOME);
+        Map<SHBE_ClaimID, SHBE_Record> recs1 = sRecs1.getRecords(env.HOOME);
         // Go through current records
-        ite = Records1.keySet().iterator();
+        ite = recs1.keySet().iterator();
         while (ite.hasNext()) {
-            ClaimID = ite.next();
-            Record1 = Records1.get(ClaimID);
-            D_Record1 = Record1.getDRecord();
+            SHBE_ClaimID cid = ite.next();
+            SHBE_Record r1 = recs1.get(cid);
+            d1 = r1.getDRecord();
             // HB
-            if (ClaimIDsWithStatusOfHBAtExtractDateInPayment0.contains(ClaimID)) {
-                Record0 = Records0.get(ClaimID);
-                D_Record0 = Record0.getDRecord();
-                doCompare2TimesCounts(
-                        Record0,
-                        D_Record0,
-                        Record1,
-                        D_Record1);
-            } else if (ClaimIDsWithStatusOfHBAtExtractDateSuspended0.contains(ClaimID)) {
-                Record0 = Records0.get(ClaimID);
-                D_Record0 = Record0.getDRecord();
-                doCompare2TimesCounts(
-                        Record0,
-                        D_Record0,
-                        Record1,
-                        D_Record1);
-            } else if (ClaimIDsWithStatusOfHBAtExtractDateOther0.contains(ClaimID)) {
-                Record0 = Records0.get(ClaimID);
-                D_Record0 = Record0.getDRecord();
-                doCompare2TimesCounts(
-                        Record0,
-                        D_Record0,
-                        Record1,
-                        D_Record1);
+            if (claimIDsWithStatusOfHBAtExtractDateInPayment0.contains(cid)) {
+                SHBE_Record r0 = recs0.get(cid);
+                d0 = r0.getDRecord();
+                doCompare2TimesCounts(r0, d0, r1, d1);
+            } else if (claimIDsWithStatusOfHBAtExtractDateSuspended0.contains(cid)) {
+                SHBE_Record r0 = recs0.get(cid);
+                d0 = r0.getDRecord();
+                doCompare2TimesCounts(r0, d0, r1, d1);
+            } else if (claimIDsWithStatusOfHBAtExtractDateOther0.contains(cid)) {
+                SHBE_Record r0 = recs0.get(cid);
+                d0 = r0.getDRecord();
+                doCompare2TimesCounts(r0, d0, r1, d1);
             } else {
-                doCompare2TimesCounts(
-                        null,
-                        null,
-                        Record1,
-                        D_Record1);
+                doCompare2TimesCounts(null, null, r1, d1);
             }
             // CTB
-            if (ClaimIDsWithStatusOfCTBAtExtractDateInPayment0.contains(ClaimID)) {
-                Record0 = Records0.get(ClaimID);
-                D_Record0 = Record0.getDRecord();
-                doCompare2TimesCounts(
-                        Record0,
-                        D_Record0,
-                        Record1,
-                        D_Record1);
-            } else if (ClaimIDsWithStatusOfCTBAtExtractDateSuspended0.contains(ClaimID)) {
-                Record0 = Records0.get(ClaimID);
-                D_Record0 = Record0.getDRecord();
-                doCompare2TimesCounts(
-                        Record0,
-                        D_Record0,
-                        Record1,
-                        D_Record1);
-            } else if (ClaimIDsWithStatusOfCTBAtExtractDateOther0.contains(ClaimID)) {
-                Record0 = Records0.get(ClaimID);
-                D_Record0 = Record0.getDRecord();
-                doCompare2TimesCounts(
-                        Record0,
-                        D_Record0,
-                        Record1,
-                        D_Record1);
+            if (claimIDsWithStatusOfCTBAtExtractDateInPayment0.contains(cid)) {
+                SHBE_Record r0 = recs0.get(cid);
+                d0 = r0.getDRecord();
+                doCompare2TimesCounts(r0, d0, r1, d1);
+            } else if (claimIDsWithStatusOfCTBAtExtractDateSuspended0.contains(cid)) {
+                SHBE_Record r0 = recs0.get(cid);
+                d0 = r0.getDRecord();
+                doCompare2TimesCounts(r0, d0, r1, d1);
+            } else if (claimIDsWithStatusOfCTBAtExtractDateOther0.contains(cid)) {
+                SHBE_Record r0 = recs0.get(cid);
+                d0 = r0.getDRecord();
+                doCompare2TimesCounts(r0, d0, r1, d1);
             } else {
-                doCompare2TimesCounts(
-                        null,
-                        null,
-                        Record1,
-                        D_Record1);
+                doCompare2TimesCounts(null, null, r1, d1);
             }
         }
-
     }
 
     public void doCompare2TimesLoopOverSet(
-            HashMap<SHBE_ClaimID, SHBE_Record> Records0,
-            HashMap<SHBE_ClaimID, SHBE_Record> Records1) {
+            Map<SHBE_ClaimID, SHBE_Record> Records0,
+            Map<SHBE_ClaimID, SHBE_Record> Records1) {
         Iterator<SHBE_ClaimID> ite;
-        SHBE_ClaimID ClaimID;
-        SHBE_Record Record0;
-        SHBE_D_Record D_Record0;
-        SHBE_Record Record1;
+        SHBE_ClaimID cid;
+        SHBE_Record r0;
+        SHBE_D_Record d0;
+        SHBE_Record r1;
         /**
          * Loop over Records0
          */
         ite = Records0.keySet().iterator();
         while (ite.hasNext()) {
-            ClaimID = ite.next();
-            Record0 = Records0.get(ClaimID);
-            D_Record0 = null;
-            if (Record0 != null) {
-                D_Record0 = Record0.getDRecord();
+            cid = ite.next();
+            r0 = Records0.get(cid);
+            d0 = null;
+            if (r0 != null) {
+                d0 = r0.getDRecord();
             }
-            Record1 = Records1.get(ClaimID);
+            r1 = Records1.get(cid);
             //SHBE_D_Record D_Record1;
             //D_Record1 = null;
             /**
              * doCompare2TimesCounts only for those Claims that are no longer in
              * this PT (they may no longer be Claims at all).
              */
-            if (Record1 == null) {
+            if (r1 == null) {
                 doCompare2TimesCounts(
-                        Record0,
-                        D_Record0,
+                        r0,
+                        d0,
                         null,//Record1,
                         null);//D_Record1);
             }
@@ -5626,58 +5450,50 @@ public class DW_Summary extends DW_Object {
          */
         ite = Records1.keySet().iterator();
         while (ite.hasNext()) {
-            ClaimID = ite.next();
-            Record0 = Records0.get(ClaimID);
-            D_Record0 = null;
-            if (Record0 != null) {
-                D_Record0 = Record0.getDRecord();
+            cid = ite.next();
+            r0 = Records0.get(cid);
+            d0 = null;
+            if (r0 != null) {
+                d0 = r0.getDRecord();
             }
-            Record1 = Records1.get(ClaimID);
+            r1 = Records1.get(cid);
             SHBE_D_Record D_Record1;
-            D_Record1 = Record1.getDRecord();
+            D_Record1 = r1.getDRecord();
             doCompare2TimesCounts(
-                    Record0,
-                    D_Record0,
-                    Record1,
+                    r0,
+                    d0,
+                    r1,
                     D_Record1);
         }
     }
 
     /**
      *
-     * @param Records
+     * @param recs
      */
-    public void doSingleTimeLoopOverSet(
-            HashMap<SHBE_ClaimID, SHBE_Record> Records) {
-        Iterator<SHBE_ClaimID> ite;
-        ite = Records.keySet().iterator();
+    public void doSingleTimeLoopOverSet(Map<SHBE_ClaimID, SHBE_Record> recs) {
+        Iterator<SHBE_ClaimID> ite = recs.keySet().iterator();
         while (ite.hasNext()) {
-            SHBE_ClaimID ClaimID = ite.next();
-            SHBE_Record Record = Records.get(ClaimID);
-            SHBE_D_Record D_Record = Record.getDRecord();
-            doSingleTimeCount(Record, D_Record);
+            SHBE_Record rec = recs.get(ite.next());
+            doSingleTimeCount(rec, rec.getDRecord());
         }
     }
 
     /**
      * Adds LoadSummary to summary
      *
-     * @param summary
-     * @param LoadSummary
+     * @param s summary
+     * @param ls loadSummary
      */
-    public void addToSummary(
-            HashMap<String, String> summary,
-            HashMap<String, Number> LoadSummary) {
-        String key;
-        Iterator<String> ite;
-        ite = LoadSummary.keySet().iterator();
+    public void addToSummary(Map<String, String> s, Map<String, Number> ls) {
+        Iterator<String> ite = ls.keySet().iterator();
         while (ite.hasNext()) {
-            key = ite.next();
-            summary.put(key, LoadSummary.get(key).toString());
+            String key = ite.next();
+            s.put(key, ls.get(key).toString());
         }
-        summary.put(sAllCount0, Integer.toString(AllCount1));
-        summary.put(sHBCount0, Integer.toString(HBCount1));
-        summary.put(sCTBCount0, Integer.toString(CTBCount1));
+        s.put(sAllCount0, Integer.toString(AllCount1));
+        s.put(sHBCount0, Integer.toString(HBCount1));
+        s.put(sCTBCount0, Integer.toString(CTBCount1));
     }
 
     /**
@@ -5688,23 +5504,16 @@ public class DW_Summary extends DW_Object {
      * @param Records
      */
     public void addToSummary(
-            HashMap<String, String> summary,
-            HashSet<SHBE_ClaimID> ClaimIDsOfNewSHBEClaims,
-            HashMap<SHBE_ClaimID, SHBE_Record> Records) {
-        Iterator<SHBE_ClaimID> ite;
-        ite = ClaimIDsOfNewSHBEClaims.iterator();
-        SHBE_ClaimID ClaimID;
-        SHBE_Record SHBE_Record;
-        int PSI;
-        int nPSI;
-        nPSI = SHBE_Handler.getNumberOfPassportedStandardIndicators();
-        int[] counts;
-        counts = new int[nPSI];
+            Map<String, String> summary,
+            Set<SHBE_ClaimID> ClaimIDsOfNewSHBEClaims,
+            Map<SHBE_ClaimID, SHBE_Record> Records) {
+        Iterator<SHBE_ClaimID> ite = ClaimIDsOfNewSHBEClaims.iterator();
+        int nPSI = SHBE_Handler.getNumberOfPassportedStandardIndicators();
+        int[] counts = new int[nPSI];
         while (ite.hasNext()) {
-            ClaimID = ite.next();
-            SHBE_Record = Records.get(ClaimID);
-            PSI = SHBE_Record.getDRecord().getPassportedStandardIndicator();
-            counts[PSI] += 1;
+            SHBE_Record sr = Records.get(ite.next());
+            int psi = sr.getDRecord().getPassportedStandardIndicator();
+            counts[psi] += 1;
         }
         for (int i = 1; i < nPSI; i++) {
             summary.put(SHBE_Strings.s_CountOfNewSHBEClaimsPSI + i, "" + counts[i]);
@@ -5713,19 +5522,14 @@ public class DW_Summary extends DW_Object {
     }
 
     protected void addToSummarySingleTimeIncomeAndRent(
-            HashMap<String, String> summary,
-            HashMap<String, BigDecimal> incomeAndRentSummary) {
-        Iterator<String> incomeAndRentSummaryKeySetIte;
-        incomeAndRentSummaryKeySetIte = incomeAndRentSummary.keySet().iterator();
-        while (incomeAndRentSummaryKeySetIte.hasNext()) {
-            String name;
-            name = incomeAndRentSummaryKeySetIte.next();
-            String value;
-            value = Math_BigDecimal.roundIfNecessary(
+            Map<String, String> summary,
+            Map<String, BigDecimal> incomeAndRentSummary) {
+        Iterator<String> ite = incomeAndRentSummary.keySet().iterator();
+        while (ite.hasNext()) {
+            String name = ite.next();
+            String value = Math_BigDecimal.roundIfNecessary(
                     incomeAndRentSummary.get(name), 2, RoundingMode.HALF_UP).toPlainString();
-            summary.put(
-                    name,
-                    value);
+            summary.put(name, value);
         }
     }
 
@@ -5776,8 +5580,7 @@ public class DW_Summary extends DW_Object {
     protected PrintWriter getPrintWriter(String name, String name2,
             TreeMap<String, HashMap<String, String>> summaryTable,
             String includeKey, boolean underOccupancy) throws IOException {
-        PrintWriter r;
-        File dirOut = env.files.getOutputSHBETableDir(name2, includeKey,
+        Path dirOut = env.files.getOutputSHBETableDir(name2, includeKey,
                 underOccupancy);
         String outFilename = includeKey + DW_Strings.symbol_underscore;
         if (underOccupancy) {
@@ -5785,9 +5588,8 @@ public class DW_Summary extends DW_Object {
         }
         outFilename += summaryTable.firstKey() + "_To_" + summaryTable.lastKey()
                 + DW_Strings.symbol_underscore + name + ".csv";
-        File outFile = new File(dirOut, outFilename);
-        r = env.ge.io.getPrintWriter(outFile, false);
-        return r;
+        Path outFile = Paths.get(dirOut.toString(), outFilename);
+        return Generic_IO.getPrintWriter(outFile, false);
     }
 
     /**
@@ -5800,114 +5602,110 @@ public class DW_Summary extends DW_Object {
      */
     public void writeSummaryTableCompare2TimesPaymentTypes(
             TreeMap<String, HashMap<String, String>> summaryTable,
-            String includeKey,
-            int nTT,
-            int nEG
-    ) throws IOException {
-        TreeMap<UKP_YM3, File> ONSPDFiles;
+            String includeKey, int nTT, int nEG) throws IOException {
+        TreeMap<UKP_YM3, Path> ONSPDFiles;
         ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
-        String name;
-        name = "Compare2TimesPaymentTypes";
-        PrintWriter pw = getPrintWriter(name, sSummaryTables, summaryTable,
-                //paymentType, 
-                includeKey, false);
+        String name = "Compare2TimesPaymentTypes";
         // Write headers
-        String header;
-        header = getHeaderCompare2TimesGeneric();
-        // HB
-        String s = DW_Strings.symbol_comma;
-        header += sTotalCount_HB_NotSuspendedToNotSuspended + s;
-        header += sTotalCount_HB_NotSuspendedToSuspended + s;
-        header += sTotalCount_HB_NotSuspendedToNull + s;
-        header += sTotalCount_HB_SuspendedToNotSuspended + s;
-        header += sTotalCount_HB_SuspendedToSuspended + s;
-        header += sTotalCount_HB_SuspendedToNull + s;
-        header += sTotalCount_HB_PTIToPTI + s;
-        header += sTotalCount_HB_PTIToPTS + s;
-        header += sTotalCount_HB_PTIToPTO + s;
-        header += sTotalCount_HB_PTIToNull + s;
-        header += sTotalCount_HB_PTSToPTI + s;
-        header += sTotalCount_HB_PTSToPTS + s;
-        header += sTotalCount_HB_PTSToPTO + s;
-        header += sTotalCount_HB_PTSToNull + s;
-        header += sTotalCount_HB_PTOToPTI + s;
-        header += sTotalCount_HB_PTOToPTS + s;
-        header += sTotalCount_HB_PTOToPTO + s;
-        header += sTotalCount_HB_PTOToNull + s;
-        // CTB
-        header += sTotalCount_CTB_NotSuspendedToNotSuspended + s;
-        header += sTotalCount_CTB_NotSuspendedToSuspended + s;
-        header += sTotalCount_CTB_NotSuspendedToNull + s;
-        header += sTotalCount_CTB_SuspendedToNotSuspended + s;
-        header += sTotalCount_CTB_SuspendedToSuspended + s;
-        header += sTotalCount_CTB_SuspendedToNull + s;
-        header += sTotalCount_CTB_PTIToPTI + s;
-        header += sTotalCount_CTB_PTIToPTS + s;
-        header += sTotalCount_CTB_PTIToPTO + s;
-        header += sTotalCount_CTB_PTIToNull + s;
-        header += sTotalCount_CTB_PTSToPTI + s;
-        header += sTotalCount_CTB_PTSToPTS + s;
-        header += sTotalCount_CTB_PTSToPTO + s;
-        header += sTotalCount_CTB_PTSToNull + s;
-        header += sTotalCount_CTB_PTOToPTI + s;
-        header += sTotalCount_CTB_PTOToPTS + s;
-        header += sTotalCount_CTB_PTOToPTO + s;
-        header += sTotalCount_CTB_PTOToNull + s;
-        header = header.substring(0, header.length() - 2);
-        pw.println(header);
-        Iterator<String> ite;
-        ite = summaryTable.keySet().iterator();
-        while (ite.hasNext()) {
-            String key;
-            key = ite.next();
-            HashMap<String, String> summary;
-            summary = summaryTable.get(key);
-            String line;
-            line = getLineCompare2TimesGeneric(
-                    summary,
-                    ONSPDFiles);
+        try (PrintWriter pw = getPrintWriter(name, sSummaryTables, summaryTable,
+                //paymentType,
+                includeKey, false)) {
+            // Write headers
+            String header = getHeaderCompare2TimesGeneric();
             // HB
-            line += summary.get(sTotalCount_HB_NotSuspendedToNotSuspended) + s;
-            line += summary.get(sTotalCount_HB_NotSuspendedToSuspended) + s;
-            line += summary.get(sTotalCount_HB_NotSuspendedToNull) + s;
-            line += summary.get(sTotalCount_HB_SuspendedToNotSuspended) + s;
-            line += summary.get(sTotalCount_HB_SuspendedToSuspended) + s;
-            line += summary.get(sTotalCount_HB_SuspendedToNull) + s;
-            line += summary.get(sTotalCount_HB_PTIToPTI) + s;
-            line += summary.get(sTotalCount_HB_PTIToPTS) + s;
-            line += summary.get(sTotalCount_HB_PTIToPTO) + s;
-            line += summary.get(sTotalCount_HB_PTIToNull) + s;
-            line += summary.get(sTotalCount_HB_PTSToPTI) + s;
-            line += summary.get(sTotalCount_HB_PTSToPTS) + s;
-            line += summary.get(sTotalCount_HB_PTSToPTO) + s;
-            line += summary.get(sTotalCount_HB_PTSToNull) + s;
-            line += summary.get(sTotalCount_HB_PTOToPTI) + s;
-            line += summary.get(sTotalCount_HB_PTOToPTS) + s;
-            line += summary.get(sTotalCount_HB_PTOToPTO) + s;
-            line += summary.get(sTotalCount_HB_PTOToNull) + s;
+            String s = DW_Strings.symbol_comma;
+            header += sTotalCount_HB_NotSuspendedToNotSuspended + s;
+            header += sTotalCount_HB_NotSuspendedToSuspended + s;
+            header += sTotalCount_HB_NotSuspendedToNull + s;
+            header += sTotalCount_HB_SuspendedToNotSuspended + s;
+            header += sTotalCount_HB_SuspendedToSuspended + s;
+            header += sTotalCount_HB_SuspendedToNull + s;
+            header += sTotalCount_HB_PTIToPTI + s;
+            header += sTotalCount_HB_PTIToPTS + s;
+            header += sTotalCount_HB_PTIToPTO + s;
+            header += sTotalCount_HB_PTIToNull + s;
+            header += sTotalCount_HB_PTSToPTI + s;
+            header += sTotalCount_HB_PTSToPTS + s;
+            header += sTotalCount_HB_PTSToPTO + s;
+            header += sTotalCount_HB_PTSToNull + s;
+            header += sTotalCount_HB_PTOToPTI + s;
+            header += sTotalCount_HB_PTOToPTS + s;
+            header += sTotalCount_HB_PTOToPTO + s;
+            header += sTotalCount_HB_PTOToNull + s;
             // CTB
-            line += summary.get(sTotalCount_CTB_NotSuspendedToNotSuspended) + s;
-            line += summary.get(sTotalCount_CTB_NotSuspendedToSuspended) + s;
-            line += summary.get(sTotalCount_CTB_NotSuspendedToNull) + s;
-            line += summary.get(sTotalCount_CTB_SuspendedToNotSuspended) + s;
-            line += summary.get(sTotalCount_CTB_SuspendedToSuspended) + s;
-            line += summary.get(sTotalCount_CTB_SuspendedToNull) + s;
-            line += summary.get(sTotalCount_CTB_PTIToPTI) + s;
-            line += summary.get(sTotalCount_CTB_PTIToPTS) + s;
-            line += summary.get(sTotalCount_CTB_PTIToPTO) + s;
-            line += summary.get(sTotalCount_CTB_PTIToNull) + s;
-            line += summary.get(sTotalCount_CTB_PTSToPTI) + s;
-            line += summary.get(sTotalCount_CTB_PTSToPTS) + s;
-            line += summary.get(sTotalCount_CTB_PTSToPTO) + s;
-            line += summary.get(sTotalCount_CTB_PTSToNull) + s;
-            line += summary.get(sTotalCount_CTB_PTOToPTI) + s;
-            line += summary.get(sTotalCount_CTB_PTOToPTS) + s;
-            line += summary.get(sTotalCount_CTB_PTOToPTO) + s;
-            line += summary.get(sTotalCount_CTB_PTOToNull) + s;
-            line = line.substring(0, line.length() - 2);
-            pw.println(line);
+            header += sTotalCount_CTB_NotSuspendedToNotSuspended + s;
+            header += sTotalCount_CTB_NotSuspendedToSuspended + s;
+            header += sTotalCount_CTB_NotSuspendedToNull + s;
+            header += sTotalCount_CTB_SuspendedToNotSuspended + s;
+            header += sTotalCount_CTB_SuspendedToSuspended + s;
+            header += sTotalCount_CTB_SuspendedToNull + s;
+            header += sTotalCount_CTB_PTIToPTI + s;
+            header += sTotalCount_CTB_PTIToPTS + s;
+            header += sTotalCount_CTB_PTIToPTO + s;
+            header += sTotalCount_CTB_PTIToNull + s;
+            header += sTotalCount_CTB_PTSToPTI + s;
+            header += sTotalCount_CTB_PTSToPTS + s;
+            header += sTotalCount_CTB_PTSToPTO + s;
+            header += sTotalCount_CTB_PTSToNull + s;
+            header += sTotalCount_CTB_PTOToPTI + s;
+            header += sTotalCount_CTB_PTOToPTS + s;
+            header += sTotalCount_CTB_PTOToPTO + s;
+            header += sTotalCount_CTB_PTOToNull + s;
+            header = header.substring(0, header.length() - 2);
+            pw.println(header);
+            Iterator<String> ite;
+            ite = summaryTable.keySet().iterator();
+            while (ite.hasNext()) {
+                String key;
+                key = ite.next();
+                HashMap<String, String> summary;
+                summary = summaryTable.get(key);
+                String line;
+                line = getLineCompare2TimesGeneric(
+                        summary,
+                        ONSPDFiles);
+                // HB
+                line += summary.get(sTotalCount_HB_NotSuspendedToNotSuspended) + s;
+                line += summary.get(sTotalCount_HB_NotSuspendedToSuspended) + s;
+                line += summary.get(sTotalCount_HB_NotSuspendedToNull) + s;
+                line += summary.get(sTotalCount_HB_SuspendedToNotSuspended) + s;
+                line += summary.get(sTotalCount_HB_SuspendedToSuspended) + s;
+                line += summary.get(sTotalCount_HB_SuspendedToNull) + s;
+                line += summary.get(sTotalCount_HB_PTIToPTI) + s;
+                line += summary.get(sTotalCount_HB_PTIToPTS) + s;
+                line += summary.get(sTotalCount_HB_PTIToPTO) + s;
+                line += summary.get(sTotalCount_HB_PTIToNull) + s;
+                line += summary.get(sTotalCount_HB_PTSToPTI) + s;
+                line += summary.get(sTotalCount_HB_PTSToPTS) + s;
+                line += summary.get(sTotalCount_HB_PTSToPTO) + s;
+                line += summary.get(sTotalCount_HB_PTSToNull) + s;
+                line += summary.get(sTotalCount_HB_PTOToPTI) + s;
+                line += summary.get(sTotalCount_HB_PTOToPTS) + s;
+                line += summary.get(sTotalCount_HB_PTOToPTO) + s;
+                line += summary.get(sTotalCount_HB_PTOToNull) + s;
+                // CTB
+                line += summary.get(sTotalCount_CTB_NotSuspendedToNotSuspended) + s;
+                line += summary.get(sTotalCount_CTB_NotSuspendedToSuspended) + s;
+                line += summary.get(sTotalCount_CTB_NotSuspendedToNull) + s;
+                line += summary.get(sTotalCount_CTB_SuspendedToNotSuspended) + s;
+                line += summary.get(sTotalCount_CTB_SuspendedToSuspended) + s;
+                line += summary.get(sTotalCount_CTB_SuspendedToNull) + s;
+                line += summary.get(sTotalCount_CTB_PTIToPTI) + s;
+                line += summary.get(sTotalCount_CTB_PTIToPTS) + s;
+                line += summary.get(sTotalCount_CTB_PTIToPTO) + s;
+                line += summary.get(sTotalCount_CTB_PTIToNull) + s;
+                line += summary.get(sTotalCount_CTB_PTSToPTI) + s;
+                line += summary.get(sTotalCount_CTB_PTSToPTS) + s;
+                line += summary.get(sTotalCount_CTB_PTSToPTO) + s;
+                line += summary.get(sTotalCount_CTB_PTSToNull) + s;
+                line += summary.get(sTotalCount_CTB_PTOToPTI) + s;
+                line += summary.get(sTotalCount_CTB_PTOToPTS) + s;
+                line += summary.get(sTotalCount_CTB_PTOToPTO) + s;
+                line += summary.get(sTotalCount_CTB_PTOToNull) + s;
+                line = line.substring(0, line.length() - 2);
+                pw.println(line);
+            }
         }
-        pw.close();
     }
 
     protected String getHeaderCompare2TimesPostcodeChange() {
@@ -6261,18 +6059,13 @@ public class DW_Summary extends DW_Object {
      */
     public void writeSummaryTableCompare2TimesTT(
             TreeMap<String, HashMap<String, String>> summaryTable,
-            String includeKey,
-            int nTT,
-            int nEG
-    ) throws IOException {
-        TreeMap<UKP_YM3, File> ONSPDFiles;
-        ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
+            String includeKey, int nTT, int nEG) throws IOException {
+        TreeMap<UKP_YM3, Path> ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesTT";
-        PrintWriter pw  = getPrintWriter(name, sSummaryTables, summaryTable, includeKey, false);
+        PrintWriter pw = getPrintWriter(name, sSummaryTables, summaryTable, includeKey, false);
         // Write headers
-        String header;
-        header = getHeaderCompare2TimesGeneric();
+        String header = getHeaderCompare2TimesGeneric();
         header += getHeaderCompare2TimesTTChange();
         header = header.substring(0, header.length() - 2);
         pw.println(header);
@@ -6316,12 +6109,10 @@ public class DW_Summary extends DW_Object {
         return r;
     }
 
-    public String getLineCompare2TimesGeneric(
-            HashMap<String, String> summary,
-            TreeMap<UKP_YM3, File> ONSPDFiles) {
+    public String getLineCompare2TimesGeneric(HashMap<String, String> summary,
+            TreeMap<UKP_YM3, Path> ONSPDFiles) {
         String line = "";
-        String filename0;
-        filename0 = summary.get(sSHBEFilename0);
+        String filename0 = summary.get(sSHBEFilename0);
         String s = DW_Strings.symbol_comma;
         line += filename0 + s;
         String month0;
@@ -6357,14 +6148,14 @@ public class DW_Summary extends DW_Object {
         String PostCodeLookupFile0Name = null;
         if (filename0 != null) {
             PostCodeLookupDate0 = Postcode_Handler.getNearestYM3ForONSPDLookup(SHBE_Handler.getYM3(filename0));
-            PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getName();
+            PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getFileName().toString();
         }
         line += PostCodeLookupDate0 + s + PostCodeLookupFile0Name + s;
         UKP_YM3 PostCodeLookupDate1 = null;
         String PostCodeLookupFile1Name = null;
         if (filename1 != null) {
             PostCodeLookupDate1 = Postcode_Handler.getNearestYM3ForONSPDLookup(SHBE_Handler.getYM3(filename1));
-            PostCodeLookupFile1Name = ONSPDFiles.get(PostCodeLookupDate1).getName();
+            PostCodeLookupFile1Name = ONSPDFiles.get(PostCodeLookupDate1).getFileName().toString();
         }
         line += PostCodeLookupDate1 + s + PostCodeLookupFile1Name + s;
         line += summary.get(sAllCount0) + s;
@@ -6390,14 +6181,12 @@ public class DW_Summary extends DW_Object {
             TreeMap<String, HashMap<String, String>> summaryTable,
             String includeKey, int nTT, int nEG
     ) throws IOException {
-        TreeMap<UKP_YM3, File> ONSPDFiles;
+        TreeMap<UKP_YM3, Path> ONSPDFiles;
         ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
-        String name;
-        name = "Compare2TimesPostcode";
-        PrintWriter pw  = getPrintWriter(name, sSummaryTables, summaryTable, includeKey, false);
+        String name = "Compare2TimesPostcode";
+        PrintWriter pw = getPrintWriter(name, sSummaryTables, summaryTable, includeKey, false);
         // Write headers
-        String header;
-        header = getHeaderCompare2TimesGeneric();
+        String header = getHeaderCompare2TimesGeneric();
         header += getHeaderCompare2TimesPostcodeChange();
         header = header.substring(0, header.length() - 2);
         pw.println(header);
@@ -6428,57 +6217,57 @@ public class DW_Summary extends DW_Object {
     public void writeSummaryTableSingleTimeGenericCounts(
             TreeMap<String, HashMap<String, String>> summaryTable,
             String includeKey, int nTT, int nEG, int nPSI) throws IOException {
-        TreeMap<UKP_YM3, File> ONSPDFiles;
+        TreeMap<UKP_YM3, Path> ONSPDFiles;
         ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
         String name;
         name = "SingleTimeGenericCounts";
-        PrintWriter pw  = getPrintWriter(name, sSummaryTables, summaryTable, includeKey,
-                false);
         // Write headers
-        String s = DW_Strings.symbol_comma;
-        String header;
-        header = "";
-        header += sSHBEFilename1 + s;
-        header += getHeaderSingleTimeGeneric();
-        header += "PostCodeLookupDate, ";
-        header += "PostCodeLookupFile, ";
-        //header += SHBE_Strings.s_CountOfClaims + s;
-        //header += SHBE_Strings.s_CountOfCTBAndHBClaims + s;
-        //header += SHBE_Strings.s_CountOfCTBClaims + s;
-        header += SHBE_Strings.s_CountOfNewSHBEClaims + s;
-        for (int i = 1; i < nPSI; i++) {
-            header += SHBE_Strings.s_CountOfNewSHBEClaimsPSI + i + s;
-        }
-        header += SHBE_Strings.s_CountOfNewSHBEClaimsWhereClaimantWasClaimantBefore + s;
-        header += SHBE_Strings.s_CountOfNewSHBEClaimsWhereClaimantWasPartnerBefore + s;
-        header += SHBE_Strings.s_CountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore + s;
-        header += SHBE_Strings.s_CountOfNewSHBEClaimsWhereClaimantIsNew + s;
-        header += SHBE_Strings.s_CountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim + s;
-        header += SHBE_Strings.s_CountOfClaimsWithClaimantsThatArePartnersInAnotherClaim + s;
-        header += SHBE_Strings.s_CountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim + s;
-        header += SHBE_Strings.s_CountOfClaimsWithPartnersThatArePartnersInAnotherClaim + s;
-        header += SHBE_Strings.s_CountOfClaimantsInMultipleClaimsInAMonth + s;
-        header += SHBE_Strings.s_CountOfPartnersInMultipleClaimsInAMonth + s;
-        header += SHBE_Strings.s_CountOfNonDependentsInMultipleClaimsInAMonth + s;
-        header += sHBPTICount1 + s;
-        header += sHBPTSCount1 + s;
-        header += sHBPTOCount1 + s;
-        header += sCTBPTICount1 + s;
-        header += sCTBPTSCount1 + s;
-        header += sCTBPTOCount1 + s;
-        header += SHBE_Strings.s_CountOfSRecords + s;
-        header += SHBE_Strings.s_CountOfUniqueClaimants + s;
-        header += SHBE_Strings.s_CountOfClaimsWithPartners + s;
-        header += SHBE_Strings.s_CountOfUniquePartners + s;
-        header += SHBE_Strings.s_CountOfDependentsInAllClaims + s;
-        header += SHBE_Strings.s_CountOfUniqueDependents + s;
-        header += SHBE_Strings.s_CountOfNonDependentsInAllClaims + s;
-        header += SHBE_Strings.s_CountOfUniqueNonDependents + s;
-        header += SHBE_Strings.s_CountOfIndividuals + s;
-        header += SHBE_Strings.s_CountOfNewClaimantPostcodes + s;
-        //header += SHBE_Strings.s_CountOfNewValidMappableClaimantPostcodes + s;
-        header += SHBE_Strings.s_CountOfMappableClaimantPostcodes + s;
-        header += SHBE_Strings.s_CountOfNonMappableClaimantPostcodes + s;
+        try (PrintWriter pw = getPrintWriter(name, sSummaryTables, summaryTable, includeKey,
+                false)) {
+            // Write headers
+            String s = DW_Strings.symbol_comma;
+            String header = "";
+            header += sSHBEFilename1 + s;
+            header += getHeaderSingleTimeGeneric();
+            header += "PostCodeLookupDate, ";
+            header += "PostCodeLookupFile, ";
+            //header += SHBE_Strings.s_CountOfClaims + s;
+            //header += SHBE_Strings.s_CountOfCTBAndHBClaims + s;
+            //header += SHBE_Strings.s_CountOfCTBClaims + s;
+            header += SHBE_Strings.s_CountOfNewSHBEClaims + s;
+            for (int i = 1; i < nPSI; i++) {
+                header += SHBE_Strings.s_CountOfNewSHBEClaimsPSI + i + s;
+            }
+            header += SHBE_Strings.s_CountOfNewSHBEClaimsWhereClaimantWasClaimantBefore + s;
+            header += SHBE_Strings.s_CountOfNewSHBEClaimsWhereClaimantWasPartnerBefore + s;
+            header += SHBE_Strings.s_CountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore + s;
+            header += SHBE_Strings.s_CountOfNewSHBEClaimsWhereClaimantIsNew + s;
+            header += SHBE_Strings.s_CountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim + s;
+            header += SHBE_Strings.s_CountOfClaimsWithClaimantsThatArePartnersInAnotherClaim + s;
+            header += SHBE_Strings.s_CountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim + s;
+            header += SHBE_Strings.s_CountOfClaimsWithPartnersThatArePartnersInAnotherClaim + s;
+            header += SHBE_Strings.s_CountOfClaimantsInMultipleClaimsInAMonth + s;
+            header += SHBE_Strings.s_CountOfPartnersInMultipleClaimsInAMonth + s;
+            header += SHBE_Strings.s_CountOfNonDependentsInMultipleClaimsInAMonth + s;
+            header += sHBPTICount1 + s;
+            header += sHBPTSCount1 + s;
+            header += sHBPTOCount1 + s;
+            header += sCTBPTICount1 + s;
+            header += sCTBPTSCount1 + s;
+            header += sCTBPTOCount1 + s;
+            header += SHBE_Strings.s_CountOfSRecords + s;
+            header += SHBE_Strings.s_CountOfUniqueClaimants + s;
+            header += SHBE_Strings.s_CountOfClaimsWithPartners + s;
+            header += SHBE_Strings.s_CountOfUniquePartners + s;
+            header += SHBE_Strings.s_CountOfDependentsInAllClaims + s;
+            header += SHBE_Strings.s_CountOfUniqueDependents + s;
+            header += SHBE_Strings.s_CountOfNonDependentsInAllClaims + s;
+            header += SHBE_Strings.s_CountOfUniqueNonDependents + s;
+            header += SHBE_Strings.s_CountOfIndividuals + s;
+            header += SHBE_Strings.s_CountOfNewClaimantPostcodes + s;
+            //header += SHBE_Strings.s_CountOfNewValidMappableClaimantPostcodes + s;
+            header += SHBE_Strings.s_CountOfMappableClaimantPostcodes + s;
+            header += SHBE_Strings.s_CountOfNonMappableClaimantPostcodes + s;
 //        //header += SHBE_Strings.s_CountOfInvalidFormatClaimantPostcodes + s;
 //        header += sTotalCount_AllPostcodeValidFormat + s;
 //        header += sPercentageOfAllCount1_AllPostcodeValidFormat + s;
@@ -6499,59 +6288,59 @@ public class DW_Summary extends DW_Object {
 //        header += sPercentageOfCTBCount1_CTBPostcodeValid + s;
 //        //header += sTotalCount_CTBPostcodeInvalid + s;
 //        header = header.substring(0, header.length() - 2);
-        pw.println(header);
-        Iterator<String> ite;
-        ite = summaryTable.keySet().iterator();
-        while (ite.hasNext()) {
-            String key;
-            key = ite.next();
-            String line;
-            line = "";
-            HashMap<String, String> summary;
-            summary = summaryTable.get(key);
-            String filename1;
-            filename1 = summary.get(sSHBEFilename1);
-            line += filename1 + s;
-            line += getLineSingleTimeGeneric(key, summary);
-            line += getPostcodeLookupDateAndFilenameLinePart(filename1, ONSPDFiles);
-            //line += summary.get(SHBE_Strings.s_CountOfClaims) + s;
-            //line += summary.get(SHBE_Strings.s_CountOfCTBAndHBClaims) + s;
-            //line += summary.get(SHBE_Strings.s_CountOfCTBClaims) + s;
-            line += summary.get(SHBE_Strings.s_CountOfNewSHBEClaims) + s;
-            for (int i = 1; i < nPSI; i++) {
-                line += summary.get(SHBE_Strings.s_CountOfNewSHBEClaimsPSI + i) + s;
-            }
-            line += summary.get(SHBE_Strings.s_CountOfNewSHBEClaimsWhereClaimantWasClaimantBefore) + s;
-            line += summary.get(SHBE_Strings.s_CountOfNewSHBEClaimsWhereClaimantWasPartnerBefore) + s;
-            line += summary.get(SHBE_Strings.s_CountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore) + s;
-            line += summary.get(SHBE_Strings.s_CountOfNewSHBEClaimsWhereClaimantIsNew) + s;
-            line += summary.get(SHBE_Strings.s_CountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim) + s;
-            line += summary.get(SHBE_Strings.s_CountOfClaimsWithClaimantsThatArePartnersInAnotherClaim) + s;
-            line += summary.get(SHBE_Strings.s_CountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim) + s;
-            line += summary.get(SHBE_Strings.s_CountOfClaimsWithPartnersThatArePartnersInAnotherClaim) + s;
-            line += summary.get(SHBE_Strings.s_CountOfClaimantsInMultipleClaimsInAMonth) + s;
-            line += summary.get(SHBE_Strings.s_CountOfPartnersInMultipleClaimsInAMonth) + s;
-            line += summary.get(SHBE_Strings.s_CountOfNonDependentsInMultipleClaimsInAMonth) + s;
-            line += summary.get(sHBPTICount1) + s;
-            line += summary.get(sHBPTSCount1) + s;
-            line += summary.get(sHBPTOCount1) + s;
-            line += summary.get(sCTBPTICount1) + s;
-            line += summary.get(sCTBPTSCount1) + s;
-            line += summary.get(sCTBPTOCount1) + s;
-            line += summary.get(SHBE_Strings.s_CountOfSRecords) + s;
-            line += summary.get(SHBE_Strings.s_CountOfUniqueClaimants) + s;
-            line += summary.get(SHBE_Strings.s_CountOfClaimsWithPartners) + s;
-            line += summary.get(SHBE_Strings.s_CountOfUniquePartners) + s;
-            line += summary.get(SHBE_Strings.s_CountOfDependentsInAllClaims) + s;
-            line += summary.get(SHBE_Strings.s_CountOfUniqueDependents) + s;
-            line += summary.get(SHBE_Strings.s_CountOfNonDependentsInAllClaims) + s;
-            line += summary.get(SHBE_Strings.s_CountOfUniqueNonDependents) + s;
-            line += summary.get(SHBE_Strings.s_CountOfIndividuals) + s;
-            line += summary.get(SHBE_Strings.s_CountOfNewClaimantPostcodes) + s;
-            //line += summary.get(SHBE_Strings.s_CountOfNewValidMappableClaimantPostcodes) + s;
-            line += summary.get(SHBE_Strings.s_CountOfMappableClaimantPostcodes) + s;
-            line += summary.get(SHBE_Strings.s_CountOfNonMappableClaimantPostcodes) + s;
-            //line += summary.get(SHBE_Strings.s_CountOfInvalidFormatClaimantPostcodes) + s;
+pw.println(header);
+Iterator<String> ite;
+ite = summaryTable.keySet().iterator();
+while (ite.hasNext()) {
+    String key;
+    key = ite.next();
+    String line;
+    line = "";
+    HashMap<String, String> summary;
+    summary = summaryTable.get(key);
+    String filename1;
+    filename1 = summary.get(sSHBEFilename1);
+    line += filename1 + s;
+    line += getLineSingleTimeGeneric(key, summary);
+    line += getPostcodeLookupDateAndFilenameLinePart(filename1, ONSPDFiles);
+    //line += summary.get(SHBE_Strings.s_CountOfClaims) + s;
+    //line += summary.get(SHBE_Strings.s_CountOfCTBAndHBClaims) + s;
+    //line += summary.get(SHBE_Strings.s_CountOfCTBClaims) + s;
+    line += summary.get(SHBE_Strings.s_CountOfNewSHBEClaims) + s;
+    for (int i = 1; i < nPSI; i++) {
+        line += summary.get(SHBE_Strings.s_CountOfNewSHBEClaimsPSI + i) + s;
+    }
+    line += summary.get(SHBE_Strings.s_CountOfNewSHBEClaimsWhereClaimantWasClaimantBefore) + s;
+    line += summary.get(SHBE_Strings.s_CountOfNewSHBEClaimsWhereClaimantWasPartnerBefore) + s;
+    line += summary.get(SHBE_Strings.s_CountOfNewSHBEClaimsWhereClaimantWasNonDependentBefore) + s;
+    line += summary.get(SHBE_Strings.s_CountOfNewSHBEClaimsWhereClaimantIsNew) + s;
+    line += summary.get(SHBE_Strings.s_CountOfClaimsWithClaimantsThatAreClaimantsInAnotherClaim) + s;
+    line += summary.get(SHBE_Strings.s_CountOfClaimsWithClaimantsThatArePartnersInAnotherClaim) + s;
+    line += summary.get(SHBE_Strings.s_CountOfClaimsWithPartnersThatAreClaimantsInAnotherClaim) + s;
+    line += summary.get(SHBE_Strings.s_CountOfClaimsWithPartnersThatArePartnersInAnotherClaim) + s;
+    line += summary.get(SHBE_Strings.s_CountOfClaimantsInMultipleClaimsInAMonth) + s;
+    line += summary.get(SHBE_Strings.s_CountOfPartnersInMultipleClaimsInAMonth) + s;
+    line += summary.get(SHBE_Strings.s_CountOfNonDependentsInMultipleClaimsInAMonth) + s;
+    line += summary.get(sHBPTICount1) + s;
+    line += summary.get(sHBPTSCount1) + s;
+    line += summary.get(sHBPTOCount1) + s;
+    line += summary.get(sCTBPTICount1) + s;
+    line += summary.get(sCTBPTSCount1) + s;
+    line += summary.get(sCTBPTOCount1) + s;
+    line += summary.get(SHBE_Strings.s_CountOfSRecords) + s;
+    line += summary.get(SHBE_Strings.s_CountOfUniqueClaimants) + s;
+    line += summary.get(SHBE_Strings.s_CountOfClaimsWithPartners) + s;
+    line += summary.get(SHBE_Strings.s_CountOfUniquePartners) + s;
+    line += summary.get(SHBE_Strings.s_CountOfDependentsInAllClaims) + s;
+    line += summary.get(SHBE_Strings.s_CountOfUniqueDependents) + s;
+    line += summary.get(SHBE_Strings.s_CountOfNonDependentsInAllClaims) + s;
+    line += summary.get(SHBE_Strings.s_CountOfUniqueNonDependents) + s;
+    line += summary.get(SHBE_Strings.s_CountOfIndividuals) + s;
+    line += summary.get(SHBE_Strings.s_CountOfNewClaimantPostcodes) + s;
+    //line += summary.get(SHBE_Strings.s_CountOfNewValidMappableClaimantPostcodes) + s;
+    line += summary.get(SHBE_Strings.s_CountOfMappableClaimantPostcodes) + s;
+    line += summary.get(SHBE_Strings.s_CountOfNonMappableClaimantPostcodes) + s;
+    //line += summary.get(SHBE_Strings.s_CountOfInvalidFormatClaimantPostcodes) + s;
 //            line += summary.get(sTotalCount_AllPostcodeValidFormat) + s;
 //            line += summary.get(sPercentageOfAllCount1_AllPostcodeValidFormat) + s;
 //            line += summary.get(sTotalCount_AllPostcodeInvalidFormat) + s;
@@ -6570,10 +6359,10 @@ public class DW_Summary extends DW_Object {
 //            line += summary.get(sTotalCount_CTBPostcodeValid) + s;
 //            line += summary.get(sPercentageOfCTBCount1_CTBPostcodeValid) + s;
 //            line += summary.get(sTotalCount_CTBPostcodeInvalid) + s;
-            line = line.substring(0, line.length() - 2);
-            pw.println(line);
+line = line.substring(0, line.length() - 2);
+pw.println(line);
+}
         }
-        pw.close();
     }
 
     /**
@@ -6587,12 +6376,9 @@ public class DW_Summary extends DW_Object {
     public void writeSummaryTableSingleTimeHouseholdSizes(
             TreeMap<String, HashMap<String, String>> summaryTable,
             //String paymentType,
-            String includeKey,
-            int nTT,
-            int nEG,
-            int nPSI
+            String includeKey, int nTT, int nEG, int nPSI
     ) throws IOException {
-        TreeMap<UKP_YM3, File> ONSPDFiles;
+        TreeMap<UKP_YM3, Path> ONSPDFiles;
         ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
         String name;
         name = "SingleTimeHouseholdSizes";
@@ -6907,13 +6693,13 @@ public class DW_Summary extends DW_Object {
     }
 
     protected String getPostcodeLookupDateAndFilenameLinePart(
-            String filename, TreeMap<UKP_YM3, File> ONSPDFiles) {
+            String filename, TreeMap<UKP_YM3, Path> ONSPDFiles) {
         String r;
         UKP_YM3 PostCodeLookupDate0 = null;
         String PostCodeLookupFile0Name = null;
         if (filename != null) {
             PostCodeLookupDate0 = Postcode_Handler.getNearestYM3ForONSPDLookup(SHBE_Handler.getYM3(filename));
-            PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getName();
+            PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getFileName().toString();
         }
         String s = DW_Strings.symbol_comma;
         r = PostCodeLookupDate0 + s + PostCodeLookupFile0Name + s;
@@ -7156,7 +6942,7 @@ public class DW_Summary extends DW_Object {
             String includeKey,
             int nTT,
             int nEG
-    )throws IOException {
+    ) throws IOException {
         String name;
         name = "SingleTimeTT";
         PrintWriter pw;

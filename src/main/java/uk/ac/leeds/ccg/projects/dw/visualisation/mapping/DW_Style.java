@@ -22,11 +22,11 @@ import java.awt.Color;
 import java.util.ArrayList;
 import org.geotools.styling.Mark;
 import org.geotools.styling.Style;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_Style;
+import uk.ac.leeds.ccg.geotools.Geotools_Style;
 
 /**
- *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class DW_Style extends Geotools_Style {
 

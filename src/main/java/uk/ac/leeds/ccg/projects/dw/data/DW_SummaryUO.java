@@ -1,42 +1,25 @@
-/*
- * Copyright (C) 2015 geoagdt.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
- */
 package uk.ac.leeds.ccg.projects.dw.data;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.agdt.data.ukp.data.id.UKP_RecordID;
-import uk.ac.leeds.ccg.agdt.data.ukp.util.UKP_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
-import uk.ac.leeds.ccg.andyt.math.Math_BigDecimal;
-import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
+import uk.ac.leeds.ccg.data.ukp.data.id.UKP_RecordID;
+import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
+import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_ClaimID;
+import uk.ac.leeds.ccg.math.Math_BigDecimal;
+import uk.ac.leeds.ccg.generic.util.Generic_Time;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Records;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_D_Record;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Record;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Strings;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Data;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Record;
@@ -597,7 +580,7 @@ public class DW_SummaryUO extends DW_Summary {
     protected int RSLLinkedRecordCount1;
 
     public DW_SummaryUO(DW_Environment env, int nTT, int nEG, int nPSI,
-            boolean handleOutOfMemoryError) throws IOException {
+            boolean handleOutOfMemoryError) throws IOException, Exception {
         super(env, nTT, nEG, nPSI, handleOutOfMemoryError);
         init(nTT, nEG, nPSI);
     }
@@ -889,49 +872,33 @@ public class DW_SummaryUO extends DW_Summary {
     }
 
     @Override
-    protected void addToSummaryCompare2Times(
-            int nTT,
-            int nEG,
-            int nPSI,
-            HashMap<String, String> summary) {
+    protected void addToSummaryCompare2Times(int nTT, int nEG, int nPSI,
+            Map<String, String> summary) {
         super.addToSummaryCompare2Times(nTT, nEG, nPSI, summary);
-        addToSummarySingleTime(
-                nTT,
-                nEG,
-                nPSI,
-                summary);
+        addToSummarySingleTime(nTT, nEG, nPSI, summary);
         double percentage;
         double d;
         // Council
         // HB
         summary.put(sTotalCount_CouncilInBoth,
                 Integer.toString(TotalCount_CouncilInBoth));
-        summary.put(
-                sSumArrearsDiffInBoth,
+        summary.put(sSumArrearsDiffInBoth,
                 Double.toString(SumArrearsDiffInBoth));
-
         summary.put(sTotalCount_CouncilInBothG0,
                 Integer.toString(TotalCount_CouncilInBothG0));
-        summary.put(
-                sSumArrearsDiffInBothG0,
+        summary.put(sSumArrearsDiffInBothG0,
                 Double.toString(SumArrearsDiffInBothG0));
-
         summary.put(sTotalCount_CouncilInBothG1,
                 Integer.toString(TotalCount_CouncilInBothG1));
-        summary.put(
-                sSumArrearsDiffInBothG1,
+        summary.put(sSumArrearsDiffInBothG1,
                 Double.toString(SumArrearsDiffInBothG1));
-
         d = CouncilCount0;
         // Tenancy Type
-        summary.put(
-                sTotalCount_CouncilTTChangeClaimant,
+        summary.put(sTotalCount_CouncilTTChangeClaimant,
                 Integer.toString(TotalCount_CouncilTTChangeClaimant));
-        summary.put(
-                sTotalCount_CouncilMinus999TTToTT1,
+        summary.put(sTotalCount_CouncilMinus999TTToTT1,
                 Integer.toString(TotalCount_CouncilMinus999TTToTT1));
-        summary.put(
-                sTotalCount_CouncilTT1ToMinus999TT,
+        summary.put(sTotalCount_CouncilTT1ToMinus999TT,
                 Integer.toString(TotalCount_CouncilTT1ToMinus999TT));
         if (d > 0) {
             percentage = (TotalCount_CouncilTTChangeClaimant * 100.0d) / d;
@@ -1271,9 +1238,8 @@ public class DW_SummaryUO extends DW_Summary {
     }
 
     @Override
-    protected void addToSummarySingleTimeCounts0(
-            int nTT,
-            HashMap<String, String> summary) {
+    protected void addToSummarySingleTimeCounts0(int nTT,
+            Map<String, String> summary) {
         super.addToSummarySingleTimeCounts0(nTT, summary);
         // Council
 //        CouncilAllCount1 = CouncilCount1 + CouncilCTBCount1;
@@ -1296,9 +1262,8 @@ public class DW_SummaryUO extends DW_Summary {
     }
 
     @Override
-    protected void addToSummarySingleTimeRates0(
-            int nTT,
-            HashMap<String, String> summary) {
+    protected void addToSummarySingleTimeRates0(int nTT,
+            Map<String, String> summary) {
         super.addToSummarySingleTimeRates0(nTT, summary);
         double ave;
         // Council
@@ -1334,10 +1299,8 @@ public class DW_SummaryUO extends DW_Summary {
     }
 
     @Override
-    protected void addToSummarySingleTimePSICounts(
-            int nTT,
-            int nPSI,
-            HashMap<String, String> summary) {
+    protected void addToSummarySingleTimePSICounts(int nTT, int nPSI,
+            Map<String, String> summary) {
         super.addToSummarySingleTimePSICounts(nTT, nPSI, summary);
         // Council
         for (int i = 1; i < nPSI; i++) {
@@ -1352,10 +1315,8 @@ public class DW_SummaryUO extends DW_Summary {
     }
 
     @Override
-    protected void addToSummarySingleTimePSIRates(
-            int nTT,
-            int nPSI,
-            HashMap<String, String> summary) {
+    protected void addToSummarySingleTimePSIRates(int nTT, int nPSI,
+            Map<String, String> summary) {
         //super.addToSummarySingleTimePSIRates(nTT, nPSI, summary); // This should not be done :-)
         double ave;
         double d;
@@ -1402,9 +1363,8 @@ public class DW_SummaryUO extends DW_Summary {
     }
 
     @Override
-    protected void addToSummarySingleTimeDisabilityCounts(
-            int nTT,
-            HashMap<String, String> summary) {
+    protected void addToSummarySingleTimeDisabilityCounts(int nTT,
+            Map<String, String> summary) {
         super.addToSummarySingleTimeDisabilityCounts(nTT, summary);
         int t;
         // Council
@@ -1537,9 +1497,8 @@ public class DW_SummaryUO extends DW_Summary {
     }
 
     @Override
-    protected void addToSummarySingleTimeDisabilityRates(
-            int nTT,
-            HashMap<String, String> summary) {
+    protected void addToSummarySingleTimeDisabilityRates(int nTT,
+            Map<String, String> summary) {
         super.addToSummarySingleTimeDisabilityRates(nTT, summary);
         double percentage;
         double d;
@@ -1652,7 +1611,7 @@ public class DW_SummaryUO extends DW_Summary {
 
     @Override
     protected void addToSummarySingleTimeCounts1(
-            HashMap<String, String> summary) {
+            Map<String, String> summary) {
         super.addToSummarySingleTimeCounts1(summary);
         int t;
         // Council
@@ -1832,7 +1791,7 @@ public class DW_SummaryUO extends DW_Summary {
 
     @Override
     protected void addToSummarySingleTimeRates1(
-            HashMap<String, String> summary) {
+            Map<String, String> summary) {
         super.addToSummarySingleTimeRates1(summary);
         double ave;
         double d;
@@ -2209,10 +2168,8 @@ public class DW_SummaryUO extends DW_Summary {
     }
 
     @Override
-    protected void addToSummarySingleTimeEthnicityCounts(
-            int nEG,
-            int nTT,
-            HashMap<String, String> summary) {
+    protected void addToSummarySingleTimeEthnicityCounts(int nEG, int nTT,
+            Map<String, String> summary) {
         super.addToSummarySingleTimeEthnicityCounts(nEG, nTT, summary);
         // Council
         for (int i = 1; i < nEG; i++) {
@@ -2228,10 +2185,8 @@ public class DW_SummaryUO extends DW_Summary {
     }
 
     @Override
-    protected void addToSummarySingleTimeEthnicityRates(
-            int nEG,
-            int nTT,
-            HashMap<String, String> summary) {
+    protected void addToSummarySingleTimeEthnicityRates(int nEG, int nTT,
+            Map<String, String> summary) {
         super.addToSummarySingleTimeEthnicityRates(nEG, nTT, summary);
         double percentage;
         double all;
@@ -2265,9 +2220,8 @@ public class DW_SummaryUO extends DW_Summary {
     }
 
     @Override
-    protected void addToSummarySingleTimeTTCounts(
-            int nTT,
-            HashMap<String, String> summary) {
+    protected void addToSummarySingleTimeTTCounts(int nTT,
+            Map<String, String> summary) {
         super.addToSummarySingleTimeTTCounts(nTT, summary);
         int all;
         // Council
@@ -2338,10 +2292,10 @@ public class DW_SummaryUO extends DW_Summary {
     protected void doCouncilCompare2TimesCounts(
             SHBE_ClaimID ClaimID,
             HashSet<SHBE_ClaimID> Group,
-            HashMap<SHBE_ClaimID, SHBE_Record> Records0,
-            HashMap<SHBE_ClaimID, DW_UO_Record> DW_UO_Set0CouncilMap,
-            HashMap<SHBE_ClaimID, SHBE_Record> Records1,
-            HashMap<SHBE_ClaimID, DW_UO_Record> DW_UO_Set1CouncilMap
+            Map<SHBE_ClaimID, SHBE_Record> Records0,
+            Map<SHBE_ClaimID, DW_UO_Record> DW_UO_Set0CouncilMap,
+            Map<SHBE_ClaimID, SHBE_Record> Records1,
+            Map<SHBE_ClaimID, DW_UO_Record> DW_UO_Set1CouncilMap
     ) {
         /**
          * Initialise: Record0, Record1, DRecord0, DRecord1, DW_UO_Record0,
@@ -2648,8 +2602,8 @@ public class DW_SummaryUO extends DW_Summary {
 
     protected void doCouncilSingleTimeCount(
             SHBE_Record Record,
-            SHBE_D_Record D_Record) {
-        super.doSingleTimeCount(Record, D_Record);
+            SHBE_D_Record d) {
+        super.doSingleTimeCount(Record, d);
         // Declaration
         int EG;
         int TT;
@@ -2672,35 +2626,35 @@ public class DW_SummaryUO extends DW_Summary {
         String ClaimantsStudentIndicator;
         String LHARegulationsApplied;
         // Initialisation
-        EG = SHBE_Handler.getEthnicityGroup(D_Record);
-        TT = D_Record.getTenancyType();
-        DisabilityPremiumAwarded = D_Record.getDisabilityPremiumAwarded();
-        SevereDisabilityPremiumAwarded = D_Record.getSevereDisabilityPremiumAwarded();
-        DisabledChildPremiumAwarded = D_Record.getDisabledChildPremiumAwarded();
-        EnhancedDisabilityPremiumAwarded = D_Record.getEnhancedDisabilityPremiumAwarded();
-        PSI = D_Record.getPassportedStandardIndicator();
-        HouseholdSize = SHBE_Handler.getHouseholdSize(D_Record);
-        HouseholdIncome = SHBE_Handler.getHouseholdIncomeTotal(Record, D_Record);
-        WeeklyHousingBenefitEntitlement = D_Record.getWeeklyHousingBenefitEntitlement();
-        WeeklyCouncilTaxBenefitBenefitEntitlement = D_Record.getWeeklyCouncilTaxBenefitEntitlement();
-        WeeklyEligibleRentAmount = D_Record.getWeeklyEligibleRentAmount();
-        WeeklyEligibleCouncilTaxAmount = D_Record.getWeeklyEligibleCouncilTaxAmount();
-        ContractualRentAmount = D_Record.getContractualRentAmount();
-        WeeklyAdditionalDiscretionaryPayment = D_Record.getWeeklyAdditionalDiscretionaryPayment();
-        WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = D_Record.getWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability();
-        ClaimantsNetWeeklyIncomeFromEmployment = D_Record.getClaimantsNetWeeklyIncomeFromEmployment();
-        ClaimantsNetWeeklyIncomeFromSelfEmployment = D_Record.getClaimantsNetWeeklyIncomeFromSelfEmployment();
-        ClaimantsStudentIndicator = D_Record.getClaimantsStudentIndicator();
-        LHARegulationsApplied = D_Record.getLHARegulationsApplied();
-        WeeklyCouncilTaxBenefitBenefitEntitlement = D_Record.getWeeklyCouncilTaxBenefitEntitlement();
-        WeeklyEligibleRentAmount = D_Record.getWeeklyEligibleRentAmount();
-        WeeklyEligibleCouncilTaxAmount = D_Record.getWeeklyEligibleCouncilTaxAmount();
-        ContractualRentAmount = D_Record.getContractualRentAmount();
-        WeeklyAdditionalDiscretionaryPayment = D_Record.getWeeklyAdditionalDiscretionaryPayment();
-        WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = D_Record.getWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability();
+        EG = SHBE_Handler.getEthnicityGroup(d);
+        TT = d.getTenancyType();
+        DisabilityPremiumAwarded = d.getDisabilityPremiumAwarded();
+        SevereDisabilityPremiumAwarded = d.getSevereDisabilityPremiumAwarded();
+        DisabledChildPremiumAwarded = d.getDisabledChildPremiumAwarded();
+        EnhancedDisabilityPremiumAwarded = d.getEnhancedDisabilityPremiumAwarded();
+        PSI = d.getPassportedStandardIndicator();
+        HouseholdSize = SHBE_Handler.getHouseholdSize(d);
+        HouseholdIncome = SHBE_Handler.getHouseholdIncomeTotal(Record, d);
+        WeeklyHousingBenefitEntitlement = d.getWeeklyHousingBenefitEntitlement();
+        WeeklyCouncilTaxBenefitBenefitEntitlement = d.getWeeklyCouncilTaxBenefitEntitlement();
+        WeeklyEligibleRentAmount = d.getWeeklyEligibleRentAmount();
+        WeeklyEligibleCouncilTaxAmount = d.getWeeklyEligibleCouncilTaxAmount();
+        ContractualRentAmount = d.getContractualRentAmount();
+        WeeklyAdditionalDiscretionaryPayment = d.getWeeklyAdditionalDiscretionaryPayment();
+        WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = d.getWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability();
+        ClaimantsNetWeeklyIncomeFromEmployment = d.getClaimantsNetWeeklyIncomeFromEmployment();
+        ClaimantsNetWeeklyIncomeFromSelfEmployment = d.getClaimantsNetWeeklyIncomeFromSelfEmployment();
+        ClaimantsStudentIndicator = d.getClaimantsStudentIndicator();
+        LHARegulationsApplied = d.getLHARegulationsApplied();
+        WeeklyCouncilTaxBenefitBenefitEntitlement = d.getWeeklyCouncilTaxBenefitEntitlement();
+        WeeklyEligibleRentAmount = d.getWeeklyEligibleRentAmount();
+        WeeklyEligibleCouncilTaxAmount = d.getWeeklyEligibleCouncilTaxAmount();
+        ContractualRentAmount = d.getContractualRentAmount();
+        WeeklyAdditionalDiscretionaryPayment = d.getWeeklyAdditionalDiscretionaryPayment();
+        WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability = d.getWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability();
         // Counts
         CouncilCount1++;
-        switch (D_Record.getStatusOfHBClaimAtExtractDate()) {
+        switch (d.getStatusOfHBClaimAtExtractDate()) {
             case 1:
                 CouncilHBPTICount1++;
                 break;
@@ -2711,7 +2665,7 @@ public class DW_SummaryUO extends DW_Summary {
                 CouncilHBPTOCount1++;
                 break;
         }
-        switch (D_Record.getStatusOfCTBClaimAtExtractDate()) {
+        switch (d.getStatusOfCTBClaimAtExtractDate()) {
             case 1:
                 CouncilCTBPTICount1++;
                 break;
@@ -2771,7 +2725,7 @@ public class DW_SummaryUO extends DW_Summary {
             }
         }
         int StatusOfHBClaimAtExtractDate;
-        StatusOfHBClaimAtExtractDate = D_Record.getStatusOfHBClaimAtExtractDate();
+        StatusOfHBClaimAtExtractDate = d.getStatusOfHBClaimAtExtractDate();
         if (HouseholdIncome > 0) {
             switch (StatusOfHBClaimAtExtractDate) {
                 case 1:
@@ -3345,7 +3299,7 @@ public class DW_SummaryUO extends DW_Summary {
             ArrayList<Integer> include, boolean forceNewSummaries,
             ArrayList<String> HB_CTB, ArrayList<String> PTs, int nTT, int nEG,
             int nPSI, DW_UO_Data DW_UO_Data, boolean handleOutOfMemoryError)
-            throws IOException {
+            throws IOException, ClassNotFoundException, Exception {
         String methodName = "getSummaryTable(...)";
         env.ge.log("<" + methodName + ">", true);
 
@@ -3368,17 +3322,17 @@ public class DW_SummaryUO extends DW_Summary {
         UKP_YM3 YM31 = null;
         SHBE_Records SHBE_Records0;
         SHBE_Records SHBE_Records1 = null;
-        HashMap<SHBE_ClaimID, SHBE_Record> Records0;
-        HashMap<SHBE_ClaimID, SHBE_Record> Records1 = null;
+        Map<SHBE_ClaimID, SHBE_Record> Records0;
+        Map<SHBE_ClaimID, SHBE_Record> Records1 = null;
         TreeMap<UKP_YM3, DW_UO_Set> CouncilUOSets;
         TreeMap<UKP_YM3, DW_UO_Set> RSLUOSets;
         DW_UO_Set CouncilUOSet0;
         DW_UO_Set RSLUOSet0;
-        DW_UO_Set CouncilUOSet1 = null;
-        DW_UO_Set RSLUOSet1 = null;
+        DW_UO_Set councilUOSet1 = null;
+        DW_UO_Set rslUOSet1 = null;
         Object[] filenames;
-        TreeMap<UKP_YM3, String> CouncilFilenames;
-        TreeMap<UKP_YM3, String> RSLFilenames;
+        TreeMap<UKP_YM3, String> councilFilenames;
+        TreeMap<UKP_YM3, String> rslFilenames;
 
         // Initialise result
         result = new TreeMap<>();
@@ -3394,8 +3348,8 @@ public class DW_SummaryUO extends DW_Summary {
         CouncilUOSets = DW_UO_Data.getCouncilUOSets();
         RSLUOSets = DW_UO_Data.getRSLUOSets();
         filenames = env.getUO_Handler().getInputFilenames();
-        CouncilFilenames = (TreeMap<UKP_YM3, String>) filenames[0];
-        RSLFilenames = (TreeMap<UKP_YM3, String>) filenames[1];
+        councilFilenames = (TreeMap<UKP_YM3, String>) filenames[0];
+        rslFilenames = (TreeMap<UKP_YM3, String>) filenames[1];
 
         // Load first data
         includeIte = include.iterator();
@@ -3405,9 +3359,9 @@ public class DW_SummaryUO extends DW_Summary {
             filename1 = SHBEFilenames[i];
             //key = SHBE_Handler.getYearMonthNumber(filename1);
             YM31 = SHBE_Handler.getYM3(filename1);
-            CouncilUOSet1 = CouncilUOSets.get(YM31);
-            if (CouncilUOSet1 != null) {
-                RSLUOSet1 = RSLUOSets.get(YM31);
+            councilUOSet1 = CouncilUOSets.get(YM31);
+            if (councilUOSet1 != null) {
+                rslUOSet1 = RSLUOSets.get(YM31);
                 env.ge.log("Load " + YM31, true);
                 SHBE_Records1 = SHBE_Handler.getRecords(YM31, env.HOOME);
                 Records1 = SHBE_Records1.getRecords(env.HOOME);
@@ -3420,7 +3374,7 @@ public class DW_SummaryUO extends DW_Summary {
 
         // Go through CouncilUOSet1 and initialise Group
         HashMap<SHBE_ClaimID, DW_UO_Record> map;
-        map = CouncilUOSet1.getMap();
+        map = councilUOSet1.getMap();
         Iterator<SHBE_ClaimID> ite;
         ite = map.keySet().iterator();
         SHBE_ClaimID ClaimID;
@@ -3437,31 +3391,18 @@ public class DW_SummaryUO extends DW_Summary {
                 }
             }
         }
-
         // Summarise first data
-        doPartSummarySingleTime(
-                SHBE_Records1,
-                YM31,
-                filename1,
-                forceNewSummaries,
-                HB_CTB,
-                PTs,
-                nTT,
-                nEG,
-                nPSI,
-                CouncilFilenames,
-                RSLFilenames,
-                CouncilUOSet1,
-                RSLUOSet1,
+        doPartSummarySingleTime(SHBE_Records1, YM31, filename1,
+                forceNewSummaries, HB_CTB, PTs, nTT, nEG, nPSI,
+                councilFilenames, rslFilenames, councilUOSet1, rslUOSet1,
                 result);
-
         filename0 = filename1;
         //YM30 = YM31;
         YM30 = new UKP_YM3(YM31);
         SHBE_Records0 = SHBE_Records1;
         Records0 = Records1;
-        CouncilUOSet0 = CouncilUOSet1;
-        RSLUOSet0 = RSLUOSet1;
+        CouncilUOSet0 = councilUOSet1;
+        RSLUOSet0 = rslUOSet1;
         incrementCounts(nTT);
         initCounts(nTT, nEG, nPSI);
 
@@ -3469,8 +3410,8 @@ public class DW_SummaryUO extends DW_Summary {
             i = includeIte.next();
             filename1 = SHBEFilenames[i];
             YM31 = SHBE_Handler.getYM3(filename1);
-            CouncilUOSet1 = CouncilUOSets.get(YM31);
-            RSLUOSet1 = RSLUOSets.get(YM31);
+            councilUOSet1 = CouncilUOSets.get(YM31);
+            rslUOSet1 = RSLUOSets.get(YM31);
             // Load next data
             env.ge.log("Load " + YM31, true);
             SHBE_Records1 = SHBE_Handler.getRecords(YM31, env.HOOME);
@@ -3488,16 +3429,16 @@ public class DW_SummaryUO extends DW_Summary {
                     Records1,
                     YM31,
                     filename1,
-                    CouncilUOSet1,
-                    RSLUOSet1,
+                    councilUOSet1,
+                    rslUOSet1,
                     forceNewSummaries,
                     HB_CTB,
                     PTs,
                     nTT,
                     nEG,
                     nPSI,
-                    CouncilFilenames,
-                    RSLFilenames,
+                    councilFilenames,
+                    rslFilenames,
                     result);
             // Set up vars for next iteration
             if (includeIte.hasNext()) {
@@ -3505,8 +3446,8 @@ public class DW_SummaryUO extends DW_Summary {
                 //YM30 = YM31;
                 YM30 = new UKP_YM3(YM31);
                 SHBE_Records0 = SHBE_Records1;
-                CouncilUOSet0 = CouncilUOSet1;
-                RSLUOSet0 = RSLUOSet1;
+                CouncilUOSet0 = councilUOSet1;
+                RSLUOSet0 = rslUOSet1;
                 incrementCounts(nTT);
                 initCounts(nTT, nEG, nPSI);
             }
@@ -3547,63 +3488,52 @@ public class DW_SummaryUO extends DW_Summary {
 
     /**
      * @param Group
-     * @param SHBE_Records0
-     * @param Records0
-     * @param YM30
+     * @param shbeRecs0
+     * @param recs0
+     * @param ym30
      * @param filename0
-     * @param SHBE_Records1
-     * @param YM31
+     * @param shbeRecs1
+     * @param ym31
      * @param filename1
-     * @param Records1
+     * @param recs1
      * @param forceNewSummaries
      * @param nTT
      * @param nEG
      * @param nPSI
-     * @param CouncilFilenames
+     * @param councilFilenames
      * @param HB_CTB
      * @param PTs
-     * @param RSLFilenames
-     * @param CouncilUOSet1
-     * @param RSLUOSet1
-     * @param CouncilUOSet0
-     * @param RSLUOSet0
+     * @param rslFilenames
+     * @param councilUOSet1
+     * @param rslUOSet1
+     * @param councilUOSet0
+     * @param rslUOSet0
      * @param summaries
      */
-    protected void doPartSummaryCompare2Times(
-            HashSet<SHBE_ClaimID> Group,
-            SHBE_Records SHBE_Records0,
-            HashMap<SHBE_ClaimID, SHBE_Record> Records0,
-            UKP_YM3 YM30,
-            String filename0,
-            DW_UO_Set CouncilUOSet0,
-            DW_UO_Set RSLUOSet0,
-            SHBE_Records SHBE_Records1,
-            HashMap<SHBE_ClaimID, SHBE_Record> Records1,
-            UKP_YM3 YM31,
-            String filename1,
-            DW_UO_Set CouncilUOSet1,
-            DW_UO_Set RSLUOSet1,
-            boolean forceNewSummaries,
-            ArrayList<String> HB_CTB,
-            ArrayList<String> PTs,
-            int nTT,
-            int nEG,
-            int nPSI,
-            TreeMap<UKP_YM3, String> CouncilFilenames,
-            TreeMap<UKP_YM3, String> RSLFilenames,
-            TreeMap<String, HashMap<String, String>> summaries) throws IOException {
-        doPartSummarySingleTime(SHBE_Records1, YM31, filename1,
+    protected void doPartSummaryCompare2Times(HashSet<SHBE_ClaimID> Group,
+            SHBE_Records shbeRecs0, Map<SHBE_ClaimID, SHBE_Record> recs0,
+            UKP_YM3 ym30, String filename0, DW_UO_Set councilUOSet0,
+            DW_UO_Set rslUOSet0, SHBE_Records shbeRecs1,
+            Map<SHBE_ClaimID, SHBE_Record> recs1, UKP_YM3 ym31,
+            String filename1, DW_UO_Set councilUOSet1, DW_UO_Set rslUOSet1,
+            boolean forceNewSummaries, ArrayList<String> HB_CTB,
+            ArrayList<String> PTs, int nTT, int nEG, int nPSI,
+            TreeMap<UKP_YM3, String> councilFilenames,
+            TreeMap<UKP_YM3, String> rslFilenames,
+            TreeMap<String, HashMap<String, String>> summaries)
+            throws IOException, ClassNotFoundException, Exception {
+        doPartSummarySingleTime(shbeRecs1, ym31, filename1,
                 forceNewSummaries, HB_CTB, PTs, nTT, nEG, nPSI,
-                CouncilFilenames, RSLFilenames, CouncilUOSet1, RSLUOSet1,
+                councilFilenames, rslFilenames, councilUOSet1, rslUOSet1,
                 summaries);
         HashMap<SHBE_ClaimID, DW_UO_Record> DW_UO_Set0CouncilMap;
-        DW_UO_Set0CouncilMap = CouncilUOSet0.getMap();
+        DW_UO_Set0CouncilMap = councilUOSet0.getMap();
         HashMap<SHBE_ClaimID, DW_UO_Record> DW_UO_Set0RSLMap;
-        DW_UO_Set0RSLMap = RSLUOSet0.getMap();
+        DW_UO_Set0RSLMap = rslUOSet0.getMap();
         HashMap<SHBE_ClaimID, DW_UO_Record> DW_UO_Set1CouncilMap;
-        DW_UO_Set1CouncilMap = CouncilUOSet1.getMap();
+        DW_UO_Set1CouncilMap = councilUOSet1.getMap();
         HashMap<SHBE_ClaimID, DW_UO_Record> DW_UO_Set1RSLMap;
-        DW_UO_Set1RSLMap = RSLUOSet1.getMap();
+        DW_UO_Set1RSLMap = rslUOSet1.getMap();
 
         // Loop over underoccupancy data
         // Loop over Council
@@ -3611,14 +3541,14 @@ public class DW_SummaryUO extends DW_Summary {
                 Group,
                 DW_UO_Set0CouncilMap,
                 DW_UO_Set1CouncilMap,
-                Records0,
-                Records1);
+                recs0,
+                recs1);
         // Loop over RSL
         doRSLCompare2TimesLoopOverSet(
                 DW_UO_Set0RSLMap,
                 DW_UO_Set1RSLMap,
-                Records0,
-                Records1);
+                recs0,
+                recs1);
 
         String key;
         key = SHBE_Handler.getYearMonthNumber(filename1);
@@ -3630,15 +3560,15 @@ public class DW_SummaryUO extends DW_Summary {
         // All
         summary.put(sSHBEFilename0, filename0);
         summary.put(sSHBEFilename1, filename1);
-        summary.put(sCouncilFilename0, CouncilFilenames.get(YM30));
-        summary.put(sRSLFilename0, RSLFilenames.get(YM30));
+        summary.put(sCouncilFilename0, councilFilenames.get(ym30));
+        summary.put(sRSLFilename0, rslFilenames.get(ym30));
         summary.put(sCouncilCount0, Integer.toString(CouncilCount0));
         summary.put(sCouncilLinkedRecordCount0, Integer.toString(CouncilLinkedRecordCount0));
         summary.put(sRSLCount0, Integer.toString(RSLCount0));
         summary.put(sRSLLinkedRecordCount0, Integer.toString(RSLLinkedRecordCount0));
         summary.put(sAllUOLinkedRecordCount0, Integer.toString(CouncilLinkedRecordCount0 + RSLLinkedRecordCount0));
-        summary.put(sCouncilFilename1, CouncilFilenames.get(YM31));
-        summary.put(sRSLFilename1, RSLFilenames.get(YM31));
+        summary.put(sCouncilFilename1, councilFilenames.get(ym31));
+        summary.put(sRSLFilename1, rslFilenames.get(ym31));
         summary.put(sCouncilLinkedRecordCount1, Integer.toString(CouncilLinkedRecordCount1));
         summary.put(sRSLLinkedRecordCount1, Integer.toString(RSLLinkedRecordCount1));
         summary.put(sAllUOLinkedRecordCount1, Integer.toString(CouncilLinkedRecordCount1 + RSLLinkedRecordCount1));
@@ -3651,38 +3581,37 @@ public class DW_SummaryUO extends DW_Summary {
             TreeMap<UKP_YM3, String> RSLFilenames, DW_UO_Set CouncilUOSet,
             DW_UO_Set RSLUOSet,
             TreeMap<String, HashMap<String, String>> summaries
-    ) throws IOException {
+    ) throws IOException, ClassNotFoundException, Exception {
         // Declare variables
         String key;
         HashMap<String, String> summary;
-        HashMap<String, Number> LoadSummary;
-        HashMap<SHBE_ClaimID, DW_UO_Record> CouncilUOMap;
-        HashMap<SHBE_ClaimID, DW_UO_Record> RSLUOMap;
-        HashMap<SHBE_ClaimID, SHBE_Record> Records;
+        Map<String, Number> loadSummary;
+        HashMap<SHBE_ClaimID, DW_UO_Record> councilUOMap;
+        HashMap<SHBE_ClaimID, DW_UO_Record> rslUOMap;
+        Map<SHBE_ClaimID, SHBE_Record> recs;
         HashMap<String, BigDecimal> IncomeAndRentSummaryAllUO;
         HashMap<String, BigDecimal> IncomeAndRentSummaryCouncil;
         HashMap<String, BigDecimal> IncomeAndRentSummaryRSL;
         // Initialise variables
         key = SHBE_Handler.getYearMonthNumber(filename);
         summary = summaries.get(key);
-        LoadSummary = SHBE_Records.getLoadSummary(env.HOOME);
-        addToSummary(summary, LoadSummary);
-        CouncilUOMap = CouncilUOSet.getMap();
-        RSLUOMap = RSLUOSet.getMap();
-        Records = SHBE_Records.getRecords(env.HOOME);
+        loadSummary = SHBE_Records.getLoadSummary(env.HOOME);
+        addToSummary(summary, loadSummary);
+        councilUOMap = CouncilUOSet.getMap();
+        rslUOMap = RSLUOSet.getMap();
+        recs = SHBE_Records.getRecords(env.HOOME);
         // Loop over Council
         CouncilLinkedRecordCount1 = doCouncilSingleTimeLoopOverSet(
-                CouncilUOMap, Records);
+                councilUOMap, recs);
         // Loop over RSL
-        RSLLinkedRecordCount1 = doRSLSingleTimeLoopOverSet(RSLUOMap, Records);
+        RSLLinkedRecordCount1 = doRSLSingleTimeLoopOverSet(rslUOMap, recs);
         // Prepare vars
-        CouncilCount1 = CouncilUOMap.size();
-        RSLCount1 = RSLUOMap.size();
+        CouncilCount1 = councilUOMap.size();
+        RSLCount1 = rslUOMap.size();
         AllUOAllCount1 = CouncilCount1 + RSLCount1;
         AllUOLinkedRecordCount1 = CouncilLinkedRecordCount1 + RSLLinkedRecordCount1;
         // Add to counts
-        DW_IncomeAndRentSummary iars;
-        iars = new DW_IncomeAndRentSummary(env, ds);
+        DW_IncomeAndRentSummary iars = new DW_IncomeAndRentSummary(env, ds);
         IncomeAndRentSummaryAllUO = iars.getIncomeAndRentSummary(
                 SHBE_Records, HB_CTB, PTs, YM3, CouncilUOSet, RSLUOSet, true,
                 true, true, forceNewSummaries);
@@ -3718,30 +3647,26 @@ public class DW_SummaryUO extends DW_Summary {
      * DW_UO_Record for the former time period.
      * @param DW_UO_Set1CouncilMap Keys are ClaimIDs values are Council
      * DW_UO_Record for the latter time period.
-     * @param Records0 Keys are ClaimIDs values are SHBE_Record for the former
-     * time period.
-     * @param Records1 Keys are ClaimIDs values are SHBE_Record for the latter
-     * time period.
+     * @param r0 Keys are ClaimIDs values are SHBE_Record for the former time
+     * period.
+     * @param r1 Keys are ClaimIDs values are SHBE_Record for the latter time
+     * period.
      */
     public void doCouncilCompare2TimesLoopOverSet(
             HashSet<SHBE_ClaimID> Group,
             HashMap<SHBE_ClaimID, DW_UO_Record> DW_UO_Set0CouncilMap,
             HashMap<SHBE_ClaimID, DW_UO_Record> DW_UO_Set1CouncilMap,
-            HashMap<SHBE_ClaimID, SHBE_Record> Records0,
-            HashMap<SHBE_ClaimID, SHBE_Record> Records1) {
+            Map<SHBE_ClaimID, SHBE_Record> r0,
+            Map<SHBE_ClaimID, SHBE_Record> r1) {
         Iterator<SHBE_ClaimID> ite;
         // Go through all those currently and previously UO.
         ite = DW_UO_Set1CouncilMap.keySet().iterator();
         while (ite.hasNext()) {
-            SHBE_ClaimID ClaimID;
-            ClaimID = ite.next();
-            if (DW_UO_Set0CouncilMap.containsKey(ClaimID)) {
-                doCouncilCompare2TimesCounts(
-                        ClaimID,
-                        Group,
-                        Records0,
+            SHBE_ClaimID cid = ite.next();
+            if (DW_UO_Set0CouncilMap.containsKey(cid)) {
+                doCouncilCompare2TimesCounts(cid, Group, r0,
                         DW_UO_Set0CouncilMap,
-                        Records1,
+                        r1,
                         DW_UO_Set1CouncilMap);
             }
         }
@@ -3758,9 +3683,9 @@ public class DW_SummaryUO extends DW_Summary {
                 doCouncilCompare2TimesCounts(
                         ClaimID,
                         Group,
-                        Records0,
+                        r0,
                         DW_UO_Set0CouncilMap,
-                        Records1,
+                        r1,
                         DW_UO_Set1CouncilMap);
             }
         }
@@ -3777,9 +3702,9 @@ public class DW_SummaryUO extends DW_Summary {
                 doCouncilCompare2TimesCounts(
                         ClaimID,
                         Group,
-                        Records0,
+                        r0,
                         DW_UO_Set0CouncilMap,
-                        Records1,
+                        r1,
                         DW_UO_Set1CouncilMap);
             }
         }
@@ -3788,8 +3713,8 @@ public class DW_SummaryUO extends DW_Summary {
     public void doRSLCompare2TimesLoopOverSet(
             HashMap<SHBE_ClaimID, DW_UO_Record> map0,
             HashMap<SHBE_ClaimID, DW_UO_Record> map1,
-            HashMap<SHBE_ClaimID, SHBE_Record> Records0,
-            HashMap<SHBE_ClaimID, SHBE_Record> Records1) {
+            Map<SHBE_ClaimID, SHBE_Record> r0,
+            Map<SHBE_ClaimID, SHBE_Record> r1) {
         Iterator<SHBE_ClaimID> ite;
         SHBE_ClaimID ClaimID;
         // Go through all those currently and previously UO.
@@ -3799,8 +3724,8 @@ public class DW_SummaryUO extends DW_Summary {
             if (map0.containsKey(ClaimID)) {
                 doRSLCompare2TimesCountsAsNecessary(
                         ClaimID,
-                        Records0,
-                        Records1);
+                        r0,
+                        r1);
             }
         }
         // Go through all those currently UO but that were not previously UO.      
@@ -3814,8 +3739,8 @@ public class DW_SummaryUO extends DW_Summary {
             if (!map0.keySet().contains(ClaimID)) {
                 doRSLCompare2TimesCountsAsNecessary(
                         ClaimID,
-                        Records0,
-                        Records1);
+                        r0,
+                        r1);
             }
         }
         // Go through all those that were UO but are not currently UO.
@@ -3829,63 +3754,48 @@ public class DW_SummaryUO extends DW_Summary {
 //                doSingleTimeRentArrearsCount(UORec);
                 doRSLCompare2TimesCountsAsNecessary(
                         ClaimID,
-                        Records0,
-                        Records1);
+                        r0,
+                        r1);
             }
         }
     }
 
-    private void doRSLCompare2TimesCountsAsNecessary(
-            SHBE_ClaimID ClaimID,
-            HashMap<SHBE_ClaimID, SHBE_Record> Records0,
-            HashMap<SHBE_ClaimID, SHBE_Record> Records1) {
-        SHBE_Record Record0;
-        Record0 = Records0.get(ClaimID);
-        SHBE_Record Record1;
-        Record1 = Records1.get(ClaimID);
-        SHBE_D_Record D_Record0;
-        D_Record0 = null;
-        if (Record0 != null) {
-            D_Record0 = Record0.getDRecord();
+    private void doRSLCompare2TimesCountsAsNecessary(SHBE_ClaimID cid,
+            Map<SHBE_ClaimID, SHBE_Record> recs0,
+            Map<SHBE_ClaimID, SHBE_Record> recs1) {
+        SHBE_Record r0 = recs0.get(cid);
+        SHBE_Record r1 = recs1.get(cid);
+        SHBE_D_Record d0 = null;
+        if (r0 != null) {
+            d0 = r0.getDRecord();
         }
-        SHBE_D_Record D_Record1;
-        D_Record1 = null;
-        if (Record1 == null) {
-            doRSLCompare2TimesCounts(
-                    Record0,
-                    D_Record0,
-                    Record1,
-                    D_Record1);
+        SHBE_D_Record d1 = null;
+        if (r1 == null) {
+            doRSLCompare2TimesCounts(r0, d0, r1, d1);
         }
     }
 
     /**
      *
      * @param map
-     * @param Records
+     * @param recs
      * @return
      */
     public int doCouncilSingleTimeLoopOverSet(
             HashMap<SHBE_ClaimID, DW_UO_Record> map,
-            HashMap<SHBE_ClaimID, SHBE_Record> Records) {
-        int linkedRecords;
-        linkedRecords = 0;
-        Iterator<SHBE_ClaimID> ite;
-        ite = map.keySet().iterator();
+            Map<SHBE_ClaimID, SHBE_Record> recs) {
+        int linkedRecords = 0;
+        Iterator<SHBE_ClaimID> ite = map.keySet().iterator();
         while (ite.hasNext()) {
-            SHBE_ClaimID ClaimID;
-            ClaimID = ite.next();
-            DW_UO_Record DW_UO_Record;
-            DW_UO_Record = map.get(ClaimID);
+            SHBE_ClaimID cid = ite.next();
+            DW_UO_Record uoRec = map.get(cid);
             // Rent Arrears DW_Summary
-            doSingleTimeRentArrearsCount(DW_UO_Record);
-            SHBE_Record Record;
-            Record = Records.get(ClaimID);
-            if (Record != null) {
-                SHBE_D_Record D_Record;
-                D_Record = Record.getDRecord();
-                if (D_Record != null) {
-                    doCouncilSingleTimeCount(Record, D_Record);
+            doSingleTimeRentArrearsCount(uoRec);
+            SHBE_Record rec = recs.get(cid);
+            if (rec != null) {
+                SHBE_D_Record d = rec.getDRecord();
+                if (d != null) {
+                    doCouncilSingleTimeCount(rec, d);
                 }
                 linkedRecords++;
             }
@@ -3901,25 +3811,19 @@ public class DW_SummaryUO extends DW_Summary {
      */
     public int doRSLSingleTimeLoopOverSet(
             HashMap<SHBE_ClaimID, DW_UO_Record> map,
-            HashMap<SHBE_ClaimID, SHBE_Record> D_Records) {
-        int linkedRecords;
-        linkedRecords = 0;
-        Iterator<SHBE_ClaimID> ite;
-        ite = map.keySet().iterator();
+            Map<SHBE_ClaimID, SHBE_Record> D_Records) {
+        int linkedRecords = 0;
+        Iterator<SHBE_ClaimID> ite = map.keySet().iterator();
         while (ite.hasNext()) {
-            SHBE_ClaimID ClaimID;
-            ClaimID = ite.next();
-            DW_UO_Record UORec;
-            UORec = map.get(ClaimID);
+            SHBE_ClaimID cid = ite.next();
+            DW_UO_Record uoRec = map.get(cid);
             // Rent Arrears DW_Summary
-            doSingleTimeRentArrearsCount(UORec);
-            SHBE_Record Record;
-            Record = D_Records.get(ClaimID);
-            if (Record != null) {
-                SHBE_D_Record D_Record;
-                D_Record = Record.getDRecord();
-                if (D_Record != null) {
-                    doRSLSingleTimeCount(Record, D_Record);
+            doSingleTimeRentArrearsCount(uoRec);
+            SHBE_Record rec = D_Records.get(cid);
+            if (rec != null) {
+                SHBE_D_Record d = rec.getDRecord();
+                if (d != null) {
+                    doRSLSingleTimeCount(rec, d);
                 }
                 linkedRecords++;
             }
@@ -4048,131 +3952,127 @@ public class DW_SummaryUO extends DW_Summary {
      */
     public void writeSummaryTableCompare2TimesRentArrears(
             TreeMap<String, HashMap<String, String>> summaryTable,
-            String includeKey,
-            int nTT,
-            int nEG
-    ) throws IOException {
-        TreeMap<UKP_YM3, File> ONSPDFiles;
+            String includeKey, int nTT, int nEG) throws IOException {
+        TreeMap<UKP_YM3, Path> ONSPDFiles;
         ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
-        String name;
-        name = "Compare2TimesRentArrears";
-        PrintWriter pw  = getPrintWriter(name, sSummaryTables, summaryTable,
-                // paymentType, 
-                includeKey, true);
+        String name = "Compare2TimesRentArrears";
         // Write headers
-        String header;
-        header = getHeaderCompare2TimesGeneric();
-        header += sTotalCount_CouncilInBoth + ",";
-        header += sSumArrearsDiffInBoth + ",";
-        header += "AverageArrearsDiffInBoth,";
-        header += sTotalCount_CouncilInBothG0 + ",";
-        header += sSumArrearsDiffInBothG0 + ",";
-        header += "AverageArrearsDiffInBothG0,";
-        header += sTotalCount_CouncilInBothG1 + ",";
-        header += sSumArrearsDiffInBothG1 + ",";
-        header += "AverageArrearsDiffInBothG1, ";
+        try (PrintWriter pw = getPrintWriter(name, sSummaryTables, summaryTable,
+                // paymentType,
+                includeKey, true)) {
+            // Write headers
+            String header = getHeaderCompare2TimesGeneric();
+            header += sTotalCount_CouncilInBoth + ",";
+            header += sSumArrearsDiffInBoth + ",";
+            header += "AverageArrearsDiffInBoth,";
+            header += sTotalCount_CouncilInBothG0 + ",";
+            header += sSumArrearsDiffInBothG0 + ",";
+            header += "AverageArrearsDiffInBothG0,";
+            header += sTotalCount_CouncilInBothG1 + ",";
+            header += sSumArrearsDiffInBothG1 + ",";
+            header += "AverageArrearsDiffInBothG1, ";
 //        header += getHeaderCompare2TimesTTChangeCouncil();
 //        header += getHeaderCompare2TimesTTChangeRSL();
 //        header += getHeaderCompare2TimesPostcodeChangeCouncil();
 //        header += getHeaderCompare2TimesPostcodeChangeRSL();
-        header = header.substring(0, header.length() - 2);
-        pw.println(header);
-        Iterator<String> ite;
-        ite = summaryTable.keySet().iterator();
-        while (ite.hasNext()) {
-            String key;
-            key = ite.next();
-            HashMap<String, String> summary;
-            summary = summaryTable.get(key);
-            String line;
-            line = getLineCompare2TimesGeneric(summary, ONSPDFiles);
-            String sCount;
-            Double count = null;
-            String sTotalArrearsDiff;
-            Double TotalArrearsDiff;
-            // Arrears all
-            sCount = summary.get(sTotalCount_CouncilInBoth);
-            if (sCount != null) {
-                if (!sCount.equalsIgnoreCase("null")) {
-                    count = Double.parseDouble(sCount);
-                    line += count + ", ";
-                } else {
-                    line += ", ";
+            header = header.substring(0, header.length() - 2);
+            pw.println(header);
+            Iterator<String> ite;
+            ite = summaryTable.keySet().iterator();
+            while (ite.hasNext()) {
+                String key;
+                key = ite.next();
+                HashMap<String, String> summary;
+                summary = summaryTable.get(key);
+                String line;
+                line = getLineCompare2TimesGeneric(summary, ONSPDFiles);
+                String sCount;
+                Double count = null;
+                String sTotalArrearsDiff;
+                Double TotalArrearsDiff;
+                // Arrears all
+                sCount = summary.get(sTotalCount_CouncilInBoth);
+                if (sCount != null) {
+                    if (!sCount.equalsIgnoreCase("null")) {
+                        count = Double.parseDouble(sCount);
+                        line += count + ", ";
+                    } else {
+                        line += ", ";
+                    }
                 }
-            }
-            sTotalArrearsDiff = summary.get(sSumArrearsDiffInBoth);
-            TotalArrearsDiff = null;
-            if (count != null) {
-                if (count != 0) {
-                    TotalArrearsDiff = Double.parseDouble(sTotalArrearsDiff);
-                    line += TotalArrearsDiff + ",";
-                    double a;
-                    a = TotalArrearsDiff / (double) count;
-                    line += a + ",";
-                } else {
-                    line += ",,";
-                }
-            } else {
-                line += ",,";
-            }
-            // Arrears Group G0
-            sCount = summary.get(sTotalCount_CouncilInBothG0);
-            if (sCount != null) {
-                if (!sCount.equalsIgnoreCase("null")) {
-                    count = Double.parseDouble(sCount);
-                    line += count + ", ";
-                } else {
-                    line += ", ";
-                }
-            }
-            sTotalArrearsDiff = summary.get(sSumArrearsDiffInBothG0);
-            TotalArrearsDiff = null;
-            if (count != null) {
-                if (count != 0) {
-                    TotalArrearsDiff = Double.parseDouble(sTotalArrearsDiff);
-                    line += TotalArrearsDiff + ",";
-                    double a;
-                    a = TotalArrearsDiff / (double) count;
-                    line += a + ",";
+                sTotalArrearsDiff = summary.get(sSumArrearsDiffInBoth);
+                TotalArrearsDiff = null;
+                if (count != null) {
+                    if (count != 0) {
+                        TotalArrearsDiff = Double.parseDouble(sTotalArrearsDiff);
+                        line += TotalArrearsDiff + ",";
+                        double a;
+                        a = TotalArrearsDiff / (double) count;
+                        line += a + ",";
+                    } else {
+                        line += ",,";
+                    }
                 } else {
                     line += ",,";
                 }
-            } else {
-                line += ",,";
-            }
-            // Arrears Group G1
-            sCount = summary.get(sTotalCount_CouncilInBothG1);
-            if (sCount != null) {
-                if (!sCount.equalsIgnoreCase("null")) {
-                    count = Double.parseDouble(sCount);
-                    line += count + ", ";
-                } else {
-                    line += ", ";
+                // Arrears Group G0
+                sCount = summary.get(sTotalCount_CouncilInBothG0);
+                if (sCount != null) {
+                    if (!sCount.equalsIgnoreCase("null")) {
+                        count = Double.parseDouble(sCount);
+                        line += count + ", ";
+                    } else {
+                        line += ", ";
+                    }
                 }
-            }
-            sTotalArrearsDiff = summary.get(sSumArrearsDiffInBothG1);
-            TotalArrearsDiff = null;
-            if (count != null) {
-                if (count != 0) {
-                    TotalArrearsDiff = Double.parseDouble(sTotalArrearsDiff);
-                    line += TotalArrearsDiff + ",";
-                    double a;
-                    a = TotalArrearsDiff / (double) count;
-                    line += a + ",";
+                sTotalArrearsDiff = summary.get(sSumArrearsDiffInBothG0);
+                TotalArrearsDiff = null;
+                if (count != null) {
+                    if (count != 0) {
+                        TotalArrearsDiff = Double.parseDouble(sTotalArrearsDiff);
+                        line += TotalArrearsDiff + ",";
+                        double a;
+                        a = TotalArrearsDiff / (double) count;
+                        line += a + ",";
+                    } else {
+                        line += ",,";
+                    }
                 } else {
                     line += ",,";
                 }
-            } else {
-                line += ",,";
-            }
+                // Arrears Group G1
+                sCount = summary.get(sTotalCount_CouncilInBothG1);
+                if (sCount != null) {
+                    if (!sCount.equalsIgnoreCase("null")) {
+                        count = Double.parseDouble(sCount);
+                        line += count + ", ";
+                    } else {
+                        line += ", ";
+                    }
+                }
+                sTotalArrearsDiff = summary.get(sSumArrearsDiffInBothG1);
+                TotalArrearsDiff = null;
+                if (count != null) {
+                    if (count != 0) {
+                        TotalArrearsDiff = Double.parseDouble(sTotalArrearsDiff);
+                        line += TotalArrearsDiff + ",";
+                        double a;
+                        a = TotalArrearsDiff / (double) count;
+                        line += a + ",";
+                    } else {
+                        line += ",,";
+                    }
+                } else {
+                    line += ",,";
+                }
 //            line += getLineCompare2TimesTTChangeCouncil(summary);
 //            line += getLineCompare2TimesTTChangeRSL(summary);
 //            line += getLineCompare2TimesPostcodeChangeCouncil(summary);
 //            line += getLineCompare2TimesPostcodeChangeRSL(summary);
-            line = line.substring(0, line.length() - 2);
-            pw.println(line);
+                line = line.substring(0, line.length() - 2);
+                pw.println(line);
+            }
         }
-        pw.close();
     }
 
     protected String getHeaderCompare2TimesPostcodeChangeCouncil() {
@@ -4378,16 +4278,11 @@ public class DW_SummaryUO extends DW_Summary {
     @Override
     public void writeSummaryTableCompare2TimesTT(
             TreeMap<String, HashMap<String, String>> summaryTable,
-            String includeKey,
-            int nTT,
-            int nEG
-    )throws IOException {
-        TreeMap<UKP_YM3, File> ONSPDFiles;
+            String includeKey, int nTT, int nEG) throws IOException {
+        TreeMap<UKP_YM3, Path> ONSPDFiles;
         ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
-        String name;
-        name = "Compare2TimesTT";
-        PrintWriter pw;
-        pw = getPrintWriter(name, sSummaryTables, summaryTable,
+        String name = "Compare2TimesTT";
+        PrintWriter pw = getPrintWriter(name, sSummaryTables, summaryTable,
                 //paymentType, 
                 includeKey, true);
         // Write headers
@@ -4460,7 +4355,7 @@ public class DW_SummaryUO extends DW_Summary {
     @Override
     public String getLineCompare2TimesGeneric(
             HashMap<String, String> summary,
-            TreeMap<UKP_YM3, File> ONSPDFiles) {
+            TreeMap<UKP_YM3, Path> ONSPDFiles) {
         String line = "";
         String filename0;
         filename0 = summary.get(sSHBEFilename0);
@@ -4499,7 +4394,7 @@ public class DW_SummaryUO extends DW_Summary {
         if (filename0 != null) {
             PostCodeLookupDate0 = Postcode_Handler.getNearestYM3ForONSPDLookup(
                     SHBE_Handler.getYM3(filename0));
-            PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getName();
+            PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getFileName().toString();
         }
         line += PostCodeLookupDate0 + ", " + PostCodeLookupFile0Name + ", ";
         UKP_YM3 PostCodeLookupDate1 = null;
@@ -4507,7 +4402,7 @@ public class DW_SummaryUO extends DW_Summary {
         if (filename1 != null) {
             PostCodeLookupDate1 = Postcode_Handler.getNearestYM3ForONSPDLookup(
                     SHBE_Handler.getYM3(filename1));
-            PostCodeLookupFile1Name = ONSPDFiles.get(PostCodeLookupDate1).getName();
+            PostCodeLookupFile1Name = ONSPDFiles.get(PostCodeLookupDate1).getFileName().toString();
         }
         line += PostCodeLookupDate1 + ", " + PostCodeLookupFile1Name + ", ";
         line += summary.get(sCouncilFilename0) + ", ";
@@ -4552,27 +4447,20 @@ public class DW_SummaryUO extends DW_Summary {
     @Override
     public void writeSummaryTableCompare2TimesPostcode(
             TreeMap<String, HashMap<String, String>> summaryTable,
-            String includeKey,
-            int nTT,
-            int nEG
-    )throws IOException {
-        TreeMap<UKP_YM3, File> ONSPDFiles;
+            String includeKey, int nTT, int nEG) throws IOException {
+        TreeMap<UKP_YM3, Path> ONSPDFiles;
         ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
-        String name;
-        name = "Compare2TimesPostcode";
-        PrintWriter pw;
-        pw = getPrintWriter(name, sSummaryTables, summaryTable,
+        String name = "Compare2TimesPostcode";
+        PrintWriter pw = getPrintWriter(name, sSummaryTables, summaryTable,
                 //paymentType, 
                 includeKey, true);
         // Write headers
-        String header;
-        header = getHeaderCompare2TimesGeneric();
+        String header = getHeaderCompare2TimesGeneric();
         header += getHeaderCompare2TimesPostcodeChangeCouncil();
         header += getHeaderCompare2TimesPostcodeChangeRSL();
         header = header.substring(0, header.length() - 2);
         pw.println(header);
-        Iterator<String> ite;
-        ite = summaryTable.keySet().iterator();
+        Iterator<String> ite = summaryTable.keySet().iterator();
         while (ite.hasNext()) {
             String key;
             key = ite.next();
@@ -4600,22 +4488,14 @@ public class DW_SummaryUO extends DW_Summary {
     public void writeSummaryTableSingleTimeGenericCounts(
             TreeMap<String, HashMap<String, String>> summaryTable,
             //String paymentType,
-            String includeKey,
-            int nTT,
-            int nEG,
-            int nPSI
-    ) throws IOException {
-        TreeMap<UKP_YM3, File> ONSPDFiles;
-        ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
-        String name;
-        name = "SingleTimeGenericCounts";
-        PrintWriter pw;
-        pw = getPrintWriter(name, sSummaryTables, summaryTable,
+            String includeKey, int nTT, int nEG, int nPSI) throws IOException {
+        TreeMap<UKP_YM3, Path> ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
+        String name = "SingleTimeGenericCounts";
+        PrintWriter pw = getPrintWriter(name, sSummaryTables, summaryTable,
                 //paymentType, 
                 includeKey, true);
         // Write headers
-        String header;
-        header = "";
+        String header = "";
         header += sSHBEFilename1 + ", ";
         header += getHeaderSingleTimeGeneric();
         header += "PostCodeLookupDate, ";
@@ -4697,22 +4577,15 @@ public class DW_SummaryUO extends DW_Summary {
     @Override
     public void writeSummaryTableSingleTimeHouseholdSizes(
             TreeMap<String, HashMap<String, String>> summaryTable,
-            String includeKey,
-            int nTT,
-            int nEG,
-            int nPSI
-    ) throws IOException {
-        TreeMap<UKP_YM3, File> ONSPDFiles;
+            String includeKey, int nTT, int nEG, int nPSI) throws IOException {
+        TreeMap<UKP_YM3, Path> ONSPDFiles;
         ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
-        String name;
-        name = "SingleTimeHouseholdSizes";
-        PrintWriter pw;
-        pw = getPrintWriter(name, sSummaryTables, summaryTable,
+        String name = "SingleTimeHouseholdSizes";
+        PrintWriter pw = getPrintWriter(name, sSummaryTables, summaryTable,
                 //paymentType, 
                 includeKey, true);
         // Write headers
-        String header;
-        header = "";
+        String header = "";
         header += sSHBEFilename1 + ", ";
         header += getHeaderSingleTimeGeneric();
         header += "PostCodeLookupDate, ";

@@ -319,7 +319,7 @@ public class DW_ProcessorLCC extends DW_Processor {
                     DW_SHBE_Records.clearData();
                 } catch (OutOfMemoryError e) {
                     env.clearMemoryReserve();
-                    env.clearSomeSHBECacheExcept(YM3);
+                    env.clearSomeDataExcept(YM3);
                     env.initMemoryReserve();
                     env.checkAndMaybeFreeMemory();
                 }

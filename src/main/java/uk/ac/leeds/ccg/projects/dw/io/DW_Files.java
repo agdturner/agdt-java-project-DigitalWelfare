@@ -1,36 +1,23 @@
-/*
- * Copyright (C) 2014 geoagdt.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
- */
 package uk.ac.leeds.ccg.projects.dw.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_Files;
+import uk.ac.leeds.ccg.generic.io.Generic_Defaults;
+import uk.ac.leeds.ccg.generic.io.Generic_Files;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Strings;
 
 /**
  * A basic convenience class that does not need a reference to the main
  * DW_Environment.
  *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class DW_Files extends Generic_Files {
 
@@ -38,278 +25,283 @@ public class DW_Files extends Generic_Files {
      * For storing the input AdviceLeeds data directory inside
      * <code>inputDir</code>.
      */
-    private File inputAdviceLeedsDir;
+    private Path inputAdviceLeedsDir;
 
     /**
      * For storing the input Census data directory inside the main input data
      * directory.
      */
-    private File inputCensusDir;
+    private Path inputCensusDir;
 
     /**
      * For storing the 2011 Census directory inside the Census data directory.
      */
-    private File inputCensus2011Dir;
+    private Path inputCensus2011Dir;
 
     /**
      * For storing the Postcode directory inside the main input data directory.
      */
-    private File inputPostcodeDir;
+    private Path inputPostcodeDir;
 
     /**
      * For storing the CodePoint directory inside the main input data directory.
      */
-    private File inputCodePointDir;
-    private File inputLCCDir;
-    private File inputSHBEDir;
-    private File inputUnderOccupiedDir;
+    private Path inputCodePointDir;
+    private Path inputLCCDir;
+    private Path inputSHBEDir;
+    private Path inputUnderOccupiedDir;
 
-    private File swapDir;
-    private File swapLCCDir;
-    private File swapSHBEDir;
+    private Path swapDir;
+    private Path swapLCCDir;
+    private Path swapSHBEDir;
 
-    //private File generatedDir;
-    private File generatedAdviceLeedsDir;
-    private File generatedCensusDir;
-    private File generatedCensus2011Dir;
-    private File generatedCensus2011LUTsDir;
-    private File generatedGridsDir;
-    private File generatedGridsGridDoubleFactoryDir;
-    private File generatedPostcodeDir;
-    private File generatedCodePointDir;
-    private File generatedONSPDDir;
-    private File generatedLCCDir;
-    private File generatedSHBEDir;
-    private File generatedUnderOccupiedDir;
+    //private Path generatedDir;
+    private Path generatedAdviceLeedsDir;
+    private Path generatedCensusDir;
+    private Path generatedCensus2011Dir;
+    private Path generatedCensus2011LUTsDir;
+    private Path generatedGridsDir;
+    private Path generatedGridsGridDoubleFactoryDir;
+    private Path generatedPostcodeDir;
+    private Path generatedCodePointDir;
+    private Path generatedONSPDDir;
+    private Path generatedLCCDir;
+    private Path generatedSHBEDir;
+    private Path generatedUnderOccupiedDir;
 
-    //private File outputDir;
-    private File outputAdviceLeedsDir;
-    private File outputAdviceLeedsMapsDir;
-    private File outputCensusDir;
-    private File outputCensus2011Dir;
-    private File outputLCCDir;
-    private File outputSHBEDir;
-    private File outputSHBELogsDir;
-    private File outputSHBEMapsDir;
-    private File outputSHBETablesDir;
-    private File outputSHBEPlotsDir;
-    private File outputAdviceLeedsTablesDir;
-    private File outputUnderOccupiedDir;
+    //private Path outputDir;
+    private Path outputAdviceLeedsDir;
+    private Path outputAdviceLeedsMapsDir;
+    private Path outputCensusDir;
+    private Path outputCensus2011Dir;
+    private Path outputLCCDir;
+    private Path outputSHBEDir;
+    private Path outputSHBELogsDir;
+    private Path outputSHBEMapsDir;
+    private Path outputSHBETablesDir;
+    private Path outputSHBEPlotsDir;
+    private Path outputAdviceLeedsTablesDir;
+    private Path outputUnderOccupiedDir;
 
-    public DW_Files(File dataDir) throws IOException {
-        super(dataDir);
+    public DW_Files(Path dataDir) throws IOException {
+        super(new Generic_Defaults(dataDir));
     }
 
-    public File getInputAdviceLeedsDir() {
+    public Path getInputAdviceLeedsDir() throws IOException {
         if (inputAdviceLeedsDir == null) {
-            inputAdviceLeedsDir = new File(getInputDir(), DW_Strings.sAdviceLeeds);
+            inputAdviceLeedsDir = Paths.get(getInputDir().toString(),
+                    DW_Strings.sAdviceLeeds);
         }
         return inputAdviceLeedsDir;
     }
 
-    public File getInputCensusDir() {
+    public Path getInputCensusDir() throws IOException {
         if (inputCensusDir == null) {
-            inputCensusDir = new File(getInputDir(), DW_Strings.sCensus);
+            inputCensusDir = Paths.get(getInputDir().toString()
+                    , DW_Strings.sCensus);
         }
         return inputCensusDir;
     }
 
-    public File getInputCensus2011Dir() {
+    public Path getInputCensus2011Dir() throws IOException {
         if (inputCensus2011Dir == null) {
-            inputCensus2011Dir = new File(getInputCensusDir(), DW_Strings.s2011);
+            inputCensus2011Dir = Paths.get(getInputCensusDir().toString(),
+                    DW_Strings.s2011);
         }
         return inputCensus2011Dir;
     }
 
-    public File getInputCensus2011Dir(Integer level) {
-        return new File(getInputCensus2011Dir(), level.toString());
+    public Path getInputCensus2011Dir(Integer level) throws IOException {
+        return Paths.get(getInputCensus2011Dir().toString(), level.toString());
     }
 
-    public File getInputCensus2011AttributeDataDir(Integer level) {
-        return new File(getInputCensus2011Dir(level), DW_Strings.sAttributeData);
+    public Path getInputCensus2011AttributeDataDir(Integer level) throws IOException {
+        return Paths.get(getInputCensus2011Dir(level).toString(),
+                DW_Strings.sAttributeData);
     }
 
-    public File getInputCensus2011BoundaryDataDir(Integer level) {
-        return new File(getInputCensus2011Dir(level), DW_Strings.sBoundaryData);
+    public Path getInputCensus2011BoundaryDataDir(Integer level) throws IOException {
+        return Paths.get(getInputCensus2011Dir(level).toString(),
+                DW_Strings.sBoundaryData);
     }
 
-    public File getInputCodePointDir(String year, String dirname) {
+    public Path getInputCodePointDir(String year, String dirname) throws IOException {
         if (inputCodePointDir == null) {
-            inputCodePointDir = new File(getInputPostcodeDir(),
+            inputCodePointDir = Paths.get(getInputPostcodeDir().toString(),
                     DW_Strings.sBoundaryData);
-            inputCodePointDir = new File(inputCodePointDir,
+            inputCodePointDir = Paths.get(inputCodePointDir.toString(),
                     DW_Strings.sCodePoint);
-            inputCodePointDir = new File(inputCodePointDir, year);//"2015");
-            inputCodePointDir = new File(inputCodePointDir, dirname);
+            inputCodePointDir = Paths.get(inputCodePointDir.toString(), year);//"2015");
+            inputCodePointDir = Paths.get(inputCodePointDir.toString(), dirname);
         }
         return inputCodePointDir;
     }
 
-    public File getInputPostcodeDir() {
+    public Path getInputPostcodeDir() throws IOException {
         if (inputPostcodeDir == null) {
-            inputPostcodeDir = new File(getInputDir(), DW_Strings.sPostcode);
+            inputPostcodeDir = Paths.get(getInputDir().toString(), DW_Strings.sPostcode);
         }
         return inputPostcodeDir;
     }
 
-    public File getInputLCCDir() {
+    public Path getInputLCCDir() throws IOException {
         if (inputLCCDir == null) {
-            inputLCCDir = new File(getInputDir(), DW_Strings.sLCC);
+            inputLCCDir = Paths.get(getInputDir().toString(), DW_Strings.sLCC);
         }
         return inputLCCDir;
     }
 
-    public File getInputSHBEDir() {
+    public Path getInputSHBEDir() throws IOException {
         if (inputSHBEDir == null) {
-            inputSHBEDir = new File(getInputLCCDir(), DW_Strings.sSHBE);
+            inputSHBEDir = Paths.get(getInputLCCDir().toString(), DW_Strings.sSHBE);
         }
         return inputSHBEDir;
     }
 
-    public File getInputUnderOccupiedDir() {
+    public Path getInputUnderOccupiedDir() throws IOException {
         if (inputUnderOccupiedDir == null) {
-            inputUnderOccupiedDir = new File(getInputLCCDir(),
+            inputUnderOccupiedDir = Paths.get(getInputLCCDir().toString(),
                     DW_Strings.sUnderOccupied);
         }
         return inputUnderOccupiedDir;
     }
 
-    public File getSwapDir() {
+    public Path getSwapDir() throws IOException {
         if (swapDir == null) {
-            swapDir = new File(getGeneratedDir(), DW_Strings.sSwap);
-            swapDir.mkdirs();
+            swapDir = Paths.get(getGeneratedDir().toString(), DW_Strings.sSwap);
+            Files.createDirectories(swapDir);
         }
         return swapDir;
     }
 
-    public File getSwapLCCDir() {
+    public Path getSwapLCCDir() throws IOException {
         if (swapLCCDir == null) {
-            swapLCCDir = new File(getSwapDir(), DW_Strings.sLCC);
-            swapLCCDir.mkdirs();
+            swapLCCDir = Paths.get(getSwapDir().toString(), DW_Strings.sLCC);
+            Files.createDirectories(swapLCCDir);
         }
         return swapLCCDir;
     }
 
-    public File getSwapSHBEDir() {
+    public Path getSwapSHBEDir() throws IOException {
         if (swapSHBEDir == null) {
-            swapSHBEDir = new File(getSwapLCCDir(), DW_Strings.sSHBE);
-            swapSHBEDir.mkdirs();
+            swapSHBEDir = Paths.get(getSwapLCCDir().toString(), DW_Strings.sSHBE);
+            Files.createDirectories(swapSHBEDir);
         }
         return swapSHBEDir;
     }
 
-    public File getGeneratedAdviceLeedsDir() {
+    public Path getGeneratedAdviceLeedsDir() throws IOException {
         if (generatedAdviceLeedsDir == null) {
-            generatedAdviceLeedsDir = new File(getGeneratedDir(),
+            generatedAdviceLeedsDir = Paths.get(getGeneratedDir().toString(),
                     DW_Strings.sAdviceLeeds);
-            generatedAdviceLeedsDir.mkdirs();
+            Files.createDirectories(generatedAdviceLeedsDir);
         }
         return generatedAdviceLeedsDir;
     }
 
-    public File getGeneratedGridsDir() {
+    public Path getGeneratedGridsDir() throws IOException {
         if (generatedGridsDir == null) {
-            generatedGridsDir = new File(getGeneratedDir(),
+            generatedGridsDir = Paths.get(getGeneratedDir().toString(),
                     DW_Strings.sGrids);
-            generatedGridsDir.mkdirs();
+            Files.createDirectories(generatedGridsDir);
         }
         return generatedGridsDir;
     }
 
-    public File getGeneratedGridsGridDoubleFactoryDir() {
+    public Path getGeneratedGridsGridDoubleFactoryDir() throws IOException {
         if (generatedGridsGridDoubleFactoryDir == null) {
-            generatedGridsGridDoubleFactoryDir = new File(
-                    getGeneratedGridsDir(), DW_Strings.sGridDoubleFactory);
-            generatedGridsGridDoubleFactoryDir.mkdirs();
+            generatedGridsGridDoubleFactoryDir = Paths.get(
+                    getGeneratedGridsDir().toString(), DW_Strings.sGridDoubleFactory);
+            Files.createDirectories(generatedGridsGridDoubleFactoryDir);
         }
         return generatedGridsGridDoubleFactoryDir;
     }
 
-    public File getGeneratedCensusDir() {
+    public Path getGeneratedCensusDir() throws IOException {
         if (generatedCensusDir == null) {
-            generatedCensusDir = new File(getGeneratedDir(), DW_Strings.sCensus);
-            generatedCensusDir.mkdirs();
+            generatedCensusDir = Paths.get(getGeneratedDir().toString(), DW_Strings.sCensus);
+            Files.createDirectories(generatedCensusDir);
         }
         return generatedCensusDir;
     }
 
-    public File getGeneratedCensus2011Dir() {
+    public Path getGeneratedCensus2011Dir() throws IOException {
         if (generatedCensus2011Dir == null) {
-            generatedCensus2011Dir = new File(getGeneratedCensusDir(),
+            generatedCensus2011Dir = Paths.get(getGeneratedCensusDir().toString(),
                     DW_Strings.s2011);
-            generatedCensus2011Dir.mkdirs();
+            Files.createDirectories(generatedCensus2011Dir);
         }
         return generatedCensus2011Dir;
     }
 
-    public File getGeneratedCensus2011Dir(String level) {
-        return new File(getGeneratedCensus2011Dir(), level);
+    public Path getGeneratedCensus2011Dir(String level) throws IOException {
+        return Paths.get(getGeneratedCensus2011Dir().toString(), level);
     }
 
-    public File getGeneratedCensus2011LUTsDir() {
+    public Path getGeneratedCensus2011LUTsDir() throws IOException {
         if (generatedCensus2011LUTsDir == null) {
-            generatedCensus2011LUTsDir = new File(getGeneratedCensus2011Dir(),
+            generatedCensus2011LUTsDir = Paths.get(getGeneratedCensus2011Dir().toString(),
                     DW_Strings.sLUTs);
-            generatedCensus2011LUTsDir.mkdirs();
+            Files.createDirectories(generatedCensus2011LUTsDir);
         }
         return generatedCensus2011LUTsDir;
     }
 
-    public File getGeneratedPostcodeDir() {
+    public Path getGeneratedPostcodeDir() throws IOException {
         if (generatedPostcodeDir == null) {
-            generatedPostcodeDir = new File(getGeneratedDir(),
+            generatedPostcodeDir = Paths.get(getGeneratedDir().toString(),
                     DW_Strings.sPostcode);
-            generatedPostcodeDir.mkdirs();
+            Files.createDirectories(generatedPostcodeDir);
         }
         return generatedPostcodeDir;
     }
 
-    public File getGeneratedCodePointDir() {
+    public Path getGeneratedCodePointDir() throws IOException {
         if (generatedCodePointDir == null) {
-            generatedCodePointDir = new File(getGeneratedPostcodeDir(),
+            generatedCodePointDir = Paths.get(getGeneratedPostcodeDir().toString(),
                     DW_Strings.sBoundaryData);
-            generatedCodePointDir = new File(generatedCodePointDir,
+            generatedCodePointDir = Paths.get(generatedCodePointDir.toString(),
                     DW_Strings.sCodePoint);
-            generatedCodePointDir.mkdirs();
+            Files.createDirectories(generatedCodePointDir);
         }
         return generatedCodePointDir;
     }
 
-    public File getGeneratedONSPDDir() {
+    public Path getGeneratedONSPDDir() throws IOException {
         if (generatedONSPDDir == null) {
-            generatedONSPDDir = new File(getGeneratedPostcodeDir(),
+            generatedONSPDDir = Paths.get(getGeneratedPostcodeDir().toString(),
                     DW_Strings.S_ONSPD);
-            generatedONSPDDir.mkdirs();
+            Files.createDirectories(generatedONSPDDir);
         }
         return generatedONSPDDir;
     }
 
-    public File getGeneratedLCCDir() {
+    public Path getGeneratedLCCDir() throws IOException {
         if (generatedLCCDir == null) {
-            generatedLCCDir = new File(getGeneratedDir(), DW_Strings.sLCC);
-            generatedLCCDir.mkdirs();
+            generatedLCCDir = Paths.get(getGeneratedDir().toString(), DW_Strings.sLCC);
+            Files.createDirectories(generatedLCCDir);
         }
         return generatedLCCDir;
     }
 
-    public File getGeneratedSHBEDir() {
+    public Path getGeneratedSHBEDir() throws IOException {
         if (generatedSHBEDir == null) {
-            generatedSHBEDir = new File(getGeneratedLCCDir(), DW_Strings.sSHBE);
-            generatedSHBEDir.mkdirs();
+            generatedSHBEDir = Paths.get(getGeneratedLCCDir().toString(), DW_Strings.sSHBE);
+            Files.createDirectories(generatedSHBEDir);
         }
         return generatedSHBEDir;
     }
 
-    public File getGeneratedSHBEDir(String dirname) {
+    public Path getGeneratedSHBEDir(String dirname) throws IOException {
         if (dirname == null) {
             return getGeneratedSHBEDir();
         }
-        return new File(getGeneratedSHBEDir(), dirname);
+        return Paths.get(getGeneratedSHBEDir().toString(), dirname);
     }
 
-    public File getGeneratedSHBEDir(String level, boolean doUnderOccupied,
-            boolean doCouncil) {
-        File r = new File(getGeneratedSHBEDir(), level);
+    public Path getGeneratedSHBEDir(String level, boolean doUnderOccupied,
+            boolean doCouncil) throws IOException {
+        Path r = Paths.get(getGeneratedSHBEDir().toString(), level);
         r = getUODir(r, doUnderOccupied, doCouncil);
         return r;
     }
@@ -321,187 +313,188 @@ public class DW_Files extends Generic_Files {
      * @param doCouncil
      * @return
      */
-    public File getUODir(File dir, boolean doUnderOccupied, boolean doCouncil) {
-        File r;
+    public Path getUODir(Path dir, boolean doUnderOccupied, boolean doCouncil) {
+        Path r;
         if (doUnderOccupied) {
-            r = new File(dir, DW_Strings.sU);
+            r = Paths.get(dir.toString(), DW_Strings.sU);
             //UnderOccupiedString);
             if (doCouncil) {
-                r = new File(r, DW_Strings.sCouncil);
+                r = Paths.get(r.toString(), DW_Strings.sCouncil);
             } else {
-                r = new File(r, DW_Strings.sRSL);
+                r = Paths.get(r.toString(), DW_Strings.sRSL);
             }
         } else {
-            r = new File(dir, DW_Strings.s_A);
+            r = Paths.get(dir.toString(), DW_Strings.s_A);
         }
         return r;
     }
 
-    public File getUOFile(File f, boolean doUnderOccupied, boolean doCouncil,
+    public Path getUOFile(Path f, boolean doUnderOccupied, boolean doCouncil,
             boolean doRSL) {
-        File r;
+        Path r;
         if (doUnderOccupied) {
-            r = new File(f, DW_Strings.sU);
+            r = Paths.get(f.toString(), DW_Strings.sU);
             //UnderOccupiedString);
             if (doCouncil & doRSL) {
-                r = new File(r, DW_Strings.s_B);
+                r = Paths.get(r.toString(), DW_Strings.s_B);
             } else if (doCouncil) {
-                r = new File(r, DW_Strings.sCouncil);
+                r = Paths.get(r.toString(), DW_Strings.sCouncil);
             } else {
-                r = new File(r, DW_Strings.sRSL);
+                r = Paths.get(r.toString(), DW_Strings.sRSL);
             }
         } else {
-            r = new File(f, DW_Strings.s_A);
+            r = Paths.get(f.toString(), DW_Strings.s_A);
         }
         return r;
     }
 
-    public ArrayList<File> getOutputSHBELevelDirsArrayList(
+    public ArrayList<Path> getOutputSHBELevelDirsArrayList(
             ArrayList<Integer> levels, boolean doUnderOccupied,
-            boolean doCouncil) {
-        ArrayList<File> r = new ArrayList<>();
-        File dir0 = getOutputSHBEDir();
+            boolean doCouncil) throws IOException {
+        ArrayList<Path> r = new ArrayList<>();
+        Path dir0 = getOutputSHBEDir();
         Iterator<Integer> ite = levels.iterator();
         while (ite.hasNext()) {
-            File d = new File(dir0, ite.next().toString());
+            Path d = Paths.get(dir0.toString(), ite.next().toString());
             d = getUODir(d, doUnderOccupied, doCouncil);
             r.add(d);
         }
         return r;
     }
 
-    public TreeMap<Integer, File> getOutputSHBELevelDirsTreeMap(
-            ArrayList<Integer> levels, boolean doUnderOccupied, boolean doCouncil) {
-        TreeMap<Integer, File> r = new TreeMap<>();
-        File dir0 = getOutputSHBEDir();
+    public TreeMap<Integer, Path> getOutputSHBELevelDirsTreeMap(
+            ArrayList<Integer> levels, boolean doUnderOccupied, 
+            boolean doCouncil) throws IOException {
+        TreeMap<Integer, Path> r = new TreeMap<>();
+        Path dir0 = getOutputSHBEDir();
         Iterator<Integer> ite = levels.iterator();
         while (ite.hasNext()) {
             Integer l = ite.next();
-            File d = new File(dir0, l.toString());
+            Path d = Paths.get(dir0.toString(), l.toString());
             d = getUODir(d, doUnderOccupied, doCouncil);
             r.put(l, d);
         }
         return r;
     }
 
-    public TreeMap<Integer, File> getOutputSHBELevelDirsTreeMap(
+    public TreeMap<Integer, Path> getOutputSHBELevelDirsTreeMap(
             ArrayList<Integer> levels, boolean doUnderOccupied,
-            boolean doCouncil, boolean doRSL) {
-        TreeMap<Integer, File> r = new TreeMap<>();
-        File dir0 = getOutputSHBEDir();
+            boolean doCouncil, boolean doRSL) throws IOException {
+        TreeMap<Integer, Path> r = new TreeMap<>();
+        Path dir0 = getOutputSHBEDir();
         Iterator<Integer> ite = levels.iterator();
         while (ite.hasNext()) {
             Integer l = ite.next();
-            File d = new File(dir0, l.toString());
+            Path d = Paths.get(dir0.toString(), l.toString());
             d = getUOFile(d, doUnderOccupied, doCouncil, doRSL);
             r.put(l, d);
         }
         return r;
     }
 
-    public File getGeneratedUnderOccupiedDir() {
+    public Path getGeneratedUnderOccupiedDir() throws IOException {
         if (generatedUnderOccupiedDir == null) {
-            generatedUnderOccupiedDir = new File(getGeneratedLCCDir(),
+            generatedUnderOccupiedDir = Paths.get(getGeneratedLCCDir().toString(),
                     DW_Strings.sUnderOccupied);
-            generatedUnderOccupiedDir.mkdirs();
+            Files.createDirectories(generatedUnderOccupiedDir);
         }
         return generatedUnderOccupiedDir;
     }
 
-    public File getOutputAdviceLeedsDir() {
+    public Path getOutputAdviceLeedsDir() throws IOException {
         if (outputAdviceLeedsDir == null) {
-            outputAdviceLeedsDir = new File(getOutputDir(),
+            outputAdviceLeedsDir = Paths.get(getOutputDir().toString(),
                     DW_Strings.sAdviceLeeds);
-            outputAdviceLeedsDir.mkdirs();
+            Files.createDirectories(outputAdviceLeedsDir);
         }
         return outputAdviceLeedsDir;
     }
 
-    public File getOutputAdviceLeedsMapsDir() {
+    public Path getOutputAdviceLeedsMapsDir() throws IOException {
         if (outputAdviceLeedsMapsDir == null) {
-            outputAdviceLeedsMapsDir = new File(getOutputAdviceLeedsDir(),
+            outputAdviceLeedsMapsDir = Paths.get(getOutputAdviceLeedsDir().toString(),
                     DW_Strings.sMaps);
-            outputAdviceLeedsMapsDir.mkdirs();
+            Files.createDirectories(outputAdviceLeedsMapsDir);
 
         }
         return outputAdviceLeedsMapsDir;
     }
 
-    public File getOutputAdviceLeedsTablesDir() {
+    public Path getOutputAdviceLeedsTablesDir() throws IOException {
         if (outputAdviceLeedsTablesDir == null) {
-            outputAdviceLeedsTablesDir = new File(
-                    getOutputAdviceLeedsDir(), DW_Strings.sTables);
-            outputAdviceLeedsTablesDir.mkdirs();
+            outputAdviceLeedsTablesDir = Paths.get(
+                    getOutputAdviceLeedsDir().toString(), DW_Strings.sTables);
+            Files.createDirectories(outputAdviceLeedsTablesDir);
         }
         return outputAdviceLeedsTablesDir;
     }
 
-    public File getOutputCensusDir() {
+    public Path getOutputCensusDir() throws IOException {
         if (outputCensusDir == null) {
-            outputCensusDir = new File(getOutputDir(), DW_Strings.sCensus);
-            outputCensusDir.mkdirs();
+            outputCensusDir = Paths.get(getOutputDir().toString(), DW_Strings.sCensus);
+            Files.createDirectories(outputCensusDir);
         }
         return outputCensusDir;
     }
 
-    public File getOutputCensus2011Dir() {
+    public Path getOutputCensus2011Dir() throws IOException {
         if (outputCensus2011Dir == null) {
-            outputCensus2011Dir = new File(getOutputCensusDir(), DW_Strings.s2011);
-            outputCensus2011Dir.mkdirs();
+            outputCensus2011Dir = Paths.get(getOutputCensusDir().toString(), DW_Strings.s2011);
+            Files.createDirectories(outputCensus2011Dir);
         }
         return outputCensus2011Dir;
     }
 
-    public File getOutputCensus2011Dir(String level) {
-        File r = new File(getOutputCensus2011Dir(), level);
-        r.mkdirs();
+    public Path getOutputCensus2011Dir(String level) throws IOException {
+        Path r = Paths.get(getOutputCensus2011Dir().toString(), level);
+        Files.createDirectories(r);
         return r;
     }
 
-    public File getOutputLCCDir() {
+    public Path getOutputLCCDir() throws IOException {
         if (outputLCCDir == null) {
-            outputLCCDir = new File(getOutputDir(), DW_Strings.sLCC);
-            outputLCCDir.mkdirs();
+            outputLCCDir = Paths.get(getOutputDir().toString(), DW_Strings.sLCC);
+            Files.createDirectories(outputLCCDir);
         }
         return outputLCCDir;
     }
 
-    public File getOutputSHBEDir() {
+    public Path getOutputSHBEDir() throws IOException {
         if (outputSHBEDir == null) {
-            outputSHBEDir = new File(getOutputLCCDir(), DW_Strings.sSHBE);
-            outputSHBEDir.mkdirs();
+            outputSHBEDir = Paths.get(getOutputLCCDir().toString(), DW_Strings.sSHBE);
+            Files.createDirectories(outputSHBEDir);
         }
         return outputSHBEDir;
     }
 
-    public File getOutputSHBELogsDir() {
+    public Path getOutputSHBELogsDir() throws IOException {
         if (outputSHBELogsDir == null) {
-            outputSHBELogsDir = new File(getOutputSHBEDir(), DW_Strings.sLogs);
-            outputSHBELogsDir.mkdirs();
+            outputSHBELogsDir = Paths.get(getOutputSHBEDir().toString(), DW_Strings.sLogs);
+            Files.createDirectories(outputSHBELogsDir);
         }
         return outputSHBELogsDir;
     }
 
-    public File getOutputSHBEMapsDir() {
+    public Path getOutputSHBEMapsDir() throws IOException {
         if (outputSHBEMapsDir == null) {
-            outputSHBEMapsDir = new File(getOutputSHBEDir(), DW_Strings.sMaps);
-            outputSHBEMapsDir.mkdirs();
+            outputSHBEMapsDir = Paths.get(getOutputSHBEDir().toString(), DW_Strings.sMaps);
+            Files.createDirectories(outputSHBEMapsDir);
         }
         return outputSHBEMapsDir;
     }
 
-    public File getOutputSHBETablesDir() {
+    public Path getOutputSHBETablesDir() throws IOException {
         if (outputSHBETablesDir == null) {
-            outputSHBETablesDir = new File(getOutputSHBEDir(), DW_Strings.sTables);
-            outputSHBETablesDir.mkdirs();
+            outputSHBETablesDir = Paths.get(getOutputSHBEDir().toString(), DW_Strings.sTables);
+            Files.createDirectories(outputSHBETablesDir);
         }
         return outputSHBETablesDir;
     }
 
-    public File getOutputSHBETablesTenancyTypeTransitionDir(
+    public Path getOutputSHBETablesTenancyTypeTransitionDir(
             //String type,
-            boolean checkPreviousTenancyType) {
-        File r = getOutputDataDir(getOutputSHBETablesDir(),
+            boolean checkPreviousTenancyType) throws IOException {
+        Path r = getOutputDataDir(getOutputSHBETablesDir(),
                 DW_Strings.sTenancy,
                 //type,
                 DW_Strings.sTenancyTypeTransition,
@@ -509,18 +502,19 @@ public class DW_Files extends Generic_Files {
         return r;
     }
 
-    public File getOutputSHBEPlotsDir() {
+    public Path getOutputSHBEPlotsDir() throws IOException {
         if (outputSHBEPlotsDir == null) {
-            outputSHBEPlotsDir = new File(getOutputSHBEDir(), DW_Strings.sPlots);
-            outputSHBEPlotsDir.mkdirs();
+            outputSHBEPlotsDir = Paths.get(getOutputSHBEDir().toString(),
+                    DW_Strings.sPlots);
+            Files.createDirectories(outputSHBEPlotsDir);
         }
         return outputSHBEPlotsDir;
     }
 
-    public File getOutputSHBEPlotsTenancyTypeTransitionDir(
+    public Path getOutputSHBEPlotsTenancyTypeTransitionDir(
             //String type,
-            boolean checkPreviousTenancyType) {
-        File r = getOutputDataDir(getOutputSHBEPlotsDir(),
+            boolean checkPreviousTenancyType) throws IOException {
+        Path r = getOutputDataDir(getOutputSHBEPlotsDir(),
                 DW_Strings.sTenancy,
                 //type,
                 DW_Strings.sTenancyTypeTransitionLineGraph,
@@ -528,35 +522,35 @@ public class DW_Files extends Generic_Files {
         return r;
     }
 
-    public File getOutputDataDir(File baseDir, String dir1, String dir2,
+    public Path getOutputDataDir(Path baseDir, String dir1, String dir2,
             boolean checkPreviousTenancyType) {
-        File r = new File(baseDir, dir1);
-        r = new File(r, dir2);
+        Path r = Paths.get(baseDir.toString(), dir1);
+        r = Paths.get(r.toString(), dir2);
         if (checkPreviousTenancyType) {
-            r = new File(r, DW_Strings.sCheckedPreviousTenancyType);
+            r = Paths.get(r.toString(), DW_Strings.sCheckedPreviousTenancyType);
         } else {
-            r = new File(r, DW_Strings.sCheckedPreviousTenancyTypeNo);
+            r = Paths.get(r.toString(), DW_Strings.sCheckedPreviousTenancyTypeNo);
         }
         return r;
     }
 
-    public File getOutputSHBELineMapsDir() {
-        return new File(getOutputSHBEMapsDir(), DW_Strings.sLine);
+    public Path getOutputSHBELineMapsDir() throws IOException {
+        return Paths.get(getOutputSHBEMapsDir().toString(), DW_Strings.sLine);
     }
 
-    public File getOutputSHBEChoroplethDir() {
-        return new File(getOutputSHBEMapsDir(), DW_Strings.sChoropleth);
+    public Path getOutputSHBEChoroplethDir() throws IOException {
+        return Paths.get(getOutputSHBEMapsDir().toString(), DW_Strings.sChoropleth);
     }
 
-    public File getOutputSHBEChoroplethDir(String level) {
-        return new File(getOutputSHBEChoroplethDir(), level);
+    public Path getOutputSHBEChoroplethDir(String level) throws IOException {
+        return Paths.get(getOutputSHBEChoroplethDir().toString(), level);
     }
 
-    public File getOutputUnderOccupiedDir() {
+    public Path getOutputUnderOccupiedDir() throws IOException {
         if (outputUnderOccupiedDir == null) {
-            outputUnderOccupiedDir = new File(getOutputLCCDir(),
+            outputUnderOccupiedDir = Paths.get(getOutputLCCDir().toString(),
                     DW_Strings.sUnderOccupied);
-            outputUnderOccupiedDir.mkdirs();
+            Files.createDirectories(outputUnderOccupiedDir);
         }
         return outputUnderOccupiedDir;
     }
@@ -568,12 +562,12 @@ public class DW_Files extends Generic_Files {
      * @param doUnderOccupancy
      * @return
      */
-    public File getOutputSHBETableDir(String name, String includeKey,
-            boolean doUnderOccupancy) {
-        File r = DW_Files.this.getOutputSHBETableDir(name, doUnderOccupancy);
-        r = new File(r, includeKey);
-        if (!r.exists()) {
-            r.mkdirs();
+    public Path getOutputSHBETableDir(String name, String includeKey,
+            boolean doUnderOccupancy) throws IOException {
+        Path r = DW_Files.this.getOutputSHBETableDir(name, doUnderOccupancy);
+        r = Paths.get(r.toString(), includeKey);
+        if (!Files.exists(r)) {
+            Files.createDirectories(r);
         }
         return r;
     }
@@ -584,16 +578,16 @@ public class DW_Files extends Generic_Files {
      * @param doUnderOccupancy
      * @return
      */
-    public File getOutputSHBETableDir(String name, boolean doUnderOccupancy) {
-        File r;
-        r = new File(getOutputSHBETablesDir(), name);
+    public Path getOutputSHBETableDir(String name, boolean doUnderOccupancy) 
+    throws IOException {
+        Path r = Paths.get(getOutputSHBETablesDir().toString(), name);
         if (doUnderOccupancy) {
-            r = new File(r, DW_Strings.sU);
+            r = Paths.get(r.toString(), DW_Strings.sU);
         } else {
-            r = new File(r, DW_Strings.s_A);
+            r = Paths.get(r.toString(), DW_Strings.s_A);
         }
-        if (!r.exists()) {
-            r.mkdirs();
+        if (!Files.exists(r)) {
+            Files.createDirectories(r);
         }
         return r;
     }

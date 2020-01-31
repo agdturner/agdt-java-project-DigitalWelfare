@@ -1,21 +1,4 @@
-/*
- * Copyright (C) 2014 geoagdt.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
- */
+
 package uk.ac.leeds.ccg.projects.dw.process;
 
 import uk.ac.leeds.ccg.projects.dw.visualisation.mapping.DW_Maps;
@@ -33,24 +16,24 @@ import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.map.MapContent;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeatureType;
-import uk.ac.leeds.ccg.agdt.data.ukp.data.onspd.ONSPD_Point;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDouble;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDoubleFactory;
+import uk.ac.leeds.ccg.data.ukp.data.onspd.ONSPD_Point;
+import uk.ac.leeds.ccg.grids.d2.grid.d.Grids_GridDouble;
+import uk.ac.leeds.ccg.grids.d2.grid.d.Grids_GridFactoryDouble;
 import uk.ac.leeds.ccg.projects.dw.visualisation.mapping.DW_AreaCodesAndShapefiles;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.stats.Grids_GridDoubleStatsNotUpdated;
-import uk.ac.leeds.ccg.andyt.grids.io.Grids_Files;
-import uk.ac.leeds.ccg.andyt.grids.process.Grids_Processor;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.agdt.data.ukp.data.UKP_Data;
-import uk.ac.leeds.ccg.agdt.data.ukp.util.UKP_YM3;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_Point;
+import uk.ac.leeds.ccg.grids.d2.Grids_Dimensions;
+import uk.ac.leeds.ccg.grids.core.Grids_Environment;
+import uk.ac.leeds.ccg.grids.d2.stats.Grids_StatsNotUpdatedDouble;
+import uk.ac.leeds.ccg.grids.io.Grids_Files;
+import uk.ac.leeds.ccg.grids.process.Grids_Processor;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
+import uk.ac.leeds.ccg.data.ukp.data.UKP_Data;
+import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
+import uk.ac.leeds.ccg.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.projects.dw.visualisation.mapping.DW_Shapefile;
 
 /**
- *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class DW_PostcodeMaps extends DW_Maps {
 

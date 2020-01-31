@@ -1,46 +1,30 @@
-/*
- * Copyright (C) 2014 geoagdt.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
- */
+
 package uk.ac.leeds.ccg.projects.dw.process;
 
 import uk.ac.leeds.ccg.projects.dw.visualisation.mapping.DW_Maps;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.gce.arcgrid.ArcGridReader;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGridNumber;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.chunk.Grids_AbstractGridChunkDoubleFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDouble;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDoubleFactory;
-import uk.ac.leeds.ccg.andyt.grids.io.Grids_ESRIAsciiGridExporter;
-import uk.ac.leeds.ccg.andyt.grids.io.Grids_ImageExporter;
-import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorGWS;
-import uk.ac.leeds.ccg.agdt.data.ukp.data.onspd.ONSPD_Point;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.stats.Grids_GridDoubleStats;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.grids.d2.grid.Grids_GridNumber;
+import uk.ac.leeds.ccg.grids.d2.chunk.d.Grids_ChunkFactoryDouble;
+import uk.ac.leeds.ccg.grids.d2.grid.d.Grids_GridDouble;
+import uk.ac.leeds.ccg.grids.d2.grid.d.Grids_GridFactoryDouble;
+import uk.ac.leeds.ccg.grids.io.Grids_ESRIAsciiGridExporter;
+import uk.ac.leeds.ccg.grids.io.Grids_ImageExporter;
+import uk.ac.leeds.ccg.grids.process.Grids_ProcessorGWS;
+import uk.ac.leeds.ccg.data.ukp.data.onspd.ONSPD_Point;
+import uk.ac.leeds.ccg.grids.d2.Grids_Dimensions;
+import uk.ac.leeds.ccg.grids.d2.stats.Grids_StatsDouble;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Object;
-import uk.ac.leeds.ccg.agdt.data.ukp.data.UKP_Data;
-import uk.ac.leeds.ccg.agdt.data.ukp.util.UKP_YM3;
+import uk.ac.leeds.ccg.data.ukp.data.UKP_Data;
+import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
 
 /**
  *
@@ -55,8 +39,8 @@ public abstract class DW_DensityMapsAbstract extends DW_Object {
     protected Grids_ESRIAsciiGridExporter eage;
     protected Grids_ImageExporter ie;
     protected Grids_ProcessorGWS gp;
-    protected Grids_GridDoubleFactory gf;
-    protected Grids_AbstractGridChunkDoubleFactory gcf;
+    protected Grids_GridFactoryDouble gf;
+    protected Grids_ChunkFactoryDouble gcf;
     protected long nrows;
     protected long ncols;
     protected int chunkNRows;
@@ -111,9 +95,9 @@ public abstract class DW_DensityMapsAbstract extends DW_Object {
      * @param dir
      * @return
      */
-    public Grids_GridDouble initiliseGrid(File dir) {
+    public Grids_GridDouble initiliseGrid(Path dir) {
         Grids_GridDouble result = (Grids_GridDouble) gf.create(
-                new Grids_GridDoubleStats(env.Grids_Env), dir, gcf, nrows, ncols,
+                new Grids_StatsDouble(env.Grids_Env), dir, gcf, nrows, ncols,
                 dimensions);
         //System.out.println("" + result.toString(handleOutOfMemoryErrors));
         for (int row = 0; row < nrows; row++) {
