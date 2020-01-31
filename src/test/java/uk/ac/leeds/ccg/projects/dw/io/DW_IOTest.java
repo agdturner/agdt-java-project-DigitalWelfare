@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.ac.leeds.ccg.andyt.projects.digitalwelfare.io;
+package uk.ac.leeds.ccg.projects.dw.io;
 
+import uk.ac.leeds.ccg.projects.dw.io.DW_IO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
