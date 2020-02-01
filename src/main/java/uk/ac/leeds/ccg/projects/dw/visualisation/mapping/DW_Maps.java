@@ -1,4 +1,3 @@
-
 package uk.ac.leeds.ccg.projects.dw.visualisation.mapping;
 
 import uk.ac.leeds.ccg.geotools.Geotools_StyleParameters;
@@ -6,7 +5,6 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.nio.file.Files;
@@ -31,6 +29,7 @@ import uk.ac.leeds.ccg.geotools.Geotools_Maps;
 import uk.ac.leeds.ccg.generic.util.Generic_Collections;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.data.ukp.data.UKP_Data;
+import uk.ac.leeds.ccg.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.projects.dw.io.DW_Files;
 
 /**
@@ -128,34 +127,23 @@ public class DW_Maps extends Geotools_Maps {
 
     public DW_Shapefile getPostcodeUnitPoly_DW_Shapefile(
             ShapefileDataStoreFactory sdsf,
-            File file,
-            File generatedCodePointDir,
+            Path file,
+            Path generatedCodePointDir,
             TreeSet<String> postcodes) {
         DW_Shapefile result;
-        if (!file.exists()) {
+        if (!Files.exists(file)) {
             // Put it together from source...
-            TreeSetFeatureCollection tsfc;
-            tsfc = new TreeSetFeatureCollection();
+            TreeSetFeatureCollection tsfc = new TreeSetFeatureCollection();
             SimpleFeatureType sft = null;
             SimpleFeatureBuilder sfb = null;
-            Iterator<String> ite;
-            ite = postcodes.iterator();
+            Iterator<String> ite = postcodes.iterator();
             while (ite.hasNext()) {
-                String postcode;
-                postcode = ite.next();
-                File aShapefile;
-                aShapefile = Paths.get(
-                        generatedCodePointDir,
-                        postcode + ".shp");
-                aShapefile = Paths.get(
-                        aShapefile,
-                        postcode + ".shp");
-                DW_Shapefile aDW_Shapefile;
-                aDW_Shapefile = new DW_Shapefile(aShapefile);
-                FeatureCollection fc;
-                fc = aDW_Shapefile.getFeatureCollection();
-                FeatureIterator fi;
-                fi = fc.features();
+                String postcode = ite.next();
+                Path aShapefile = Paths.get(generatedCodePointDir.toString(),
+                        postcode + ".shp", postcode + ".shp");
+                DW_Shapefile aDW_Shapefile = new DW_Shapefile(aShapefile);
+                FeatureCollection fc = aDW_Shapefile.getFeatureCollection();
+                FeatureIterator fi = fc.features();
                 if (sft == null) {
                     sft = (SimpleFeatureType) fc.getSchema();
                 }
@@ -183,18 +171,11 @@ public class DW_Maps extends Geotools_Maps {
      * @param level
      * @return
      */
-    public DW_Shapefile getPostcodePoly_DW_Shapefile(DW_Environment env, String level) {
-        DW_Shapefile r;
-        File dir;
-        dir = Paths.get(env.files.getInputPostcodeDir(), "BoundaryData");
-        dir = Paths.get(dir, "GBPostcodeAreaSectorDistrict");
-        dir = Paths.get(dir, "GB_Postcodes");
-        String name;
-        name = "Postal" + level + ".shp";
-        dir = Paths.get(dir, name);
-        File file = Paths.get(dir, name);
-        r = new DW_Shapefile(file);
-        return r;
+    public DW_Shapefile getPostcodePoly_DW_Shapefile(DW_Environment env,
+            String level) throws IOException {
+        String name = "Postal" + level + ".shp";
+        return new DW_Shapefile(Paths.get(env.files.getInputPostcodeDir().toString(),
+                "BoundaryData", "GBPostcodeAreaSectorDistrict", "GB_Postcodes", name, name));
     }
 
     /*
@@ -214,7 +195,7 @@ public class DW_Maps extends Geotools_Maps {
             TreeSet<String> codesToSelect,
             //String attributeName, 
             String targetPropertyName,
-            File outputFile) {
+            Path outputFile) {
         // Initialise the collection of new Features
         TreeSetFeatureCollection tsfc;
         tsfc = new TreeSetFeatureCollection();
@@ -263,18 +244,11 @@ public class DW_Maps extends Geotools_Maps {
     }
 
     @Override
-    public File getOutputImageFile(
-            File outputFile,
-            String outputType) {
-        File result;
-        String filename = outputFile.getName();
-        String outputImageFilename;
-        outputImageFilename = filename.substring(0, filename.length() - 4)
+    public Path getOutputImageFile(Path outputFile, String outputType) {
+        String filename = outputFile.getFileName().toString();
+        String fn = filename.substring(0, filename.length() - 4)
                 + "." + outputType;
-        result = Paths.get(
-                outputFile.getParent(),
-                outputImageFilename);
-        return result;
+        return Paths.get(outputFile.getParent().toString(), fn);
     }
 
     /**
@@ -282,18 +256,15 @@ public class DW_Maps extends Geotools_Maps {
      * @param area
      * @return
      */
-    public TreeMap<String, Integer> getPopData(
-            String level,
-            String area) {
-        TreeMap<String, Integer> result;
-        result = new TreeMap<>();
-        File dir = Paths.get(env.files.getInputCensus2011AttributeDataDir(level),
-                area);
-        File file = Paths.get(dir, "pop.csv");
+    public TreeMap<String, Integer> getPopData(String level, String area)
+            throws IOException {
+        TreeMap<String, Integer> r = new TreeMap<>();
+        Path file = Paths.get(env.files.getInputCensus2011AttributeDataDir(level).toString(),
+                area, "pop.csv");
         try {
-            try (BufferedReader br = env.ge.io.getBufferedReader(file)) {
+            try (BufferedReader br = Generic_IO.getBufferedReader(file)) {
                 StreamTokenizer st = new StreamTokenizer(br);
-                env.ge.io.setStreamTokenizerSyntax1(st);
+                Generic_IO.setStreamTokenizerSyntax1(st);
                 int token = st.nextToken();
 //            //skip header (2 lines)
 //            st.nextToken();
@@ -319,7 +290,7 @@ public class DW_Maps extends Geotools_Maps {
                                 try {
                                     String censusArea = split[0];
                                     Integer pop = new Integer(split[1]);
-                                    result.put(censusArea, pop);
+                                    r.put(censusArea, pop);
 //                            } else {
 //                                int debug = 1; //Wierdness for Scotland!
 //                            }
@@ -337,38 +308,29 @@ public class DW_Maps extends Geotools_Maps {
         } catch (IOException e) {
             System.err.println(e.getMessage() + "in DW_Maps.getPopData(String=" + level + ",String=" + area + ")");
         }
-        return result;
+        return r;
     }
 
     /**
      * @param level
      * @return File
      */
-    protected File getAreaBoundaryShapefile(
-            String level) {
-        File result = null;
+    protected Path getAreaBoundaryShapefile(String level) throws IOException {
+        Path r = null;
         String name;
         if (level.startsWith("Postcode")) {
             if (level.equalsIgnoreCase("PostcodeUnit")) {
                 // Get Postcode Unit Boundaries
-                DW_Shapefile postcodeUnitPoly_DW_Shapefile;
-                postcodeUnitPoly_DW_Shapefile = getPostcodeUnitPoly_DW_Shapefile(env,
-                        new ShapefileDataStoreFactory());
-                result = postcodeUnitPoly_DW_Shapefile.getFile();
+                r = getPostcodeUnitPoly_DW_Shapefile(env,
+                        new ShapefileDataStoreFactory()).getFile();
             }
             if (level.equalsIgnoreCase("PostcodeSector")) {
                 // Get PostcodeSector Boundaries
-                DW_Shapefile postcodeSectorPoly_DW_Shapefile;
-                postcodeSectorPoly_DW_Shapefile = getPostcodePoly_DW_Shapefile(env,
-                        "Sector");
-                result = postcodeSectorPoly_DW_Shapefile.getFile();
+                r = getPostcodePoly_DW_Shapefile(env, "Sector").getFile();
             }
             if (level.equalsIgnoreCase("PostcodeDistrict")) {
                 // Get PostcodeSector Boundaries
-                DW_Shapefile postcodeSectorPoly_DW_Shapefile;
-                postcodeSectorPoly_DW_Shapefile = getPostcodePoly_DW_Shapefile(env,
-                        "District");
-                result = postcodeSectorPoly_DW_Shapefile.getFile();
+                r = getPostcodePoly_DW_Shapefile(env, "District").getFile();
             }
         } else {
             if (level.equalsIgnoreCase("LAD")) {
@@ -378,16 +340,10 @@ public class DW_Maps extends Geotools_Maps {
             } else {
                 name = level + "_2011_EW_BGC.shp";
             }
-            ///scratch02/DigitalWelfare/Input/Census/2011/LSOA/BoundaryData/
-            File censusDirectory = env.files.getInputCensus2011Dir(level);
-            File boundaryDirectory = Paths.get(censusDirectory, "/BoundaryData/");
-            File shapefileDirectory = Paths.get(boundaryDirectory, name);
-//        File boundaryDirectory = Paths.get(
-//                digitalWelfareDir,
-//                "/BoundaryData/" + level + "/" + name);
-            result = Paths.get(shapefileDirectory, name);
+            r = Paths.get(env.files.getInputCensus2011Dir(level).toString()
+                    , "/BoundaryData/", name, name);
         }
-        return result;
+        return r;
     }
 
     /**
@@ -395,36 +351,25 @@ public class DW_Maps extends Geotools_Maps {
      * @param level
      * @return File
      */
-    protected File getCensusBoundaryShapefile(
-            String area,
-            String level) {
-        File result;
+    protected Path getCensusBoundaryShapefile(String area, String level)
+            throws IOException {
         String name = area + "_" + level + "_2011_EW_BGC.shp";
-        File boundaryDirectory = Paths.get(
-                env.files.getGeneratedCensus2011Dir(level),
+        Path boundaryDirectory = Paths.get(
+                env.files.getGeneratedCensus2011Dir(level).toString(),
                 "/BoundaryData/" + name);
-        if (!boundaryDirectory.exists()) {
-            boolean dirCreated;
-            dirCreated = boundaryDirectory.mkdirs();
-            if (!dirCreated) {
-                System.err.println("Warning directory " + boundaryDirectory
-                        + " not created in " + DW_Maps.class
-                        + ".getLeedsCensusBoundaryShapefile(File).");
-            }
+        if (!Files.exists(boundaryDirectory)) {
+            Files.createDirectories(boundaryDirectory);
         }
-        result = Paths.get(boundaryDirectory, name);
-        return result;
+        return Paths.get(boundaryDirectory.toString(), name);
     }
 
     /**
      * @return File
      */
-    protected File getLeedsPostcodeSectorShapefile() {
+    protected Path getLeedsPostcodeSectorShapefile() throws IOException {
         String fileAndDirName = "LSPostalSector.shp";
-        File boundaryDirectory = Paths.get(env.files.getInputPostcodeDir(),
-                "BoundaryData");
-        File shapefileDir = Paths.get(boundaryDirectory, fileAndDirName);
-        return Paths.get(shapefileDir, fileAndDirName);
+        return Paths.get(env.files.getInputPostcodeDir().toString(),
+                "BoundaryData", fileAndDirName, fileAndDirName);
     }
 
     /*
@@ -471,7 +416,7 @@ public class DW_Maps extends Geotools_Maps {
             String targetPropertyName,
             TreeMap<String, Integer> population,
             double populationMultiplier,
-            File outputFile,
+            Path outputFile,
             int filter,
             TreeMap<Integer, Integer> deprivationClasses,
             Integer deprivationClass,
@@ -628,7 +573,7 @@ public class DW_Maps extends Geotools_Maps {
                         countClientsInAndOutOfRegion,
                         inAndOutOfRegionCount);
             } else if (countClientsInAndOutOfRegion) {
-                Generic_Collections.addToTreeMapIntegerInteger(
+                Generic_Collections.addToMapInteger(
                         inAndOutOfRegionCount, 0, clientCount);
             } //DEBUG
         } else if (levelDataKeySet.contains(areaCode) || areaCodes.contains(areaCode)) {
@@ -646,7 +591,7 @@ public class DW_Maps extends Geotools_Maps {
                     countClientsInAndOutOfRegion,
                     inAndOutOfRegionCount);
         } else if (countClientsInAndOutOfRegion) {
-            Generic_Collections.addToTreeMapIntegerInteger(
+            Generic_Collections.addToMapInteger(
                     inAndOutOfRegionCount, 0, clientCount);
         }
         //}
@@ -716,10 +661,7 @@ public class DW_Maps extends Geotools_Maps {
 //            System.out.println("" + id_int + ", " + areaCode + ", " + clientCount + ", " + area + ", " + pop);
         }
         if (countClientsInAndOutOfRegion) {
-            Generic_Collections.addToTreeMapIntegerInteger(
-                    inAndOutOfRegionCount,
-                    1,
-                    clientCount);
+            Generic_Collections.addToMapInteger(inAndOutOfRegionCount, 1, clientCount);
         }
         id_int++;
         return id_int;
@@ -744,12 +686,11 @@ public class DW_Maps extends Geotools_Maps {
         return result;
     }
 
-    public DW_Shapefile getCommunityAreasDW_Shapefile() {
+    public DW_Shapefile getCommunityAreasDW_Shapefile() throws IOException {
         String name = "communityareas_region.shp";
-        File dir = Paths.get(env.files.getInputDir(), "CommunityAreas");
-        dir = Paths.get(dir, name);
-        File f = Paths.get(dir, name);
-        return new DW_Shapefile(f);
+        Path p = Paths.get(env.files.getInputDir().toString(),
+                "CommunityAreas", name, name);
+        return new DW_Shapefile(p);
     }
 
     public String getLevel() {

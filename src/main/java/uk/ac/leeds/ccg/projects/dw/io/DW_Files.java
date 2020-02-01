@@ -1,6 +1,5 @@
 package uk.ac.leeds.ccg.projects.dw.io;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -111,16 +110,16 @@ public class DW_Files extends Generic_Files {
         return inputCensus2011Dir;
     }
 
-    public Path getInputCensus2011Dir(Integer level) throws IOException {
-        return Paths.get(getInputCensus2011Dir().toString(), level.toString());
+    public Path getInputCensus2011Dir(String level) throws IOException {
+        return Paths.get(getInputCensus2011Dir().toString(), level);
     }
 
-    public Path getInputCensus2011AttributeDataDir(Integer level) throws IOException {
+    public Path getInputCensus2011AttributeDataDir(String level) throws IOException {
         return Paths.get(getInputCensus2011Dir(level).toString(),
                 DW_Strings.sAttributeData);
     }
 
-    public Path getInputCensus2011BoundaryDataDir(Integer level) throws IOException {
+    public Path getInputCensus2011BoundaryDataDir(String level) throws IOException {
         return Paths.get(getInputCensus2011Dir(level).toString(),
                 DW_Strings.sBoundaryData);
     }
@@ -561,6 +560,7 @@ public class DW_Files extends Generic_Files {
      * @param includeKey
      * @param doUnderOccupancy
      * @return
+     * @throws java.io.IOException
      */
     public Path getOutputSHBETableDir(String name, String includeKey,
             boolean doUnderOccupancy) throws IOException {
@@ -577,6 +577,7 @@ public class DW_Files extends Generic_Files {
      * @param name
      * @param doUnderOccupancy
      * @return
+     * @throws java.io.IOException
      */
     public Path getOutputSHBETableDir(String name, boolean doUnderOccupancy) 
     throws IOException {

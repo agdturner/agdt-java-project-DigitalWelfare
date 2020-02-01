@@ -46,7 +46,7 @@ public class DW_UO_Set extends DW_Object implements Serializable {
      * @param reload If true this forces a reload of the data.
      */
     public DW_UO_Set(DW_Environment env, String type, String filename,
-            UKP_YM3 YM3, boolean reload) throws IOException, ClassNotFoundException {
+            UKP_YM3 YM3, boolean reload) throws IOException, ClassNotFoundException, Exception {
         super(env);
         String methodName;
         methodName = "DW_UO_Set(...)";

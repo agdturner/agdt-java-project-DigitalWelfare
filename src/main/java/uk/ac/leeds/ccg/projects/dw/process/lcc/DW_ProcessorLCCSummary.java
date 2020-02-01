@@ -11,19 +11,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_ClaimID;
+import uk.ac.leeds.ccg.data.shbe.core.SHBE_Strings;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Strings;
 import uk.ac.leeds.ccg.projects.dw.data.DW_Summary;
 import uk.ac.leeds.ccg.projects.dw.data.DW_SummaryUO;
 
 /**
- * This is the main class for the Digital Welfare Project. For more details of
- * the project visit:
- * http://www.geog.leeds.ac.uk/people/a.turner/projects/DigitalWelfare/
- *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
 
@@ -66,7 +63,7 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
         String sName;
 
         // Initialisation
-        includes = SHBE_Handler.getIncludes();
+        includes = shbeHandler.getIncludes();
 //        includes.remove(DW_Strings.sIncludeAll);
 //        includes.remove(DW_Strings.sIncludeYearly);
 //        includes.remove(DW_Strings.sInclude6Monthly);
@@ -87,10 +84,10 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
         HB_CTB = DW_Strings.getHB_CTB();
         //forceNewSummaries = false;
         forceNewSummaries = true;
-        nTT = SHBE_Handler.getNumberOfTenancyTypes();
-        //nEG = SHBE_Handler.getNumberOfClaimantsEthnicGroups();
-        nEG = SHBE_Handler.getNumberOfClaimantsEthnicGroupsGrouped();
-        nPSI = SHBE_Handler.getOneOverMaxValueOfPassportStandardIndicator();
+        nTT = shbeHandler.getNumberOfTenancyTypes();
+        //nEG = shbeHandler.getNumberOfClaimantsEthnicGroups();
+        nEG = shbeHandler.getNumberOfClaimantsEthnicGroupsGrouped();
+        nPSI = shbeHandler.getOneOverMaxValueOfPassportStandardIndicator();
 
         // Processing loop
         Summary = new DW_Summary(env, nTT, nEG, nPSI, hoome);
@@ -103,7 +100,7 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
             if (doAll) {
                 sName = "Summary";
                 env.ge.log("<" + sName + ">", true);
-                SummaryTableAll = Summary.getSummaryTable(SHBEFilenames,
+                SummaryTableAll = Summary.getSummaryTable(shbeFilenames,
                         include, forceNewSummaries, HB_CTB, PTs, nTT, nEG, nPSI,
                         hoome);
                 Summary.writeSummaryTables(SummaryTableAll, HB_CTB, PTs,
@@ -113,7 +110,7 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
             if (doUO) {
                 sName = "SummaryUO";
                 env.ge.log("<" + sName + ">", true);
-                SummaryTableUO = SummaryUO.getSummaryTable(Group, SHBEFilenames,
+                SummaryTableUO = SummaryUO.getSummaryTable(Group, shbeFilenames,
                         include, forceNewSummaries, HB_CTB, PTs, nTT, nEG, nPSI,
                         UO_Data, hoome);
                 SummaryUO.writeSummaryTables(SummaryTableUO, PTs, includeKey,

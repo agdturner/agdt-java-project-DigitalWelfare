@@ -5,33 +5,34 @@
  */
 package uk.ac.leeds.ccg.projects.dw.process.lcc;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.agdt.data.ukp.data.UKP_Data;
-import uk.ac.leeds.ccg.agdt.data.ukp.util.UKP_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Handler;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.data.ukp.data.UKP_Data;
+import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
+import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_ClaimID;
+import uk.ac.leeds.ccg.data.shbe.core.SHBE_Strings;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Records;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_D_Record;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Record;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Strings;
+import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Handler;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Record;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Set;
 
 /**
- * This is the main class for the Digital Welfare Project. For more details of
- * the project visit:
- * http://www.geog.leeds.ac.uk/people/a.turner/projects/DigitalWelfare/
- *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC {
 
@@ -49,14 +50,14 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
     protected SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
 
     public DW_ProcessorLCCHBGeneralAggregateStatistics(DW_Environment env)
-            throws IOException {
+            throws IOException, Exception {
         super(env);
         UO_Handler = env.getUO_Handler();
         SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
-        SHBE_Handler = env.getSHBE_Handler();
-        ClaimIDToClaimRefLookup = SHBE_Handler.getClaimIDToClaimRefLookup();
+        shbeHandler = env.getSHBE_Handler();
+        cid2c = shbeHandler.getCid2c();
         UO_Data = env.getUO_Data();
-        SHBEFilenames = SHBE_Handler.getSHBEFilenamesAll();
+        shbeFilenames = shbeHandler.getFilenames();
     }
 
     @Override
@@ -72,7 +73,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         Iterator<Integer> includeIte;
         int i;
         SHBE_Records SHBE_Records;
-        HashMap<SHBE_ClaimID, SHBE_Record> ClaimIDToSHBE_RecordMap;
+        Map<SHBE_ClaimID, SHBE_Record> ClaimIDToSHBE_RecordMap;
         SHBE_ClaimID SHBE_ClaimID;
         SHBE_D_Record DRecord;
         String ClaimPostcodeF;
@@ -83,10 +84,10 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         Integer level;
         TreeMap<String, String> ClaimPostcodeF_To_LevelCodeMap;
         String AreaCode;
-        File outDir;
-        File outDir1;
-        File outDir2;
-        File outFile;
+        Path outDir;
+        Path outDir1;
+        Path outDir2;
+        Path outFile;
         UKP_YM3 YM3;
         PrintWriter outPW;
         String PT;
@@ -102,7 +103,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
 //        levels.add(UKP_Data.TYPE_DISTRICT);
         levels.add(UKP_Data.TYPE_ParliamentaryConstituency);
         levels.add(UKP_Data.TYPE_StatisticalWard);
-        includes = SHBE_Handler.getIncludes();
+        includes = shbeHandler.getIncludes();
 //            includes.remove(SHBE_Strings.s_.sIncludeAll);
 //            includes.remove(SHBE_Strings.s_.sIncludeYearly);
 //            includes.remove(SHBE_Strings.s_.sInclude6Monthly);
@@ -114,8 +115,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
 //            PTs.remove(DW_Strings.sPaymentTypeIn);
 //            PTs.remove(DW_Strings.sPaymentTypeSuspended);
 //            PTs.remove(DW_Strings.sPaymentTypeOther);
-        outDir = new File(
-                files.getOutputSHBETablesDir(),
+        outDir = Paths.get(files.getOutputSHBETablesDir().toString(), 
                 DW_Strings.sHBGeneralAggregateStatistics);
         // Load UOdata
         TreeMap<UKP_YM3, DW_UO_Set> CouncilUOSets;
@@ -132,17 +132,17 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
         while (PTsIte.hasNext()) {
             PT = PTsIte.next();
             includeName = SHBE_Strings.s_IncludeAll;
-            outDir1 = new File(outDir, PT);
+            outDir1 = Paths.get(outDir.toString(), PT);
             include = includes.get(includeName);
             includeIte = include.iterator();
             while (includeIte.hasNext()) {
                 i = includeIte.next();
-                YM3 = SHBE_Handler.getYM3(SHBEFilenames[i]);
+                YM3 = shbeHandler.getYM3(shbeFilenames[i]);
                 env.ge.log("Generalising " + YM3, true);
                 // Get Lookup
                 ClaimPostcodeF_To_LevelCode_Maps = getClaimPostcodeF_To_LevelCode_Maps(levels, YM3, CensusYear);
                 // Load SHBE
-                SHBE_Records = SHBE_Handler.getRecords(YM3, env.HOOME);
+                SHBE_Records = shbeHandler.getRecords(YM3, env.HOOME);
                 // Load UOdata
                 CouncilUOSet = CouncilUOSets.get(YM3);
                 RSLUOSet = RSLUOSets.get(YM3);
@@ -165,9 +165,9 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                     SHBE_Record SHBE_Record;
                     SHBE_Record = ClaimIDToSHBE_RecordMap.get(SHBE_ClaimID);
                     DRecord = SHBE_Record.getDRecord();
-                    if (SHBE_Handler.isHBClaim(DRecord)) {
+                    if (shbeHandler.isHBClaim(DRecord)) {
                         NumberOfChildDependents = DRecord.getNumberOfChildDependents();
-                        HouseholdSize = SHBE_Handler.getHouseholdSizeint(DRecord);
+                        HouseholdSize = shbeHandler.getHouseholdSizeint(DRecord);
                         ClaimPostcodeF = SHBE_Record.getClaimPostcodeF();
                         boolean DoUO;
                         DW_UO_Record DW_UO_Record;
@@ -187,7 +187,7 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                             DoUO = false;
                         }
                         //councilTaxBenefitClaimReferenceNumber0 = DRecord0.getCouncilTaxBenefitClaimReferenceNumber();
-                        //claimantType = SHBE_Handler.getClaimantType(DRecord0);
+                        //claimantType = shbeHandler.getClaimantType(DRecord0);
                         if (ClaimPostcodeF != null) {
                             levelsIte = levels.iterator();
                             while (levelsIte.hasNext()) {
@@ -262,10 +262,10 @@ public class DW_ProcessorLCCHBGeneralAggregateStatistics extends DW_ProcessorLCC
                 while (ite.hasNext()) {
                     level = ite.next();
                     result0 = result.get(level);
-                    outDir2 = new File(outDir1, level.toString());
-                    outDir2.mkdirs();
-                    outFile = new File(outDir2, YM3 + ".csv");
-                    outPW = env.ge.io.getPrintWriter(outFile, false);
+                    outDir2 = Paths.get(outDir1.toString(), level.toString());
+                    Files.createDirectories(outDir2);
+                    outFile = Paths.get(outDir2.toString(), YM3 + ".csv");
+                    outPW = Generic_IO.getPrintWriter(outFile, false);
                     outPW.println("AreaCode, NumberOfHBClaims, "
                             + "NumberOfChildDependentsInHBClaimingHouseholds, "
                             + "TotalPopulationInHBClaimingHouseholds, "

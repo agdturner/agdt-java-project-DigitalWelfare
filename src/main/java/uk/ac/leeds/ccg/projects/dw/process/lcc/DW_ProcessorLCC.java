@@ -18,45 +18,47 @@
  */
 package uk.ac.leeds.ccg.projects.dw.process.lcc;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
-import uk.ac.leeds.ccg.andyt.data.core.Data_Environment;
-import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
-import uk.ac.leeds.ccg.agdt.data.ukp.data.UKP_Data;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.agdt.data.ukp.util.UKP_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
+import uk.ac.leeds.ccg.data.core.Data_Environment;
+import uk.ac.leeds.ccg.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.data.ukp.data.UKP_Data;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
+import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
+import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_ClaimID;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Records;
+import uk.ac.leeds.ccg.generic.io.Generic_Defaults;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Data;
 import uk.ac.leeds.ccg.projects.dw.process.DW_Processor;
 import uk.ac.leeds.ccg.projects.dw.reporting.DW_Report;
-//import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.charts.DW_BarChart;
+//import uk.ac.leeds.ccg.projects.dw.visualisation.charts.DW_BarChart;
 import uk.ac.leeds.ccg.projects.dw.visualisation.charts.DW_LineGraph;
 
 /**
- *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class DW_ProcessorLCC extends DW_Processor {
 
     // For convenience
-    protected transient SHBE_Handler SHBE_Handler;
+    protected transient SHBE_Handler shbeHandler;
     protected transient DW_UO_Data UO_Data;
-    protected transient String[] SHBEFilenames;
-    protected transient HashMap<SHBE_ClaimID, String> ClaimIDToClaimRefLookup;
+    protected transient String[] shbeFilenames;
+    protected transient Map<SHBE_ClaimID, String> cid2c;
 
-    public DW_ProcessorLCC(DW_Environment e) throws IOException {
+    public DW_ProcessorLCC(DW_Environment e) throws IOException, Exception {
         super(e);
-        SHBE_Handler = e.getSHBE_Handler();
+        shbeHandler = e.getSHBE_Handler();
         UO_Data = e.getUO_Data();
-        SHBEFilenames = SHBE_Handler.getSHBEFilenamesAll();
-        ClaimIDToClaimRefLookup = SHBE_Handler.getClaimIDToClaimRefLookup();
+        shbeFilenames = shbeHandler.getFilenames();
+        cid2c = shbeHandler.getCid2c();
     }
 
     /**
@@ -70,9 +72,10 @@ public class DW_ProcessorLCC extends DW_Processor {
                         + "Aborting.");
                 System.exit(0);
             } else {
-                File dataDir = new File(args[1]);
+                Path dataDir = Paths.get(args[1]);
                 DW_Environment env = new DW_Environment(new Data_Environment(
-                        new Generic_Environment(dataDir, Level.FINE)));
+                        new Generic_Environment(new Generic_Defaults(dataDir), 
+                                Level.FINE)));
                 DW_ProcessorLCC p = new DW_ProcessorLCC(env);
                 p.run();
                 /**
@@ -227,9 +230,9 @@ public class DW_ProcessorLCC extends DW_Processor {
             processName = "LoadAllSHBEFromSource";
             int logID2 = env.ge.initLog(processName);
             // Process
-            SHBE_Handler = new SHBE_Handler(env.SHBE_Env, logID2);
-            env.setSHBE_Handler(SHBE_Handler);
-            SHBE_Handler.run(logID2);
+            shbeHandler = new SHBE_Handler(env.SHBE_Env, logID2);
+            env.setSHBE_Handler(shbeHandler);
+            shbeHandler.run(logID2);
             // Close logs
             env.ge.closeLog(logID2);
         }
@@ -242,9 +245,9 @@ public class DW_ProcessorLCC extends DW_Processor {
             processName = "LoadNewSHBEFromSource";
             int logID2 = env.ge.initLog(processName);
             // Process
-            SHBE_Handler = new SHBE_Handler(env.SHBE_Env, logID2);
-            env.setSHBE_Handler(SHBE_Handler);
-            SHBE_Handler.runNew();
+            shbeHandler = new SHBE_Handler(env.SHBE_Env, logID2);
+            env.setSHBE_Handler(shbeHandler);
+            shbeHandler.runNew();
             // Close logs
             env.ge.closeLog(logID2);
         }
@@ -257,9 +260,9 @@ public class DW_ProcessorLCC extends DW_Processor {
             processName = "PostcodeCheck";
             int logID2 = env.ge.initLog(processName);
             // Process
-            SHBE_Handler = new SHBE_Handler(env.SHBE_Env, logID2);
-            env.setSHBE_Handler(SHBE_Handler);
-            SHBE_Handler.runPostcodeCheck();
+            shbeHandler = new SHBE_Handler(env.SHBE_Env, logID2);
+            env.setSHBE_Handler(shbeHandler);
+            shbeHandler.runPostcodeCheck();
             // Close logs
             env.ge.closeLog(logID2);
         }
@@ -272,9 +275,9 @@ public class DW_ProcessorLCC extends DW_Processor {
             processName = "PostcodeCheckLatest";
             int logID2 = env.ge.initLog(processName);
             // Process
-            SHBE_Handler = new SHBE_Handler(env.SHBE_Env);
-            env.setSHBE_Handler(SHBE_Handler);
-            SHBE_Handler.runPostcodeCheckLatest();
+            shbeHandler = new SHBE_Handler(env.SHBE_Env);
+            env.setSHBE_Handler(shbeHandler);
+            shbeHandler.runPostcodeCheckLatest();
             // Close logs
             env.ge.closeLog(logID2);
         }
@@ -289,38 +292,35 @@ public class DW_ProcessorLCC extends DW_Processor {
             processName = "LoadSHBE";
             int logID2 = env.ge.initLog(processName);
             // Process
-            HashMap<UKP_YM3, SHBE_Records> Data;
-            Data = env.SHBE_Handler.getData();
-            SHBE_Handler = new SHBE_Handler(env.SHBE_Env);
-            env.setSHBE_Handler(SHBE_Handler);
-            SHBEFilenames = SHBE_Handler.getSHBEFilenamesAll();
-            File dir;
-            dir = env.files.getGeneratedSHBEDir();
+            Map<UKP_YM3, SHBE_Records> data = env.SHBE_Handler.getData();
+            shbeHandler = new SHBE_Handler(env.SHBE_Env);
+            env.setSHBE_Handler(shbeHandler);
+            shbeFilenames = shbeHandler.getFilenames();
+            Path dir = env.files.getGeneratedSHBEDir();
             UKP_YM3 YM3;
-            for (String SHBEFilename : SHBEFilenames) {
-                YM3 = SHBE_Handler.getYM3(SHBEFilename);
+            for (String SHBEFilename : shbeFilenames) {
+                YM3 = shbeHandler.getYM3(SHBEFilename);
                 try {
-                    SHBE_Records DW_SHBE_Records;
-                    DW_SHBE_Records = new SHBE_Records(env.SHBE_Env, YM3);
+                    SHBE_Records shbeRecords = new SHBE_Records(env.SHBE_Env, YM3);
                     env.checkAndMaybeFreeMemory();
-                    Data.put(YM3, DW_SHBE_Records);
-                    env.ge.log("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment().size() "
-                            + DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment(env.HOOME).size(), true);
-                    env.ge.log("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateSuspended().size() "
-                            + DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateSuspended(env.HOOME).size(), true);
-                    env.ge.log("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateOther().size() "
-                            + DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateOther(env.HOOME).size(), true);
-                    env.ge.log("DW_SHBE_Records.getClaimIDsWithStatusOfHBAtExtractDateInPayment().size() "
-                            + DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(env.HOOME).size(), true);
-                    env.ge.log("DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateSuspended().size() "
-                            + DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(env.HOOME).size(), true);
-                    env.ge.log("DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateOther().size() "
-                            + DW_SHBE_Records.getClaimIDsWithStatusOfCTBAtExtractDateOther(env.HOOME).size(), true);
-                    DW_SHBE_Records.clearData();
+                    data.put(YM3, shbeRecords);
+                    env.ge.log("shbeRecords.getClaimIDsWithStatusOfHBAtExtractDateInPayment().size() "
+                            + shbeRecords.getClaimIDsWithStatusOfHBAtExtractDateInPayment(env.HOOME).size(), true);
+                    env.ge.log("shbeRecords.getClaimIDsWithStatusOfHBAtExtractDateSuspended().size() "
+                            + shbeRecords.getClaimIDsWithStatusOfHBAtExtractDateSuspended(env.HOOME).size(), true);
+                    env.ge.log("shbeRecords.getClaimIDsWithStatusOfHBAtExtractDateOther().size() "
+                            + shbeRecords.getClaimIDsWithStatusOfHBAtExtractDateOther(env.HOOME).size(), true);
+                    env.ge.log("shbeRecords.getClaimIDsWithStatusOfHBAtExtractDateInPayment().size() "
+                            + shbeRecords.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(env.HOOME).size(), true);
+                    env.ge.log("shbeRecords.getClaimIDsWithStatusOfCTBAtExtractDateSuspended().size() "
+                            + shbeRecords.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(env.HOOME).size(), true);
+                    env.ge.log("shbeRecords.getClaimIDsWithStatusOfCTBAtExtractDateOther().size() "
+                            + shbeRecords.getClaimIDsWithStatusOfCTBAtExtractDateOther(env.HOOME).size(), true);
+                    shbeRecords.clearData();
                 } catch (OutOfMemoryError e) {
-                    env.clearMemoryReserve();
+                    env.clearMemoryReserve(env.ge);
                     env.clearSomeDataExcept(YM3);
-                    env.initMemoryReserve();
+                    env.initMemoryReserve(env.ge);
                     env.checkAndMaybeFreeMemory();
                 }
             }
@@ -360,8 +360,7 @@ public class DW_ProcessorLCC extends DW_Processor {
             processName = "LCCSummary";
             int logID2 = env.ge.initLog(processName);
             // Process
-            DW_ProcessorLCCSummary p;
-            p = new DW_ProcessorLCCSummary(env);
+            DW_ProcessorLCCSummary p = new DW_ProcessorLCCSummary(env);
             p.run();
             // Close logs
             env.ge.closeLog(logID2);
@@ -372,8 +371,7 @@ public class DW_ProcessorLCC extends DW_Processor {
             processName = "RentArrears";
             int logID2 = env.ge.initLog(processName);
             // Process
-            DW_ProcessorLCCRentArrears p;
-            p = new DW_ProcessorLCCRentArrears(env);
+            DW_ProcessorLCCRentArrears p = new DW_ProcessorLCCRentArrears(env);
             p.run(doRentArrearsNewData);
             // Close logs
             env.ge.closeLog(logID2);
@@ -384,8 +382,8 @@ public class DW_ProcessorLCC extends DW_Processor {
             processName = "LCCHBGeneralAggregateStatistics";
             int logID2 = env.ge.initLog(processName);
             // Process
-            DW_ProcessorLCCHBGeneralAggregateStatistics p;
-            p = new DW_ProcessorLCCHBGeneralAggregateStatistics(env);
+            DW_ProcessorLCCHBGeneralAggregateStatistics p
+                    = new DW_ProcessorLCCHBGeneralAggregateStatistics(env);
             p.run();
             // Close logs
             env.ge.closeLog(logID2);
@@ -396,8 +394,8 @@ public class DW_ProcessorLCC extends DW_Processor {
             processName = "LCCTenancyChangesUO";
             int logID2 = env.ge.initLog(processName);
             // Process
-            DW_ProcessorLCCTenancyChangesUO p;
-            p = new DW_ProcessorLCCTenancyChangesUO(env);
+            DW_ProcessorLCCTenancyChangesUO p
+                    = new DW_ProcessorLCCTenancyChangesUO(env);
             p.run();
             // Close logs
             env.ge.closeLog(logID2);
@@ -468,8 +466,7 @@ public class DW_ProcessorLCC extends DW_Processor {
             processName = "Reports";
             int logID2 = env.ge.initLog(processName);
             // Process
-            DW_Report p;
-            p = new DW_Report(env);
+            DW_Report p = new DW_Report(env);
             p.run();
             // Close logs
             env.ge.closeLog(logID2);
@@ -506,11 +503,10 @@ public class DW_ProcessorLCC extends DW_Processor {
             processName = "LineDensityMaps";
             int logID2 = env.ge.initLog(processName);
             // Process
-            DW_LineDensityMaps_LCC p;
-            p = new DW_LineDensityMaps_LCC(env);
+            DW_LineDensityMaps_LCC p = new DW_LineDensityMaps_LCC(env);
             p.run();
-            DW_LineDensityDifferenceMaps_LCC p2;
-            p2 = new DW_LineDensityDifferenceMaps_LCC(env);
+            DW_LineDensityDifferenceMaps_LCC p2
+                    = new DW_LineDensityDifferenceMaps_LCC(env);
             p2.run();
             // Close logs
             env.ge.closeLog(logID2);

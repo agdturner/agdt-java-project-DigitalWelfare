@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package uk.ac.leeds.ccg.projects.dw.process.lcc;
 
 import java.io.File;
@@ -22,28 +18,25 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.agdt.data.ukp.data.id.UKP_RecordID;
-import uk.ac.leeds.ccg.agdt.data.ukp.util.UKP_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
-import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.data.ukp.data.id.UKP_RecordID;
+import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
+import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_ClaimID;
+import uk.ac.leeds.ccg.data.shbe.core.SHBE_Strings;
+import uk.ac.leeds.ccg.generic.util.Generic_Collections;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Handler;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Records;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_D_Record;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Record;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Strings;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Data;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Record;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Set;
 
 /**
- * This is the main class for the Digital Welfare Project. For more details of
- * the project visit:
- * http://www.geog.leeds.ac.uk/people/a.turner/projects/DigitalWelfare/
- *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
 
@@ -60,8 +53,8 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         super(env);
         UO_Handler = env.getUO_Handler();
         SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
-        PostcodeToPostcodeIDLookup = SHBE_Handler.getPostcodeToPostcodeIDLookup();
-        PostcodeIDToPostcodeLookup = SHBE_Handler.getPostcodeIDToPostcodeLookup();
+        PostcodeToPostcodeIDLookup = shbeHandler.getPostcodeToPostcodeIDLookup();
+        PostcodeIDToPostcodeLookup = shbeHandler.getPostcodeIDToPostcodeLookup();
     }
 
     public void run(
@@ -71,7 +64,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             boolean DoTenancyChanges,
             boolean DoTenancyAndPostcodeChanges
     ) throws IOException {
-        SHBEFilenames = SHBE_Handler.getSHBEFilenamesAll();
+        shbeFilenames = shbeHandler.getSHBEFilenamesAll();
         ArrayList<String> types;
         types = new ArrayList<>();
         types.add(DW_Strings.sAllClaimants); // Count of all claimants
@@ -125,7 +118,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         b = getArrayListBoolean();
 
         // Runtime approximately 1 hour 5 minutes.
-        includes = SHBE_Handler.getIncludes();
+        includes = shbeHandler.getIncludes();
 //        includes.remove(DW_Strings.sIncludeAll);
 //        includes.remove(DW_Strings.sIncludeYearly);
 //        includes.remove(DW_Strings.sInclude6Monthly);
@@ -197,8 +190,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                                         } else {
                                             UOApril2013ClaimIDsDummy = null;
                                         }
-                                        doPostcodeChanges(
-                                                SHBEFilenames,
+                                        doPostcodeChanges(shbeFilenames,
                                                 TTs.get(DoUnderOccupiedData),
                                                 includes,
                                                 loadData,
@@ -249,8 +241,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                                     } else {
                                         UOApril2013ClaimIDsDummy = null;
                                     }
-                                    doTTTs(
-                                            SHBEFilenames,
+                                    doTTTs(shbeFilenames,
                                             TTs.get(DoUnderOccupiedData),
                                             includes,
                                             CheckPreviousTenancyType,
@@ -291,8 +282,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                                             } else {
                                                 UOApril2013ClaimIDsDummy = null;
                                             }
-                                            doTTAndPostcodeChangesU(
-                                                    SHBEFilenames,
+                                            doTTAndPostcodeChangesU(shbeFilenames,
                                                     TTs.get(DoUnderOccupiedData),
                                                     includes,
                                                     CheckPreviousTenancyType,
@@ -355,8 +345,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                                         } else {
                                             UOApril2013ClaimIDsDummy = null;
                                         }
-                                        doPostcodeChanges(
-                                                SHBEFilenames,
+                                        doPostcodeChanges(shbeFilenames,
                                                 TTs.get(DoUnderOccupiedData),
                                                 includes,
                                                 loadData,
@@ -407,8 +396,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                                     } else {
                                         UOApril2013ClaimIDsDummy = null;
                                     }
-                                    doTTTs(
-                                            SHBEFilenames,
+                                    doTTTs(shbeFilenames,
                                             TTs.get(DoUnderOccupiedData),
                                             includes,
                                             CheckPreviousTenancyType,
@@ -449,8 +437,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                                             } else {
                                                 UOApril2013ClaimIDsDummy = null;
                                             }
-                                            doTTAndPostcodeChanges(
-                                                    SHBEFilenames,
+                                            doTTAndPostcodeChanges(shbeFilenames,
                                                     TTs.get(DoUnderOccupiedData),
                                                     includes,
                                                     CheckPreviousTenancyType,
@@ -592,18 +579,18 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             env.ge.log("dirOut " + dirOut2, true);
             ArrayList<Integer> include = includes.get(includeKey);
             Iterator<Integer> includeIte = include.iterator();
-            HashMap<Integer, UKP_YM3> indexYM3s = SHBE_Handler.getIndexYM3s();
+            HashMap<Integer, UKP_YM3> indexYM3s = shbeHandler.getIndexYM3s();
             int i;
             i = includeIte.next();
             // Load first data
             String filename;
             filename = SHBEFilenames[i];
             UKP_YM3 YM30;
-            YM30 = SHBE_Handler.getYM3(filename);
+            YM30 = shbeHandler.getYM3(filename);
             DW_UO_Set AllUOSet0 = null;
             DW_UO_Set CouncilUOSet0 = null;
             DW_UO_Set RSLUOSet0 = null;
-            SHBE_Records SHBE_Records0 = SHBE_Handler.getRecords(YM30, env.HOOME);
+            SHBE_Records SHBE_Records0 = shbeHandler.getRecords(YM30, env.HOOME);
             HashMap<SHBE_ClaimID, SHBE_Record> Records0;
             Records0 = SHBE_Records0.getRecords(env.HOOME);
             // ClaimIDToTTLookups
@@ -660,10 +647,10 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                     filename = SHBEFilenames[i];
                     ClaimIDToPostcodeIDLookups.put(i, new HashMap<>());
                     // Set Year and Month variables
-                    UKP_YM3 YM31 = SHBE_Handler.getYM3(filename);
+                    UKP_YM3 YM31 = shbeHandler.getYM3(filename);
                     env.ge.log("Year Month " + YM31, true);
                     SHBE_Records SHBE_Records1;
-                    SHBE_Records1 = SHBE_Handler.getRecords(YM31, env.HOOME);
+                    SHBE_Records1 = shbeHandler.getRecords(YM31, env.HOOME);
                     ClaimIDToPostcodeIDLookup = loadClaimIDToPostcodeIDLookup(
                             YM31,
                             i,
@@ -955,7 +942,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             String filename;
             filename = SHBEFilenames[i];
             UKP_YM3 YM30;
-            YM30 = SHBE_Handler.getYM3(filename);
+            YM30 = shbeHandler.getYM3(filename);
             // ClaimIDToTTLookups
             HashMap<Integer, HashMap<SHBE_ClaimID, Integer>> ClaimIDToTTLookups;
             ClaimIDToTTLookups = new HashMap<>();
@@ -1032,7 +1019,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                     i = includeIte.next();
                     filename = SHBEFilenames[i];
                     // Set Year and Month variables
-                    UKP_YM3 YM31 = SHBE_Handler.getYM3(filename);
+                    UKP_YM3 YM31 = shbeHandler.getYM3(filename);
                     // UOSet1
                     DW_UO_Set UOSet1 = null;
                     UOSet1 = DW_UO_SetsAll.get(YM31);
@@ -1288,7 +1275,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             String filename;
             filename = SHBEFilenames[i];
             UKP_YM3 YM30;
-            YM30 = SHBE_Handler.getYM3(filename);
+            YM30 = shbeHandler.getYM3(filename);
             // ClaimIDToTTLookups
             HashMap<Integer, HashMap<SHBE_ClaimID, Integer>> ClaimIDToTTLookups;
             ClaimIDToTTLookups = new HashMap<>();
@@ -1326,7 +1313,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                 i = includeIte.next();
                 filename = SHBEFilenames[i];
                 // Set Year and Month variables
-                UKP_YM3 YM31 = SHBE_Handler.getYM3(filename);
+                UKP_YM3 YM31 = shbeHandler.getYM3(filename);
                 // ClaimIDToTTLookup1
                 HashMap<SHBE_ClaimID, Integer> ClaimIDToTTLookup1;
                 ClaimIDToTTLookup1 = loadClaimIDToTTLookup(
@@ -1594,7 +1581,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             String filename;
             filename = SHBEFilenames[i];
             UKP_YM3 YM30;
-            YM30 = SHBE_Handler.getYM3(filename);
+            YM30 = shbeHandler.getYM3(filename);
             // UOSet0
             DW_UO_Set UOSet0 = null;
             // ClaimIDToTTLookups
@@ -1635,7 +1622,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                 i = includeIte.next();
                 filename = SHBEFilenames[i];
                 // Set Year and Month variables
-                UKP_YM3 YM31 = SHBE_Handler.getYM3(filename);
+                UKP_YM3 YM31 = shbeHandler.getYM3(filename);
                 // UOSet1
                 DW_UO_Set UOSet1 = null;
                 // ClaimIDToTTLookup1
@@ -1841,7 +1828,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         }
         result = new HashMap<>();
         SHBE_Records SHBE_Records;
-        SHBE_Records = SHBE_Handler.getRecords(YM3, env.HOOME);
+        SHBE_Records = shbeHandler.getRecords(YM3, env.HOOME);
         HashMap<SHBE_ClaimID, SHBE_Record> records;
         records = SHBE_Records.getRecords(env.HOOME);
         Iterator<SHBE_ClaimID> ite;
@@ -1864,7 +1851,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         if (ClaimIDToPostcodeIDLookups.containsKey(key)) {
             return ClaimIDToPostcodeIDLookups.get(key);
         }
-        r = SHBE_Handler.getRecords(YM3, env.HOOME).getClaimIDToPostcodeIDLookup(env.HOOME);
+        r = shbeHandler.getRecords(YM3, env.HOOME).getClaimIDToPostcodeIDLookup(env.HOOME);
         ClaimIDToPostcodeIDLookups.put(key, r);
         return r;
     }
@@ -3676,7 +3663,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             DW_UO_Set UOSet1,
             Set<SHBE_ClaimID> UOInApril2013) throws IOException {
         HashMap<Integer, UKP_YM3> indexYM3s;
-        indexYM3s = SHBE_Handler.getIndexYM3s();
+        indexYM3s = shbeHandler.getIndexYM3s();
         TreeMap<String, TreeMap<String, Integer>> result;
         result = new TreeMap<>();
         ArrayList<String[]> postcodeChanges = null;
@@ -3956,7 +3943,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
             boolean checkPreviousPostcode,
             Set<SHBE_ClaimID> UOInApril2013) throws IOException {
         HashMap<Integer, UKP_YM3> indexYM3s;
-        indexYM3s = SHBE_Handler.getIndexYM3s();
+        indexYM3s = shbeHandler.getIndexYM3s();
         TreeMap<String, TreeMap<String, Integer>> result;
         result = new TreeMap<>();
         ArrayList<String[]> postcodeChanges = null;
@@ -5811,17 +5798,17 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         result[1] = originsAndDestinations;
         // Start
         UKP_YM3 YM30;
-        YM30 = SHBE_Handler.getYM3(SHBEFilenames[startIndex]);
+        YM30 = shbeHandler.getYM3(SHBEFilenames[startIndex]);
         SHBE_Records recs0;
-        recs0 = SHBE_Handler.getRecords(YM30, env.HOOME);
+        recs0 = shbeHandler.getRecords(YM30, env.HOOME);
 //        recs0 = env.getSHBE_Handler().getData().get(YM30);
         HashMap<SHBE_ClaimID, SHBE_Record> recordsStart;
         recordsStart = recs0.getRecords(env.HOOME);
         // End
         UKP_YM3 YM31;
-        YM31 = SHBE_Handler.getYM3(SHBEFilenames[endIndex]);
+        YM31 = shbeHandler.getYM3(SHBEFilenames[endIndex]);
         SHBE_Records recs1;
-        recs1 = SHBE_Handler.getRecords(YM31, env.HOOME);
+        recs1 = shbeHandler.getRecords(YM31, env.HOOME);
 //        recs1 = env.getSHBE_Handler().getData().get(YM31);
         HashMap<SHBE_ClaimID, SHBE_Record> recordsEnd;
         recordsEnd = recs1.getRecords(env.HOOME);
@@ -6010,16 +5997,16 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         originsAndDestinations.add(-999);
         result[1] = originsAndDestinations;
         UKP_YM3 YM30;
-        YM30 = SHBE_Handler.getYM3(SHBEFilenames[startIndex]);
+        YM30 = shbeHandler.getYM3(SHBEFilenames[startIndex]);
         SHBE_Records recs0;
-        recs0 = SHBE_Handler.getRecords(YM30, env.HOOME);
+        recs0 = shbeHandler.getRecords(YM30, env.HOOME);
         //recs0 = env.getSHBE_Handler().getData().get(YM30);
         HashMap<SHBE_ClaimID, SHBE_Record> recordsStart;
         recordsStart = recs0.getRecords(env.HOOME);
         UKP_YM3 YM31;
-        YM31 = SHBE_Handler.getYM3(SHBEFilenames[endIndex]);
+        YM31 = shbeHandler.getYM3(SHBEFilenames[endIndex]);
         SHBE_Records recs1;
-        recs1 = SHBE_Handler.getRecords(YM31, env.HOOME);
+        recs1 = shbeHandler.getRecords(YM31, env.HOOME);
         //recs1 = env.getSHBE_Handler().getData().get(YM31);
         HashMap<SHBE_ClaimID, SHBE_Record> recordsEnd;
         recordsEnd = recs1.getRecords(env.HOOME);

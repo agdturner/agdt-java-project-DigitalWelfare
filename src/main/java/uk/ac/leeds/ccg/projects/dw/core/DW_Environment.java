@@ -222,7 +222,7 @@ public class DW_Environment extends Generic_MemoryManager
      *
      * @return
      */
-    public DW_UO_Handler getUO_Handler() throws IOException {
+    public DW_UO_Handler getUO_Handler() throws IOException, Exception {
         if (UO_Handler == null) {
             UO_Handler = new DW_UO_Handler(this);
         }
@@ -234,17 +234,14 @@ public class DW_Environment extends Generic_MemoryManager
      *
      * @return
      */
-    public DW_UO_Data getUO_Data() {
+    public DW_UO_Data getUO_Data() throws Exception {
         if (UO_Data == null) {
             try {
                 UO_Data = getUO_Data(false);
             } catch (IOException | ClassNotFoundException e) {
                 try {
                     UO_Data = getUO_Data(true);
-                } catch (IOException e1) {
-                    System.err.print(e1.getMessage());
-                    e.printStackTrace(System.err);
-                } catch (ClassNotFoundException e1) {
+                } catch (IOException | ClassNotFoundException e1) {
                     System.err.print(e1.getMessage());
                     e.printStackTrace(System.err);
                 }
@@ -265,7 +262,8 @@ public class DW_Environment extends Generic_MemoryManager
      * @throws java.io.IOException
      * @throws java.lang.ClassNotFoundException
      */
-    public DW_UO_Data getUO_Data(boolean loadFromSource) throws IOException, ClassNotFoundException {
+    public DW_UO_Data getUO_Data(boolean loadFromSource) throws IOException, 
+            ClassNotFoundException, Exception {
         if (UO_Data == null || loadFromSource) {
             UO_Handler = getUO_Handler();
             Path f = Paths.get(files.getGeneratedUnderOccupiedDir().toString(),

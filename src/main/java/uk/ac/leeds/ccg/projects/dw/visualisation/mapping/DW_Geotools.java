@@ -1,21 +1,3 @@
-/*
- * Copyright (C) 2014 geoagdt.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
- */
 package uk.ac.leeds.ccg.projects.dw.visualisation.mapping;
 
 import com.vividsolutions.jts.geom.LineString;
@@ -23,8 +5,10 @@ import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import java.awt.Color;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -95,13 +79,13 @@ public class DW_Geotools extends Geotools_Environment {
     @Override
     public void outputToImageUsingGeoToolsAndSetCommonStyle(
             double normalisation, Geotools_StyleParameters styleParameters,
-            int index, String outname, Grids_AbstractGridNumber g,
+            int index, String outname, Grids_GridNumber g,
             GridCoverage2D gc,
             ArrayList<Geotools_Shapefile> foregroundDW_Shapefile0,
             Geotools_Shapefile foregroundDW_Shapefile1,
-            Geotools_Shapefile backgroundDW_Shapefile, File outputDir,
-            int imageWidth, boolean showMapsInJMapPane, boolean scaleToFirst) 
-            throws IOException {
+            Geotools_Shapefile backgroundDW_Shapefile, Path outputDir,
+            int imageWidth, boolean showMapsInJMapPane, boolean scaleToFirst)
+            throws IOException, Exception {
         Object[] mcAndNewImageWidthAndHeight = createMapContent(normalisation,
                 outname, g, gc, foregroundDW_Shapefile0,
                 foregroundDW_Shapefile1, backgroundDW_Shapefile, imageWidth,
@@ -114,8 +98,8 @@ public class DW_Geotools extends Geotools_Environment {
         int newImageWidth = (Integer) mcAndNewImageWidthAndHeight[1];
         int newImageHeight = (Integer) mcAndNewImageWidthAndHeight[2];
         //int imageHeight = getMapContentImageHeight(mc, imageWidth);
-        File outputFile = getOutputFile(outputDir, outname, Geotools_Strings.png_String);
-        File outputImageFile = Env.getMaps().getOutputImageFile(outputFile, Geotools_Strings.png_String);
+        Path outputFile = getOutputFile(outputDir, outname, Geotools_Strings.png_String);
+        Path outputImageFile = Env.getMaps().getOutputImageFile(outputFile, Geotools_Strings.png_String);
 
         writeImageFile(g.env, // For handling OutOfMemoryErrors
                 mc, newImageWidth, newImageHeight, outputImageFile, Geotools_Strings.png_String);
@@ -162,12 +146,12 @@ public class DW_Geotools extends Geotools_Environment {
      * @return
      */
     private Object[] createMapContent(double normalisation, String name,
-            Grids_AbstractGridNumber g, GridCoverage2D gc,
+            Grids_GridNumber g, GridCoverage2D gc,
             ArrayList<Geotools_Shapefile> foregroundShapefiles,
             Geotools_Shapefile foregroundDW_Shapefile1,
             Geotools_Shapefile backgroundDW_Shapefile, int imageWidth,
             Geotools_StyleParameters styleParameters, int index,
-            boolean scaleToFirst) {
+            boolean scaleToFirst) throws Exception {
         Object[] r = new Object[3];
         MapContent mc = new MapContent();
         // Unbox styleParameters
@@ -339,11 +323,11 @@ public class DW_Geotools extends Geotools_Environment {
      * @param max
      * @param showMapsInJMapPane
      */
-    public void outputToImage(String outname, File outputShapefile,
+    public void outputToImage(String outname, Path outputShapefile,
             ArrayList<Geotools_Shapefile> foregroundDW_Shapefile0,
             Geotools_Shapefile foregroundDW_Shapefile1,
             Geotools_Shapefile backgroundDW_Shapefile, String attributeName,
-            File outputDir, String png_String, int imageWidth,
+            Path outputDir, String png_String, int imageWidth,
             Geotools_StyleParameters styleParameters, int styleIndex,
             double max, boolean showMapsInJMapPane) throws IOException {
         //Style resultStyle;
@@ -362,7 +346,7 @@ public class DW_Geotools extends Geotools_Environment {
     public void outputToImage(String outname,
             ArrayList<Geotools_Shapefile> midgrounds,
             ArrayList<Geotools_Shapefile> foregrounds, String attributeName,
-            File outputDir, String png_String, int imageWidth,
+            Path outputDir, String png_String, int imageWidth,
             Geotools_StyleParameters styleParameters, int styleIndex,
             double max, boolean showMapsInJMapPane) {
 //        String title = outname;
@@ -390,7 +374,7 @@ public class DW_Geotools extends Geotools_Environment {
             String outname,
             ArrayList<Geotools_Shapefile> midgrounds,
             ArrayList<Geotools_Shapefile> foregrounds,
-            File outputDir,
+            Path outputDir,
             String png_String,
             int imageWidth,
             DW_StyleParameters styleParameters,
@@ -440,7 +424,7 @@ public class DW_Geotools extends Geotools_Environment {
             ArrayList<Geotools_Shapefile> midgrounds,
             ArrayList<Geotools_Shapefile> backgrounds,
             String attributeName,
-            File outputDir,
+            Path outputDir,
             String png_String,
             int imageWidth,
             DW_StyleParameters styleParameters,
@@ -485,22 +469,22 @@ public class DW_Geotools extends Geotools_Environment {
             ArrayList<Geotools_Shapefile> foregrounds,
             ArrayList<Geotools_Shapefile> midgrounds,
             ArrayList<Geotools_Shapefile> backgrounds,
-            File outputDir,
+            Path outputDir,
             int imageWidth,
             boolean showMapsInJMapPane) throws IOException {
         int imageHeight = getMapContentImageHeight(mc, imageWidth);
-        File outputFile = getOutputFile(
+        Path outputFile = getOutputFile(
                 outputDir,
                 outname,
                 Geotools_Strings.png_String);
-        File outputImageFile = Env.getMaps().getOutputImageFile(outputFile, Geotools_Strings.png_String);
+        Path outputImageFile = Env.getMaps().getOutputImageFile(outputFile, Geotools_Strings.png_String);
         writeImageFile(
                 mc,
                 imageWidth,
                 imageHeight,
                 outputImageFile,
                 Geotools_Strings.png_String);
-        System.out.println("Written " + outputImageFile.getAbsolutePath());
+        System.out.println("Written " + outputImageFile.toAbsolutePath());
         // Dispose of MapContent to prevent memory leaks
         if (showMapsInJMapPane) {
             // Display mc in a JMapFrame
@@ -553,25 +537,25 @@ public class DW_Geotools extends Geotools_Environment {
     public void outputToImage(
             MapContent mc,
             String outname,
-            File outputShapefile,
-            File outputDir,
+            Path outputShapefile,
+            Path outputDir,
             int imageWidth,
             boolean showMapsInJMapPane) throws IOException {
         DW_Shapefile outputDW_Shapefile;
         outputDW_Shapefile = new DW_Shapefile(outputShapefile);
         int imageHeight = getMapContentImageHeight(mc, imageWidth);
-        File outputFile = getOutputFile(
+        Path outputFile = getOutputFile(
                 outputDir,
                 outname,
                 Geotools_Strings.png_String);
-        File outputImageFile = Env.getMaps().getOutputImageFile(outputFile, Geotools_Strings.png_String);
+        Path outputImageFile = Env.getMaps().getOutputImageFile(outputFile, Geotools_Strings.png_String);
         writeImageFile(
                 mc,
                 imageWidth,
                 imageHeight,
                 outputImageFile,
                 Geotools_Strings.png_String);
-        System.out.println("Written " + outputImageFile.getAbsolutePath());
+        System.out.println("Written " + outputImageFile.toAbsolutePath());
         // Dispose of MapContent to prevent memory leaks
         if (showMapsInJMapPane) {
             // Display mc in a JMapFrame
@@ -609,36 +593,26 @@ public class DW_Geotools extends Geotools_Environment {
      * @param imageWidth
      * @param showMapsInJMapPane
      */
-    public void outputToImage(
-            MapContent mc,
-            String outname,
-            ArrayList<Geotools_Shapefile> midgrounds,
-            File outputDir,
-            int imageWidth,
-            boolean showMapsInJMapPane) throws IOException {
+    public void outputToImage(MapContent mc, String outname,
+            ArrayList<Geotools_Shapefile> midgrounds, Path outputDir,
+            int imageWidth, boolean showMapsInJMapPane) throws IOException {
         //DW_Shapefile outputDW_Shapefile;
         //outputDW_Shapefile = new DW_Shapefile(outputShapefile);
         int imageHeight = getMapContentImageHeight(mc, imageWidth);
-        File outputFile = getOutputFile(
-                outputDir,
-                outname,
+        Path outputFile = getOutputFile(outputDir, outname,
                 Geotools_Strings.png_String);
-        File outputImageFile = Env.getMaps().getOutputImageFile(outputFile, Geotools_Strings.png_String);
-        writeImageFile(
-                mc,
-                imageWidth,
-                imageHeight,
-                outputImageFile,
+        Path outputImageFile = Env.getMaps().getOutputImageFile(outputFile,
                 Geotools_Strings.png_String);
-        System.out.println("Written " + outputImageFile.getAbsolutePath());
+        writeImageFile(mc, imageWidth, imageHeight, outputImageFile,
+                Geotools_Strings.png_String);
+        System.out.println("Written " + outputImageFile.toAbsolutePath());
         // Dispose of MapContent to prevent memory leaks
         if (showMapsInJMapPane) {
             // Display mc in a JMapFrame
             JMapFrame.showMap(mc); // Need to not dispose of mc if this is to persist!
         } else {
             // Tidy up
-            Iterator<Geotools_Shapefile> ite1;
-            ite1 = midgrounds.iterator();
+            Iterator<Geotools_Shapefile> ite1 = midgrounds.iterator();
             while (ite1.hasNext()) {
                 Geotools_Shapefile s = ite1.next();
                 s.dispose();
@@ -1034,7 +1008,7 @@ public class DW_Geotools extends Geotools_Environment {
         ite = midgrounds.iterator();
         while (ite.hasNext()) {
             Geotools_Shapefile sf = ite.next();
-            Style style  = styleParameters.getMidgroundStyle(i);
+            Style style = styleParameters.getMidgroundStyle(i);
             r.addLayer(new FeatureLayer(sf.getFeatureSource(), style));
         }
         // Add foregrounds to mc
@@ -1064,7 +1038,7 @@ public class DW_Geotools extends Geotools_Environment {
 //        }
         return r;
     }
-    
+
     /**
      * Here is a programmatic alternative to using JSimpleStyleDialog to get a
      * Style. This methods works out what sort of feature geometry we have in
@@ -1083,7 +1057,7 @@ public class DW_Geotools extends Geotools_Environment {
                 Logger.getLogger(Geotools_Environment.class.getName()).log(Level.SEVERE, null, ex);
                 return null;
             }
-            return getStyle().createPolygonStyle(fc, attributeName, 
+            return getStyle().createPolygonStyle(fc, attributeName,
                     styleParameters, doDebug);
         }
         Object[] r = new Object[2];
@@ -1097,23 +1071,22 @@ public class DW_Geotools extends Geotools_Environment {
     }
 
     /**
-     * Creates a directory called name in dir and returns a File within this
+     * Creates a directory called name in dir and returns a Path within this
      * with name.
      *
      * @param dir
      * @param name
      * @return
      */
-    public File getShapefile(File dir, String name) {
-        File r;
-        File dir2;
-        dir2 = new File(dir, name);
+    public Path getShapefile(Path dir, String name) throws IOException {
+        Path r;
+        Path dir2 = Paths.get(dir.toString(), name);
         // Could add extra logic here to deal with issues if directory or a file 
         // of this name already exists...
-        if (!dir2.exists()) {
-            dir2.mkdirs();
+        if (!Files.exists(dir2)) {
+            Files.createDirectories(dir2);
         }
-        r = new File(dir2, name);
+        r = Paths.get(dir2.toString(), name);
         return r;
     }
 }

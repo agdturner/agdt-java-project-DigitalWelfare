@@ -145,7 +145,7 @@ public class DW_UO_Handler extends DW_Object {
      * @param reload Iff true then the data is reloaded from source.
      * @return The loaded data.
      */
-    public DW_UO_Data loadUnderOccupiedReportData(boolean reload) throws IOException, ClassNotFoundException {
+    public DW_UO_Data loadUnderOccupiedReportData(boolean reload) throws IOException, ClassNotFoundException, Exception {
         String methodName = "loadUnderOccupiedReportData(boolean)";
         env.ge.logStartTag(methodName);
         DW_UO_Data r;

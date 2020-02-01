@@ -1,23 +1,22 @@
-
 package uk.ac.leeds.ccg.projects.dw.visualisation.mapping;
 
 import com.vividsolutions.jts.geom.Geometry;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StreamTokenizer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.TreeSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.geotools.data.collection.TreeSetFeatureCollection;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import uk.ac.leeds.ccg.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Object;
 
@@ -61,11 +60,9 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
      * @param targetPropertyName
      * @param sdsf
      */
-    public DW_AreaCodesAndShapefiles(
-            DW_Environment env,
-            Integer level,
-            String targetPropertyName,
-            ShapefileDataStoreFactory sdsf) throws IOException {
+    public DW_AreaCodesAndShapefiles(DW_Environment env, String level,
+            String targetPropertyName, ShapefileDataStoreFactory sdsf) 
+            throws IOException {
         super(env);
         this.Maps = env.getMaps();
         String tLeedsString = "Leeds";
@@ -116,14 +113,14 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
                 tLeedsAndNearNeighbouringLADsString,
                 tLeedsAndNearNeighbouringLADCodes,
                 sdsf);
-        File censusDataDirectory = new File(
-                env.files.getInputCensus2011AttributeDataDir(level),
+        Path censusDataDirectory = Paths.get(
+                env.files.getInputCensus2011AttributeDataDir(level).toString(),
                 tLeedsString);
         if (level.equalsIgnoreCase("OA")
                 || level.equalsIgnoreCase("LSOA")
                 || level.equalsIgnoreCase("MSOA")) {
             // Read Census Boundary Data of level
-            File levelShapefile = Maps.getAreaBoundaryShapefile(level);
+            Path levelShapefile = Maps.getAreaBoundaryShapefile(level);
             LevelDW_Shapefile = new DW_Shapefile(levelShapefile);
 
             // Read area level Census Codes
@@ -146,16 +143,15 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
              * and set this Leeds LAD LSOA Boundary Data Shapefile as the
              * backgroundShapefile
              */
-            File leedsLevelShapefile;
-            leedsLevelShapefile = Maps.getCensusBoundaryShapefile(tLeedsString,
-                    level);
+            Path leedsLevelShapefile = Maps.getCensusBoundaryShapefile(
+                    tLeedsString, level);
             LeedsLevelDW_Shapefile = new DW_Shapefile(leedsLevelShapefile);
-            if (!leedsLevelShapefile.exists()) {
+            if (!Files.exists(leedsLevelShapefile)) {
                 Maps.selectAndCreateNewShapefile(sdsf, levelFC, levelSFT,
                         LeedsAreaCodes, targetPropertyName, leedsLevelShapefile);
             }
         } else {
-            File levelShapefile = Maps.getAreaBoundaryShapefile(level);
+            Path levelShapefile = Maps.getAreaBoundaryShapefile(level);
             if (levelShapefile == null) {
                 int debug = 1;
             }
@@ -173,42 +169,42 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
         }
     }
 
+    /**
+     *
+     * @param area
+     * @param level
+     * @param targetPropertyName
+     * @param llsf tLeedsLADDW_Shapefile
+     * @param lsf tLevelDW_Shapefile
+     * @return
+     * @throws IOException
+     */
     public final TreeSet<String> getAreaCodesAndShapefile(String area,
-            String level, String targetPropertyName,
-            DW_Shapefile tLeedsLADDW_Shapefile,
-            DW_Shapefile tLevelDW_Shapefile) throws IOException {
-        TreeSet<String> result;
-        File censusDataDirectory = new File(
-                env.files.getInputCensus2011AttributeDataDir(level), area);
+            String level, String targetPropertyName, DW_Shapefile llsf,
+            DW_Shapefile lsf) throws IOException {
+        TreeSet<String> r;
+        Path censusDataDirectory = Paths.get(
+                env.files.getInputCensus2011AttributeDataDir(level).toString(), area);
         if (level.equalsIgnoreCase("OA")
                 || level.equalsIgnoreCase("LSOA")
                 || level.equalsIgnoreCase("MSOA")) {
-            result = env.censusEnv.getCensusCodes(area, level);
+            r = env.censusEnv.getCensusCodes(area, level);
         } else {
-            File tPostcodeShapefile;
-            tPostcodeShapefile = getPostcodeShapefile(                    area,                    level);
-            result = new TreeSet<>();
-            File postcodeAreaCodesFile = getPostcodeDataAreaCodesFile(
-                    area,
-                    level);
-            if (tPostcodeShapefile.exists()
-                    && postcodeAreaCodesFile.exists()) {
+            Path psf = getPostcodeShapefile(area, level);
+            r = new TreeSet<>();
+            Path pacf = getPostcodeDataAreaCodesFile(area, level);
+            if (Files.exists(psf) && Files.exists(pacf)) {
                 //Read files
-                result = getAreaCodes(                        area,                        level);
+                r = getAreaCodes(area, level);
             } else {
-                tPostcodeShapefile.getParentFile().mkdirs();
-                ShapefileDataStoreFactory sdsf;
-                sdsf = new ShapefileDataStoreFactory();
+                Files.createDirectories(psf.getParent());
+                ShapefileDataStoreFactory sdsf = new ShapefileDataStoreFactory();
                 SimpleFeatureType sft = null;
-                TreeSetFeatureCollection tsfc;
-                tsfc = new TreeSetFeatureCollection();
+                TreeSetFeatureCollection tsfc = new TreeSetFeatureCollection();
                 // Intersect and return
-                FeatureCollection fc;
-                fc = tLeedsLADDW_Shapefile.getFeatureCollection();
-                FeatureCollection fc2;
-                fc2 = tLevelDW_Shapefile.getFeatureCollection();
-                FeatureIterator fi2;
-                fi2 = fc2.features();
+                FeatureCollection fc = llsf.getFeatureCollection();
+                FeatureCollection fc2 = lsf.getFeatureCollection();
+                FeatureIterator fi2 = fc2.features();
                 while (fi2.hasNext()) {
                     SimpleFeature sf2;
                     sf2 = (SimpleFeature) fi2.next();
@@ -218,100 +214,98 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
                     Geometry g2 = (Geometry) sf2.getDefaultGeometry();
 //                        Polygon p2;
 //                        p2 = (Polygon) sf2.getDefaultGeometry();
-                    FeatureIterator fi;
-                    fi = fc.features();
+                    FeatureIterator fi = fc.features();
                     while (fi.hasNext()) {
-                        SimpleFeature sf;
-                        sf = (SimpleFeature) fi.next();
+                        SimpleFeature sf = (SimpleFeature) fi.next();
                         Geometry g = (Geometry) sf.getDefaultGeometry();
 //                            Polygon p;
 //                            p = (Polygon) sf.getDefaultGeometry();
                         Geometry intersection = g.intersection(g2);
-                        if (intersection != null
-                                && !intersection.isEmpty()) {
+                        if (intersection != null && !intersection.isEmpty()) {
                             tsfc.add(sf2);
-                            String postcode;
-                            postcode = sf2.getAttribute(targetPropertyName).toString();
-                            result.add(postcode);
+                            r.add(sf2.getAttribute(targetPropertyName).toString());
                         }
                     }
                     fi.close();
                 }
                 fi2.close();
-                DW_Shapefile.transact(tPostcodeShapefile, sft, tsfc, sdsf);
-                writeAreaCodes(
-                        postcodeAreaCodesFile,
-                        result,
-                        area,
-                        level);
+                DW_Shapefile.transact(psf, sft, tsfc, sdsf);
+                writeAreaCodes(pacf, r, area, level);
             }
         }
-        return result;
-    }
-
-    public final File getPostcodeShapefile(String area, String level) {
-        File r;
-        r = new File(env.files.getGeneratedPostcodeDir(),
-                area + level + "PolyShapefile.shp");
-        r = new File(r, area + level + "PolyShapefile.shp");
         return r;
     }
 
+    public final Path getPostcodeShapefile(String area, String level)
+            throws IOException {
+        String n = area + level + "PolyShapefile.shp";
+        return Paths.get(env.files.getGeneratedPostcodeDir().toString(), n, n);
+    }
+
     /**
-     * 
+     *
      * @param name
-     * @param tLADCensusCodes The Local Authority District Census Area Codes. 
+     * @param tLADCensusCodes The Local Authority District Census Area Codes.
      * @param sdsf
-     * @return 
+     * @return
      */
     public final DW_Shapefile getLADShapefile(String name,
-            TreeSet<String> tLADCensusCodes, ShapefileDataStoreFactory sdsf) {
+            TreeSet<String> tLADCensusCodes, ShapefileDataStoreFactory sdsf)
+            throws IOException {
         // Read LAD Census Boundary Data
-        File tLADShapefile = Maps.getAreaBoundaryShapefile("LAD");
+        Path tLADShapefile = Maps.getAreaBoundaryShapefile("LAD");
         DW_Shapefile sf = new DW_Shapefile(tLADShapefile);
         return getLADShapefile(name, tLADCensusCodes, sf, sdsf);
     }
 
     public DW_Shapefile getLADShapefile(String name,
             TreeSet<String> tLADCensusCodes, DW_Shapefile sf,
-            ShapefileDataStoreFactory sdsf) {
+            ShapefileDataStoreFactory sdsf) throws IOException {
         DW_Shapefile r;
         FeatureCollection fc = sf.getFeatureCollection();
         SimpleFeatureType sft = sf.getSimpleFeatureType();
         // Select tLADCensusCodes from LAD Census Boundary Data
-        File tLADShapefile = Maps.getCensusBoundaryShapefile(name, "LAD");
+        Path tLADShapefile = Maps.getCensusBoundaryShapefile(name, "LAD");
         r = new DW_Shapefile(tLADShapefile);
-        if (!tLADShapefile.exists()) {
-            Maps.selectAndCreateNewShapefile(sdsf, fc, sft, 
+        if (!Files.exists(tLADShapefile)) {
+            Maps.selectAndCreateNewShapefile(sdsf, fc, sft,
                     tLADCensusCodes, "CODE", tLADShapefile);
         }
         return r;
     }
 
-    public File getPostcodeDataAreaCodesFile(            String area,            String level) {
-        File r;
-        File dir = new File(env.files.getGeneratedPostcodeDir(), area);
-        dir = new File(dir, level);
-        dir.mkdirs();
-        r = new File(dir, "AreaCodes.csv");
-        return r;
+    /**
+     *
+     * @param a area
+     * @param l level
+     * @return
+     * @throws IOException
+     */
+    public Path getPostcodeDataAreaCodesFile(String a, String l)
+            throws IOException {
+        Path dir = Paths.get(env.files.getGeneratedPostcodeDir().toString(),
+                a, l);
+        Files.createDirectories(dir);
+        return Paths.get(dir.toString(), "AreaCodes.csv");
     }
 
-    public static void writeAreaCodes(File postcodeDataAreaCodesFile,
-            TreeSet<String> result, String area, String level) {
-        postcodeDataAreaCodesFile.getParentFile().mkdirs();
-        try {
-            PrintWriter pw;
-            pw = new PrintWriter(postcodeDataAreaCodesFile);
-            Iterator<String> ite;
-            ite = result.iterator();
+    /**
+     *
+     * @param pacf postcodeDataAreaCodesFile
+     * @param result
+     * @param area
+     * @param level
+     * @throws IOException
+     */
+    public static void writeAreaCodes(Path pacf, TreeSet<String> result,
+            String area, String level) throws IOException {
+        Files.createDirectories(pacf.getParent());
+        try (PrintWriter pw = Generic_IO.getPrintWriter(pacf, false)) {
+            Iterator<String> ite = result.iterator();
             while (ite.hasNext()) {
                 pw.println(ite.next());
             }
             pw.flush();
-            pw.close();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(DW_AreaCodesAndShapefiles.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -322,21 +316,17 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
      * Local Authority District loaded from a specific file within
      * digitalWelfareDir.
      */
-    public TreeSet<String> getAreaCodes(String area, String level) {
+    public TreeSet<String> getAreaCodes(String area, String level) throws IOException {
         TreeSet<String> result = null;
-        File dir = new File(env.files.getGeneratedPostcodeDir(), area);
-        dir = new File(dir, level);
-        File file = new File(dir, "AreaCodes.csv");
-        if (file.exists()) {
-            try {
-                BufferedReader br;
-                StreamTokenizer st;
-                br = env.ge.io.getBufferedReader(file);
+        Path f = Paths.get(env.files.getGeneratedPostcodeDir().toString(),
+                area, level, "AreaCodes.csv");
+        if (Files.exists(f)) {
+            try (BufferedReader br = Generic_IO.getBufferedReader(f)) {
                 result = new TreeSet<>();
-                st = new StreamTokenizer(br);
-                env.ge.io.setStreamTokenizerSyntax1(st);
+                StreamTokenizer st = new StreamTokenizer(br);
+                Generic_IO.setStreamTokenizerSyntax1(st);
                 int token = st.nextToken();
-//                    long RecordID = 0;
+//                long RecordID = 0;
                 String line = "";
                 while (!(token == StreamTokenizer.TT_EOF)) {
                     switch (token) {
@@ -353,9 +343,6 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
                     }
                     token = st.nextToken();
                 }
-                br.close();
-            } catch (IOException e) {
-                System.err.println(e.getMessage());
             }
         }
         return result;

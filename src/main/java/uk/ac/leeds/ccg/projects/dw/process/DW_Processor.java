@@ -9,16 +9,20 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Object;
-import uk.ac.leeds.ccg.agdt.data.ukp.data.UKP_Data;
-import uk.ac.leeds.ccg.agdt.data.ukp.util.UKP_YM3;
+import uk.ac.leeds.ccg.data.ukp.data.UKP_Data;
+import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
+import uk.ac.leeds.ccg.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Strings;
 
 public abstract class DW_Processor extends DW_Object {
@@ -47,20 +51,20 @@ public abstract class DW_Processor extends DW_Object {
      * @param filename The name of the file to be initialised for writing to.
      * @return PrintWriter for pushing output to.
      */
-    protected PrintWriter init_OutputTextFilePrintWriter(File dir,
-            String filename) {
-        PrintWriter r = null;
-        File f = new File(dir, filename);
-        try {
-            f.createNewFile();
-            r = new PrintWriter(f);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(DW_Processor.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(DW_Processor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return r;
-    }
+//    protected PrintWriter init_OutputTextFilePrintWriter(File dir,
+//            String filename) {
+//        PrintWriter r = null;
+//        Path f = Paths.get(dir.toString(), filename);
+//        try {
+//            Files.createFile(f);
+//            r = new PrintWriter(f);
+//        } catch (FileNotFoundException ex) {
+//            Logger.getLogger(DW_Processor.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (IOException ex) {
+//            Logger.getLogger(DW_Processor.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return r;
+//    }
 
     /**
      * @param YM3
@@ -74,25 +78,26 @@ public abstract class DW_Processor extends DW_Object {
      * Keys are postcodes; values are census area codes.
      */
     public TreeMap<String, String> getClaimPostcodeF_To_LevelCode_Map(
-            int level, int CensusYear, UKP_YM3 YM3) throws IOException {
+            int level, int CensusYear, UKP_YM3 YM3) throws IOException, 
+            ClassNotFoundException {
         UKP_YM3 YM3Nearest;
         YM3Nearest = Postcode_Handler.getNearestYM3ForONSPDLookup(YM3);
         TreeMap<String, String> r;
         String outputFilename;
-        File dir;
+        Path dir;
         outputFilename = "PostcodeTo" + level + "_" + YM3Nearest
                 + "_LookUp_TreeMap_String_Strings"
                 + DW_Strings.sBinaryFileExtension;
-        dir = new File(files.getGeneratedONSPDDir(), YM3Nearest.toString());
+        dir = Paths.get(files.getGeneratedONSPDDir().toString(), YM3Nearest.toString());
 //        }
-        File outfile = new File(dir, outputFilename);
-        if (!outfile.exists()) {
-            dir.mkdirs();
-            File infile = env.SHBE_Env.oe.files.getInputONSPDFile(YM3Nearest);
+        Path outfile = Paths.get(dir.toString(), outputFilename);
+        if (!Files.exists(outfile)) {
+            Files.createDirectories(dir);
+            Path infile = env.SHBE_Env.oe.files.getInputONSPDFile(YM3Nearest);
             r = initLookupFromPostcodeToCensusCodes(infile, outfile, level,
                     CensusYear, YM3Nearest);
         } else {
-            r = (TreeMap<String, String>) env.ge.io.readObject(outfile);
+            r = (TreeMap<String, String>) Generic_IO.readObject(outfile);
         }
         return r;
     }
@@ -108,7 +113,7 @@ public abstract class DW_Processor extends DW_Object {
      * @return
      */
     private TreeMap<String, String> initLookupFromPostcodeToCensusCodes(
-            File infile, File outFile, int level, int CensusYear,
+            Path infile, Path outFile, int level, int CensusYear,
             UKP_YM3 YM3) throws IOException {
         TreeMap<String, String> r;
         r = Postcode_Handler.getPostcodeUnitCensusCodeLookup(infile, outFile,

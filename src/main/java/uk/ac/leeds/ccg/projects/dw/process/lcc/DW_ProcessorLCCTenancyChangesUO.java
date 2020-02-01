@@ -1,20 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package uk.ac.leeds.ccg.projects.dw.process.lcc;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.data.DW_TenancyChangesUO;
 
 /**
  * This class produces output relating to Tenancy Type Changes for all those
  * SHBE Claims that have at some stage since April 2013 being Under Occupying.
  * There are several types of output generated.
+ * 
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class DW_ProcessorLCCTenancyChangesUO extends DW_ProcessorLCC {
 
@@ -38,7 +37,7 @@ public class DW_ProcessorLCCTenancyChangesUO extends DW_ProcessorLCC {
          */
         Object[] table;
         ArrayList<Integer> include;
-        include = SHBE_Handler.getIncludeMonthlyUO();
+        include = shbeHandler.getIncludeMonthlyUO();
         DW_TenancyChangesUO UOTTC = new DW_TenancyChangesUO(
                 env,
                 handleOutOfMemoryError);
@@ -48,22 +47,22 @@ public class DW_ProcessorLCCTenancyChangesUO extends DW_ProcessorLCC {
         String endMonth;
         String endYear;
         index = include.get(0);
-        startMonth = SHBE_Handler.getMonth(
-                SHBEFilenames[index]);
-        startYear = SHBE_Handler.getYear(
-                SHBEFilenames[index]);
+        startMonth = shbeHandler.getMonth(
+                shbeFilenames[index]);
+        startYear = shbeHandler.getYear(
+                shbeFilenames[index]);
         index = include.get(include.size() - 1);
-        endMonth = SHBE_Handler.getMonth(
-                SHBEFilenames[index]);
-        endYear = SHBE_Handler.getYear(
-                SHBEFilenames[index]);
+        endMonth = shbeHandler.getMonth(
+                shbeFilenames[index]);
+        endYear = shbeHandler.getYear(
+                shbeFilenames[index]);
         iteB = bArray.iterator();
         while (iteB.hasNext()) {
             boolean includePreUnderOccupancyValues;
             includePreUnderOccupancyValues = iteB.next();
             env.ge.log("<includePreUnderOccupancyValues " 
                     + includePreUnderOccupancyValues + ">", true);
-            table = UOTTC.getTable(UO_Data, SHBEFilenames, include,
+            table = UOTTC.getTable(UO_Data, shbeFilenames, include,
                     includePreUnderOccupancyValues);
             UOTTC.writeTenancyChangeTables(table,
                     includePreUnderOccupancyValues, startMonth, startYear, 

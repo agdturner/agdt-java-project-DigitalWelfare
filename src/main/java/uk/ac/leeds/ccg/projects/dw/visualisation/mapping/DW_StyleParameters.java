@@ -1,31 +1,14 @@
-/*
- * Copyright (C) 2015 geoagdt.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
- */
+
 package uk.ac.leeds.ccg.projects.dw.visualisation.mapping;
 
 import java.util.ArrayList;
 import org.geotools.styling.Style;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_LegendItem;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_StyleParameters;
+import uk.ac.leeds.ccg.geotools.Geotools_LegendItem;
+import uk.ac.leeds.ccg.geotools.Geotools_StyleParameters;
 
 /**
- *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class DW_StyleParameters extends Geotools_StyleParameters {
     
@@ -173,6 +156,7 @@ public class DW_StyleParameters extends Geotools_StyleParameters {
      * @param index
      * @return a specific list of legendItems
      */
+    @Override
     public ArrayList<Geotools_LegendItem> getLegendItems(int index) {
         ArrayList<Geotools_LegendItem> result;
         ArrayList<ArrayList<Geotools_LegendItem>> legendItems0;
@@ -198,6 +182,7 @@ public class DW_StyleParameters extends Geotools_StyleParameters {
      * @param index
      * @return
      */
+    @Override
     public ArrayList<Geotools_LegendItem> setLegendItems(
             ArrayList<Geotools_LegendItem> legendItems, int index) {
         ArrayList<Geotools_LegendItem> result;
@@ -209,6 +194,7 @@ public class DW_StyleParameters extends Geotools_StyleParameters {
     /**
      * @return the legendItems
      */
+    @Override
     public ArrayList<ArrayList<Geotools_LegendItem>> getLegendItems() {
         if (legendItems == null) {
             legendItems = new ArrayList<>();
@@ -219,6 +205,7 @@ public class DW_StyleParameters extends Geotools_StyleParameters {
     /**
      * @param legendItems the legendItems to set
      */
+    @Override
     public void setLegendItems(ArrayList<ArrayList<Geotools_LegendItem>> legendItems) {
         this.legendItems = legendItems;
     }
@@ -243,6 +230,7 @@ public class DW_StyleParameters extends Geotools_StyleParameters {
         return foregroundStyles;
     }
 
+    @Override
     public void setForegroundStyles(ArrayList<Style> foregroundStyles) {
         this.foregroundStyles = foregroundStyles;
     }

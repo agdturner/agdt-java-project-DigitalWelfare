@@ -1,39 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package uk.ac.leeds.ccg.projects.dw.process.lcc;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import uk.ac.leeds.ccg.agdt.data.ukp.util.UKP_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
+import java.util.Map;
+import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
+import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_ClaimID;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_D_Record;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Record;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Records;
+import uk.ac.leeds.ccg.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.projects.dw.data.DW_Claim;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.data.DW_RentArrearsUO;
-import uk.ac.leeds.ccg.projects.dw.data.DW_Summary;
-import uk.ac.leeds.ccg.projects.dw.data.DW_SummaryUO;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
 
 /**
- * This is the main class for the Digital Welfare Project. For more details of
- * the project visit:
- * http://www.geog.leeds.ac.uk/people/a.turner/projects/DigitalWelfare/
- *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
 
@@ -49,17 +38,16 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
         doClaims = false;
         doClaims = true;
 
-        File f;
-        f = new File(                files.getGeneratedLCCDir(),
+        Path f = Paths.get(files.getGeneratedLCCDir().toString(),
                 "RentArrearsAll" + files.getDefaultBinaryFileExtension());
-        DW_RentArrearsUO RentArrearsUO;
+        DW_RentArrearsUO raUO;
         if (newData) {
-            RentArrearsUO = new DW_RentArrearsUO(env);
-            env.ge.io.writeObject(RentArrearsUO, f);
-        } else if (f.exists()) {
-            RentArrearsUO = (DW_RentArrearsUO) env.ge.io.readObject(f);
-            RentArrearsUO.SHBE_Handler = env.getSHBE_Handler();
-            RentArrearsUO.UO_Data = env.getUO_Data();
+            raUO = new DW_RentArrearsUO(env);
+            Generic_IO.writeObject(raUO, f);
+        } else if (Files.exists(f)) {
+            raUO = (DW_RentArrearsUO) Generic_IO.readObject(f);
+            raUO.SHBE_Handler = env.getSHBE_Handler();
+            raUO.UO_Data = env.getUO_Data();
 // The following code was an attempt to automatically detect if a reload was 
 // necessary and simplify things a bit, but I didn't quite get it to work. The
 // idea was to count the number of files and compare this with the size of the 
@@ -71,18 +59,16 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
 //                env.ge.io.writeObject(DW_RentArrearsUO, f);
 //            }
         } else {
-            RentArrearsUO = new DW_RentArrearsUO(env);
-            env.ge.io.writeObject(RentArrearsUO, f);
+            raUO = new DW_RentArrearsUO(env);
+            Generic_IO.writeObject(raUO, f);
         }
 
-        HashMap<UKP_YM3, SHBE_Records> AllSHBE;
-        AllSHBE = SHBE_Handler.getData();
+        Map<UKP_YM3, SHBE_Records> allSHBE = shbeHandler.getData();
 
-        DecimalFormat df;
-        df = new DecimalFormat("0.00");
+        DecimalFormat df = new DecimalFormat("0.00");
 
         HashMap<SHBE_ClaimID, DW_Claim> ClaimData;
-        ClaimData = RentArrearsUO.ClaimData;
+        ClaimData = raUO.ClaimData;
 
         int AllSHBECount;
         int AllSHBESuspendedCount;
@@ -154,37 +140,14 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
 
         PrintWriter pw0 = null;
         PrintWriter pw2 = null;
+            String d = this.files.getOutputLCCDir().toString();
         if (doClaims) {
-            File f0;
-            f0 = new File(
-                    this.files.getOutputLCCDir(),
-                    "RentArrearsClaimsAll.csv");
-            try {
-                pw0 = new PrintWriter(f0);
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(DW_ProcessorLCCRentArrears.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            File f2;
-            f2 = new File(
-                    this.files.getOutputLCCDir(),
-                    "RentArrearsSummary.csv");
-            try {
-                pw2 = new PrintWriter(f2);
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(DW_ProcessorLCCRentArrears.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            pw0 = Generic_IO.getPrintWriter(Paths.get(d, "RentArrearsClaimsAll.csv"), false);
+            pw2 = Generic_IO.getPrintWriter(Paths.get(d, "RentArrearsSummary.csv"), false);
         }
         PrintWriter pw1 = null;
         if (doMonths) {
-            File f1;
-            f1 = new File(
-                    this.files.getOutputLCCDir(),
-                    "RentArrearsMonths.csv");
-            try {
-                pw1 = new PrintWriter(f1);
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(DW_ProcessorLCCRentArrears.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            pw1 = Generic_IO.getPrintWriter(Paths.get(d, "RentArrearsMonths.csv"), false);
         }
 
         // Rent Arrears Difference variables
@@ -431,9 +394,9 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                 ClaimID = ite2.next();
 
 //            for (int j = 0; j < 17; j++) {
-//                YM3 = SHBE_Handler.getYM3(SHBEFilenames[j]);
+//                YM3 = shbeHandler.getYM3(shbeFilenames[j]);
 //                env.ge.log("YM3 " + YM3, true);
-//                SHBE_Records = SHBE_Handler.getRecords(YM3);
+//                SHBE_Records = shbeHandler.getRecords(YM3);
 //                HashMap<SHBE_ClaimID, SHBE_Record> Records;
 //                Records = SHBE_Records.getRecords(env.HOOME);
 //                if (Records.keySet().contains(ClaimID)) {
@@ -443,7 +406,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
 //            }
                 //if (ClaimID.getID() == 137367) {
                 //    int debug = 1;
-                ClaimRef = ClaimIDToClaimRefLookup.get(ClaimID);
+                ClaimRef = cid2c.get(ClaimID);
                 DW_Claim = ClaimData.get(ClaimID);
 
                 ite = include.iterator();
@@ -485,7 +448,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                         }
                         IndexOfLastSHBE = i;
 //                } else {
-//                    System.out.println("" + ClaimID + " not in SHBE " + SHBE_Handler.getYM3(SHBEFilenames[i]));
+//                    System.out.println("" + ClaimID + " not in SHBE " + shbeHandler.getYM3(shbeFilenames[i]));
                     }
                     if (Suspended != null) {
                         if (Suspended) {
@@ -615,8 +578,8 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                         + ", " + ClaimRef;
                 // SHBE
                 if (IndexOfFirstSHBE != null) {
-                    line += ", " + SHBE_Handler.getYM3(SHBEFilenames[IndexOfFirstSHBE])
-                            + ", " + SHBE_Handler.getYM3(SHBEFilenames[IndexOfLastSHBE]);
+                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfFirstSHBE])
+                            + ", " + shbeHandler.getYM3(shbeFilenames[IndexOfLastSHBE]);
                 } else {
                     /**
                      * This only happens if someone is in the UO data, but is
@@ -657,8 +620,8 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     line += ", " + df.format(0);
                 }
                 if (IndexOfFirstBT != null) {
-                    line += ", " + SHBE_Handler.getYM3(SHBEFilenames[IndexOfFirstBT]);
-                    line += ", " + SHBE_Handler.getYM3(SHBEFilenames[IndexOfLastBT]);
+                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfFirstBT]);
+                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfLastBT]);
                 } else {
                     line += ", null";
                     line += ", null";
@@ -672,8 +635,8 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     line += ", " + df.format(0);
                 }
                 if (IndexOfFirstBT14 != null) {
-                    line += ", " + SHBE_Handler.getYM3(SHBEFilenames[IndexOfFirstBT14]);
-                    line += ", " + SHBE_Handler.getYM3(SHBEFilenames[IndexOfLastBT14]);
+                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfFirstBT14]);
+                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfLastBT14]);
                 } else {
                     line += ", null";
                     line += ", null";
@@ -687,8 +650,8 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     line += ", " + df.format(0);
                 }
                 if (IndexOfFirstBT25 != null) {
-                    line += ", " + SHBE_Handler.getYM3(SHBEFilenames[IndexOfFirstBT25]);
-                    line += ", " + SHBE_Handler.getYM3(SHBEFilenames[IndexOfLastBT25]);
+                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfFirstBT25]);
+                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfLastBT25]);
                 } else {
                     line += ", null";
                     line += ", null";
@@ -703,8 +666,8 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     line += ", " + df.format(0);
                 }
                 if (IndexOfFirstDHP != null) {
-                    line += ", " + SHBE_Handler.getYM3(SHBEFilenames[IndexOfFirstDHP]);
-                    line += ", " + SHBE_Handler.getYM3(SHBEFilenames[IndexOfLastDHP]);
+                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfFirstDHP]);
+                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfLastDHP]);
                 } else {
                     line += ", null";
                     line += ", null";
@@ -712,8 +675,8 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                 // Rent Arrears
                 line += ", " + StartRentArrears;
                 if (IndexOfFirstNonZeroArrears != null) {
-                    line += ", " + SHBE_Handler.getYM3(SHBEFilenames[IndexOfFirstBT]);
-                    line += ", " + SHBE_Handler.getYM3(SHBEFilenames[IndexOfFirstNonZeroArrears]);
+                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfFirstBT]);
+                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfFirstNonZeroArrears]);
                 } else {
                     line += ", null";
                     line += ", null";
@@ -728,13 +691,13 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
 //                }
                 line += ", " + MaxRentArrears;
                 if (IndexOfMaxRentArrears != null) {
-                    line += ", " + SHBE_Handler.getYM3(SHBEFilenames[IndexOfMaxRentArrears]);
+                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfMaxRentArrears]);
                 } else {
                     line += ", null";
                 }
                 line += ", " + EndRentArrears;
                 if (IndexOfLastNonZeroArrears != null) {
-                    line += ", " + SHBE_Handler.getYM3(SHBEFilenames[IndexOfLastNonZeroArrears]);
+                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfLastNonZeroArrears]);
                 } else {
                     line += ", null";
                 }
@@ -761,13 +724,13 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                 }
                 line += ", " + RADMax;
                 if (IndexOfMaximumRAD != null) {
-                    line += ", " + SHBE_Handler.getYM3(SHBEFilenames[IndexOfMaximumRAD]);
+                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfMaximumRAD]);
                 } else {
                     line += ", null";
                 }
                 line += ", " + RADMin;
                 if (IndexOfMinimumRAD != null) {
-                    line += ", " + SHBE_Handler.getYM3(SHBEFilenames[IndexOfMinimumRAD]);
+                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfMinimumRAD]);
                 } else {
                     line += ", null";
                 }
@@ -802,23 +765,23 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     line += ", " + df.format(0);
                 }
                 if (IndexOfFirstBT != null) {
-                    YM3 = SHBE_Handler.getYM3(SHBEFilenames[IndexOfFirstBT]);
+                    YM3 = shbeHandler.getYM3(shbeFilenames[IndexOfFirstBT]);
                     //System.out.println("IndexOfFirstBT " + IndexOfFirstBT);
                     //System.out.println("YM3 " + YM3);
                     //SHBE_Records = AllSHBE.get(YM3);
-                    SHBE_Records = SHBE_Handler.getRecords(YM3, env.HOOME);
+                    SHBE_Records = shbeHandler.getRecords(YM3, env.HOOME);
                     if (SHBE_Records == null) {
                         env.ge.log("AllSHBE.get(YM3) is null!");
                     }
-                    HashMap<SHBE_ClaimID, SHBE_Record> Records;
-                    Records = SHBE_Records.getRecords(env.HOOME);
-                    if (Records == null) {
+                    Map<SHBE_ClaimID, SHBE_Record> recs 
+                            = SHBE_Records.getRecords(env.HOOME);
+                    if (recs == null) {
                         env.ge.log("AllSHBE.get(YM3).getRecords(true) is null!");
                     }
-                    Record = Records.get(ClaimID);
+                    Record = recs.get(ClaimID);
                     if (Record != null) {
                         DRecord = Record.getDRecord();
-                        if (SHBE_Handler.getDisability(DRecord)) {
+                        if (shbeHandler.getDisability(DRecord)) {
                             line += ", 1";
                         } else {
                             line += ", 0";
@@ -1037,7 +1000,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     }
                 }
                 counter++;
-                line = SHBE_Handler.getYM3(SHBEFilenames[i]).toString();
+                line = shbeHandler.getYM3(shbeFilenames[i]).toString();
                 line += ", " + df.format(BTTotal);
                 line += ", " + BTCount;
                 if (BTCount > 0) {

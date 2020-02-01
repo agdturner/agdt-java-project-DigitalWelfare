@@ -1,27 +1,12 @@
-/*
- * Copyright (C) 2015 geoagdt.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
- */
 package uk.ac.leeds.ccg.projects.dw.visualisation.charts;
 
-import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,19 +14,19 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import uk.ac.leeds.ccg.andyt.chart.examples.Chart_Bar;
-import uk.ac.leeds.ccg.andyt.generic.execution.Generic_Execution;
-import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
-import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.chart.examples.Chart_Bar;
+import uk.ac.leeds.ccg.generic.util.Generic_Collections;
+import uk.ac.leeds.ccg.generic.visualisation.Generic_Visualisation;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Strings;
 import uk.ac.leeds.ccg.projects.dw.data.generated.DW_Table;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.generic.io.Generic_IO;
 
 /**
- *
- * @author geoagdt
+ * 
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class DW_BarChart extends Chart_Bar {
 
@@ -63,14 +48,19 @@ public class DW_BarChart extends Chart_Bar {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new DW_BarChart(null).run(args);
+        try {
+            new DW_BarChart(null).run(args);
+        } catch (Exception ex) {
+            ex.printStackTrace(System.err);
+        }
     }
 
     /**
      *
      * @param args These are ignored!
+     * @throws java.lang.Exception
      */
-    public void run(String[] args) {
+    public void run(String[] args) throws Exception {
         Generic_Visualisation v = new Generic_Visualisation(env.ge);
         v.getHeadlessEnvironment();
         dataWidth = 400;
@@ -94,12 +84,9 @@ public class DW_BarChart extends Chart_Bar {
         roundingMode = RoundingMode.HALF_UP;
         executorService = Executors.newSingleThreadExecutor();
 
-        String[] SHBEFilenames;
-        SHBEFilenames = env.getSHBE_Handler().getSHBEFilenamesAll();
-        ArrayList<String> claimantTypes;
-        claimantTypes = DW_Strings.getHB_CTB();
-        ArrayList<String> levels;
-        levels = new ArrayList<>();
+        String[] shbeFilenames = env.getSHBE_Handler().getFilenames();
+        ArrayList<String> claimantTypes = DW_Strings.getHB_CTB();
+        ArrayList<String> levels = new ArrayList<>();
         levels.add("OA");
         levels.add("LSOA");
         levels.add("MSOA");
@@ -164,7 +151,7 @@ public class DW_BarChart extends Chart_Bar {
                     generateBarCharts(
                             doUnderOccupied,
                             doCouncil,
-                            SHBEFilenames,
+                            shbeFilenames,
                             startIndex,
                             levels,
                             claimantTypes,
@@ -177,7 +164,7 @@ public class DW_BarChart extends Chart_Bar {
                 generateBarCharts(
                         false,
                         false,
-                        SHBEFilenames,
+                        shbeFilenames,
                         startIndex,
                         levels,
                         claimantTypes,
@@ -199,11 +186,10 @@ public class DW_BarChart extends Chart_Bar {
             ArrayList<String> tenureTypes,
             ArrayList<String> types,
             ArrayList<String> distanceTypes,
-            ArrayList<Double> distances) {
+            ArrayList<Double> distances) throws IOException, Exception {
 
         format = "PNG";
-        File dirOut;
-        dirOut = new File(env.files.getOutputSHBEPlotsDir(), "BarCharts");
+        Path dirOut = Paths.get(env.files.getOutputSHBEPlotsDir().toString(), "BarCharts");
         dirOut = env.files.getUODir(dirOut, doUnderOccupied, doCouncil);
         Iterator<String> levelsIte;
         Iterator<String> claimantTypesIte;
@@ -212,78 +198,59 @@ public class DW_BarChart extends Chart_Bar {
         Iterator<String> distanceTypesIte;
         Iterator<Double> distancesIte;
 
-        SHBE_Handler tDW_SHBE_Handler;
-        tDW_SHBE_Handler = env.getSHBE_Handler();
+        SHBE_Handler shbeHandler = env.getSHBE_Handler();
 
         for (int i = startIndex + 1; i < SHBEFilenames.length; i++) {
             String aSHBEFilename = SHBEFilenames[i];
-            String month = tDW_SHBE_Handler.getMonth(aSHBEFilename);
-            String year = tDW_SHBE_Handler.getYear(aSHBEFilename);
+            String month = shbeHandler.getMonth(aSHBEFilename);
+            String year = shbeHandler.getYear(aSHBEFilename);
 
             levelsIte = levels.iterator();
             while (levelsIte.hasNext()) {
                 String level = levelsIte.next();
-                File dirOut2 = new File(
-                        dirOut,
-                        level);
+                Path dirOut2 = Paths.get(dirOut.toString(), level);
                 claimantTypesIte = claimantTypes.iterator();
                 while (claimantTypesIte.hasNext()) {
-                    String claimantType;
-                    claimantType = claimantTypesIte.next();
-                    File dirOut3 = new File(
-                            dirOut2,
-                            claimantType);
+                    String claimantType = claimantTypesIte.next();
+                    Path dirOut3 = Paths.get(dirOut2.toString(), claimantType);
                     tenureTypesIte = tenureTypes.iterator();
                     while (tenureTypesIte.hasNext()) {
-                        String tenure;
-                        tenure = tenureTypesIte.next();
+                        String tenure = tenureTypesIte.next();
                         // Do types
                         typesIte = types.iterator();
                         while (typesIte.hasNext()) {
-                            String type;
-                            type = typesIte.next();
-                            File dirOut4 = new File(dirOut3, type);
-                            dirOut4 = new File(dirOut4, tenure);
-                            dirOut4.mkdirs();
-                            File fout;
-                            fout = new File(dirOut4, year + month + "BarChart.PNG");
+                            String type = typesIte.next();
+                            Path dirOut4 = Paths.get(dirOut3.toString(), type, tenure);
+                            Files.createDirectories(dirOut4);
+                            Path fout = Paths.get(dirOut4.toString(), 
+                                    year + month + "BarChart.PNG");
                             title = year + " " + month + " Bar Chart";
                             xAxisLabel = type + " Count";
-                            File dirIn = new File(env.files.getGeneratedSHBEDir(
-                                    level, doUnderOccupied, doCouncil),
-                                    type);
-                            dirIn = new File(dirIn, claimantType);
-                            dirIn = new File(dirIn, tenure);
-                            File fin = new File(dirIn, "" + year + month + ".csv");
+                            Path fin = Paths.get(env.files.getGeneratedSHBEDir(
+                                    level, doUnderOccupied, doCouncil).toString(),
+                                    type, claimantType, tenure, "" + year + month + ".csv");
                             generateBarChart(level, fout, fin, format, title);
                         }
                         // Do distance types
                         distanceTypesIte = distanceTypes.iterator();
                         while (distanceTypesIte.hasNext()) {
-                            String distanceType;
-                            distanceType = distanceTypesIte.next();
+                            String distanceType = distanceTypesIte.next();
                             distancesIte = distances.iterator();
                             while (distancesIte.hasNext()) {
                                 Double distanceThreshold = distancesIte.next();
-                                File dir;
-                                dir = env.files.getOutputSHBEPlotsDir();
-                                dir = new File(dir, level);
-                                dir = new File(dir, claimantType);
-                                dir = new File(dir, distanceType);
-                                dir = new File(dir, tenure);
-                                dir = new File(dir, distanceThreshold.toString());
-                                dir.mkdirs();
-                                File fout;
-                                fout = new File(dir, year + month + "BarChart.PNG");
+                                Path dir = Paths.get(
+                                        env.files.getOutputSHBEPlotsDir().toString(),
+                                        level, claimantType, distanceType, 
+                                        tenure, distanceThreshold.toString());
+                                Files.createDirectories(dir);
+                                Path fout = Paths.get(dir.toString(),
+                                        year + month + "BarChart.PNG");
                                 title = year + " " + month + " Bar Chart";
                                 xAxisLabel = distanceType + " " + distanceThreshold + " Count";
-                                dir = new File(env.files.getGeneratedSHBEDir(
-                                        level, doUnderOccupied, doCouncil),
-                                        distanceType);
-                                dir = new File(dir, claimantType);
-                                dir = new File(dir, tenure);
-                                dir = new File(dir, "" + distanceThreshold);
-                                File fin = new File(dir, "" + year + month + ".csv");
+                                Path fin = Paths.get(env.files.getGeneratedSHBEDir(
+                                        level, doUnderOccupied, doCouncil).toString(),
+                                        distanceType, claimantType, tenure,
+                                        "" + distanceThreshold, "" + year + month + ".csv");
                                 generateBarChart(level, fout, fin, format, title);
                             }
                         }
@@ -294,7 +261,7 @@ public class DW_BarChart extends Chart_Bar {
         this.exec.shutdownExecutorService(executorService, future, this);
     }
 
-    private void generateBarChart(String level, File fout, File fin, String format, String title) {
+    private void generateBarChart(String level, Path fout, Path fin, String format, String title) {
         try {
             Chart_Bar chart = new Chart_Bar(env.ge, executorService,
                     fout, format, title, dataWidth, dataHeight, xAxisLabel,
@@ -322,7 +289,7 @@ public class DW_BarChart extends Chart_Bar {
         }
     }
 
-    public Object[] getData(String level, File f, int numberOfBars) {
+    public Object[] getData(String level, Path f, int numberOfBars) {
         DW_Table table = new DW_Table(env);
         Object[] result;
         result = new Object[3];
@@ -343,16 +310,13 @@ public class DW_BarChart extends Chart_Bar {
         String header = ite.next();
         String[] headerSplit = header.split(","); // Could set the xAxisLabel and yAxisLabels from this!
         while (ite.hasNext()) {
-            String line;
-            line = ite.next();
-            String[] split;
-            split = line.split(",");
+            String line = ite.next();
+            String[] split = line.split(",");
             String areaCode = split[0].trim();
             map.put(areaCode, new BigDecimal(split[1].trim()));
         }
         // Add all the zeros
-        Set<String> keySet;
-        keySet = map.keySet();
+        Set<String> keySet = map.keySet();
         ite = areaCodes2.iterator();
         while (ite.hasNext()) {
             String areaCode;
@@ -413,38 +377,38 @@ public class DW_BarChart extends Chart_Bar {
 
     }
 
-    public void initAreaCodes(ArrayList<String> levels) {
+    public void initAreaCodes(ArrayList<String> levels) throws IOException, ClassNotFoundException {
 
         areaCodes = new HashMap<>();
         DW_Table table = new DW_Table(env);
         Iterator<String> ite = levels.iterator();
         while (ite.hasNext()) {
             String level = ite.next();
-            File dir;
-            File fin;
-            File fout;
+            Path dir;
+            Path fin;
+            Path fout;
             if (level.startsWith("Post")) {
-                dir = new File(env.files.getGeneratedPostcodeDir(), "Leeds");
-                dir = new File(dir, level);
-                fin = new File(dir, "AreaCodes.csv");
-                fout = new File(dir, "AreaCodes_HashSetString" + DW_Strings.sBinaryFileExtension);
+                dir = Paths.get(env.files.getGeneratedPostcodeDir().toString(),
+                        "Leeds", level);
+                fin = Paths.get(dir.toString(), "AreaCodes.csv");
+                fout = Paths.get(dir.toString(), "AreaCodes_HashSetString" + DW_Strings.sBinaryFileExtension);
             } else {
-                dir = new File(env.files.getInputCensus2011AttributeDataDir(level), "Leeds");
-                fin = new File(dir, "censusCodes.csv");
-                dir = new File(env.files.getGeneratedCensus2011Dir(level), "AttributeData");
-                dir = new File(dir, "Leeds");
-                dir.mkdirs();
-                fout = new File(dir, "AreaCodes_HashSetString" + DW_Strings.sBinaryFileExtension);
+                dir = Paths.get(env.files.getInputCensus2011AttributeDataDir(level).toString(), "Leeds");
+                fin = Paths.get(dir.toString(), "censusCodes.csv");
+                dir = Paths.get(env.files.getGeneratedCensus2011Dir(level).toString(),
+                        "AttributeData", "Leeds");
+                Files.createDirectories(dir);
+                fout = Paths.get(dir.toString(), "AreaCodes_HashSetString" + DW_Strings.sBinaryFileExtension);
             }
             HashSet<String> areaCodesForLevel;
-            if (fout.exists()) {
-                areaCodesForLevel = (HashSet<String>) env.ge.io.readObject(fout);
+            if (Files.exists(fout)) {
+                areaCodesForLevel = (HashSet<String>) Generic_IO.readObject(fout);
             } else {
                 ArrayList<String> lines;
                 lines = table.readCSV(fin);
                 areaCodesForLevel = new HashSet<>();
                 areaCodesForLevel.addAll(lines);
-                env.ge.io.writeObject(areaCodesForLevel, fout);
+                Generic_IO.writeObject(areaCodesForLevel, fout);
             }
             areaCodes.put(level, areaCodesForLevel);
         }

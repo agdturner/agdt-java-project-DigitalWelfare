@@ -22,12 +22,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_Shapefile;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.geotools.Geotools_Shapefile;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.projects.dw.process.DW_DensityMapsAbstract;
 //import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMapsLCC.getYM3s;
-import uk.ac.leeds.ccg.andyt.vector.core.Vector_Environment;
+import uk.ac.leeds.ccg.vector.core.Vector_Environment;
 
 /**
  *

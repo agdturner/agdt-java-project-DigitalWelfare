@@ -1,70 +1,54 @@
-/*
- * Copyright (C) 2014 geoagdt.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
- */
 package uk.ac.leeds.ccg.projects.dw.process.lcc;
 
 import java.awt.Color;
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.agdt.data.ukp.data.UKP_Data;
-import uk.ac.leeds.ccg.agdt.data.ukp.data.onspd.ONSPD_Point;
-import uk.ac.leeds.ccg.agdt.data.ukp.util.UKP_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_Shapefile;
-import uk.ac.leeds.ccg.andyt.geotools.Geotools_StyleParameters;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_Dimensions;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_AbstractGridNumber;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDouble;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.chunk.Grids_GridChunkDoubleArrayFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.Grids_GridDoubleFactory;
-import uk.ac.leeds.ccg.andyt.grids.core.Grids_Environment;
-import uk.ac.leeds.ccg.andyt.grids.core.grid.stats.Grids_GridDoubleStatsNotUpdated;
-import uk.ac.leeds.ccg.andyt.grids.io.Grids_ESRIAsciiGridExporter;
-import uk.ac.leeds.ccg.andyt.grids.io.Grids_Files;
-import uk.ac.leeds.ccg.andyt.grids.io.Grids_ImageExporter;
-import uk.ac.leeds.ccg.andyt.grids.process.Grids_ProcessorGWS;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
-import uk.ac.leeds.ccg.projects.dw.visualisation.mapping.DW_AreaCodesAndShapefiles;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.data.ukp.data.UKP_Data;
+import uk.ac.leeds.ccg.data.ukp.data.onspd.ONSPD_Point;
+import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
+import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_ClaimID;
+import uk.ac.leeds.ccg.data.shbe.core.SHBE_Strings;
+import uk.ac.leeds.ccg.geotools.Geotools_Shapefile;
+import uk.ac.leeds.ccg.geotools.Geotools_StyleParameters;
+import uk.ac.leeds.ccg.grids.d2.Grids_Dimensions;
+import uk.ac.leeds.ccg.grids.d2.grid.Grids_GridNumber;
+import uk.ac.leeds.ccg.grids.d2.grid.d.Grids_GridDouble;
+import uk.ac.leeds.ccg.grids.d2.grid.d.Grids_GridFactoryDouble;
+import uk.ac.leeds.ccg.grids.core.Grids_Environment;
+import uk.ac.leeds.ccg.grids.io.Grids_ESRIAsciiGridExporter;
+import uk.ac.leeds.ccg.grids.io.Grids_Files;
+import uk.ac.leeds.ccg.grids.io.Grids_ImageExporter;
+import uk.ac.leeds.ccg.grids.process.Grids_ProcessorGWS;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Records;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_D_Record;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Record;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.generic.io.Generic_Path;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Data;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Record;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Set;
 import uk.ac.leeds.ccg.projects.dw.process.DW_DensityMapsAbstract;
+import uk.ac.leeds.ccg.projects.dw.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.projects.dw.visualisation.mapping.DW_Geotools;
 import uk.ac.leeds.ccg.projects.dw.visualisation.mapping.DW_MapsLCC;
 import uk.ac.leeds.ccg.projects.dw.visualisation.mapping.DW_Shapefile;
-//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.process.DW_LineMaps_LCC.getAllTenancyTypeGroups;
-//import static uk.ac.leeds.ccg.andyt.projects.digitalwelfare.visualisation.mapping.Maps.initONSPDLookups;
+//import static uk.ac.leeds.ccg.projects.digitalwelfare.process.DW_LineMaps_LCC.getAllTenancyTypeGroups;
+//import static uk.ac.leeds.ccg.projects.digitalwelfare.visualisation.mapping.maps.initONSPDLookups;
 
 /**
- *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 
@@ -88,7 +72,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
     public void run() throws Exception, Error {
         // If showMapsInJMapPane is true, the maps are presented in individual 
         // JMapPanes
-//        Maps.setShowMapsInJMapPane(false);
+//        maps.setShowMapsInJMapPane(false);
         //showMapsInJMapPane = true;
         //outputESRIAsciigrids = false;
         //initONSPDLookups();
@@ -105,27 +89,25 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //        for (int i = 0; i < paletteNames.length; i++) {
 //            System.out.println(paletteNames[i]);
 //        }
-        Geotools_StyleParameters sp  = new Geotools_StyleParameters();
+        Geotools_StyleParameters sp = new Geotools_StyleParameters();
         sp.setnClasses(9);
         sp.setPaletteName("Reds");
         sp.setAddWhiteForZero(true);
 //        Geotools_StyleParameters.setForegroundStyleTitle0("Foreground Style 0");
 //        Geotools_StyleParameters.setForegroundStyles(DW_Style.createDefaultPointStyle());
 //        Geotools_StyleParameters.setForegroundStyles(DW_Style.createAdviceLeedsPointStyles());
-        sp.setForegroundStyle1(
-                Geotools.getStyle().createDefaultPolygonStyle(
-                        //Color.GREEN,
-                        Color.BLACK,
-                        Color.WHITE));
+        sp.setForegroundStyle1(Geotools.getStyle().createDefaultPolygonStyle(
+                //Color.GREEN,
+                Color.BLACK,
+                Color.WHITE));
         sp.setForegroundStyleTitle1("Foreground Style 1");
         MapsLCC.setStyleParameters(sp);
 
-        File generatedGridsDirectory  = new File( files.getGeneratedGridsDir(),
-                "Density");
+        Generic_Path generatedGridsDirectory = new Generic_Path(
+                Paths.get(files.getGeneratedGridsDir().toString(), "Density"));
 //        MapsLCC.setMapDirectory(mapDirectory);
 
-        int imageWidth;
-        imageWidth = 2000;
+        int imageWidth = 2000;
 //        MapsLCC.setImageWidth(imageWidth);
 
 //        foregroundDW_Shapefile0 = getAdviceLeedsPointDW_Shapefiles();
@@ -139,18 +121,19 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         eage = new Grids_ESRIAsciiGridExporter(ge);
         ie = new Grids_ImageExporter(ge);
         gp = new Grids_ProcessorGWS(ge);
-        gcf = new Grids_GridChunkDoubleArrayFactory();
+//        gcf = new Grids_ChunkFactoryDoubleArray();
         chunkNRows = 300;//250; //64
         chunkNCols = 350;//300; //64
-        gf = new Grids_GridDoubleFactory(
-                ge,
-                gp.GridChunkDoubleFactory,
-                gp.DefaultGridChunkDoubleFactory,
-                9999.0d,
-                chunkNRows,
-                chunkNCols,
-                new Grids_Dimensions(chunkNRows, chunkNCols),
-                new Grids_GridDoubleStatsNotUpdated(ge));
+        gf = gp.gridFactoryDouble;
+//        new Grids_GridFactoryDouble(
+//                ge,
+//                gp.GridChunkDoubleFactory,
+//                gp.DefaultGridChunkDoubleFactory,
+//                9999.0d,
+//                chunkNRows,
+//                chunkNCols,
+//                new Grids_Dimensions(chunkNRows, chunkNCols),
+//                new Grids_GridDoubleStatsNotUpdated(ge));
 //        // Jenks runs
 //        styleParameters.setClassificationFunctionName("Jenks");
 //        commonStyling = true;
@@ -170,19 +153,19 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 
         //int resolutionMultiplier = 4;
         cellsize = 50;
-        maxCellDistanceForGeneralisation = 4; // 8;
+        mcdg = 4; // 8;
         runAll();
         //runRateMaps();
 
-//        for (maxCellDistanceForGeneralisation = 4; maxCellDistanceForGeneralisation <= 32; maxCellDistanceForGeneralisation *= 2) {
-//            cellsize = (1600 / maxCellDistanceForGeneralisation) / resolutionMultiplier;
+//        for (mcdg = 4; mcdg <= 32; mcdg *= 2) {
+//            cellsize = (1600 / mcdg) / resolutionMultiplier;
 //            runAll(resolutionMultiplier);
 //        }
     }
 
     private void init() throws IOException {
         //initStyleParameters();
-        File mapDirectory;
+        Path mapDirectory;
         mapDirectory = files.getOutputSHBELineMapsDir();
 //        MapsLCC.setMapDirectory(mapDirectory);
         foregrounds = new ArrayList<>();
@@ -199,23 +182,27 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //        foregroundDW_Shapefile1 = tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
     }
 
-    public void runRateMaps() throws IOException {
-        File dirOut  = new File( files.getOutputSHBEMapsDir(),  "Density");
+    public void runRateMaps() throws IOException, Exception {
+        // Parameters for density maps
+        BigDecimal wi = BigDecimal.ONE; // weight intersect
+        int wf = 2; // weight factor
+        int dp = 2; // decimal places
+        RoundingMode rm = RoundingMode.HALF_UP; // RoundingMode
 
-        String[] SHBEFilenames;
-        SHBEFilenames = env.getSHBE_Handler().getSHBEFilenamesAll();
+        Path dirOut = Paths.get(files.getOutputSHBEMapsDir().toString(), "Density");
+
+        String[] fns = env.getSHBE_Handler().getFilenames();
         // Specifiy distances
-        ArrayList<Double> distances;
-        distances = new ArrayList<>();
-        for (double distance = 1000.0d; distance < 5000.0d; distance += 1000.0d) {
+        ArrayList<Double> distances = new ArrayList<>();
+        for (double d = 1000.0d; d < 5000.0d; d += 1000.0d) {
 //        for (double distance = 1000.0d; distance < 2000.0d; distance += 1000.0d) {
-            distances.add(distance);
+            distances.add(d);
         }
         // Set grid dimensions    
 //        int multiplier;
 //        multiplier = (int) (400 / cellsize);
-        DW_Shapefile backgroundDW_Shapefile;
-        backgroundDW_Shapefile = LSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
+        DW_Shapefile backgroundDW_Shapefile
+                = LSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
 //        MapsLCC.setBackgroundDW_Shapefile(backgroundDW_Shapefile);
 //        backgroundDW_Shapefile = new DW_Shapefile(f);
         //foregroundDW_Shapefile0 = new ArrayList<AGDT_Shapefile>();
@@ -243,62 +230,59 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         boolean overlaycommunityAreas;
         overlaycommunityAreas = true;
 //        overlaycommunityAreas = false;
-        File dirOut1;
+        Path dirOut1;
         if (overlaycommunityAreas) {
             foregroundDW_Shapefile1 = MapsLCC.getCommunityAreasDW_Shapefile();
-            dirOut1 = new File(dirOut, "CommunityAreasOverlaid");
+            dirOut1 = Paths.get(dirOut.toString(), "CommunityAreasOverlaid");
         } else {
-            dirOut1 = new File(dirOut, "LADOverlaid");
+            dirOut1 = Paths.get(dirOut.toString(), "LADOverlaid");
             foregroundDW_Shapefile1 = LSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
         }
-        Grids_GridDoubleFactory f = new Grids_GridDoubleFactory(
-                ge,
-                gp.GridChunkDoubleFactory,
-                gp.DefaultGridChunkDoubleFactory,
-                -9999.0,
-                chunkNRows,
-                chunkNCols,
-                dimensions,
-                new Grids_GridDoubleStatsNotUpdated(ge));
-        Grids_ProcessorGWS p;
-        p = new Grids_ProcessorGWS(ge);
+//        Grids_GridDoubleFactory f = new Grids_GridDoubleFactory(
+//                ge,
+//                gp.GridChunkDoubleFactory,
+//                gp.DefaultGridChunkDoubleFactory,
+//                -9999.0,
+//                chunkNRows,
+//                chunkNCols,
+//                dimensions,
+//                new Grids_GridDoubleStatsNotUpdated(ge));
+        Grids_ProcessorGWS p = new Grids_ProcessorGWS(ge);
+        Grids_GridFactoryDouble f = p.gridFactoryDouble;
 
         Grids_GridDouble numerator;
         Grids_GridDouble denominator1;
         Grids_GridDouble denominator2;
         Grids_GridDouble rate;
-        Grids_Files gfiles  = ge.files;
-        File dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
-        rate = (Grids_GridDouble) f.create(dir, nrows, ncols);
+        Grids_Files gfiles = ge.files;
+        //Path dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
+        rate = (Grids_GridDouble) f.create(nrows, ncols);
 
         int index;
         index = 0;
         List<String> stats = new ArrayList<>();
         stats.add("WSum");
 
-        File dirIn;
-        dirIn = new File(
-                dirOut,
-                "AllPT/UO/All/CommunityAreasOverlaid/MonthlyUO/Social");
-        File numeratorFile;
-        File denominatorFile;
+        Path dirIn = Paths.get(dirOut.toString(), "AllPT", "UO", "All",
+                "CommunityAreasOverlaid/MonthlyUO/Social");
+        Path numeratorFile;
+        Path denominatorFile;
         if (false) {
-            numeratorFile = new File(dirIn, "2013_AprMinus2015_Oct.asc");
-            dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
-            if (numeratorFile.exists()) {
-                numerator = (Grids_GridDouble) f.create(dir, numeratorFile);
+            numeratorFile = Paths.get(dirIn.toString(), "2013_AprMinus2015_Oct.asc");
+            //dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
+            if (Files.exists(numeratorFile)) {
+                numerator = (Grids_GridDouble) f.create(new Generic_Path(numeratorFile));
                 System.out.println(numerator.toString());
             } else {
                 int debug = 1;
             }
-            denominatorFile = new File(dirIn,
-                    "2013_Apr/Density2013_Apr_554_ncols_680_cellsize_50.0.asc");
-            denominator1 = (Grids_GridDouble) f.create(dir, denominatorFile);
+            denominatorFile = Paths.get(dirIn.toString(), "2013_Apr",
+                    "Density2013_Apr_554_ncols_680_cellsize_50.0.asc");
+            denominator1 = (Grids_GridDouble) f.create(new Generic_Path(denominatorFile));
             System.out.println(denominator1.toString());
-            denominatorFile = new File(
-                    dirIn,
-                    "2015_Oct/Density2015_Oct_554_ncols_680_cellsize_50.0.asc");
-            denominator2 = (Grids_GridDouble) f.create(dir, denominatorFile);
+            denominatorFile = Paths.get(dirIn.toString(), "2015_Oct",
+                    "Density2015_Oct_554_ncols_680_cellsize_50.0.asc");
+            denominator2 = (Grids_GridDouble) f.create(new Generic_Path(denominatorFile));
             System.out.println(denominator2.toString());
             //p.addToGrid(denominator1, denominator2, handleOutOfMemoryErrors);
             //System.out.println(denominator1.toString(handleOutOfMemoryErrors));
@@ -320,42 +304,35 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
             }
             System.out.println(rate.toString());
 
-            //int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
-            for (int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
-                    cellDistanceForGeneralisation > 1; cellDistanceForGeneralisation /= 2) {
+            //int cellDistanceForGeneralisation = mcdg;
+            for (int cdg = mcdg; cdg > 1; cdg /= 2) {
                 index++;
-                double distance = maxCellDistanceForGeneralisation * cellsize;
-                double weightIntersect = 1.0d;
-                double weightFactor = 2.0d;
+                BigDecimal dist = new BigDecimal(cdg * cellsize);
+
                 // RegionUnivariateStatistics
-                List<Grids_AbstractGridNumber> gws;
-                gws = gp.regionUnivariateStatistics(rate, stats, distance, weightIntersect, weightFactor, gf);
-                Iterator<Grids_AbstractGridNumber> itegws;
-                itegws = gws.iterator();
-                // Set normaliser part of the result to null to save space
-                Grids_AbstractGridNumber normaliser = itegws.next();
-                normaliser = null;
+                List<Grids_GridNumber> gws = gp.regionUnivariateStatistics(rate,
+                        stats, dist, wi, wf, gf, dp, rm);
+                Iterator<Grids_GridNumber> itegws = gws.iterator();
+//                // Set normaliser part of the result to null to save space
+//                Grids_GridNumber normaliser = itegws.next();
+//                normaliser = null;
                 // Write out grid
-                Grids_AbstractGridNumber gwsgrid = itegws.next();
+                Grids_GridNumber gwsgrid = itegws.next();
                 String outputName2;
-                outputName2 = "Rate" + "GWS_" + cellDistanceForGeneralisation;// + "_" + i;
-//                        imageFile = new File(
+                outputName2 = "Rate" + "GWS_" + cdg;// + "_" + i;
+//                        imageFile = Paths.get(
 //                                outletmapDirectory,
 //                                outputName + ".png");
 //                        ie.toGreyScaleImage(gwsgrid, gp, imageFile, "png", handleOutOfMemoryErrors);
 
-                File asciigridFile = new File(
-                        dirIn,
+                Path asciigridFile = Paths.get(dirIn.toString(),
                         //dirOut1,
                         outputName2 + ".asc");
                 eage.toAsciiFile(gwsgrid, asciigridFile);
 
                 boolean scaleToFirst = false;
-                outputGrid((Grids_GridDouble) gwsgrid,
-                        dirOut1,
-                        outputName2,
-                        "name" + index,
-                        scaleToFirst);
+                outputGrid((Grids_GridDouble) gwsgrid, dirOut1, outputName2,
+                        "name" + index, scaleToFirst);
 
 //            // outputGridToImageUsingGeoToolsAndSetCommonStyle - this styles everything too
 //            outputGridToImageUsingGeoToolsAndSetCommonStyle(
@@ -382,21 +359,17 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         ArrayList<Integer> include;
         include = includes.get("MonthlyUO");
 
-        File dirOut2;
-        dirOut2 = new File(
-                dirOut1,
-                "Clustering");
-        dirOut2.mkdirs();
+        Path dirOut2;
+        dirOut2 = Paths.get(dirOut1.toString(), "Clustering");
+        Files.createDirectories(dirOut2);
         Iterator<Integer> includesIte;
         String type = "Social";
 
-        SHBE_Handler tSHBE_Handler;
-        tSHBE_Handler = env.getSHBE_Handler();
+        SHBE_Handler shbeHandler = env.getSHBE_Handler();
 
 //        if (true) {
         if (true) {
-            File dirIn2 = new File(
-                    dirOut1,
+            Path dirIn2 = Paths.get(dirOut1.toString(),
                     "AllPT/CommunityAreasOverlaid/MonthlyUO/" + type);
             includesIte = include.iterator();
             int i;
@@ -404,18 +377,16 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
             String month;
             while (includesIte.hasNext()) {
                 i = includesIte.next();
-                year = tSHBE_Handler.getYear(SHBEFilenames[i]);
-                month = tSHBE_Handler.getMonth3(SHBEFilenames[i]);
-                numeratorFile = new File(
-                        dirIn,
-                        year + "_" + month + "/Density" + year + "_" + month + "_554_ncols_680_cellsize_50.0.asc");
-                dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
-                numerator = (Grids_GridDouble) f.create(dir, numeratorFile);
-                denominatorFile = new File(
-                        dirIn2,
-                        year + "_" + month + "/Density" + year + "_" + month + "_554_ncols_680_cellsize_50.0.asc");
-                dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
-                denominator2 = (Grids_GridDouble) f.create(dir, denominatorFile);
+                year = shbeHandler.getYear(fns[i]);
+                month = shbeHandler.getMonth3(fns[i]);
+                numeratorFile = Paths.get(dirIn.toString(), year + "_" + month,
+                        "Density" + year + "_" + month + "_554_ncols_680_cellsize_50.0.asc");
+                //dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
+                numerator = (Grids_GridDouble) f.create(new Generic_Path(numeratorFile));
+                denominatorFile = Paths.get(dirIn2.toString(), year + "_" + month,
+                        "Density" + year + "_" + month + "_554_ncols_680_cellsize_50.0.asc");
+                //dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
+                denominator2 = (Grids_GridDouble) f.create(new Generic_Path(denominatorFile));
                 System.out.println(denominator2.toString());
                 //p.addToGrid(denominator1, denominator2);
                 //System.out.println(denominator1.toString());
@@ -435,40 +406,27 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 }
                 System.out.println(rate.toString());
 
-                //int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
-                for (int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
-                        cellDistanceForGeneralisation > 1; cellDistanceForGeneralisation /= 2) {
+                //int cellDistanceForGeneralisation = mcdg;
+                for (int cdg = mcdg; cdg > 1; cdg /= 2) {
                     index++;
-                    double distance = maxCellDistanceForGeneralisation * cellsize;
-                    double weightIntersect = 1.0d;
-                    double weightFactor = 2.0d;
+                    BigDecimal dist = new BigDecimal(cdg * cellsize);
                     // RegionUnivariateStatistics
-                    List<Grids_AbstractGridNumber> gws;
-                    gws = gp.regionUnivariateStatistics(
-                            rate,
-                            stats,
-                            distance,
-                            weightIntersect,
-                            weightFactor,
-                            gf);
-                    Iterator<Grids_AbstractGridNumber> itegws;
-                    itegws = gws.iterator();
-                    // Set normaliser part of the result to null to save space
-                    Grids_AbstractGridNumber normaliser = itegws.next();
-                    normaliser = null;
+                    List<Grids_GridNumber> gws = gp.regionUnivariateStatistics(
+                            rate, stats, dist, wi, wf, gf, dp, rm);
+                    Iterator<Grids_GridNumber> itegws = gws.iterator();
+//                    // Set normaliser part of the result to null to save space
+//                    Grids_GridNumber normaliser = itegws.next();
+//                    normaliser = null;
                     // Write out grid
-                    Grids_AbstractGridNumber gwsgrid = itegws.next();
-                    String outputName2;
-                    outputName2 = year + "_" + month + "UO_Over_All_" + type + "_Rate";
+                    Grids_GridNumber gwsgrid = itegws.next();
+                    String outputName2 = year + "_" + month + "UO_Over_All_" + type + "_Rate";
 //                            + "GWS_" + cellDistanceForGeneralisation;// + "_" + i;
-//                        imageFile = new File(
+//                        imageFile = Paths.get(
 //                                outletmapDirectory,
 //                                outputName + ".png");
 //                        ie.toGreyScaleImage(gwsgrid, gp, imageFile, "png", handleOutOfMemoryErrors);
 
-                    File asciigridFile = new File(
-                            dirIn,
-                            outputName2 + ".asc");
+                    Path asciigridFile = Paths.get(dirIn.toString(), outputName2 + ".asc");
                     eage.toAsciiFile(gwsgrid, asciigridFile);
 
                     boolean scaleToFirst = false;
@@ -491,24 +449,22 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
             String year;
             String month;
             i = includesIte.next();
-            year0 = tSHBE_Handler.getYear(SHBEFilenames[i]);
-            month0 = tSHBE_Handler.getMonth3(SHBEFilenames[i]);
+            year0 = shbeHandler.getYear(fns[i]);
+            month0 = shbeHandler.getMonth3(fns[i]);
             year00 = year0;
             month00 = month0;
             while (includesIte.hasNext()) {
                 i = includesIte.next();
-                year = tSHBE_Handler.getYear(SHBEFilenames[i]);
-                month = tSHBE_Handler.getMonth3(SHBEFilenames[i]);
-                numeratorFile = new File(
-                        dirOut2,
+                year = shbeHandler.getYear(fns[i]);
+                month = shbeHandler.getMonth3(fns[i]);
+                numeratorFile = Paths.get(dirOut2.toString(),
                         year0 + "_" + month0 + "UO_Over_All_" + type + "_Rate.asc");
-                dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
-                numerator = (Grids_GridDouble) f.create(dir, numeratorFile);
-                denominatorFile = new File(
-                        dirOut2,
+                //dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
+                numerator = (Grids_GridDouble) f.create(new Generic_Path(numeratorFile));
+                denominatorFile = Paths.get(dirOut2.toString(),
                         year + "_" + month + "UO_Over_All_" + type + "_Rate.asc");
-                dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
-                denominator2 = (Grids_GridDouble) f.create(dir, denominatorFile);
+                //dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
+                denominator2 = (Grids_GridDouble) f.create(new Generic_Path(denominatorFile));
                 System.out.println(denominator2.toString());
                 //p.addToGrid(denominator1, denominator2, handleOutOfMemoryErrors);
                 //System.out.println(denominator1.toString(handleOutOfMemoryErrors));
@@ -524,61 +480,46 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 }
                 System.out.println(rate.toString());
 
-                //int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
-                for (int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
-                        cellDistanceForGeneralisation > 1; cellDistanceForGeneralisation /= 2) {
+                //int cellDistanceForGeneralisation = mcdg;
+                for (int cdg = mcdg; cdg > 1; cdg /= 2) {
                     index++;
-                    double distance = maxCellDistanceForGeneralisation * cellsize;
-                    double weightIntersect = 1.0d;
-                    double weightFactor = 2.0d;
+                    BigDecimal dist = new BigDecimal(cdg * cellsize);
                     // RegionUnivariateStatistics
-                    List<Grids_AbstractGridNumber> gws;
-                    gws = gp.regionUnivariateStatistics(
-                            rate,
-                            stats,
-                            distance,
-                            weightIntersect,
-                            weightFactor,
-                            gf);
-                    Iterator<Grids_AbstractGridNumber> itegws;
-                    itegws = gws.iterator();
-                    // Set normaliser part of the result to null to save space
-                    Grids_AbstractGridNumber normaliser = itegws.next();
-                    normaliser = null;
+                    List<Grids_GridNumber> gws = gp.regionUnivariateStatistics(
+                            rate, stats, dist, wi, wf, gf, dp, rm);
+                    Iterator<Grids_GridNumber> itegws = gws.iterator();
+//                    // Set normaliser part of the result to null to save space
+//                    Grids_GridNumber normaliser = itegws.next();
+//                    normaliser = null;
                     // Write out grid
-                    Grids_AbstractGridNumber gwsgrid = itegws.next();
-                    String outputName2;
-                    outputName2 = year0 + month0 + "To" + year + month + "_" + type + "_Diff" + cellDistanceForGeneralisation;// + "_" + i;
-//                        imageFile = new File(
+                    Grids_GridNumber gwsgrid = itegws.next();
+                    String outputName2 = year0 + month0 + "To" + year + month
+                            + "_" + type + "_Diff" + cdg;// + "_" + i;
+//                        imageFile = Paths.get(
 //                                outletmapDirectory,
 //                                outputName + ".png");
 //                        ie.toGreyScaleImage(gwsgrid, gp, imageFile, "png", handleOutOfMemoryErrors);
 
-                    File asciigridFile = new File(
-                            dirIn,
+                    Path asciigridFile = Paths.get(dirIn.toString(),
                             outputName2 + ".asc");
                     eage.toAsciiFile(gwsgrid, asciigridFile);
 
                     boolean scaleToFirst = false;
-                    outputGrid((Grids_GridDouble) gwsgrid,
-                            dirOut2,
-                            outputName2,
-                            "name" + index,
-                            scaleToFirst);
+                    outputGrid((Grids_GridDouble) gwsgrid, dirOut2, outputName2,
+                            "name" + index, scaleToFirst);
                 }
                 year0 = year;
                 month0 = month;
             }
 
-            numeratorFile = new File(dirOut2,
+            numeratorFile = Paths.get(dirOut2.toString(),
                     year00 + "_" + month00 + "UO_Over_All_" + type + "_Rate.asc");
-            dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
-            numerator = (Grids_GridDouble) f.create(dir, numeratorFile);
-            denominatorFile = new File(
-                    dirOut2,
+            //dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
+            numerator = (Grids_GridDouble) f.create(new Generic_Path(numeratorFile));
+            denominatorFile = Paths.get(dirOut2.toString(),
                     year0 + "_" + month0 + "UO_Over_All_" + type + "_Rate.asc");
-            dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
-            denominator2 = (Grids_GridDouble) f.create(dir, denominatorFile);
+//            dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
+            denominator2 = (Grids_GridDouble) f.create(new Generic_Path(denominatorFile));
             System.out.println(denominator2.toString());
             //p.addToGrid(denominator1, denominator2, handleOutOfMemoryErrors);
             //System.out.println(denominator1.toString(handleOutOfMemoryErrors));
@@ -593,38 +534,27 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 }
             }
             System.out.println(rate.toString());
-            //int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
-            for (int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
-                    cellDistanceForGeneralisation > 1; cellDistanceForGeneralisation /= 2) {
+            //int cellDistanceForGeneralisation = mcdg;
+            for (int cdg = mcdg; cdg > 1; cdg /= 2) {
                 index++;
-                double distance = maxCellDistanceForGeneralisation * cellsize;
-                double weightIntersect = 1.0d;
-                double weightFactor = 2.0d;
+                BigDecimal dist = new BigDecimal(cdg * cellsize);
                 // RegionUnivariateStatistics
-                List<Grids_AbstractGridNumber> gws;
-                gws = gp.regionUnivariateStatistics(
-                        rate,
-                        stats,
-                        distance,
-                        weightIntersect,
-                        weightFactor,
-                        gf);
-                Iterator<Grids_AbstractGridNumber> itegws;
-                itegws = gws.iterator();
-                // Set normaliser part of the result to null to save space
-                Grids_AbstractGridNumber normaliser = itegws.next();
-                normaliser = null;
+                List<Grids_GridNumber> gws = gp.regionUnivariateStatistics(
+                        rate, stats, dist, wi, wf, gf, dp, rm);// Set normaliser part of the result to null to save space
+//                Grids_GridNumber normaliser = itegws.next();
+//                
+                Iterator<Grids_GridNumber> itegws = gws.iterator();
+//                normaliser = null;
                 // Write out grid
-                Grids_AbstractGridNumber gwsgrid = itegws.next();
+                Grids_GridNumber gwsgrid = itegws.next();
                 String outputName2;
-                outputName2 = year00 + month00 + "To" + year0 + month0 + "_" + type + "_Diff" + cellDistanceForGeneralisation;// + "_" + i;
-//                        imageFile = new File(
+                outputName2 = year00 + month00 + "To" + year0 + month0 + "_" + type + "_Diff" + cdg;// + "_" + i;
+//                        imageFile = Paths.get(
 //                                outletmapDirectory,
 //                                outputName + ".png");
 //                        ie.toGreyScaleImage(gwsgrid, gp, imageFile, "png");
 
-                File asciigridFile = new File(
-                        dirIn,
+                Path asciigridFile = Paths.get(dirIn.toString(),
                         outputName2 + ".asc");
                 eage.toAsciiFile(gwsgrid, asciigridFile);
 
@@ -643,17 +573,11 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
     //public void runAll(int resolutionMultiplier) {
     public void runAll() throws Exception, Error {
         boolean scaleToFirst = false;
-        File dirOut;
-        dirOut = new File(
-                files.getOutputSHBEMapsDir(),
-                "Density");
-        SHBE_Handler tSHBE_Handler;
-        tSHBE_Handler = env.getSHBE_Handler();
-        String[] SHBEFilenames;
-        SHBEFilenames = tSHBE_Handler.getSHBEFilenamesAll();
+        Path dirOut = Paths.get(files.getOutputSHBEMapsDir().toString(), "Density");
+        SHBE_Handler shbeHandler = env.getSHBE_Handler();
+        String[] fns = shbeHandler.getFilenames();
 
-        DW_UO_Data DW_UO_Data;
-        DW_UO_Data = env.getUO_Data();
+        DW_UO_Data uoData = env.getUO_Data();
 
 //        Object[] ttgs = SHBE_TenancyType_Handler.getTenancyTypeGroups();
 //        HashMap<Boolean, TreeMap<String, ArrayList<String>>> tenancyTypeGroups;
@@ -676,7 +600,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 
         // Includes
         TreeMap<String, ArrayList<Integer>> includes;
-        includes = tSHBE_Handler.getIncludes();
+        includes = shbeHandler.getIncludes();
 //        includes.remove("All");
         includes.remove("Yearly");
         includes.remove("6Monthly");
@@ -731,22 +655,18 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //        paymentTypes.remove(tSHBE_Handler.sPaymentTypeSuspended);
 //        paymentTypes.remove(tSHBE_Handler.sPaymentTypeOther);
 
-        Iterator<String> inPaymentTypesIte;
-        inPaymentTypesIte = paymentTypes.iterator();
-        while (inPaymentTypesIte.hasNext()) {
-            String inPaymentType;
-            inPaymentType = inPaymentTypesIte.next();
-            File dirOut2 = new File(dirOut, inPaymentType);
+        Iterator<String> ptIte = paymentTypes.iterator();
+        while (ptIte.hasNext()) {
+            String inPT = ptIte.next();
+            Path dirOut2 = Paths.get(dirOut.toString(), inPT);
             boolean doUnderOccupied;
 //            doUnderOccupied = true;
 //            doUnderOccupied = false;
-            Iterator<Boolean> iteb;
-            iteb = b.iterator();
+            Iterator<Boolean> iteb = b.iterator();
             while (iteb.hasNext()) {
                 doUnderOccupied = iteb.next();
                 if (doUnderOccupied) {
-                    boolean overlaycommunityAreas;
-                    overlaycommunityAreas = true;
+                    boolean overlaycommunityAreas = true;
 //                        Iterator<Boolean> iteb3;
 //                        iteb3 = b.iterator();
 //                        while (iteb3.hasNext()) {
@@ -756,47 +676,47 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                     doRSL = true;
                     doCouncil = true;
                     run(
-                            inPaymentType,
+                            inPT,
                             allTenancyTypeGroups,
-                            DW_UO_Data,
+                            uoData,
                             doUnderOccupied,
                             doRSL,
                             doCouncil,
                             scaleToFirst,
                             files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
                             overlaycommunityAreas,
-                            SHBEFilenames,
-                            tSHBE_Handler,
+                            fns,
+                            shbeHandler,
                             includes);
                     doRSL = true;
                     doCouncil = false;
                     run(
-                            inPaymentType,
+                            inPT,
                             allTenancyTypeGroups,
-                            DW_UO_Data,
+                            uoData,
                             doUnderOccupied,
                             doRSL,
                             doCouncil,
                             scaleToFirst,
                             files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
                             overlaycommunityAreas,
-                            SHBEFilenames,
-                            tSHBE_Handler,
+                            fns,
+                            shbeHandler,
                             includes);
                     doRSL = false;
                     doCouncil = true;
                     run(
-                            inPaymentType,
+                            inPT,
                             allTenancyTypeGroups,
-                            DW_UO_Data,
+                            uoData,
                             doUnderOccupied,
                             doRSL,
                             doCouncil,
                             scaleToFirst,
                             files.getUOFile(dirOut2, doUnderOccupied, doCouncil, doRSL),
                             overlaycommunityAreas,
-                            SHBEFilenames,
-                            tSHBE_Handler,
+                            fns,
+                            shbeHandler,
                             includes);
 
 //                    }
@@ -808,21 +728,21 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //                    while (iteb3.hasNext()) {
 //                        boolean overlaycommunityAreas = iteb3.next();
                     run(
-                            inPaymentType,
+                            inPT,
                             allTenancyTypeGroups,
                             //                            tenancyTypeGroups,
                             //                            tenancyTypesGrouped,
                             //                            regulatedGroups,
                             //                            unregulatedGroups,
-                            DW_UO_Data,
+                            uoData,
                             doUnderOccupied,
                             false,
                             false,
                             scaleToFirst,
                             dirOut2,
                             overlaycommunityAreas,
-                            SHBEFilenames,
-                            tSHBE_Handler,
+                            fns,
+                            shbeHandler,
                             includes);
 //                        startIndex,
 //                        endIndex);
@@ -859,7 +779,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //            boolean doCouncil,
 //            boolean doRSL,
 //            boolean scaleToFirst,
-//            File dirOut,
+//            Path dirOut,
 //            String[] SHBEFilenames,
 //            SHBE_Handler tSHBE_Handler) {
 //
@@ -895,10 +815,10 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //                                TTs = ites.next();
 //                                String name;
 //                                name = DW_LineMaps_LCC.getName(TTs);
-//                                File dirOut2 = new File(
+//                                Path dirOut2 = Paths.get(
 //                                        dirOut,
 //                                        inPaymentType);
-//                                dirOut2 = new File(
+//                                dirOut2 = Paths.get(
 //                                        dirOut2,
 //                                        name);
 //                                Grids_GridDouble g0 = doDensity(
@@ -925,10 +845,10 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //                            TTs = ites.next();
 //                            String name;
 //                            name = DW_LineMaps_LCC.getName(TTs);
-//                            File dirOut2 = new File(
+//                            Path dirOut2 = Paths.get(
 //                                    dirOut,
 //                                    inPaymentType);
-//                            dirOut2 = new File(
+//                            dirOut2 = Paths.get(
 //                                    dirOut2,
 //                                    name);
 //                            Grids_GridDouble g0 = doDensity(
@@ -956,9 +876,9 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
             //            HashMap<Boolean, ArrayList<String>> regulatedGroups,
             //            HashMap<Boolean, ArrayList<String>> unregulatedGroups,
             DW_UO_Data DW_UO_Data, boolean doUnderOccupied, boolean doCouncil,
-            boolean doRSL, boolean scaleToFirst, File dirOut,
+            boolean doRSL, boolean scaleToFirst, Path dirOut,
             boolean overlaycommunityAreas, String[] SHBEFilenames,
-            SHBE_Handler tSHBE_Handler, 
+            SHBE_Handler tSHBE_Handler,
             TreeMap<String, ArrayList<Integer>> includes) throws Exception, Error {
 //        // Declare iterators
 //        Iterator<String> claimantTypesIte;
@@ -973,12 +893,12 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         DW_Shapefile backgroundDW_Shapefile;
         backgroundDW_Shapefile = LSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile();
 //        MapsLCC.setBackgroundDW_Shapefile(backgroundDW_Shapefile);
-        File dirOut1;
+        Path dirOut1;
         if (overlaycommunityAreas) {
 //            MapsLCC.setForegroundDW_Shapefile1(MapsLCC.getCommunityAreasDW_Shapefile());
-            dirOut1 = new File(dirOut, "CommunityAreasOverlaid");
+            dirOut1 = Paths.get(dirOut.toString(), "CommunityAreasOverlaid");
         } else {
-            dirOut1 = new File(dirOut, "LADOverlaid");
+            dirOut1 = Paths.get(dirOut.toString(), "LADOverlaid");
 //            MapsLCC.setForegroundDW_Shapefile1(tLSOACodesAndLeedsLSOAShapefile.getLeedsLADDW_Shapefile());
         }
         // Set grid dimensions    
@@ -1019,7 +939,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         String tenancyTypeGroupName;
         Iterator<String> includesIte;
         String includeName;
-        File dirOut2;
+        Path dirOut2;
         ArrayList<Integer> include;
         Iterator<Integer> ite;
         int i;
@@ -1035,8 +955,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
             includesIte = includes.keySet().iterator();
             while (includesIte.hasNext()) {
                 includeName = includesIte.next();
-                dirOut2 = new File(
-                        dirOut1,
+                dirOut2 = Paths.get(dirOut1.toString(),
                         includeName);
                 include = includes.get(includeName);
                 ite = include.iterator();
@@ -1075,10 +994,9 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 //            while (ites.hasNext()) {
 //                String tenancyTypeGroupName;
 //                tenancyTypeGroupName = ites.next();
-                ArrayList<String> TTs;
-                TTs = tenancyTypeGroups.get(tenancyTypeGroupName);
-                File dirOut3 = new File(                        dirOut2,                        tenancyTypeGroupName);
-                Grids_GridDouble g0 = doDensity(TTs, dirOut3, yM30, recs0,
+                ArrayList<String> tts = tenancyTypeGroups.get(tenancyTypeGroupName);
+                Path dirOut3 = Paths.get(dirOut2.toString(), tenancyTypeGroupName);
+                Grids_GridDouble g0 = doDensity(tts, dirOut3, yM30, recs0,
                         DW_UO_Data, doUnderOccupied, underOccupiedSetCouncil0,
                         underOccupiedSetRSL0, doCouncil, doRSL, scaleToFirst);
 //                outputGrid( g0, dirOut3, yM30, "Name" + yM30, scaleToFirst);
@@ -1095,8 +1013,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                     SHBE_Records SHBEData1;
                     SHBEData1 = env.getSHBE_Handler().getRecords(yM30, env.HOOME);
 
-                    UKP_YM3 yM31;
-                    yM31 = tSHBE_Handler.getYM3(SHBEFilenames[i]);
+                    UKP_YM3 yM31 = tSHBE_Handler.getYM3(SHBEFilenames[i]);
                     // Init underOccupiedSets
                     DW_UO_Set underOccupiedSetCouncil1 = null;
                     if (doCouncil) {
@@ -1106,31 +1023,22 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                     if (doRSL) {
                         underOccupiedSetRSL1 = underOccupiedSetsRSL.get(yM31);
                     }
-                    Grids_GridDouble g1 = doDensity(
-                            TTs,
-                            dirOut3,
-                            yM31,
-                            SHBEData1,
-                            DW_UO_Data,
-                            doUnderOccupied,
-                            underOccupiedSetCouncil1,
-                            underOccupiedSetRSL1,
-                            doCouncil,
-                            doRSL,
-                            scaleToFirst);
+                    Grids_GridDouble g1 = doDensity(tts, dirOut3, yM31,
+                            SHBEData1, DW_UO_Data, doUnderOccupied,
+                            underOccupiedSetCouncil1, underOccupiedSetRSL1,
+                            doCouncil, doRSL, scaleToFirst);
 //                    outputGrid(
 //                            g0,
 //                            dirOut3,
 //                            yM30,
 //                            "Name" + yM30,
 //                            scaleToFirst);
-                    gp.addToGrid(g1, g0, -1.0d);
-                    outputGrid(
-                            g1,
-                            dirOut3,
-                            yM30 + "Minus" + yM31,
-                            "Name" + yM30 + "Minus" + yM31,
-                            scaleToFirst);
+                    int dp = 2;
+                    RoundingMode rm = RoundingMode.HALF_UP;
+                    BigDecimal w = BigDecimal.valueOf(-1.0d);
+                    gp.addToGrid(g1, g0, w, dp, rm);
+                    outputGrid(g1, dirOut3, yM30 + "Minus" + yM31, "Name" + yM30
+                            + "Minus" + yM31, scaleToFirst);
                     underOccupiedSetCouncil0 = underOccupiedSetCouncil1;
                     underOccupiedSetRSL0 = underOccupiedSetRSL1;
                     yM30 = yM31;
@@ -1138,7 +1046,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 }
                 if (hasNext) {
                     Grids_GridDouble g1 = doDensity(
-                            TTs,
+                            tts,
                             dirOut3,
                             yM30,
                             recs0,
@@ -1149,11 +1057,11 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                             doCouncil,
                             doRSL,
                             scaleToFirst);
-                    gp.addToGrid(g1, g00, -1.0d);
-                    outputGrid(
-                            g1,
-                            dirOut3,
-                            yM300 + "Minus" + yM30,
+                    int dp = 2;
+                    RoundingMode rm = RoundingMode.HALF_UP;
+                    BigDecimal w = BigDecimal.valueOf(-1.0d);
+                    gp.addToGrid(g1, g00, w, dp, rm);
+                    outputGrid(g1, dirOut3, yM300 + "Minus" + yM30,
                             "Name" + yM300 + "Minus" + yM30,
                             scaleToFirst);
                 }
@@ -1163,7 +1071,7 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 
     protected Grids_GridDouble doDensity(
             ArrayList<String> TTs,
-            File dirOut,
+            Path dirOut,
             UKP_YM3 yM3,
             SHBE_Records SHBEData,
             DW_UO_Data DW_UO_Data,
@@ -1172,33 +1080,30 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
             DW_UO_Set underOccupiedSetRSL,
             boolean doCouncil,
             boolean doRSL,
-            boolean scaleToFirst) throws IOException {
-
-        File dirOut2 = new File(
-                dirOut,
-                yM3.toString());
+            boolean scaleToFirst) throws IOException, Exception {
+        BigDecimal wi = BigDecimal.ONE;
+        int wf = 2;
+        int dp = 2;
+        RoundingMode rm = RoundingMode.HALF_UP;
+        Path dirOut2 = Paths.get(dirOut.toString(), yM3.toString());
 
         MapsLCC.getStyleParameters().setnClasses(9);
         MapsLCC.getStyleParameters().setPaletteName2(null);
 
         String name = "Density" + yM3;
 
-        String outputName;
-        outputName = name + "_" + nrows + "_ncols_" + ncols + "_cellsize_" + cellsize;
+        String outputName = name + "_" + nrows + "_ncols_" + ncols + "_cellsize_" + cellsize;
         // Generate initial grid
-        File grid = new File(
-                dirOut2,
-                "Grid_" + outputName);
-        grid.mkdirs();
+        Path grid = Paths.get(dirOut2.toString(), "Grid_" + outputName);
+        Files.createDirectories(grid);
         Grids_GridDouble g0 = initiliseGrid(grid);
 
-        TreeMap<Integer, TreeMap<UKP_YM3, TreeMap<String, ONSPD_Point>>> lookups;
-        lookups = env.SHBE_Env.oe.getONSPDlookups();
-        TreeMap<String, ONSPD_Point> lookup;
-        lookup = lookups.get(UKP_Data.TYPE_UNIT).get(Postcode_Handler.getNearestYM3ForONSPDLookup(yM3));
+        TreeMap<Integer, TreeMap<UKP_YM3, TreeMap<String, ONSPD_Point>>> lookups
+                = env.SHBE_Env.oe.getONSPDlookups();
+        TreeMap<String, ONSPD_Point> lookup
+                = lookups.get(UKP_Data.TYPE_UNIT).get(ukpHandler.getNearestYM3ForONSPDLookup(yM3));
 
-        HashMap<SHBE_ClaimID, SHBE_Record> records;
-        records = SHBEData.getRecords(env.HOOME);
+        Map<SHBE_ClaimID, SHBE_Record> records = SHBEData.getRecords(env.HOOME);
 
         boolean nonZero = false;
 
@@ -1267,18 +1172,19 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
                 if (doMainLoop) {
                     if (postcode != null) {
                         ONSPD_Point p;
-                        p = lookup.get(Postcode_Handler.formatPostcodeForMapping(postcode));
+                        p = lookup.get(ukpHandler.formatPostcodeForMapping(postcode));
 //            String formattedPostcode;
 //            formattedPostcode = UKP_Data.formatPostcodeForONSPDLookup(postcode);
 //            ONSPD_Point p1;
 //            p1 = UKP_Data.getPointFromPostcode(UKP_Data.formatPostcodeForONSPDLookup(postcode));
                         if (p != null) {
-                            g0.addToCell((double) p.getX(), (double) p.getY(), 1.0d);
+                            g0.addToCell(BigDecimal.valueOf(p.getX()),
+                                    BigDecimal.valueOf(p.getY()), 1.0d);
                             nonZero = true;
                         } else {
                             System.out.println("No point for postcode " + postcode + ", "
-                                    + "DW_Postcode_Handler.formatPostcodeForMapping(postcode)" + Postcode_Handler.formatPostcodeForMapping(postcode) + ", "
-                                    + "DW_Postcode_Handler.formatPostcode(postcode) " + Postcode_Handler.formatPostcode(postcode));
+                                    + "DW_Postcode_Handler.formatPostcodeForMapping(postcode)" + ukpHandler.formatPostcodeForMapping(postcode) + ", "
+                                    + "DW_Postcode_Handler.formatPostcode(postcode) " + ukpHandler.formatPostcode(postcode));
                         }
                     }
                 }
@@ -1290,11 +1196,11 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
             // output grid
 //            Grids_ImageExporter ie;
 //            ie = new Grids_ImageExporter(ge);
-//            File fout = new File(
+//            Path fout = Paths.get(
 //                    dirOut2,
 //                    name + ".PNG");
 //            ie.toGreyScaleImage(g, gp, fout, "PNG", handleOutOfMemoryErrors);
-            File asciigridFile = new File(dirOut2, outputName + ".asc");
+            Path asciigridFile = Paths.get(dirOut2.toString(), outputName + ".asc");
             eage.toAsciiFile(g0, asciigridFile);
             // outputGridToImageUsingGeoToolsAndSetCommonStyle - this styles everything too
             int index = 0;
@@ -1314,52 +1220,41 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
             // Generate some geographically weighted statsitics
             List<String> stats = new ArrayList<>();
             stats.add("WSum");
-            //int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
-            for (int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
-                    cellDistanceForGeneralisation > 1; cellDistanceForGeneralisation /= 2) {
+            //int cellDistanceForGeneralisation = mcdg;
+            for (int cdg = mcdg; cdg > 1; cdg /= 2) {
                 index++;
-                double distance = maxCellDistanceForGeneralisation * cellsize;
-                double weightIntersect = 1.0d;
-                double weightFactor = 2.0d;
+                BigDecimal dist = new BigDecimal(cdg * cellsize);
 //                    // GeometricDensity
 //                    Grids_GridDouble[] gws;
 //                    gws = gp.geometricDensity(g, distance, gf);
 //                    for (int gwsi = 0; gwsi < gws.length; gwsi++) {
-//                        imageFile = new File(
+//                        imageFile = Paths.get(
 //                                outletmapDirectory,
 //                                nameOfGrid + "GWS" + gwsi + ".png");
 //                        ie.toGreyScaleImage(gws[gwsi], gp, imageFile, "png", false);
-//                        asciigridFile = new File(
+//                        asciigridFile = Paths.get(
 //                                outletmapDirectory,
 //                                nameOfGrid + "GWS" + gwsi + ".asc");
 //                        eage.toAsciiFile(gws[gwsi], asciigridFile, false);
 //                        System.out.println(gws[gwsi]);
 //                    }
                 // RegionUnivariateStatistics
-                List<Grids_AbstractGridNumber> gws;
-                gws = gp.regionUnivariateStatistics(
-                        g0,
-                        stats,
-                        distance,
-                        weightIntersect,
-                        weightFactor,
-                        gf);
-                Iterator<Grids_AbstractGridNumber> itegws;
+                List<Grids_GridNumber> gws = gp.regionUnivariateStatistics(
+                        g0, stats, dist, wi, wf, gf, dp, rm);
+                Iterator<Grids_GridNumber> itegws;
                 itegws = gws.iterator();
                 // Set normaliser part of the result to null to save space
-                Grids_AbstractGridNumber normaliser = itegws.next();
+                Grids_GridNumber normaliser = itegws.next();
                 normaliser = null;
                 // Write out grid
-                Grids_AbstractGridNumber gwsgrid = itegws.next();
-                String outputName2;
-                outputName2 = outputName + "GWS_" + cellDistanceForGeneralisation;// + "_" + i;
-//                        imageFile = new File(
+                Grids_GridNumber gwsgrid = itegws.next();
+                String outputName2 = outputName + "GWS_" + cdg;// + "_" + i;
+//                        imageFile = Paths.get(
 //                                outletmapDirectory,
 //                                outputName + ".png");
 //                        ie.toGreyScaleImage(gwsgrid, gp, imageFile, "png", handleOutOfMemoryErrors);
 
-                asciigridFile = new File(
-                        dirOut2,
+                asciigridFile = Paths.get(dirOut2.toString(),
                         outputName2 + ".asc");
                 eage.toAsciiFile(gwsgrid, asciigridFile);
 
@@ -1384,10 +1279,15 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
 
     protected void outputGrid(
             Grids_GridDouble g1,
-            File dirOut,
+            Path dirOut,
             String outputName,
             String name,
-            boolean scaleToFirst) throws IOException {
+            boolean scaleToFirst) throws IOException, Exception {
+
+        BigDecimal wi = BigDecimal.ONE;
+        int wf = 2;
+        int dp = 2;
+        RoundingMode rm = RoundingMode.HALF_UP;
 
         //styleParameters = new Geotools_StyleParameters();
         MapsLCC.getStyleParameters().setnClasses(5);
@@ -1400,13 +1300,11 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         // output grid
 //            Grids_ImageExporter ie;
 //            ie = new Grids_ImageExporter(ge);
-//            File fout = new File(
+//            Path fout = Paths.get(
 //                    dirOut2,
 //                    name + ".PNG");
 //            ie.toGreyScaleImage(g, gp, fout, "PNG", handleOutOfMemoryErrors);
-        File asciigridFile = new File(
-                dirOut,
-                outputName + ".asc");
+        Path asciigridFile = Paths.get(dirOut.toString(), outputName + ".asc");
         eage.toAsciiFile(g1, asciigridFile);
         // outputGridToImageUsingGeoToolsAndSetCommonStyle - this styles everything too
         int index = 0;
@@ -1426,55 +1324,42 @@ public class DW_DensityMapsLCC extends DW_DensityMapsAbstract {
         // Generate some geographically weighted statsitics
         List<String> stats = new ArrayList<>();
         stats.add("WSum");
-        //int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
-        for (int cellDistanceForGeneralisation = maxCellDistanceForGeneralisation;
+        //int cellDistanceForGeneralisation = mcdg;
+        for (int cellDistanceForGeneralisation = mcdg;
                 cellDistanceForGeneralisation > 1; cellDistanceForGeneralisation /= 2) {
             index++;
-            double distance = cellDistanceForGeneralisation * cellsize;
-            double weightIntersect = 1.0d;
-            double weightFactor = 2.0d;
+            BigDecimal dist = BigDecimal.valueOf(cellDistanceForGeneralisation * cellsize);
 //                    // GeometricDensity
 //                    Grids_GridDouble[] gws;
 //                    gws = gp.geometricDensity(g, distance, gf);
 //                    for (int gwsi = 0; gwsi < gws.length; gwsi++) {
-//                        imageFile = new File(
+//                        imageFile = Paths.get(
 //                                outletmapDirectory,
 //                                nameOfGrid + "GWS" + gwsi + ".png");
 //                        ie.toGreyScaleImage(gws[gwsi], gp, imageFile, "png", false);
-//                        asciigridFile = new File(
+//                        asciigridFile = Paths.get(
 //                                outletmapDirectory,
 //                                nameOfGrid + "GWS" + gwsi + ".asc");
 //                        eage.toAsciiFile(gws[gwsi], asciigridFile, false);
 //                        System.out.println(gws[gwsi]);
 //                    }
             // RegionUnivariateStatistics
-            List<Grids_AbstractGridNumber> gws;
-            gws = gp.regionUnivariateStatistics(
-                    g1,
-                    stats,
-                    distance,
-                    weightIntersect,
-                    weightFactor,
-                    gf);
-
-            Iterator<Grids_AbstractGridNumber> itegws;
-            itegws = gws.iterator();
+            List<Grids_GridNumber> gws = gp.regionUnivariateStatistics(g1,
+                    stats, dist, wi, wf, gf, dp, rm);
+            Iterator<Grids_GridNumber> itegws = gws.iterator();
             // Skip over the normaliser part of the result
             itegws.next();
-            Grids_AbstractGridNumber gwsgrid = itegws.next();
+            Grids_GridNumber gwsgrid = itegws.next();
 
             System.out.println(gwsgrid);
 
-            String outputName2;
-            outputName2 = outputName + "GWS_" + cellDistanceForGeneralisation;// + "_" + i;
-//                        imageFile = new File(
+            String outputName2 = outputName + "GWS_" + cellDistanceForGeneralisation;// + "_" + i;
+//                        imageFile = Paths.get(
 //                                outletmapDirectory,
 //                                outputName + ".png");
 //                        ie.toGreyScaleImage(gwsgrid, gp, imageFile, "png", handleOutOfMemoryErrors);
 
-            asciigridFile = new File(
-                    dirOut,
-                    outputName2 + ".asc");
+            asciigridFile = Paths.get(dirOut.toString(), outputName2 + ".asc");
             eage.toAsciiFile(gwsgrid, asciigridFile);
 
             System.out.println(asciigridFile);

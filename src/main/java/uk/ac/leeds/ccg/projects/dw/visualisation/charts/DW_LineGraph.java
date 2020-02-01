@@ -1,28 +1,12 @@
-/*
- * Copyright (C) 2015 geoagdt.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
- */
 package uk.ac.leeds.ccg.projects.dw.visualisation.charts;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 //import java.math.MathContext;
 import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,61 +17,64 @@ import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import uk.ac.leeds.ccg.andyt.chart.examples.Chart_Line;
-import uk.ac.leeds.ccg.agdt.data.ukp.util.UKP_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
-//import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
-import uk.ac.leeds.ccg.andyt.generic.execution.Generic_Execution;
-import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
-import uk.ac.leeds.ccg.andyt.generic.visualisation.Generic_Visualisation;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.chart.examples.Chart_Line;
+import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
+import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_ClaimID;
+import uk.ac.leeds.ccg.data.shbe.core.SHBE_Strings;
+//import uk.ac.leeds.ccg.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.generic.execution.Generic_Execution;
+import uk.ac.leeds.ccg.generic.util.Generic_Time;
+import uk.ac.leeds.ccg.generic.visualisation.Generic_Visualisation;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Strings;
 import uk.ac.leeds.ccg.projects.dw.data.generated.DW_Table;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Handler;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Data;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Handler;
 import uk.ac.leeds.ccg.projects.dw.io.DW_Files;
 
 /**
- *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class DW_LineGraph extends Chart_Line {
 
     protected final transient DW_Environment env;
-    protected final transient DW_Files Files;
-    protected final transient SHBE_Handler SHBE_Handler;
-    protected final transient DW_UO_Handler UO_Handler;
-    protected final transient DW_UO_Data UO_Data;
+    protected final transient DW_Files files;
+    protected final transient SHBE_Handler shbeHandler;
+    protected final transient DW_UO_Handler uoHandler;
+    protected final transient DW_UO_Data uoData;
 
-    HashMap<String, HashSet<String>> AreaCodes;
+    /**
+     * Area Codes
+     */
+    HashMap<String, HashSet<String>> ac;
 
-    public DW_LineGraph(DW_Environment de) throws IOException {
+    public DW_LineGraph(DW_Environment de) throws IOException, Exception {
         super(de.ge);
         this.env = de;
-        this.Files = de.files;
-        this.SHBE_Handler = de.getSHBE_Handler();
-        this.UO_Data = de.getUO_Data();
-        this.UO_Handler = de.getUO_Handler();
+        this.files = de.files;
+        this.shbeHandler = de.getSHBE_Handler();
+        this.uoData = de.getUO_Data();
+        this.uoHandler = de.getUO_Handler();
     }
 
-    public DW_LineGraph(DW_Environment de, ExecutorService es, File file,
+    public DW_LineGraph(DW_Environment de, ExecutorService es, Path file,
             String format, String title, int dataWidth, int dataHeight,
             String xAxisLabel, String yAxisLabel, BigDecimal yMax,
             ArrayList<BigDecimal> yPin, BigDecimal yIncrement, int numberOfYAxisTicks,
             int decimalPlacePrecisionForCalculations,
-            int decimalPlacePrecisionForDisplay, RoundingMode rm) throws IOException {
+            int decimalPlacePrecisionForDisplay, RoundingMode rm) throws IOException, Exception {
         super(de.ge, es, file, format, title, dataWidth, dataHeight, xAxisLabel,
-                yAxisLabel, yMax, yPin, yIncrement, numberOfYAxisTicks, 
-                true, decimalPlacePrecisionForCalculations, 
+                yAxisLabel, yMax, yPin, yIncrement, numberOfYAxisTicks,
+                true, decimalPlacePrecisionForCalculations,
                 decimalPlacePrecisionForDisplay, rm);
         this.env = de;
-        this.Files = de.files;
-        this.SHBE_Handler = de.getSHBE_Handler();
-        this.UO_Data = de.getUO_Data();
-        this.UO_Handler = de.getUO_Handler();
+        this.files = de.files;
+        this.shbeHandler = de.getSHBE_Handler();
+        this.uoData = de.getUO_Data();
+        this.uoHandler = de.getUO_Handler();
     }
 
     HashSet<Future> futures;
@@ -103,7 +90,7 @@ public class DW_LineGraph extends Chart_Line {
      */
     public void run(
             boolean doGraphTenancyTypeTransitions,
-            boolean doGraphAggregateData) throws IOException {
+            boolean doGraphAggregateData) throws IOException, Exception {
         env.ge.log("<run>");
         vis.getHeadlessEnvironment();
         dataWidth = 1300;
@@ -120,11 +107,11 @@ public class DW_LineGraph extends Chart_Line {
 //        mc = new MathContext(decimalPlacePrecisionForCalculations, roundingMode);
         numberOfYAxisTicks = 10;
         executorService = Executors.newSingleThreadExecutor();
-        SHBEFilenames = SHBE_Handler.getSHBEFilenamesAll();
+        SHBEFilenames = shbeHandler.getFilenames();
 //        ArrayList<String> claimantTypes;
 //        claimantTypes = DW_Strings.getHB_CTB();
 
-        includes = SHBE_Handler.getIncludes();
+        includes = shbeHandler.getIncludes();
         includes.remove(SHBE_Strings.s_IncludeAll);
         includes.remove(SHBE_Strings.s_IncludeYearly);
         includes.remove(SHBE_Strings.s_Include6Monthly);
@@ -147,7 +134,7 @@ public class DW_LineGraph extends Chart_Line {
 //        types.add("Multiple");
 //        types.add("");
         PTs = SHBE_Strings.getPaymentTypes();
-//        PTs.remove(SHBE_Handler.sPaymentTypeAll);
+//        PTs.remove(shbeHandler.sPaymentTypeAll);
         PTs.remove(SHBE_Strings.s_PaymentTypeIn);
         PTs.remove(SHBE_Strings.s_PaymentTypeSuspended);
         PTs.remove(SHBE_Strings.s_PaymentTypeOther);
@@ -164,7 +151,7 @@ public class DW_LineGraph extends Chart_Line {
         }
     }
 
-    protected void graphAggregateData() throws IOException {
+    protected void graphAggregateData() throws IOException, Exception {
         DW_Table table = new DW_Table(env);
         ArrayList<String> AZs; // AggregatedZones
         AZs = new ArrayList<>();
@@ -173,51 +160,26 @@ public class DW_LineGraph extends Chart_Line {
 //        AZs.add(DW_Strings.sLSOA);
 //        AZs.add(DW_Strings.sMSOA);
 
-        Iterator<String> PTsIte;
-        PTsIte = PTs.iterator();
-        while (PTsIte.hasNext()) {
-            String PT;
-            PT = PTsIte.next();
-            File dirIn;
-            dirIn = new File(
-                    Files.getOutputSHBETablesDir(),
-                    DW_Strings.sHBGeneralAggregateStatistics);
-            dirIn = new File(
-                    dirIn,
-                    PT);
-            File dirOut;
-            dirOut = new File(
-                    Files.getOutputSHBEPlotsDir(),
-                    DW_Strings.sHBGeneralAggregateStatistics);
-            dirOut = new File(
-                    dirOut,
-                    PT);
-
-            Iterator<String> includesIte;
-            includesIte = includes.keySet().iterator();
-            String includeName;
-            ArrayList<Integer> include;
-            while (includesIte.hasNext()) {
-                includeName = includesIte.next();
-                include = includes.get(includeName);
-                Iterator<String> AZsIte;
-                AZsIte = AZs.iterator();
+        Iterator<String> ptIte = PTs.iterator();
+        while (ptIte.hasNext()) {
+            String pt = ptIte.next();
+            Path dirIn = Paths.get(files.getOutputSHBETablesDir().toString(),
+                    DW_Strings.sHBGeneralAggregateStatistics, pt);
+            Path dirOut = Paths.get(files.getOutputSHBEPlotsDir().toString(),
+                    DW_Strings.sHBGeneralAggregateStatistics, pt);
+            Iterator<String> iIte = includes.keySet().iterator();
+            while (iIte.hasNext()) {
+                String includeName = iIte.next();
+                ArrayList<Integer> include = includes.get(includeName);
+                Iterator<String> AZsIte = AZs.iterator();
                 while (AZsIte.hasNext()) {
-                    String AZ;
-                    AZ = AZsIte.next();
-                    File dirIn1;
-                    dirIn1 = new File(
-                            dirIn,
-                            AZ);
-                    File dirOut1;
-                    dirOut1 = new File(
-                            dirOut,
-                            AZ);
-                    dirOut1 = new File(
-                            dirOut1,
-                            includeName);
+                    String AZ = AZsIte.next();
+                    Path dirIn1 = Paths.get(dirIn.toString(), AZ);
+                    Path dirOut1;
+                    dirOut1 = Paths.get(dirOut.toString(), AZ);
+                    dirOut1 = Paths.get(dirOut1.toString(), includeName);
                     //dirOut1.mkdirs();
-                    File fout;
+                    Path fout;
                     for (int stat = 1; stat <= 8; stat++) {
                         String filename;
                         switch (stat) {
@@ -262,31 +224,22 @@ public class DW_LineGraph extends Chart_Line {
                                 title = yAxisLabel + " Over Time";
                                 break;
                         }
-                        fout = new File(
-                                dirOut1,
-                                filename);
-                        TreeMap<String, TreeMap<UKP_YM3, BigDecimal>> data0;
-                        data0 = new TreeMap<>();
-                        Iterator<Integer> includeIte;
-                        includeIte = include.iterator();
+                        fout = Paths.get(dirOut1.toString(), filename);
+                        TreeMap<String, TreeMap<UKP_YM3, BigDecimal>> data0
+                                = new TreeMap<>();
+                        Iterator<Integer> includeIte = include.iterator();
                         while (includeIte.hasNext()) {
                             int i = includeIte.next();
                             UKP_YM3 YM3;
-                            YM3 = SHBE_Handler.getYM3(SHBEFilenames[i]);
-                            File f = new File(
-                                    dirIn1,
-                                    YM3 + ".csv");
+                            YM3 = shbeHandler.getYM3(SHBEFilenames[i]);
+                            Path f = Paths.get(dirIn1.toString(), YM3 + ".csv");
                             // readCSV
-                            ArrayList<String> lines;
-                            lines = table.readCSV(f);
-                            Iterator<String> ite;
-                            ite = lines.iterator();
+                            ArrayList<String> lines = table.readCSV(f);
+                            Iterator<String> ite = lines.iterator();
                             String line;
                             String[] fields;
-                            String header;
-                            header = ite.next();
-                            String[] headerFields;
-                            headerFields = header.split(DW_Strings.special_commaSpace);
+                            String header = ite.next();
+                            String[] headerFields = header.split(DW_Strings.special_commaSpace);
                             /*
                              * AreaCode, NumberOfHBClaims, 
                              * NumberOfChildDependentsInHBClaimingHouseholds, 
@@ -319,7 +272,7 @@ public class DW_LineGraph extends Chart_Line {
                                 getRoundingMode());
                         //
                         Object[] TreeMapDateLabelSHBEFilename;
-                        TreeMapDateLabelSHBEFilename = SHBE_Handler.getTreeMapDateLabelSHBEFilenamesSingle(
+                        TreeMapDateLabelSHBEFilename = shbeHandler.getTreeMapDateLabelSHBEFilenamesSingle(
                                 SHBEFilenames, include);
                         TreeMap<BigDecimal, UKP_YM3> xAxisLabels;
                         xAxisLabels = (TreeMap<BigDecimal, UKP_YM3>) TreeMapDateLabelSHBEFilename[0];
@@ -343,7 +296,7 @@ public class DW_LineGraph extends Chart_Line {
         }
     }
 
-    protected void graphTenancyTypeTransitions() throws IOException {
+    protected void graphTenancyTypeTransitions() throws IOException, Exception {
         ArrayList<String> month3Letters;
         month3Letters = Generic_Time.getMonths3Letters();
 
@@ -398,7 +351,7 @@ public class DW_LineGraph extends Chart_Line {
         }
 
         Set<SHBE_ClaimID> UOApril2013ClaimIDs;
-        UOApril2013ClaimIDs = UO_Handler.getUOStartApril2013ClaimIDs(UO_Data);
+        UOApril2013ClaimIDs = uoHandler.getUOStartApril2013ClaimIDs(uoData);
 
         boolean CheckPreviousTenancyType;
 ////            checkPreviousTenure = false;
@@ -408,12 +361,12 @@ public class DW_LineGraph extends Chart_Line {
             CheckPreviousTenancyType = iteB.next();
             env.ge.log("CheckPreviousTenancyType " + CheckPreviousTenancyType);
 
-            File dirIn;
-            dirIn = Files.getOutputSHBETablesTenancyTypeTransitionDir(
+            Path dirIn;
+            dirIn = files.getOutputSHBETablesTenancyTypeTransitionDir(
                     //DW_DW_Strings.sPaymentTypeAll,
                     CheckPreviousTenancyType);
-            File dirOut;
-            dirOut = Files.getOutputSHBEPlotsTenancyTypeTransitionDir(
+            Path dirOut;
+            dirOut = files.getOutputSHBEPlotsTenancyTypeTransitionDir(
                     //DW_DW_Strings.sAll,
                     CheckPreviousTenancyType);
 
@@ -425,11 +378,11 @@ public class DW_LineGraph extends Chart_Line {
                 tenancyOnly = iteB1.next();
 
                 if (tenancyOnly) {
-                    File dirIn2 = new File(
-                            dirIn,
+                    Path dirIn2 = Paths.get(
+                            dirIn.toString(),
                             DW_Strings.sWithOrWithoutPostcodeChange);
-                    File dirOut2 = new File(
-                            dirOut,
+                    Path dirOut2 = Paths.get(
+                            dirOut.toString(),
                             DW_Strings.sWithOrWithoutPostcodeChange);
                     Iterator<Boolean> iteB2;
                     iteB2 = b.iterator();
@@ -437,23 +390,19 @@ public class DW_LineGraph extends Chart_Line {
                     boolean doUnderOccupancyData;
 //                    doUnderOccupancyData = false; // Switch for testing.
 
-                    Iterator<String> includesIte;
-                    includesIte = includes.keySet().iterator();
+                    Iterator<String> includesIte = includes.keySet().iterator();
                     while (includesIte.hasNext()) {
-                        String includeKey;
-                        includeKey = includesIte.next();
-                        ArrayList<Integer> include;
-                        include = includes.get(includeKey);
-                        File dirIn3 = new File(dirIn2, includeKey);
-                        File dirOut3 = new File(dirOut2, includeKey);
-//fdsafds
+                        String includeKey = includesIte.next();
+                        ArrayList<Integer> include = includes.get(includeKey);
+                        Path dirIn3 = Paths.get(dirIn2.toString(), includeKey);
+                        Path dirOut3 = Paths.get(dirOut2.toString(), includeKey);
                         /**
                          * It is thought this should be a choice between doing
                          * All or doing only those that were UO in April 2013.
                          * This needs checking!
                          */
-                        dirIn3 = new File(dirIn2, DW_Strings.sAll);
-                        dirOut3 = new File(dirOut2, DW_Strings.sAll);
+                        dirIn3 = Paths.get(dirIn2.toString(), DW_Strings.sAll);
+                        dirOut3 = Paths.get(dirOut2.toString(), DW_Strings.sAll);
 
                         while (iteB2.hasNext()) {
                             doUnderOccupancyData = iteB2.next();
@@ -467,32 +416,32 @@ public class DW_LineGraph extends Chart_Line {
 //                                            } else {
 //                                                UOApril2013ClaimIDsDummy = null;
 //                                            }
-                                File dirIn4 = new File(dirIn3, DW_Strings.sU);
-                                File dirOut4 = new File(dirOut3, DW_Strings.sU);
-                                File dirIn5;
-                                File dirOut5;
+                                Path dirIn4 = Paths.get(dirIn3.toString(), DW_Strings.sU);
+                                Path dirOut4 = Paths.get(dirOut3.toString(), DW_Strings.sU);
+                                Path dirIn5;
+                                Path dirOut5;
                                 boolean doAll = true;
                                 if (doAll) {
-                                    dirIn5 = new File(dirIn4, DW_Strings.s_B);
-                                    dirOut5 = new File(dirOut4, DW_Strings.s_B);
+                                    dirIn5 = Paths.get(dirIn4.toString(), DW_Strings.s_B);
+                                    dirOut5 = Paths.get(dirOut4.toString(), DW_Strings.s_B);
                                     Iterator<Boolean> iteB4;
                                     iteB4 = b.iterator();
                                     while (iteB4.hasNext()) {
                                         boolean do999 = iteB4.next();
-                                        File dirOut6;
+                                        Path dirOut6;
                                         if (do999) {
-                                            dirOut6 = new File(dirOut5, DW_Strings.sInclude999);
+                                            dirOut6 = Paths.get(dirOut5.toString(), DW_Strings.sInclude999);
                                             Iterator<Boolean> iteB5;
                                             iteB5 = b.iterator();
                                             while (iteB5.hasNext()) {
                                                 boolean doSameTenancy;
                                                 doSameTenancy = iteB5.next();
-                                                File dirOut7;
+                                                Path dirOut7;
                                                 if (doSameTenancy) {
-                                                    dirOut7 = new File(dirOut6,
+                                                    dirOut7 = Paths.get(dirOut6.toString(),
                                                             SHBE_Strings.s_IncludeSameTenancy);
                                                 } else {
-                                                    dirOut7 = new File(dirOut6,
+                                                    dirOut7 = Paths.get(dirOut6.toString(),
                                                             SHBE_Strings.s_NotIncludeSameTenancy);
                                                 }
                                                 Iterator<Boolean> iteB6;
@@ -512,18 +461,18 @@ public class DW_LineGraph extends Chart_Line {
                                                 }
                                             }
                                         } else {
-                                            dirOut6 = new File(dirOut5, DW_Strings.sExclude999);
+                                            dirOut6 = Paths.get(dirOut5.toString(), DW_Strings.sExclude999);
                                             Iterator<Boolean> iteB5;
                                             iteB5 = b.iterator();
                                             while (iteB5.hasNext()) {
                                                 boolean doSameTenancy;
                                                 doSameTenancy = iteB5.next();
-                                                File dirOut7;
+                                                Path dirOut7;
                                                 if (doSameTenancy) {
-                                                    dirOut7 = new File(dirOut6,
+                                                    dirOut7 = Paths.get(dirOut6.toString(),
                                                             SHBE_Strings.s_IncludeSameTenancy);
                                                 } else {
-                                                    dirOut7 = new File(dirOut6,
+                                                    dirOut7 = Paths.get(dirOut6.toString(),
                                                             SHBE_Strings.s_NotIncludeSameTenancy);
                                                 }
                                                 Iterator<Boolean> iteB6;
@@ -553,30 +502,29 @@ public class DW_LineGraph extends Chart_Line {
                                         boolean doCouncil;
                                         doCouncil = iteB3.next();
                                         if (doCouncil) {
-                                            dirIn5 = new File(dirIn4, DW_Strings.sCouncil);
-                                            dirOut5 = new File(dirOut4, DW_Strings.sCouncil);
+                                            dirIn5 = Paths.get(dirIn4.toString(), DW_Strings.sCouncil);
+                                            dirOut5 = Paths.get(dirOut4.toString(), DW_Strings.sCouncil);
                                         } else {
-                                            dirIn5 = new File(dirIn4, DW_Strings.sRSL);
-                                            dirOut5 = new File(dirOut4, DW_Strings.sRSL);
+                                            dirIn5 = Paths.get(dirIn4.toString(), DW_Strings.sRSL);
+                                            dirOut5 = Paths.get(dirOut4.toString(), DW_Strings.sRSL);
                                         }
                                         Iterator<Boolean> iteB4;
                                         iteB4 = b.iterator();
                                         while (iteB4.hasNext()) {
                                             boolean do999 = iteB4.next();
-                                            File dirOut6;
+                                            Path dirOut6;
                                             if (do999) {
-                                                dirOut6 = new File(dirOut5, DW_Strings.sInclude999);
-                                                Iterator<Boolean> iteB5;
-                                                iteB5 = b.iterator();
+                                                dirOut6 = Paths.get(dirOut5.toString(), DW_Strings.sInclude999);
+                                                Iterator<Boolean> iteB5 = b.iterator();
                                                 while (iteB5.hasNext()) {
                                                     boolean doSameTenancy;
                                                     doSameTenancy = iteB5.next();
-                                                    File dirOut7;
+                                                    Path dirOut7;
                                                     if (doSameTenancy) {
-                                                        dirOut7 = new File(dirOut6,
+                                                        dirOut7 = Paths.get(dirOut6.toString(),
                                                                 SHBE_Strings.s_IncludeSameTenancy);
                                                     } else {
-                                                        dirOut7 = new File(dirOut6,
+                                                        dirOut7 = Paths.get(dirOut6.toString(),
                                                                 SHBE_Strings.s_NotIncludeSameTenancy);
                                                     }
                                                     Iterator<Boolean> iteB6;
@@ -597,18 +545,18 @@ public class DW_LineGraph extends Chart_Line {
                                                     }
                                                 }
                                             } else {
-                                                dirOut6 = new File(dirOut5, DW_Strings.sExclude999);
+                                                dirOut6 = Paths.get(dirOut5.toString(), DW_Strings.sExclude999);
                                                 Iterator<Boolean> iteB5;
                                                 iteB5 = b.iterator();
                                                 while (iteB5.hasNext()) {
                                                     boolean doSameTenancy;
                                                     doSameTenancy = iteB5.next();
-                                                    File dirOut7;
+                                                    Path dirOut7;
                                                     if (doSameTenancy) {
-                                                        dirOut7 = new File(dirOut6,
+                                                        dirOut7 = Paths.get(dirOut6.toString(),
                                                                 SHBE_Strings.s_IncludeSameTenancy);
                                                     } else {
-                                                        dirOut7 = new File(dirOut6,
+                                                        dirOut7 = Paths.get(dirOut6.toString(),
                                                                 SHBE_Strings.s_NotIncludeSameTenancy);
                                                     }
                                                     Iterator<Boolean> iteB6;
@@ -633,19 +581,19 @@ public class DW_LineGraph extends Chart_Line {
                                     }
                                 }
                             } else {
-                                File dirIn4 = new File(dirIn3, DW_Strings.sU);
-                                File dirOut4 = new File(dirOut3, DW_Strings.sU);
+                                Path dirIn4 = Paths.get(dirIn3.toString(), DW_Strings.sU);
+                                Path dirOut4 = Paths.get(dirOut3.toString(), DW_Strings.sU);
                                 boolean doBoth = true;
                                 if (doBoth) {
-                                    File dirIn5 = new File(dirIn4, DW_Strings.s_B);
-                                    File dirOut5 = new File(dirOut4, DW_Strings.s_B);
+                                    Path dirIn5 = Paths.get(dirIn4.toString(), DW_Strings.s_B);
+                                    Path dirOut5 = Paths.get(dirOut4.toString(), DW_Strings.s_B);
                                     Iterator<Boolean> iteB3;
                                     iteB3 = b.iterator();
                                     while (iteB3.hasNext()) {
                                         boolean do999 = iteB3.next();
-                                        File dirOut6;
+                                        Path dirOut6;
                                         if (do999) {
-                                            dirOut6 = new File(dirOut5, DW_Strings.sInclude999);
+                                            dirOut6 = Paths.get(dirOut5.toString(), DW_Strings.sInclude999);
                                             Iterator<Boolean> iteB4;
                                             iteB4 = b.iterator();
                                             while (iteB4.hasNext()) {
@@ -662,7 +610,7 @@ public class DW_LineGraph extends Chart_Line {
                                                 }
                                             }
                                         } else {
-                                            dirOut6 = new File(dirOut5, DW_Strings.sExclude999);
+                                            dirOut6 = Paths.get(dirOut5.toString(), DW_Strings.sExclude999);
                                             Iterator<Boolean> iteB4;
                                             iteB4 = b.iterator();
                                             while (iteB4.hasNext()) {
@@ -685,29 +633,25 @@ public class DW_LineGraph extends Chart_Line {
                         }
                     }
                 } else {
-                    File dirIn2;
-                    dirIn2 = new File(dirIn, DW_Strings.sTenancyAndPostcodeChanges);
-                    File dirOut2;
-                    dirOut2 = new File(dirOut, DW_Strings.sTenancyAndPostcodeChanges);
-                    Iterator<String> includesIte;
-                    includesIte = includes.keySet().iterator();
+                    Path dirIn2 = Paths.get(dirIn.toString(), 
+                            DW_Strings.sTenancyAndPostcodeChanges);
+                    Path dirOut2 = Paths.get(dirOut.toString(), 
+                            DW_Strings.sTenancyAndPostcodeChanges);
+                    Iterator<String> includesIte = includes.keySet().iterator();
                     while (includesIte.hasNext()) {
-                        String includeKey;
-                        includeKey = includesIte.next();
-                        ArrayList<Integer> include;
-                        include = includes.get(includeKey);
-                        File dirIn3;
-                        File dirOut3;
-                        dirIn3 = new File(dirIn2, includeKey);
-                        dirOut3 = new File(dirOut2, includeKey);
-                        //fdsaf
+                        String includeKey = includesIte.next();
+                        ArrayList<Integer> include = includes.get(includeKey);
+                        Path dirIn3;
+                        Path dirOut3;
+                        dirIn3 = Paths.get(dirIn2.toString(), includeKey);
+                        dirOut3 = Paths.get(dirOut2.toString(), includeKey);
                         /**
                          * It is thought this should be a choice between doing
                          * All or doing only those that were UO in April 2013.
                          * This needs checking!
                          */
-                        dirIn3 = new File(dirIn2, DW_Strings.sAll);
-                        dirOut3 = new File(dirOut2, DW_Strings.sAll);
+                        dirIn3 = Paths.get(dirIn2.toString(), DW_Strings.sAll);
+                        dirOut3 = Paths.get(dirOut2.toString(), DW_Strings.sAll);
                         boolean doUnderOccupancyData;
 //                    doUnderOccupancyData = false;
                         Iterator<Boolean> iteB2;
@@ -715,64 +659,60 @@ public class DW_LineGraph extends Chart_Line {
                         while (iteB2.hasNext()) {
                             doUnderOccupancyData = iteB2.next();
                             if (doUnderOccupancyData) {
-                                File dirIn4;
-                                File dirOut4;
-                                dirIn4 = new File(dirIn3, DW_Strings.sU);
-                                dirOut4 = new File(dirOut3, DW_Strings.sU);
+                                Path dirIn4;
+                                Path dirOut4;
+                                dirIn4 = Paths.get(dirIn3.toString(), DW_Strings.sU);
+                                dirOut4 = Paths.get(dirOut3.toString(), DW_Strings.sU);
                                 boolean doBoth;
                                 doBoth = true;
                                 if (doBoth) {
-                                    File dirIn5;
-                                    File dirOut5;
-                                    dirIn5 = new File(dirIn4, DW_Strings.s_B);
-                                    dirOut5 = new File(dirOut4, DW_Strings.s_B);
+                                    Path dirIn5;
+                                    Path dirOut5;
+                                    dirIn5 = Paths.get(dirIn4.toString(), DW_Strings.s_B);
+                                    dirOut5 = Paths.get(dirOut4.toString(), DW_Strings.s_B);
 //                                Iterator<String> includesIte;
 //                                includesIte = includes.keySet().iterator();
 //                                while (includesIte.hasNext()) {
 //                                    String include;
 //                                    include = includesIte.next();
-//                                    File dirIn5;
-//                                    File dirOut5;
-//                                    dirIn5 = new File(dirIn4, include);
-//                                    dirOut5 = new File(dirOut4, include);
+//                                    Path dirIn5;
+//                                    Path dirOut5;
+//                                    dirIn5 = Paths.get(dirIn4, include);
+//                                    dirOut5 = Paths.get(dirOut4, include);
 //                                }
 
-                                    Iterator<Boolean> iteB4;
-                                    iteB4 = b.iterator();
+                                    Iterator<Boolean> iteB4 = b.iterator();
                                     while (iteB4.hasNext()) {
-                                        boolean grouped;
-                                        grouped = iteB4.next();
-                                        Iterator<Boolean> iteB5;
-                                        iteB5 = b.iterator();
+                                        boolean grouped = iteB4.next();
+                                        Iterator<Boolean> iteB5 = b.iterator();
                                         while (iteB5.hasNext()) {
-                                            boolean postcodeChanged;
-                                            postcodeChanged = iteB5.next();
-                                            File dirIn6;
-                                            File dirOut6;
+                                            boolean postcodeChanged = iteB5.next();
+                                            Path dirIn6;
+                                            Path dirOut6;
                                             if (postcodeChanged) {
-                                                dirIn6 = new File(dirIn5, DW_Strings.sPostcodeChanged);
-                                                dirOut6 = new File(dirOut5, DW_Strings.sPostcodeChanged);
+                                                dirIn6 = Paths.get(dirIn5.toString(), DW_Strings.sPostcodeChanged);
+                                                dirOut6 = Paths.get(dirOut5.toString(), DW_Strings.sPostcodeChanged);
                                             } else {
-                                                dirIn6 = new File(dirIn5, DW_Strings.sPostcodeChangedNo);
-                                                dirOut6 = new File(dirOut5, DW_Strings.sPostcodeChangedNo);
+                                                dirIn6 = Paths.get(dirIn5.toString(), DW_Strings.sPostcodeChangedNo);
+                                                dirOut6 = Paths.get(dirOut5.toString(), DW_Strings.sPostcodeChangedNo);
                                             }
                                             Iterator<Boolean> iteB6;
                                             iteB6 = b.iterator();
                                             while (iteB6.hasNext()) {
                                                 boolean do999 = iteB6.next();
-                                                File dirOut7;
+                                                Path dirOut7;
                                                 if (do999) {
-                                                    dirOut7 = new File(dirOut6, DW_Strings.sInclude999);
+                                                    dirOut7 = Paths.get(dirOut6.toString(), DW_Strings.sInclude999);
                                                     Iterator<Boolean> iteB7;
                                                     iteB7 = b.iterator();
                                                     while (iteB7.hasNext()) {
                                                         boolean doSameTenancy;
                                                         doSameTenancy = iteB7.next();
-                                                        File dirOut8;
+                                                        Path dirOut8;
                                                         if (doSameTenancy) {
-                                                            dirOut8 = new File(dirOut7, SHBE_Strings.s_IncludeSameTenancy);
+                                                            dirOut8 = Paths.get(dirOut7.toString(), SHBE_Strings.s_IncludeSameTenancy);
                                                         } else {
-                                                            dirOut8 = new File(dirOut7, SHBE_Strings.s_NotIncludeSameTenancy);
+                                                            dirOut8 = Paths.get(dirOut7.toString(), SHBE_Strings.s_NotIncludeSameTenancy);
                                                         }
                                                         if (grouped) {
                                                             doSumat(dirIn6, dirOut8, include, includeKey,
@@ -785,18 +725,18 @@ public class DW_LineGraph extends Chart_Line {
                                                         }
                                                     }
                                                 } else {
-                                                    dirOut7 = new File(dirOut6, DW_Strings.sExclude999);
+                                                    dirOut7 = Paths.get(dirOut6.toString(), DW_Strings.sExclude999);
                                                     Iterator<Boolean> iteB7;
                                                     iteB7 = b.iterator();
                                                     while (iteB7.hasNext()) {
                                                         boolean doSameTenancy;
                                                         doSameTenancy = iteB7.next();
-                                                        File dirOut8;
+                                                        Path dirOut8;
                                                         if (doSameTenancy) {
-                                                            dirOut8 = new File(dirOut7,
+                                                            dirOut8 = Paths.get(dirOut7.toString(),
                                                                     SHBE_Strings.s_IncludeSameTenancy);
                                                         } else {
-                                                            dirOut8 = new File(dirOut7,
+                                                            dirOut8 = Paths.get(dirOut7.toString(),
                                                                     SHBE_Strings.s_NotIncludeSameTenancy);
                                                         }
                                                         if (grouped) {
@@ -821,58 +761,56 @@ public class DW_LineGraph extends Chart_Line {
                                     boolean doCouncil;
                                     doCouncil = iteB3.next();
                                     if (doCouncil) {
-                                        dirIn4 = new File(dirIn3, DW_Strings.sCouncil);
-                                        dirOut4 = new File(dirOut3, DW_Strings.sCouncil);
+                                        dirIn4 = Paths.get(dirIn3.toString(), DW_Strings.sCouncil);
+                                        dirOut4 = Paths.get(dirOut3.toString(), DW_Strings.sCouncil);
                                     } else {
-                                        dirIn4 = new File(dirIn3, DW_Strings.sRSL);
-                                        dirOut4 = new File(dirOut3, DW_Strings.sRSL);
+                                        dirIn4 = Paths.get(dirIn3.toString(), DW_Strings.sRSL);
+                                        dirOut4 = Paths.get(dirOut3.toString(), DW_Strings.sRSL);
                                     }
                                     Iterator<Boolean> iteB4;
                                     iteB4 = b.iterator();
                                     while (iteB4.hasNext()) {
                                         boolean grouped;
                                         grouped = iteB4.next();
-                                        File dirIn5;
-                                        File dirOut5;
+                                        Path dirIn5;
+                                        Path dirOut5;
                                         if (grouped) {
-                                            dirIn5 = new File(dirIn4, DW_Strings.sGrouped);
-                                            dirOut5 = new File(dirOut4, DW_Strings.sGrouped);
+                                            dirIn5 = Paths.get(dirIn4.toString(), DW_Strings.sGrouped);
+                                            dirOut5 = Paths.get(dirOut4.toString(), DW_Strings.sGrouped);
                                         } else {
-                                            dirIn5 = new File(dirIn4, DW_Strings.sGroupedNo);
-                                            dirOut5 = new File(dirOut4, DW_Strings.sGroupedNo);
+                                            dirIn5 = Paths.get(dirIn4.toString(), DW_Strings.sGroupedNo);
+                                            dirOut5 = Paths.get(dirOut4.toString(), DW_Strings.sGroupedNo);
                                         }
-                                        Iterator<Boolean> iteB5;
-                                        iteB5 = b.iterator();
+                                        Iterator<Boolean> iteB5 = b.iterator();
                                         while (iteB5.hasNext()) {
-                                            boolean postcodeChanged;
-                                            postcodeChanged = iteB5.next();
-                                            File dirIn6;
-                                            File dirOut6;
+                                            boolean postcodeChanged = iteB5.next();
+                                            Path dirIn6;
+                                            Path dirOut6;
                                             if (postcodeChanged) {
-                                                dirIn6 = new File(dirIn5, DW_Strings.sPostcodeChanged);
-                                                dirOut6 = new File(dirOut5, DW_Strings.sPostcodeChanged);
+                                                dirIn6 = Paths.get(dirIn5.toString(), DW_Strings.sPostcodeChanged);
+                                                dirOut6 = Paths.get(dirOut5.toString(), DW_Strings.sPostcodeChanged);
                                             } else {
-                                                dirIn6 = new File(dirIn5, DW_Strings.sPostcodeChangedNo);
-                                                dirOut6 = new File(dirOut5, DW_Strings.sPostcodeChangedNo);
+                                                dirIn6 = Paths.get(dirIn5.toString(), DW_Strings.sPostcodeChangedNo);
+                                                dirOut6 = Paths.get(dirOut5.toString(), DW_Strings.sPostcodeChangedNo);
                                             }
                                             Iterator<Boolean> iteB6;
                                             iteB6 = b.iterator();
                                             while (iteB6.hasNext()) {
                                                 boolean do999 = iteB6.next();
-                                                File dirOut7;
+                                                Path dirOut7;
                                                 if (do999) {
-                                                    dirOut7 = new File(dirOut6, DW_Strings.sInclude999);
+                                                    dirOut7 = Paths.get(dirOut6.toString(), DW_Strings.sInclude999);
                                                     Iterator<Boolean> iteB7;
                                                     iteB7 = b.iterator();
                                                     while (iteB7.hasNext()) {
                                                         boolean doSameTenancy;
                                                         doSameTenancy = iteB7.next();
-                                                        File dirOut8;
+                                                        Path dirOut8;
                                                         if (doSameTenancy) {
-                                                            dirOut8 = new File(dirOut7,
+                                                            dirOut8 = Paths.get(dirOut7.toString(),
                                                                     SHBE_Strings.s_IncludeSameTenancy);
                                                         } else {
-                                                            dirOut8 = new File(dirOut7,
+                                                            dirOut8 = Paths.get(dirOut7.toString(),
                                                                     SHBE_Strings.s_NotIncludeSameTenancy);
                                                         }
                                                         if (grouped) {
@@ -886,18 +824,18 @@ public class DW_LineGraph extends Chart_Line {
                                                         }
                                                     }
                                                 } else {
-                                                    dirOut7 = new File(dirOut6, DW_Strings.sExclude999);
+                                                    dirOut7 = Paths.get(dirOut6.toString(), DW_Strings.sExclude999);
                                                     Iterator<Boolean> iteB7;
                                                     iteB7 = b.iterator();
                                                     while (iteB7.hasNext()) {
                                                         boolean doSameTenancy;
                                                         doSameTenancy = iteB7.next();
-                                                        File dirOut8;
+                                                        Path dirOut8;
                                                         if (doSameTenancy) {
-                                                            dirOut8 = new File(dirOut7,
+                                                            dirOut8 = Paths.get(dirOut7.toString(),
                                                                     SHBE_Strings.s_IncludeSameTenancy);
                                                         } else {
-                                                            dirOut8 = new File(dirOut7,
+                                                            dirOut8 = Paths.get(dirOut7.toString(),
                                                                     SHBE_Strings.s_NotIncludeSameTenancy);
                                                         }
                                                         if (grouped) {
@@ -916,36 +854,33 @@ public class DW_LineGraph extends Chart_Line {
                                     }
                                 }
                             } else {
-                                File dirIn4;
-                                File dirOut4;
-                                dirIn4 = new File(dirIn3, DW_Strings.sAll);
-                                dirOut4 = new File(dirOut3, DW_Strings.sAll);
+                                Path dirIn4;
+                                Path dirOut4;
+                                dirIn4 = Paths.get(dirIn3.toString(), DW_Strings.sAll);
+                                dirOut4 = Paths.get(dirOut3.toString(), DW_Strings.sAll);
                                 Iterator<Boolean> iteB3;
                                 iteB3 = b.iterator();
                                 while (iteB3.hasNext()) {
-                                    boolean grouped;
-                                    grouped = iteB3.next();
-                                    Iterator<Boolean> iteB4;
-                                    iteB4 = b.iterator();
+                                    boolean grouped = iteB3.next();
+                                    Iterator<Boolean> iteB4 = b.iterator();
                                     while (iteB4.hasNext()) {
-                                        boolean postcodeChanged;
-                                        postcodeChanged = iteB4.next();
-                                        File dirIn5;
-                                        File dirOut5;
+                                        boolean postcodeChanged = iteB4.next();
+                                        Path dirIn5;
+                                        Path dirOut5;
                                         if (postcodeChanged) {
-                                            dirIn5 = new File(dirIn4, DW_Strings.sPostcodeChanged);
-                                            dirOut5 = new File(dirOut4, DW_Strings.sPostcodeChanged);
+                                            dirIn5 = Paths.get(dirIn4.toString(), DW_Strings.sPostcodeChanged);
+                                            dirOut5 = Paths.get(dirOut4.toString(), DW_Strings.sPostcodeChanged);
                                         } else {
-                                            dirIn5 = new File(dirIn4, DW_Strings.sPostcodeChangedNo);
-                                            dirOut5 = new File(dirOut4, DW_Strings.sPostcodeChangedNo);
+                                            dirIn5 = Paths.get(dirIn4.toString(), DW_Strings.sPostcodeChangedNo);
+                                            dirOut5 = Paths.get(dirOut4.toString(), DW_Strings.sPostcodeChangedNo);
                                         }
                                         Iterator<Boolean> iteB5;
                                         iteB5 = b.iterator();
                                         while (iteB5.hasNext()) {
                                             boolean do999 = iteB5.next();
-                                            File dirOut6;
+                                            Path dirOut6;
                                             if (do999) {
-                                                dirOut6 = new File(dirOut5, DW_Strings.sInclude999);
+                                                dirOut6 = Paths.get(dirOut5.toString(), DW_Strings.sInclude999);
                                                 if (grouped) {
                                                     doSumat(dirIn5, dirOut6, include, includeKey,
                                                             allSelectionsGrouped.get(false).get(do999).get(doUnderOccupancyData),
@@ -956,7 +891,7 @@ public class DW_LineGraph extends Chart_Line {
                                                             futures, format, SHBEFilenames, grouped, month3Letters);
                                                 }
                                             } else {
-                                                dirOut6 = new File(dirOut5, DW_Strings.sExclude999);
+                                                dirOut6 = Paths.get(dirOut5.toString(), DW_Strings.sExclude999);
                                                 if (grouped) {
                                                     doSumat(dirIn5, dirOut6, include, includeKey,
                                                             allSelectionsGrouped.get(false).get(do999).get(doUnderOccupancyData),
@@ -980,22 +915,22 @@ public class DW_LineGraph extends Chart_Line {
         env.ge.log("</run>");
     }
 
-    private void doSumat(File dirIn, File dirOut, ArrayList<Integer> include,
+    private void doSumat(Path dirIn, Path dirOut, ArrayList<Integer> include,
             String includeKey, TreeMap<String, HashSet<String>> allSelections,
             HashSet<Future> futures, String format, String[] SHBEFilenames,
-            boolean grouped, ArrayList<String> month3Letters) throws IOException {
+            boolean grouped, ArrayList<String> month3Letters) throws IOException, Exception {
 //        Iterator<String> includesIte;
 //        includesIte = includes.keySet().iterator();
 //        while (includesIte.hasNext()) {
 //            String includeKey;
 //            includeKey = includesIte.next();
-//            File dirIn2;
-//            dirIn2 = new File( dirIn, includeKey);
+//            Path dirIn2;
+//            dirIn2 = Paths.get( dirIn, includeKey);
 ////            doneFirsts.put(includeKey, false);
 //            ArrayList<Integer> include;
 //            include = includes.get(includeKey);
         Object[] treeMapDateLabelSHBEFilename;
-        treeMapDateLabelSHBEFilename = SHBE_Handler.getTreeMapDateLabelSHBEFilenames(
+        treeMapDateLabelSHBEFilename = shbeHandler.getTreeMapDateLabelSHBEFilenames(
                 SHBEFilenames, include);
         TreeMap<BigDecimal, String> xAxisLabels;
         xAxisLabels = (TreeMap<BigDecimal, String>) treeMapDateLabelSHBEFilename[0];
@@ -1020,7 +955,7 @@ public class DW_LineGraph extends Chart_Line {
                 if (include.contains(i - 1) && (i - 1) >= 0) {
                     String aSHBEFilename0;
                     aSHBEFilename0 = SHBEFilenames[i - 1];
-                    YM30 = SHBE_Handler.getYM3(aSHBEFilename0);
+                    YM30 = shbeHandler.getYM3(aSHBEFilename0);
                     yM30 = YM30.toString();
                     doneFirst = true;
                 }
@@ -1029,13 +964,13 @@ public class DW_LineGraph extends Chart_Line {
                 String aSHBEFilename1;
                 aSHBEFilename1 = SHBEFilenames[i];
                 UKP_YM3 YM31;
-                YM31 = SHBE_Handler.getYM3(aSHBEFilename1);
+                YM31 = shbeHandler.getYM3(aSHBEFilename1);
                 String yM31;
                 yM31 = YM31.toString();
                 String filename;
                 filename = DW_Strings.sTenancyTypeTransition + "_Start_" + YM30 + "_End_" + YM31 + ".csv";
                 if (include.contains(i)) {
-                    File dirIn3;
+                    Path dirIn3;
                     double timeDiff;
                     timeDiff = Generic_Time.getMonthDiff(YM30.getYear(),
                             YM31.getYear(), YM30.getMonth(), YM31.getMonth());
@@ -1044,11 +979,10 @@ public class DW_LineGraph extends Chart_Line {
                     BigDecimal key;
                     key = fileLabelValue.get(label);
                     if (grouped) {
-//                        dirIn3 = new File(dirIn, DW_DW_Strings.sAll);
-                        dirIn3 = new File(dirIn, DW_Strings.sGrouped);
-                        File f;
-                        f = new File(dirIn3, filename);
-                        if (f.exists()) {
+//                        dirIn3 = Paths.get(dirIn, DW_DW_Strings.sAll);
+                        dirIn3 = Paths.get(dirIn.toString(), DW_Strings.sGrouped);
+                        Path f = Paths.get(dirIn3.toString(), filename);
+                        if (Files.exists(f)) {
                             System.out.println("Using file " + f);
 
                             TreeMap<String, TreeMap<String, BigDecimal>> tttmg;
@@ -1063,11 +997,10 @@ public class DW_LineGraph extends Chart_Line {
                             System.out.println(f + " does not exist");
                         }
                     } else {
-//                        dirIn3 = new File(dirIn, DW_DW_Strings.sAll);
-                        dirIn3 = new File(dirIn, DW_Strings.sGroupedNo);
-                        File f;
-                        f = new File(dirIn3, filename);
-                        if (f.exists()) {
+//                        dirIn3 = Paths.get(dirIn, DW_DW_Strings.sAll);
+                        dirIn3 = Paths.get(dirIn.toString(), DW_Strings.sGroupedNo);
+                        Path f = Paths.get(dirIn3.toString(), filename);
+                        if (Files.exists(f)) {
                             System.out.println("Using file " + f);
                             // TenancyTypeBefore, TenancyTypeNow Counts.
                             TreeMap<String, TreeMap<String, BigDecimal>> tenancyTypeTransitionMap;
@@ -1108,20 +1041,18 @@ public class DW_LineGraph extends Chart_Line {
             }
         }
         if (!bigMatrix.isEmpty()) {
-            File dirOut2;
-            dirOut2 = new File(dirOut, includeKey);
+            Path dirOut2 = Paths.get(dirOut.toString(), includeKey);
             if (grouped) {
-                dirOut2 = new File(dirOut2, DW_Strings.sGrouped);
+                dirOut2 = Paths.get(dirOut2.toString(), DW_Strings.sGrouped);
             } else {
-                dirOut2 = new File(dirOut2, DW_Strings.sGroupedNo);
+                dirOut2 = Paths.get(dirOut2.toString(), DW_Strings.sGroupedNo);
             }
-            Iterator<String> allSelectionsIte;
-            allSelectionsIte = allSelections.keySet().iterator();
+            Iterator<String> allSelectionsIte = allSelections.keySet().iterator();
             while (allSelectionsIte.hasNext()) {
                 String selections = allSelectionsIte.next();
                 //dirOut2.mkdirs(); // only make if there is result.
-                File fout;
-                fout = new File(dirOut2, DW_Strings.sTenancyTypeTransitionLineGraph
+                Path fout;
+                fout = Paths.get(dirOut2.toString(), DW_Strings.sTenancyTypeTransitionLineGraph
                         + selections + ".PNG");
                 yAxisLabel = "Tenancy Changes Per Month";
                 title = "Tenancy Transition Line Graph";
@@ -1143,7 +1074,7 @@ public class DW_LineGraph extends Chart_Line {
                         if (newMinY.compareTo(newMaxY) == 1) {
                             env.ge.log("newMinY.compareTo(newMaxY) == 1 so no graph is produced.");
                         } else {
-                            dirOut2.mkdirs();
+                            Files.createDirectories(dirOut2);
                             chart.setData(data);
                             //chart.run();
                             future = chart.future;
@@ -1940,7 +1871,7 @@ public class DW_LineGraph extends Chart_Line {
      * @return TenureBefore, TenureNow Counts.
      */
     public TreeMap<String, TreeMap<String, BigDecimal>> getTenancyTypeTransitionMap(
-            File f,
+            Path f,
             double timeDiff) {
         DW_Table table = new DW_Table(env);
 //        Object[] result;
@@ -2029,7 +1960,7 @@ public class DW_LineGraph extends Chart_Line {
      * @return TenancyTypeBefore, TenancyTypeNow Counts.
      */
     public TreeMap<String, TreeMap<String, BigDecimal>> getTenancyTypeTransitionMapGrouped(
-            File f,
+            Path f,
             double timeDiff) {
         DW_Table table = new DW_Table(env);
 //        Object[] result;
@@ -2432,9 +2363,9 @@ public class DW_LineGraph extends Chart_Line {
 //            //tenancyTypes = label.split(" - ");
 //            tenancyTypes = label.split(" - ");
 //            String newLabel;
-//            newLabel = SHBE_Handler.getTenancyTypeName(Integer.valueOf(tenancyTypes[0]));
+//            newLabel = shbeHandler.getTenancyTypeName(Integer.valueOf(tenancyTypes[0]));
 //            newLabel += " TO ";
-//            newLabel += SHBE_Handler.getTenancyTypeName(Integer.valueOf(tenancyTypes[1]));
+//            newLabel += shbeHandler.getTenancyTypeName(Integer.valueOf(tenancyTypes[1]));
 //            labels.add(newLabel);
 //            nonZero2.put(newLabel, nonZero.get(label));
 //        }

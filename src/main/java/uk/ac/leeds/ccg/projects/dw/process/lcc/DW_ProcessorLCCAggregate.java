@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package uk.ac.leeds.ccg.projects.dw.process.lcc;
 
 import java.io.File;
@@ -15,20 +11,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import uk.ac.leeds.ccg.agdt.data.ukp.data.UKP_Data;
-import uk.ac.leeds.ccg.agdt.data.ukp.data.id.UKP_RecordID;
-import uk.ac.leeds.ccg.agdt.data.ukp.util.UKP_YM3;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.id.SHBE_ClaimID;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.core.SHBE_Strings;
-import uk.ac.leeds.ccg.andyt.generic.util.Generic_Collections;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.data.ukp.data.UKP_Data;
+import uk.ac.leeds.ccg.data.ukp.data.id.UKP_RecordID;
+import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
+import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_ClaimID;
+import uk.ac.leeds.ccg.data.shbe.core.SHBE_Strings;
+import uk.ac.leeds.ccg.generic.util.Generic_Collections;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Handler;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Records;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_D_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_Record;
-import uk.ac.leeds.ccg.andyt.generic.data.shbe.data.SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Records;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_D_Record;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Record;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_TenancyType_Handler;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Strings;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Data;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Record;
@@ -36,9 +33,8 @@ import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Set;
 
 /**
  * Class for aggregating data.
- * http://www.geog.leeds.ac.uk/people/a.turner/projects/DigitalWelfare/
- *
- * @author geoagdt
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 
@@ -81,18 +77,18 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
     boolean doAggregation = false;
     boolean doHBGeneralAggregateStatistics = false;
 
-    public DW_ProcessorLCCAggregate(DW_Environment env) throws IOException {
+    public DW_ProcessorLCCAggregate(DW_Environment env) throws IOException, Exception {
         super(env);
         UO_Handler = env.getUO_Handler();
         SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
-        SHBE_Handler = env.getSHBE_Handler();
-        ClaimIDToClaimRefLookup = SHBE_Handler.getClaimIDToClaimRefLookup();
+        shbeHandler = env.getSHBE_Handler();
+        cid2c = shbeHandler.getCid2c();
         UO_Data = env.getUO_Data();
     }
 
     @Override
     public void run() throws Exception, Error {
-        SHBEFilenames = SHBE_Handler.getSHBEFilenamesAll();
+        shbeFilenames = shbeHandler.getSHBEFilenamesAll();
         // Declaration
         ArrayList<String> PTs;
         ArrayList<Integer> levels;
@@ -129,7 +125,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         levels.add(UKP_Data.TYPE_StatisticalWard);
 
         // Initialise includes
-        includes = SHBE_Handler.getIncludes();
+        includes = shbeHandler.getIncludes();
 //            includes.remove(DW_Strings.sIncludeAll);
 //            includes.remove(DW_Strings.sIncludeYearly);
 //            includes.remove(DW_Strings.sInclude6Monthly);
@@ -184,12 +180,12 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 
         if (doAggregation) {
             UKP_YM3 YM3;
-//            for (int i = 0; i < SHBEFilenames.length; i++) {
-//                YM3 = SHBE_Handler.getYM3(SHBEFilenames[i]);
-            for (String SHBEFilename : SHBEFilenames) {
-                YM3 = SHBE_Handler.getYM3(SHBEFilename);
+//            for (int i = 0; i < shbeFilenames.length; i++) {
+//                YM3 = shbeHandler.getYM3(shbeFilenames[i]);
+            for (String SHBEFilename : shbeFilenames) {
+                YM3 = shbeHandler.getYM3(SHBEFilename);
                 aggregate(YM3, PTs, levels, getArrayListBoolean(), UO_Data,
-                        SHBEFilenames, claimantTypes, types, distances,
+                        shbeFilenames, claimantTypes, types, distances,
                         distanceTypes, TTs, TTGroups, TTsGrouped,
                         regulatedGroups, unregulatedGroups, includes);
             }
@@ -386,13 +382,13 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             int startIndex) {
         String result = null;
         if (i > startIndex + 2) {
-            String lastMonthYear = SHBE_Handler.getYear(SHBEFilenames[i - 1]);
+            String lastMonthYear = shbeHandler.getYear(SHBEFilenames[i - 1]);
             int yearInt = Integer.parseInt(year);
             int lastMonthYearInt = Integer.parseInt(lastMonthYear);
             if (!(yearInt == lastMonthYearInt || yearInt == lastMonthYearInt + 1)) {
                 return null;
             }
-            String lastMonthMonth = SHBE_Handler.getMonth(SHBEFilenames[i - 1]);
+            String lastMonthMonth = shbeHandler.getMonth(SHBEFilenames[i - 1]);
             result = lastMonthYear + lastMonthMonth;
         }
 
@@ -407,8 +403,8 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             int startIndex) {
         String result = null;
         if (i > startIndex + 13) {
-            String lastYearYear = SHBE_Handler.getYear(SHBEFilenames[i - 12]);
-            String lastYearMonth = SHBE_Handler.getMonth(SHBEFilenames[i - 12]);
+            String lastYearYear = shbeHandler.getYear(SHBEFilenames[i - 12]);
+            String lastYearMonth = shbeHandler.getMonth(SHBEFilenames[i - 12]);
             int yearInt = Integer.parseInt(year);
             int lastYearYearInt = Integer.parseInt(lastYearYear);
             if (!(yearInt == lastYearYearInt + 1)) {
@@ -521,14 +517,14 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
      * @return
      */
     protected HashMap<SHBE_ClaimID, Integer> loadClaimIDToTTLookup(UKP_YM3 ym3,
-            Integer key, HashMap<Integer, HashMap<SHBE_ClaimID, Integer>> m) {
+            Integer key, HashMap<Integer, HashMap<SHBE_ClaimID, Integer>> m) throws IOException {
         HashMap<SHBE_ClaimID, Integer> r;
         if (m.containsKey(key)) {
             r = m.get(key);
         } else {
             r = new HashMap<>();
-            SHBE_Records sr = SHBE_Handler.getRecords(ym3, env.HOOME);
-            HashMap<SHBE_ClaimID, SHBE_Record> recs = sr.getRecords(env.HOOME);
+            SHBE_Records sr = shbeHandler.getRecords(ym3, env.HOOME);
+            Map<SHBE_ClaimID, SHBE_Record> recs = sr.getRecords(env.HOOME);
             Iterator<SHBE_ClaimID> ite = recs.keySet().iterator();
             while (ite.hasNext()) {
                 SHBE_ClaimID claimID = ite.next();
@@ -671,7 +667,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             i = includeIte.next();
             // Load first data
             UKP_YM3 YM30;
-            YM30 = SHBE_Handler.getYM3(SHBEFilenames[i]);
+            YM30 = shbeHandler.getYM3(SHBEFilenames[i]);
             SHBE_Records recs0;
             recs0 = env.getSHBE_Handler().getRecords(YM30, env.HOOME);
             UKP_YM3 YM30v;
@@ -794,7 +790,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                             TreeMap<String, String> tLookupFromPostcodeToLevelCode;
                             tLookupFromPostcodeToLevelCode = lookupsFromPostcodeToLevelCode.get(level);
                             String claimantType;
-                            claimantType = SHBE_Handler.getClaimantType(DRecord0);
+                            claimantType = shbeHandler.getClaimantType(DRecord0);
                             Integer TTInt = DRecord0.getTenancyType();
                             if (postcode0 != null) {
                                 String areaCode;
@@ -917,7 +913,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             while (includeIte.hasNext()) {
                 i = includeIte.next();
                 // Set Year and Month variables
-                UKP_YM3 YM31 = SHBE_Handler.getYM3(SHBEFilenames[i]);
+                UKP_YM3 YM31 = shbeHandler.getYM3(SHBEFilenames[i]);
                 // Load next data
                 SHBE_Records recs1;
                 recs1 = env.getSHBE_Handler().getRecords(YM31, env.HOOME);
@@ -929,21 +925,21 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 YM31v = recs1.getNearestYM3ForONSPDLookup();
 //            String yearMonth = year + month;
 //            String lastMonth_yearMonth;
-//            String year = SHBE_Handler.getYear(SHBEFilenames[i]);
-//            String month = SHBE_Handler.getMonth(SHBEFilenames[i]);
+//            String year = shbeHandler.getYear(shbeFilenames[i]);
+//            String month = shbeHandler.getMonth(shbeFilenames[i]);
 //            String yearMonth = year + month;
 //            String lastMonth_yearMonth;
 //            lastMonth_yearMonth = getLastMonth_yearMonth(
 //                    year,
 //                    month,
-//                    SHBEFilenames,
+//                    shbeFilenames,
 //                    i,
 //                    startIndex);
 //            String lastYear_yearMonth;
 //            lastYear_yearMonth = getLastYear_yearMonth(
 //                    year,
 //                    month,
-//                    SHBEFilenames,
+//                    shbeFilenames,
 //                    i,
 //                    startIndex);
                 // Get UnderOccupancy Data
@@ -1177,11 +1173,11 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                 String CTBRef1;
                                 CTBRef1 = DRecord1.getCouncilTaxBenefitClaimReferenceNumber();
                                 SHBE_ClaimID claimID1;
-                                claimID1 = SHBE_Handler.getClaimRefToClaimIDLookup().get(CTBRef1);
+                                claimID1 = shbeHandler.getClaimRefToClaimIDLookup().get(CTBRef1);
                                 SHBE_ClaimID claimantSHBE_ClaimID1;
                                 claimantSHBE_ClaimID1 = null;//DW_PersonIDtoSHBE_ClaimIDLookup.get(claimantDW_PersonID1);
                                 String claimantType;
-                                claimantType = SHBE_Handler.getClaimantType(DRecord1);
+                                claimantType = shbeHandler.getClaimantType(DRecord1);
                                 boolean doAdd = true;
                                 // Check for UnderOccupied
                                 if (doUnderOccupied) {
