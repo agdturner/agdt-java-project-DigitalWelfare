@@ -1,11 +1,14 @@
 package uk.ac.leeds.ccg.projects.dw.reporting;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
-import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.generic.util.Generic_Time;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 
 public class DW_Types extends DW_HTMLPage {
 
@@ -159,21 +162,19 @@ public class DW_Types extends DW_HTMLPage {
         }
     }
 
-    public void write(
-            String reportName,
-            String type,
+    public void write(String reportName, String type, 
             HashMap<String, String> definitions) throws IOException {
         String baseReportDir = mainDirectoryName + "/" + reportName + "/" + "Definitions/";
         String baseURLString0 = "http://www.geog.leeds.ac.uk/people/a.turner/"
                 + projectName + "/" + baseReportDir;
         String date = Generic_Time.getDate();
 
-        File dir = new File(env.files.getOutputDir(), baseReportDir);
-        dir.mkdirs();
+        Path dir = Paths.get(env.files.getOutputDir().toString(), baseReportDir);
+        Files.createDirectories(dir);
         String reportFilename = type + ".html";
         String baseURLString1 = baseURLString0 + reportFilename;
-        File f = new File(dir, reportFilename);
-        componentFOS = env.ge.io.getBufferedOutputStream(f);
+        Path f = Paths.get(dir.toString(), reportFilename);
+        componentFOS = Generic_IO.getBufferedOutputStream(f);
         write(type, definitions, projectName, reportName, reportFilename,
                 baseReportDir, baseURLString0, baseURLString1);
         try {

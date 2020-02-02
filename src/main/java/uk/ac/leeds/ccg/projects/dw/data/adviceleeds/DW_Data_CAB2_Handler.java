@@ -20,13 +20,13 @@ package uk.ac.leeds.ccg.projects.dw.data.adviceleeds;
 
 import uk.ac.leeds.ccg.projects.dw.core.DW_Object;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.StreamTokenizer;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 
 /**
  * For handling data from CASE.
@@ -46,26 +46,18 @@ public class DW_Data_CAB2_Handler extends DW_Object {
      * representing records
      */
     public TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> loadInputData(
-            File directory,
-            String filename,
-            Object IDType) {
+            Path directory, String filename, Object IDType) throws IOException {
         System.out.println("Loading " + filename);
-        TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> result;
-        result = new TreeMap<>();
-        File inputFile = new File(
-                directory,
-                filename);
-        try {
-            BufferedReader br;
-            br = env.ge.io.getBufferedReader(inputFile);
-            StreamTokenizer st;
-            st = getStreamTokenizerSyntax(br);
+        TreeMap<DW_ID_ClientID, DW_Data_CAB2_Record> r = new TreeMap<>();
+        Path inputFile = Paths.get(directory.toString(), filename);
+        try (BufferedReader br = Generic_IO.getBufferedReader(inputFile)) {
+            StreamTokenizer st = getStreamTokenizerSyntax(br);
             String line = "";
             long RecordID = 0;
             // Skip the header
             int headerLines = 2;
             for (int i = 0; i < headerLines; i++) {
-                env.ge.io.skipline(st);
+                br.readLine();
             }
             // Read data
             int tokenType;
@@ -96,10 +88,10 @@ public class DW_Data_CAB2_Handler extends DW_Object {
                                 // IDType instance of DW_ID_ClientID
                                 id = new DW_ID_ClientID(client_ref);
                             }
-                            if (result.containsKey(id)) {
+                            if (r.containsKey(id)) {
                                 System.out.println("Additional record for " + id);
                                 DW_Data_CAB2_Record existingRecord;
-                                existingRecord = result.get(id);
+                                existingRecord = r.get(id);
                                 System.out.println("Existing Record");
                                 System.out.println(existingRecord);
                                 System.out.println("Current Record");
@@ -109,7 +101,7 @@ public class DW_Data_CAB2_Handler extends DW_Object {
                                 }
                                 id.toString();
                             } else {
-                                result.put(id, record);
+                                r.put(id, record);
                             }
                         } catch (Exception e) {
                             System.err.println(line);
@@ -121,33 +113,29 @@ public class DW_Data_CAB2_Handler extends DW_Object {
                 }
                 tokenType = st.nextToken();
             }
-            br.close();
-        } catch (IOException ex) {
-            Logger.getLogger(DW_Data_CAB2_Handler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return result;
+        return r;
     }
 
     public StreamTokenizer getStreamTokenizerSyntax(BufferedReader br) {
-        StreamTokenizer result;
-        result = new StreamTokenizer(br);
-        env.ge.io.setStreamTokenizerSyntax5(result);
-        result.wordChars('`', '`');
-        result.wordChars('\'', '\'');
-        result.wordChars('(', '(');
-        result.wordChars(')', ')');
-        result.wordChars('\'', '\'');
-        result.wordChars('*', '*');
-        result.wordChars('\\', '\\');
-        result.wordChars('/', '/');
-        result.wordChars('&', '&');
-        result.wordChars('£', '£');
-        result.wordChars('<', '<');
-        result.wordChars('>', '>');
-        result.wordChars('=', '=');
-        result.wordChars('#', '#');
-        result.wordChars(':', ':');
-        result.wordChars(';', ';');
-        return result;
+        StreamTokenizer r = new StreamTokenizer(br);
+        Generic_IO.setStreamTokenizerSyntax5(r);
+        r.wordChars('`', '`');
+        r.wordChars('\'', '\'');
+        r.wordChars('(', '(');
+        r.wordChars(')', ')');
+        r.wordChars('\'', '\'');
+        r.wordChars('*', '*');
+        r.wordChars('\\', '\\');
+        r.wordChars('/', '/');
+        r.wordChars('&', '&');
+        r.wordChars('£', '£');
+        r.wordChars('<', '<');
+        r.wordChars('>', '>');
+        r.wordChars('=', '=');
+        r.wordChars('#', '#');
+        r.wordChars(':', ':');
+        r.wordChars(';', ';');
+        return r;
     }
 }

@@ -19,13 +19,15 @@
 package uk.ac.leeds.ccg.projects.dw.data.adviceleeds;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.StreamTokenizer;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 
 /**
  * For handling data from the Burley Lodge Centre/Better Leeds Communities.
@@ -39,10 +41,14 @@ public class DW_Data_BLC_Handler extends DW_Data_AbstractRecord {
     }
 
     public static void main(String[] args) {
-        new DW_Data_BLC_Handler(null).run();
+        try {
+            new DW_Data_BLC_Handler(null).run();
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        }
     }
 
-    public void run() {
+    public void run() throws IOException {
         String filename = "Burley Lodge Amalgamated 2012-2013.csv";
         TreeMap<String, DW_Data_BLC_Record> data;
         data = loadInputData(filename);
@@ -55,15 +61,15 @@ public class DW_Data_BLC_Handler extends DW_Data_AbstractRecord {
      * @return
      */
     public TreeMap<String, DW_Data_BLC_Record> loadInputData(
-            String filename) {
+            String filename) throws IOException {
         System.out.println("Loading " + filename);
         TreeMap<String, DW_Data_BLC_Record> r = new TreeMap<>();
-        File directory = new File(env.files.getInputAdviceLeedsDir(),
+        Path directory = Paths.get(env.files.getInputAdviceLeedsDir().toString(),
                 "BurleyLodgeCentre");
-        File inputFile = new File(directory, filename);
-        try (BufferedReader br = env.ge.io.getBufferedReader(inputFile)) {
+        Path inputFile = Paths.get(directory.toString(), filename);
+        try (BufferedReader br = Generic_IO.getBufferedReader(inputFile)) {
             StreamTokenizer st = new StreamTokenizer(br);
-            env.ge.io.setStreamTokenizerSyntax5(st);
+            Generic_IO.setStreamTokenizerSyntax5(st);
             st.wordChars('`', '`');
             st.wordChars('(', '(');
             st.wordChars(')', ')');
@@ -88,7 +94,7 @@ public class DW_Data_BLC_Handler extends DW_Data_AbstractRecord {
             // Skip the header
             int headerLines = 8;
             for (int i = 0; i < headerLines; i++) {
-                env.ge.io.skipline(st);
+                br.readLine();
             }   // Read data
             int tokenType;
             tokenType = st.nextToken();

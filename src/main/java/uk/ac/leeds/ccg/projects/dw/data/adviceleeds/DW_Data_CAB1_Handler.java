@@ -24,10 +24,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StreamTokenizer;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 
 /**
  * For handling data from CASE.
@@ -48,21 +51,14 @@ public class DW_Data_CAB1_Handler extends DW_Object {
      * @return TreeMap<String,DW_Data_CAB1_Record> representing records
      */
     public TreeMap<String, DW_Data_CAB1_Record> loadInputData(
-            File directory,
-            String filename,
-            PrintWriter pw) {
+            Path directory, String filename, PrintWriter pw) throws IOException {
         System.out.println("Loading " + filename);
-        TreeMap<String, DW_Data_CAB1_Record> result;
-        result = new TreeMap<>();
-        File inputFile = new File(
-                directory,
-                filename);
-        try {
-            BufferedReader br;
-            br = env.ge.io.getBufferedReader(inputFile);
+        TreeMap<String, DW_Data_CAB1_Record> r = new TreeMap<>();
+        Path inputFile = Paths.get(directory.toString(), filename);
+        try (BufferedReader br = Generic_IO.getBufferedReader(inputFile)) {
             StreamTokenizer st;
             st = new StreamTokenizer(br);
-            env.ge.io.setStreamTokenizerSyntax5(st);
+            Generic_IO.setStreamTokenizerSyntax5(st);
             st.wordChars('`', '`');
             st.wordChars('(', '(');
             st.wordChars(')', ')');
@@ -82,7 +78,7 @@ public class DW_Data_CAB1_Handler extends DW_Object {
             // Skip the header
             int headerLines = 16;
             for (int i = 0; i < headerLines; i++) {
-                env.ge.io.skipline(st);
+                br.readLine();
             }
             // Read data
             int tokenType;
@@ -103,10 +99,10 @@ public class DW_Data_CAB1_Handler extends DW_Object {
                         try {
                             DW_Data_CAB1_Record record = new DW_Data_CAB1_Record(env, RecordID, line, this);
                             String clientProfileID = record.getClientProfileID();
-                            if (result.containsKey(clientProfileID)) {
+                            if (r.containsKey(clientProfileID)) {
                                 System.out.println("Additional record for client " + clientProfileID);
                             } else {
-                                result.put(clientProfileID, record);
+                                r.put(clientProfileID, record);
                             }
                         } catch (Exception e) {
                             System.err.println(line);
@@ -118,11 +114,8 @@ public class DW_Data_CAB1_Handler extends DW_Object {
                 }
                 tokenType = st.nextToken();
             }
-            br.close();
-        } catch (IOException ex) {
-            Logger.getLogger(DW_Data_CAB1_Handler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return result;
+        return r;
     }
 
 }

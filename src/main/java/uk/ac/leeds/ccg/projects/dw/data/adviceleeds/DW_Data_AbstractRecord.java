@@ -18,7 +18,7 @@
  */
 package uk.ac.leeds.ccg.projects.dw.data.adviceleeds;
 
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Object;
 
 /**

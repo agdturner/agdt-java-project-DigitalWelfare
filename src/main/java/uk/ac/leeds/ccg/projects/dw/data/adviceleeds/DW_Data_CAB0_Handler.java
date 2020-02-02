@@ -23,11 +23,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.StreamTokenizer;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
-import uk.ac.leeds.ccg.andyt.projects.digitalwelfare.core.DW_Environment;
+import uk.ac.leeds.ccg.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 
 /**
  * For Handling data from Petra.
@@ -57,12 +59,12 @@ public class DW_Data_CAB0_Handler extends DW_Object {
     public TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> loadInputData(
             int type,
             String filename,
-            Object IDType) {
+            Object IDType) throws IOException {
         TreeMap<DW_ID_ClientID, DW_Data_CAB0_Record> result;
         result = new TreeMap<>();
-        File directory = new File(env.files.getInputAdviceLeedsDir(),
+        Path directory = Paths.get(env.files.getInputAdviceLeedsDir().toString(),
                 "ChapeltownCAB");
-        File inputFile = new File(directory, filename);
+        Path inputFile = Paths.get(directory.toString(), filename);
         try {
             long RecordID;
             int recordsLoaded;
@@ -77,7 +79,7 @@ public class DW_Data_CAB0_Handler extends DW_Object {
                 // Skip the header
                 int headerLines = 1;
                 for (int i = 0; i < headerLines; i++) {
-                    env.ge.io.skipline(st);
+                    br.readLine();
                 }   // Read data
                 int tokenType;
                 tokenType = st.nextToken();

@@ -1,13 +1,15 @@
 package uk.ac.leeds.ccg.projects.dw.reporting;
 
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeMap;
+import uk.ac.leeds.ccg.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.generic.lang.Generic_String;
 import uk.ac.leeds.ccg.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
@@ -41,12 +43,12 @@ public class DW_Report extends DW_HTMLPage {
     public static void main(String[] args) {
         try {
             new DW_Report(null).run();
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace(System.err);
         }
     }
 
-    public void run() throws IOException {
+    public void run() throws IOException, Exception {
         levels = new ArrayList<>();
         ArrayList<String> levelsCopy;
         levelsCopy = new ArrayList<>();
@@ -175,13 +177,12 @@ public class DW_Report extends DW_HTMLPage {
             boolean doUnderOccupied,
             boolean doCouncil) throws IOException {
         try {
-            File dirOut = new File(env.files.getOutputDir(), baseReportDir);
+            Path dirOut = Paths.get(env.files.getOutputDir().toString(), baseReportDir);
             dirOut = env.files.getUODir(dirOut, doUnderOccupied, doCouncil);
-            dirOut.mkdirs();
+            Files.createDirectories(dirOut);
             String pageTitle = "Results";
-            File f;
-            f = new File(dirOut, pageTitle + ".html");
-            masterFOS = env.ge.io.getBufferedOutputStream(f);
+            Path f = Paths.get(dirOut.toString(), pageTitle + ".html");
+            masterFOS = Generic_IO.getBufferedOutputStream(f);
             writeHTMLHeader(projectName, pageTitle, masterFOS);
             writeStartOfBody(baseURLString0, pageTitle, masterFOS);
         } catch (IOException e) {
@@ -192,8 +193,8 @@ public class DW_Report extends DW_HTMLPage {
 
     public void writeToMaster() {
         try {
-            File dir0 = new File(env.files.getOutputDir(), baseReportDir);
-            File dir1 = new File(dir0, levelsString);
+            Path dir0 = Paths.get(env.files.getOutputDir().toString(), baseReportDir);
+            Path dir1 = Paths.get(dir0.toString(), levelsString);
             writeLine("<div>", masterFOS);
             writeLine("<ul>", masterFOS);
             writeLine("<li><h2>" + levelsString + "</h2>", masterFOS);
@@ -206,7 +207,7 @@ public class DW_Report extends DW_HTMLPage {
                 String claimantType;
                 claimantType = claimantTypesIte.next();
                 String claimantType2 = Generic_String.getCapitalFirstLetter(claimantType) + "Claimants";
-                File dir2 = new File(dir1, claimantType2);
+                Path dir2 = Paths.get(dir1.toString(), claimantType2);
                 writeLine("<li>" + claimantType2, masterFOS);
                 writeLine("<ul>", masterFOS);
                 //dir2.mkdirs();
@@ -241,9 +242,9 @@ public class DW_Report extends DW_HTMLPage {
 
     public void write(
             boolean doUnderOccupied,
-            boolean doCouncil) throws FileNotFoundException {
-        File dirOut = new File(env.files.getOutputDir(), baseReportDir);
-        dirOut = new File(dirOut, levelsString);
+            boolean doCouncil) throws FileNotFoundException, IOException {
+        Path dirOut = Paths.get(env.files.getOutputDir().toString(), 
+                baseReportDir, levelsString);
         dirOut = env.files.getUODir(dirOut, doUnderOccupied, doCouncil);
         String[] tFilenames;
         tFilenames = getFilenames();
@@ -253,42 +254,41 @@ public class DW_Report extends DW_HTMLPage {
             String claimantType;
             claimantType = claimantTypesIte.next();
             String claimantType2 = Generic_String.getCapitalFirstLetter(claimantType) + "Claimants";
-            File dirOut2 = new File(dirOut, claimantType2);
-            dirOut2.mkdirs();
+            Path dirOut2 = Paths.get(dirOut.toString(), claimantType2);
+            Files.createDirectories(dirOut2);
             Iterator<String> tenureIte;
             tenureIte = tenureTypeGroups.iterator();
             while (tenureIte.hasNext()) {
                 String tenure = tenureIte.next();
                 String tenure2 = Generic_String.getCapitalFirstLetter(tenure) + "Tenure";
                 String reportFilename = tenure2 + ".html";
-                File f = new File(dirOut2, reportFilename);
-                int filePathDepth;
-                filePathDepth = env.ge.io.getFileDepth(dirOut2)
-                        - env.ge.io.getFileDepth(dirOut)
-                        + env.ge.io.getFileDepth(baseReportDir);
-                String relativeFilePath;
-                relativeFilePath = env.ge.io.getRelativeFilePath(
-                        filePathDepth);
+                Path f = Paths.get(dirOut2.toString(), reportFilename);
+//                int filePathDepth = env.ge.io.getFileDepth(dirOut2)
+//                        - env.ge.io.getFileDepth(dirOut)
+//                        + env.ge.io.getFileDepth(baseReportDir);
+//                String relativeFilePath;
+//                relativeFilePath = env.ge.io.getRelativeFilePath(
+//                        filePathDepth);
 //                String distanceRelativeFilePath;
 //                distanceRelativeFilePath = env.ge.io.getRelativeFilePath(
 //                        filePathDepth + 1);
-                String definitionsPath;
-                definitionsPath = relativeFilePath + baseReportDir + "/Definitions/";
-                componentFOS = env.ge.io.getBufferedOutputStream(f);
-                String pageTitle;
-                pageTitle = reportName + " " + claimantType2 + " " + tenure2;
-                write(doUnderOccupied, doCouncil, definitionsPath,
-                        relativeFilePath,
-                        //distanceRelativeFilePath,
-                        pageTitle, claimantType, claimantType2, tenure, tenure2,
-                        reportFilename, tFilenames);
-                try {
-                    writeHTMLFooter(date, componentFOS);
-                    componentFOS.close();
-                } catch (IOException e) {
-                    System.err.println(e.getMessage());
-                    e.printStackTrace(System.err);
-                }
+//                String definitionsPath;
+//                definitionsPath = relativeFilePath + baseReportDir + "/Definitions/";
+//                componentFOS = env.ge.io.getBufferedOutputStream(f);
+//                String pageTitle;
+//                pageTitle = reportName + " " + claimantType2 + " " + tenure2;
+//                write(doUnderOccupied, doCouncil, definitionsPath,
+//                        relativeFilePath,
+//                        //distanceRelativeFilePath,
+//                        pageTitle, claimantType, claimantType2, tenure, tenure2,
+//                        reportFilename, tFilenames);
+//                try {
+//                    writeHTMLFooter(date, componentFOS);
+//                    componentFOS.close();
+//                } catch (IOException e) {
+//                    System.err.println(e.getMessage());
+//                    e.printStackTrace(System.err);
+//                }
             }
         }
     }
@@ -500,13 +500,13 @@ public class DW_Report extends DW_HTMLPage {
         writeLine("<img src=\"" + imageSource + "\" alt=\"[" + imageSource + "]\" />", componentFOS);
         writeLine("", componentFOS);
         writeLine("", componentFOS);
-        File dir;
-        File f;
+        Path dir;
+        Path f;
         ArrayList<String> table;
         // Total, In and Out Count Table
-        dir = new File(env.files.getOutputSHBEChoroplethDir(level), filepath);
-        f = new File(dir, name + ".txt");
-        if (f.exists()) {
+        dir = Paths.get(env.files.getOutputSHBEChoroplethDir(level).toString(), filepath);
+        f = Paths.get(dir.toString(), name + ".txt");
+        if (Files.exists(f)) {
             writeLine("", componentFOS);
             writeLine("<h5>Total, In and Out Count Table</h5>", componentFOS);
             writeLine("", componentFOS);
@@ -514,13 +514,13 @@ public class DW_Report extends DW_HTMLPage {
             writeTable(table, componentFOS);
         }
         // Counts By Tenure Table
-        dir = new File(env.files.getGeneratedSHBEDir(level, doUnderOccupied, doCouncil),
+        dir = Paths.get(env.files.getGeneratedSHBEDir(level, doUnderOccupied, doCouncil).toString(),
                 type + "/" + claimantType + "/" + tenure);
         if (type.contains("Distance")) {
-            dir = new File(dir, "" + distanceThreshold);
+            dir = Paths.get(dir.toString(), "" + distanceThreshold);
         }
-        f = new File(dir, "CountsByTenure" + year + month + ".csv");
-        if (f.exists()) {
+        f = Paths.get(dir.toString(), "CountsByTenure" + year + month + ".csv");
+        if (Files.exists(f)) {
             writeLine("", componentFOS);
             writeLine("<h5>Counts By Tenure Table</h5>", componentFOS);
             writeLine("", componentFOS);
@@ -552,11 +552,11 @@ public class DW_Report extends DW_HTMLPage {
 
     }
 
-    protected void writeExtremeAreaTable(File dir, String year, String month)
+    protected void writeExtremeAreaTable(Path dir, String year, String month)
             throws IOException {
         DW_Table tab = new DW_Table(env);
-        File f = new File(dir, "HighestClaimants" + year + month + ".csv");
-        if (f.exists()) {
+        Path f = Paths.get(dir.toString(), "HighestClaimants" + year + month + ".csv");
+        if (Files.exists(f)) {
             writeLine("", componentFOS);
             writeLine("<h5>Areas With The Highest Numbers of Claimants Table</h5>", componentFOS);
             writeLine("", componentFOS);
@@ -566,13 +566,13 @@ public class DW_Report extends DW_HTMLPage {
         }
     }
 
-    protected void writeExtremeAreaChangesTable(File dir, String name,
+    protected void writeExtremeAreaChangesTable(Path dir, String name,
             String type, String year, String month) throws IOException {
         DW_Table tab = new DW_Table(env);
-        File f;
-        f = new File(dir, "ExtremeAreaChanges" + name + type + "LastYear" + year
+        Path f;
+        f = Paths.get(dir.toString(), "ExtremeAreaChanges" + name + type + "LastYear" + year
                 + month + ".csv");
-        if (f.exists()) {
+        if (Files.exists(f)) {
             writeLine("", componentFOS);
             writeLine("<h5>Areas With The Largest " + name + " " + type
                     + " In Numbers Of Claimants Table From Last Year</h5>",
@@ -582,10 +582,10 @@ public class DW_Report extends DW_HTMLPage {
             table = tab.readCSV(f);
             writeTable(table, componentFOS);
         }
-        f = new File(dir,
+        f = Paths.get(dir.toString(),
                 "ExtremeAreaChanges" + name + type + "LastMonth" + year + month
                 + ".csv");
-        if (f.exists()) {
+        if (Files.exists(f)) {
             writeLine("", componentFOS);
             writeLine("<h5>Areas With The Largest " + name + " " + type
                     + " In Numbers Of Claimants Table From Last Month</h5>",

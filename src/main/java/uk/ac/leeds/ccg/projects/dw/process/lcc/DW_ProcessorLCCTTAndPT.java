@@ -956,7 +956,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
                 int max;
                 Iterator<SHBE_ClaimID> ttcsITe;
                 // Ungrouped
-                dirOut3 = Paths.get(                        dirOut2.toString(),                        DW_Strings.sGroupedNo);
+                dirOut3 = Paths.get(dirOut2.toString(), DW_Strings.sGroupedNo);
                 Files.createDirectories(dirOut3);
                 transitions = new TreeMap<>();
                 max = 0;
@@ -1078,6 +1078,7 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
      * @param UOInApril2013
      * @param doGrouped This is optional. If DoGRouped == true then grouped
      * tenancy type results are written out too.
+     * @throws java.io.IOException If encountered.
      */
     public void doTTAndPostcodeChanges(
             String[] SHBEFilenames,
@@ -1299,8 +1300,9 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
      * @param doUnderOccupiedData
      * @param uoSetsAll
      * @param cids
-     * @param DoGrouped This is optional. If true then frequencies for grouped
+     * @param doGrouped This is optional. If true then frequencies for grouped
      * tenancies are also written out.
+     * @throws java.io.IOException If encountered.
      */
     public void doPostcodeChanges(String[] shbeFilenames, ArrayList<String> tts,
             TreeMap<String, ArrayList<Integer>> includes, boolean loadData,
@@ -1555,26 +1557,24 @@ public class DW_ProcessorLCCTTAndPT extends DW_ProcessorLCC {
         return r;
     }
 
-    private void writeTransitionFrequencies(
-            TreeMap<String, Integer> transitions,
-            Path dirOut,
-            //String dirname,
+    private void writeTransitionFrequencies(TreeMap<String, Integer> transitions,
+            Path dirOut, //String dirname,
             String name,
             boolean reportTenancyTransitionBreaks) throws IOException {
         if (transitions.size() > 0) {
             Path dirOut2 = dirOut;
             Files.createDirectories(dirOut2);
-            PrintWriter pw = getFrequencyPrintWriter(dirOut2, name,
-                    reportTenancyTransitionBreaks);
-            pw.println("Count, Type");
-            Iterator<String> ite2 = transitions.keySet().iterator();
-            while (ite2.hasNext()) {
-                String type = ite2.next();
-                Integer count = transitions.get(type);
-                pw.println(count + ", " + type);
+            try (PrintWriter pw = getFrequencyPrintWriter(dirOut2, name,
+                    reportTenancyTransitionBreaks)) {
+                pw.println("Count, Type");
+                Iterator<String> ite2 = transitions.keySet().iterator();
+                while (ite2.hasNext()) {
+                    String type = ite2.next();
+                    Integer count = transitions.get(type);
+                    pw.println(count + ", " + type);
+                }
+                pw.flush();
             }
-            pw.flush();
-            pw.close();
         }
     }
 

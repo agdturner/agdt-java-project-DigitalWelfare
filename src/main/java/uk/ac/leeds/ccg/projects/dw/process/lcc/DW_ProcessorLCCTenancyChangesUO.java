@@ -17,7 +17,7 @@ import uk.ac.leeds.ccg.projects.dw.data.DW_TenancyChangesUO;
  */
 public class DW_ProcessorLCCTenancyChangesUO extends DW_ProcessorLCC {
 
-    public DW_ProcessorLCCTenancyChangesUO(DW_Environment env) throws IOException {
+    public DW_ProcessorLCCTenancyChangesUO(DW_Environment env) throws IOException, Exception {
         super(env);
     }
 
