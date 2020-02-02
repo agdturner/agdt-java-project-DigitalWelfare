@@ -1,21 +1,4 @@
-/*
- * Copyright (C) 2015 geoagdt.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
- */
+
 package uk.ac.leeds.ccg.projects.dw.process.lcc;
 
 import java.io.IOException;
@@ -304,18 +287,18 @@ public class DW_ProcessorLCC extends DW_Processor {
                     SHBE_Records shbeRecords = new SHBE_Records(env.SHBE_Env, YM3);
                     env.checkAndMaybeFreeMemory();
                     data.put(YM3, shbeRecords);
-                    env.ge.log("shbeRecords.getClaimIDsWithStatusOfHBAtExtractDateInPayment().size() "
-                            + shbeRecords.getClaimIDsWithStatusOfHBAtExtractDateInPayment(env.HOOME).size(), true);
-                    env.ge.log("shbeRecords.getClaimIDsWithStatusOfHBAtExtractDateSuspended().size() "
-                            + shbeRecords.getClaimIDsWithStatusOfHBAtExtractDateSuspended(env.HOOME).size(), true);
-                    env.ge.log("shbeRecords.getClaimIDsWithStatusOfHBAtExtractDateOther().size() "
-                            + shbeRecords.getClaimIDsWithStatusOfHBAtExtractDateOther(env.HOOME).size(), true);
-                    env.ge.log("shbeRecords.getClaimIDsWithStatusOfHBAtExtractDateInPayment().size() "
-                            + shbeRecords.getClaimIDsWithStatusOfCTBAtExtractDateInPayment(env.HOOME).size(), true);
-                    env.ge.log("shbeRecords.getClaimIDsWithStatusOfCTBAtExtractDateSuspended().size() "
-                            + shbeRecords.getClaimIDsWithStatusOfCTBAtExtractDateSuspended(env.HOOME).size(), true);
-                    env.ge.log("shbeRecords.getClaimIDsWithStatusOfCTBAtExtractDateOther().size() "
-                            + shbeRecords.getClaimIDsWithStatusOfCTBAtExtractDateOther(env.HOOME).size(), true);
+                    env.ge.log("shbeRecords.getCidsHII().size() "
+                            + shbeRecords.getCidsHII(env.HOOME).size(), true);
+                    env.ge.log("shbeRecords.getCidsHIS().size() "
+                            + shbeRecords.getCidsHIS(env.HOOME).size(), true);
+                    env.ge.log("shbeRecords.getCidsHIO().size() "
+                            + shbeRecords.getCidsHIO(env.HOOME).size(), true);
+                    env.ge.log("shbeRecords.getCidsCII().size() "
+                            + shbeRecords.getCidsCII(env.HOOME).size(), true);
+                    env.ge.log("shbeRecords.getCidsCIS().size() "
+                            + shbeRecords.getCidsCIS(env.HOOME).size(), true);
+                    env.ge.log("shbeRecords.getCidsCIO().size() "
+                            + shbeRecords.getCidsCIO(env.HOOME).size(), true);
                     shbeRecords.clearData();
                 } catch (OutOfMemoryError e) {
                     env.clearMemoryReserve(env.ge);
@@ -656,7 +639,7 @@ public class DW_ProcessorLCC extends DW_Processor {
      * @throws java.io.IOException
      */
     public TreeMap<Integer, TreeMap<String, String>> getClaimPostcodeF_To_LevelCode_Maps(
-            ArrayList<Integer> levels, UKP_YM3 YM3, int CensusYear) throws IOException {
+            ArrayList<Integer> levels, UKP_YM3 YM3, int CensusYear) throws IOException, ClassNotFoundException {
         TreeMap<Integer, TreeMap<String, String>> r = new TreeMap<>();
         Iterator<Integer> ite = levels.iterator();
         while (ite.hasNext()) {

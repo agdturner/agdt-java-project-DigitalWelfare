@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_ClaimID;
 import uk.ac.leeds.ccg.data.shbe.core.SHBE_Strings;
@@ -24,7 +25,7 @@ import uk.ac.leeds.ccg.projects.dw.data.DW_SummaryUO;
  */
 public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
 
-    public DW_ProcessorLCCSummary(DW_Environment env) throws IOException {
+    public DW_ProcessorLCCSummary(DW_Environment env) throws IOException, Exception {
         super(env);
     }
 
@@ -55,8 +56,8 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
         Iterator<String> includesIte;
         String includeKey;
         ArrayList<Integer> include;
-        TreeMap<String, HashMap<String, String>> SummaryTableAll;
-        TreeMap<String, HashMap<String, String>> SummaryTableUO;
+        TreeMap<String, Map<String, String>> SummaryTableAll;
+        TreeMap<String, Map<String, String>> SummaryTableUO;
         /**
          * Variable to store a sub-process name.
          */

@@ -1,6 +1,5 @@
 package uk.ac.leeds.ccg.projects.dw.data;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
@@ -1236,7 +1235,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         super(env);
     }
 
-    public DW_TenancyChangesUO(DW_Environment env, boolean hoome) 
+    public DW_TenancyChangesUO(DW_Environment env, boolean hoome)
             throws IOException, Exception, ClassNotFoundException {
         this(env);
         this.shbeHandler = env.getSHBE_Handler();
@@ -1963,7 +1962,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         TreeMap<String, String> preUnderOccupancyValues = null;
         if (includePreUnderOccupancyValues) {
             preUnderOccupancyValues = getPreUnderOccupancyValues(ClaimIDs,
-                    SHBEFilenames,                    NotMonthlyUO);
+                    SHBEFilenames, NotMonthlyUO);
             result[4] = preUnderOccupancyValues;
         }
 
@@ -2025,7 +2024,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         while (ite.hasNext()) {
             SHBE_ClaimID ClaimID;
             ClaimID = ite.next();
-           SHBE_Record r1 = recs1.get(ClaimID);
+            SHBE_Record r1 = recs1.get(ClaimID);
             if (r1 != null) {
                 DRecord1 = r1.getDRecord();
                 int DHP1;
@@ -2743,7 +2742,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                 TT4_To_UOTT1InArrearsAndGettingDHPClaimIDs);
 
         HashSet<SHBE_ClaimID> InArrearsAtSomePointClaimIDs = new HashSet<>();
-        HashSet<SHBE_ClaimID> DHPAtSomePoint                = new HashSet<>();
+        HashSet<SHBE_ClaimID> DHPAtSomePoint = new HashSet<>();
         HashSet<SHBE_ClaimID> InArrearsAtSomePoint_And_DHPAtSomePointClaimIDs
                 = new HashSet<>();
         Groups.put(sInArrearsAtSomePoint_And_DHPAtSomePoint,
@@ -3053,10 +3052,8 @@ public class DW_TenancyChangesUO extends DW_Object {
         HashSet<SHBE_ClaimID> UOTT4_To_TT4_PostcodeUnchangedThisMonth
                 = new HashSet<>();
 
-        Map<SHBE_ClaimID, SHBE_PersonID> claimIDToClaimantPersonIDLookup
-                = shbeRecs1.getClaimIDToClaimantPersonIDLookup(env.HOOME);
-        Map<SHBE_ClaimID, SHBE_PersonID> claimIDToPartnerPersonIDLookup
-                = shbeRecs1.getClaimIDToPartnerPersonIDLookup(env.HOOME);
+        Map<SHBE_ClaimID, SHBE_PersonID> cid2cpid = shbeRecs1.getCid2cpid(env.HOOME);
+        Map<SHBE_ClaimID, SHBE_PersonID> cid2ppid = shbeRecs1.getCid2ppid(env.HOOME);
 
         // Add TT of all ClaimRefs to result
         Object[] processResult;
@@ -3077,10 +3074,10 @@ public class DW_TenancyChangesUO extends DW_Object {
         while (ite.hasNext()) {
             ClaimID = ite.next();
             ClaimRef = cid2c.get(ClaimID);
-           SHBE_Record r1 = recs1.get(ClaimID);
+            SHBE_Record r1 = recs1.get(ClaimID);
             processResult = process(
-                    claimIDToClaimantPersonIDLookup,
-                    claimIDToPartnerPersonIDLookup,
+                    cid2cpid,
+                    cid2ppid,
                     UOClaims, AggregateStatistics, GeneralStatistics,
                     ClaimID, ClaimRef,
                     year0, month0, YM30,
@@ -3417,10 +3414,10 @@ public class DW_TenancyChangesUO extends DW_Object {
             while (ite.hasNext()) {
                 ClaimID = ite.next();
                 ClaimRef = cid2c.get(ClaimID);
-               SHBE_Record r1 = recs1.get(ClaimID);
+                SHBE_Record r1 = recs1.get(ClaimID);
                 processResult = process(
-                        claimIDToClaimantPersonIDLookup,
-                        claimIDToPartnerPersonIDLookup,
+                        cid2cpid,
+                        cid2ppid,
                         UOClaims, AggregateStatistics, GeneralStatistics,
                         ClaimID, ClaimRef,
                         year0, month0, YM30,
@@ -6685,10 +6682,10 @@ public class DW_TenancyChangesUO extends DW_Object {
         result = new HashSet[2];
         result[0] = new HashSet<>();
         result[1] = new HashSet<>();
-        UKP_YM3 yM31 ;
+        UKP_YM3 yM31;
         DW_UO_Set councilUnderOccupiedSet1;
-        DW_UO_Set RSLUnderOccupiedSet1 ;
-        String filename1 ;
+        DW_UO_Set RSLUnderOccupiedSet1;
+        String filename1;
         Iterator<Integer> includeIte;
         includeIte = include.iterator();
         int i;
@@ -6728,10 +6725,10 @@ public class DW_TenancyChangesUO extends DW_Object {
         result = new HashSet[2];
         result[0] = new HashSet<>();
         result[1] = new HashSet<>();
-        UKP_YM3 yM31 ;
-        DW_UO_Set councilUnderOccupiedSet1 ;
-        DW_UO_Set RSLUnderOccupiedSet1 ;
-        String filename1 ;
+        UKP_YM3 yM31;
+        DW_UO_Set councilUnderOccupiedSet1;
+        DW_UO_Set RSLUnderOccupiedSet1;
+        String filename1;
         Iterator<Integer> includeIte;
         includeIte = include.iterator();
         int i;
@@ -8293,9 +8290,9 @@ public class DW_TenancyChangesUO extends DW_Object {
             HashSet<SHBE_PersonID> DependentChildrenOver10,
             HashSet<SHBE_PersonID> NonDependentPersonIDs,
             HashMap<SHBE_ClaimID, Integer> MaxNumberOfDependentsInClaimWhenUO,
-            String year, String month, UKP_YM3 YM3, 
-            ArrayList<SHBE_S_Record> SRecords,            SHBE_D_Record d,
-            Map<SHBE_ClaimID, SHBE_PersonID> ClaimIDToClaimantPersonIDLookup) 
+            String year, String month, UKP_YM3 YM3,
+            ArrayList<SHBE_S_Record> SRecords, SHBE_D_Record d,
+            Map<SHBE_ClaimID, SHBE_PersonID> ClaimIDToClaimantPersonIDLookup)
             throws IOException, ClassNotFoundException {
         SHBE_PersonID ClaimantPersonID;
         ClaimantPersonID = ClaimIDToClaimantPersonIDLookup.get(ClaimID);

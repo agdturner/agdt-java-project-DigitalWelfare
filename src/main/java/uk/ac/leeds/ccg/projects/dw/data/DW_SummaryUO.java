@@ -1205,8 +1205,7 @@ public class DW_SummaryUO extends DW_Summary {
         }
     }
 
-    protected void addToSummarySingleTimeRentArrears(
-            HashMap<String, String> summary) {
+    protected void addToSummarySingleTimeRentArrears(Map<String, String> summary) {
         summary.put(sCouncilTotal_RentArrears,
                 "" + Math_BigDecimal.roundToAndSetDecimalPlaces(
                         BigDecimal.valueOf(CouncilTotal_RentArrears),
@@ -3294,7 +3293,7 @@ public class DW_SummaryUO extends DW_Summary {
      * @param handleOutOfMemoryError
      * @return
      */
-    public TreeMap<String, HashMap<String, String>> getSummaryTable(
+    public TreeMap<String, Map<String, String>> getSummaryTable(
             HashSet<SHBE_ClaimID> Group, String[] SHBEFilenames,
             ArrayList<Integer> include, boolean forceNewSummaries,
             ArrayList<String> HB_CTB, ArrayList<String> PTs, int nTT, int nEG,
@@ -3311,10 +3310,10 @@ public class DW_SummaryUO extends DW_Summary {
         initCounts(nTT, nEG, nPSI);
 
         // Declare variables
-        TreeMap<String, HashMap<String, String>> result;
+        TreeMap<String, Map<String, String>> result;
         int i;
         Iterator<Integer> includeIte;
-        HashMap<String, String> summary;
+        Map<String, String> summary;
         String key;
         String filename0;
         String filename1 = "";
@@ -3520,7 +3519,7 @@ public class DW_SummaryUO extends DW_Summary {
             ArrayList<String> PTs, int nTT, int nEG, int nPSI,
             TreeMap<UKP_YM3, String> councilFilenames,
             TreeMap<UKP_YM3, String> rslFilenames,
-            TreeMap<String, HashMap<String, String>> summaries)
+            TreeMap<String, Map<String, String>> summaries)
             throws IOException, ClassNotFoundException, Exception {
         doPartSummarySingleTime(shbeRecs1, ym31, filename1,
                 forceNewSummaries, HB_CTB, PTs, nTT, nEG, nPSI,
@@ -3544,16 +3543,11 @@ public class DW_SummaryUO extends DW_Summary {
                 recs0,
                 recs1);
         // Loop over RSL
-        doRSLCompare2TimesLoopOverSet(
-                DW_UO_Set0RSLMap,
-                DW_UO_Set1RSLMap,
-                recs0,
+        doRSLCompare2TimesLoopOverSet(DW_UO_Set0RSLMap, DW_UO_Set1RSLMap, recs0, 
                 recs1);
 
-        String key;
-        key = SHBE_Handler.getYearMonthNumber(filename1);
-        HashMap<String, String> summary;
-        summary = summaries.get(key);
+        String key = SHBE_Handler.getYearMonthNumber(filename1);
+        Map<String, String> summary = summaries.get(key);
 
         addToSummaryCompare2Times(nTT, nEG, nPSI, summary);
 
@@ -3580,11 +3574,11 @@ public class DW_SummaryUO extends DW_Summary {
             int nPSI, TreeMap<UKP_YM3, String> CouncilFilenames,
             TreeMap<UKP_YM3, String> RSLFilenames, DW_UO_Set CouncilUOSet,
             DW_UO_Set RSLUOSet,
-            TreeMap<String, HashMap<String, String>> summaries
+            TreeMap<String, Map<String, String>> summaries
     ) throws IOException, ClassNotFoundException, Exception {
         // Declare variables
         String key;
-        HashMap<String, String> summary;
+        Map<String, String> summary;
         Map<String, Number> loadSummary;
         HashMap<SHBE_ClaimID, DW_UO_Record> councilUOMap;
         HashMap<SHBE_ClaimID, DW_UO_Record> rslUOMap;
@@ -3832,7 +3826,7 @@ public class DW_SummaryUO extends DW_Summary {
     }
 
     protected void addToSummarySingleTimeIncomeAndRent(
-            HashMap<String, String> summary,
+            Map<String, String> summary,
             HashMap<String, BigDecimal> incomeAndRentSummaryAllUO,
             HashMap<String, BigDecimal> incomeAndRentSummaryCouncil,
             HashMap<String, BigDecimal> incomeAndRentSummaryRSL) {
@@ -3884,7 +3878,7 @@ public class DW_SummaryUO extends DW_Summary {
      */
     //@Override
     public void writeSummaryTables(
-            TreeMap<String, HashMap<String, String>> summaryTable,
+            TreeMap<String, Map<String, String>> summaryTable,
             ArrayList<String> PTs,
             String includeKey,
             int nTT,
@@ -3951,7 +3945,7 @@ public class DW_SummaryUO extends DW_Summary {
      * @param nEG
      */
     public void writeSummaryTableCompare2TimesRentArrears(
-            TreeMap<String, HashMap<String, String>> summaryTable,
+            TreeMap<String, Map<String, String>> summaryTable,
             String includeKey, int nTT, int nEG) throws IOException {
         TreeMap<UKP_YM3, Path> ONSPDFiles;
         ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
@@ -3977,15 +3971,11 @@ public class DW_SummaryUO extends DW_Summary {
 //        header += getHeaderCompare2TimesPostcodeChangeRSL();
             header = header.substring(0, header.length() - 2);
             pw.println(header);
-            Iterator<String> ite;
-            ite = summaryTable.keySet().iterator();
+            Iterator<String> ite = summaryTable.keySet().iterator();
             while (ite.hasNext()) {
-                String key;
-                key = ite.next();
-                HashMap<String, String> summary;
-                summary = summaryTable.get(key);
-                String line;
-                line = getLineCompare2TimesGeneric(summary, ONSPDFiles);
+                String key = ite.next();
+                Map<String, String> summary = summaryTable.get(key);
+                String line = getLineCompare2TimesGeneric(summary, ONSPDFiles);
                 String sCount;
                 Double count = null;
                 String sTotalArrearsDiff;
@@ -4137,7 +4127,7 @@ public class DW_SummaryUO extends DW_Summary {
         return header;
     }
 
-    protected String getLineCompare2TimesPostcodeChangeCouncil(HashMap<String, String> summary) {
+    protected String getLineCompare2TimesPostcodeChangeCouncil(Map<String, String> summary) {
         String line = "";
         line += summary.get(sTotalCount_CouncilPostcodeF0MappablePostcodeF1Mappable) + ", ";
         line += summary.get(sPercentageOfCouncilCount0_CouncilPostcodeF0MappablePostcodeF1Mappable) + ", ";
@@ -4168,7 +4158,7 @@ public class DW_SummaryUO extends DW_Summary {
         return line;
     }
 
-    protected String getLineCompare2TimesPostcodeChangeRSL(HashMap<String, String> summary) {
+    protected String getLineCompare2TimesPostcodeChangeRSL(Map<String, String> summary) {
         String line = "";
         line += summary.get(sTotalCount_RSLPostcodeF0MappablePostcodeF1Mappable) + ", ";
         line += summary.get(sPercentageOfRSLCount0_RSLPostcodeF0MappablePostcodeF1Mappable) + ", ";
@@ -4233,7 +4223,7 @@ public class DW_SummaryUO extends DW_Summary {
         return header;
     }
 
-    protected String getLineCompare2TimesTTChangeCouncil(HashMap<String, String> summary) {
+    protected String getLineCompare2TimesTTChangeCouncil(Map<String, String> summary) {
         String line = "";
         line += summary.get(sTotalCount_CouncilTTChangeClaimant) + ", ";
         line += summary.get(sPercentageOfCouncilCount0_CouncilTTChangeClaimant) + ", ";
@@ -4250,7 +4240,7 @@ public class DW_SummaryUO extends DW_Summary {
         return line;
     }
 
-    protected String getLineCompare2TimesTTChangeRSL(HashMap<String, String> summary) {
+    protected String getLineCompare2TimesTTChangeRSL(Map<String, String> summary) {
         String line = "";
         line += summary.get(sTotalCount_RSLTTChangeClaimant) + ", ";
         line += summary.get(sPercentageOfRSLHB_RSLTTChangeClaimant) + ", ";
@@ -4277,7 +4267,7 @@ public class DW_SummaryUO extends DW_Summary {
      */
     @Override
     public void writeSummaryTableCompare2TimesTT(
-            TreeMap<String, HashMap<String, String>> summaryTable,
+            TreeMap<String, Map<String, String>> summaryTable,
             String includeKey, int nTT, int nEG) throws IOException {
         TreeMap<UKP_YM3, Path> ONSPDFiles;
         ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
@@ -4297,7 +4287,7 @@ public class DW_SummaryUO extends DW_Summary {
         while (ite.hasNext()) {
             String key;
             key = ite.next();
-            HashMap<String, String> summary;
+            Map<String, String> summary;
             summary = summaryTable.get(key);
             String line;
             line = "";
@@ -4354,7 +4344,7 @@ public class DW_SummaryUO extends DW_Summary {
 
     @Override
     public String getLineCompare2TimesGeneric(
-            HashMap<String, String> summary,
+            Map<String, String> summary,
             TreeMap<UKP_YM3, Path> ONSPDFiles) {
         String line = "";
         String filename0;
@@ -4446,7 +4436,7 @@ public class DW_SummaryUO extends DW_Summary {
      */
     @Override
     public void writeSummaryTableCompare2TimesPostcode(
-            TreeMap<String, HashMap<String, String>> summaryTable,
+            TreeMap<String, Map<String, String>> summaryTable,
             String includeKey, int nTT, int nEG) throws IOException {
         TreeMap<UKP_YM3, Path> ONSPDFiles;
         ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
@@ -4464,7 +4454,7 @@ public class DW_SummaryUO extends DW_Summary {
         while (ite.hasNext()) {
             String key;
             key = ite.next();
-            HashMap<String, String> summary;
+            Map<String, String> summary;
             summary = summaryTable.get(key);
             String line;
             line = getLineCompare2TimesGeneric(summary, ONSPDFiles);
@@ -4486,7 +4476,7 @@ public class DW_SummaryUO extends DW_Summary {
      */
     @Override
     public void writeSummaryTableSingleTimeGenericCounts(
-            TreeMap<String, HashMap<String, String>> summaryTable,
+            TreeMap<String, Map<String, String>> summaryTable,
             //String paymentType,
             String includeKey, int nTT, int nEG, int nPSI) throws IOException {
         TreeMap<UKP_YM3, Path> ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
@@ -4531,7 +4521,7 @@ public class DW_SummaryUO extends DW_Summary {
             key = ite.next();
             String line;
             line = "";
-            HashMap<String, String> summary;
+            Map<String, String> summary;
             summary = summaryTable.get(key);
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
@@ -4576,7 +4566,7 @@ public class DW_SummaryUO extends DW_Summary {
      */
     @Override
     public void writeSummaryTableSingleTimeHouseholdSizes(
-            TreeMap<String, HashMap<String, String>> summaryTable,
+            TreeMap<String, Map<String, String>> summaryTable,
             String includeKey, int nTT, int nEG, int nPSI) throws IOException {
         TreeMap<UKP_YM3, Path> ONSPDFiles;
         ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
@@ -4605,7 +4595,7 @@ public class DW_SummaryUO extends DW_Summary {
             key = ite.next();
             String line;
             line = "";
-            HashMap<String, String> summary;
+            Map<String, String> summary;
             summary = summaryTable.get(key);
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
@@ -4633,7 +4623,7 @@ public class DW_SummaryUO extends DW_Summary {
      */
     @Override
     public void writeSummaryTableSingleTimeEntitlementEligibleAmountContractualAmount(
-            TreeMap<String, HashMap<String, String>> summaryTable,
+            TreeMap<String, Map<String, String>> summaryTable,
             String includeKey,
             int nTT,
             int nEG
@@ -4748,7 +4738,7 @@ public class DW_SummaryUO extends DW_Summary {
             key = ite.next();
             String line;
             line = "";
-            HashMap<String, String> summary;
+            Map<String, String> summary;
             summary = summaryTable.get(key);
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
@@ -4859,7 +4849,7 @@ public class DW_SummaryUO extends DW_Summary {
      */
     @Override
     public void writeSummaryTableSingleTimeEmploymentEducationTraining(
-            TreeMap<String, HashMap<String, String>> summaryTable,
+            TreeMap<String, Map<String, String>> summaryTable,
             String includeKey,
             int nTT,
             int nEG
@@ -4917,7 +4907,7 @@ public class DW_SummaryUO extends DW_Summary {
             key = ite.next();
             String line;
             line = "";
-            HashMap<String, String> summary;
+            Map<String, String> summary;
             summary = summaryTable.get(key);
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
@@ -4972,7 +4962,7 @@ public class DW_SummaryUO extends DW_Summary {
      * @param nEG
      */
     public void writeSummaryTableSingleTimeRentAndIncome(
-            TreeMap<String, HashMap<String, String>> summaryTable,
+            TreeMap<String, Map<String, String>> summaryTable,
             String includeKey,
             int nTT,
             int nEG
@@ -5026,7 +5016,7 @@ public class DW_SummaryUO extends DW_Summary {
             key = ite.next();
             String line;
             line = "";
-            HashMap<String, String> summary;
+            Map<String, String> summary;
             summary = summaryTable.get(key);
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
@@ -5073,7 +5063,7 @@ public class DW_SummaryUO extends DW_Summary {
      * @param nEG
      */
     public void writeSummaryTableSingleTimeRentArrears(
-            TreeMap<String, HashMap<String, String>> summaryTable,
+            TreeMap<String, Map<String, String>> summaryTable,
             String includeKey,
             int nTT,
             int nEG
@@ -5107,7 +5097,7 @@ public class DW_SummaryUO extends DW_Summary {
             key = ite.next();
             String line;
             line = "";
-            HashMap<String, String> summary;
+            Map<String, String> summary;
             summary = summaryTable.get(key);
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
@@ -5140,7 +5130,7 @@ public class DW_SummaryUO extends DW_Summary {
      */
     @Override
     public void writeSummaryTableSingleTimeEthnicity(
-            TreeMap<String, HashMap<String, String>> summaryTable,
+            TreeMap<String, Map<String, String>> summaryTable,
             String includeKey,
             int nTT,
             int nEG
@@ -5180,7 +5170,7 @@ public class DW_SummaryUO extends DW_Summary {
             key = ite.next();
             String line;
             line = "";
-            HashMap<String, String> summary;
+            Map<String, String> summary;
             summary = summaryTable.get(key);
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
@@ -5216,7 +5206,7 @@ public class DW_SummaryUO extends DW_Summary {
      */
     @Override
     public void writeSummaryTableSingleTimeTT(
-            TreeMap<String, HashMap<String, String>> summaryTable,
+            TreeMap<String, Map<String, String>> summaryTable,
             String includeKey,
             int nTT,
             int nEG
@@ -5247,7 +5237,7 @@ public class DW_SummaryUO extends DW_Summary {
             key = ite.next();
             String line;
             line = "";
-            HashMap<String, String> summary;
+            Map<String, String> summary;
             summary = summaryTable.get(key);
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
@@ -5273,7 +5263,7 @@ public class DW_SummaryUO extends DW_Summary {
      */
     @Override
     public void writeSummaryTableSingleTimePSI(
-            TreeMap<String, HashMap<String, String>> summaryTable,
+            TreeMap<String, Map<String, String>> summaryTable,
             String includeKey,
             int nTT,
             int nEG,
@@ -5309,7 +5299,7 @@ public class DW_SummaryUO extends DW_Summary {
             key = ite.next();
             String line;
             line = "";
-            HashMap<String, String> summary;
+            Map<String, String> summary;
             summary = summaryTable.get(key);
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
@@ -5340,7 +5330,7 @@ public class DW_SummaryUO extends DW_Summary {
      */
     @Override
     public void writeSummaryTableSingleTimeDisability(
-            TreeMap<String, HashMap<String, String>> summaryTable,
+            TreeMap<String, Map<String, String>> summaryTable,
             String includeKey,
             int nTT,
             int nEG
@@ -5415,7 +5405,7 @@ public class DW_SummaryUO extends DW_Summary {
             key = ite.next();
             String line;
             line = "";
-            HashMap<String, String> summary;
+            Map<String, String> summary;
             summary = summaryTable.get(key);
             String filename1;
             filename1 = summary.get(sSHBEFilename1);
@@ -5497,7 +5487,7 @@ public class DW_SummaryUO extends DW_Summary {
     @Override
     protected String getLineSingleTimeGeneric(
             String key,
-            HashMap<String, String> summary) {
+            Map<String, String> summary) {
         String result;
         result = key + ", ";
         result += summary.get(sCouncilFilename1) + ", ";
