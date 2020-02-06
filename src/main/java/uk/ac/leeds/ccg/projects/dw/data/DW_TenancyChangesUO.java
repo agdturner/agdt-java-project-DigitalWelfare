@@ -24,10 +24,10 @@ import uk.ac.leeds.ccg.projects.dw.core.DW_Object;
 import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_PersonID;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_Records;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_D_Record;
-import uk.ac.leeds.ccg.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Data;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_Record;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_S_Record;
-import uk.ac.leeds.ccg.data.shbe.data.SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_TenancyType;
 import uk.ac.leeds.ccg.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Strings;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Data;
@@ -44,8 +44,8 @@ public class DW_TenancyChangesUO extends DW_Object {
     /**
      * For convenience;
      */
-    SHBE_Handler shbeHandler;
-    SHBE_TenancyType_Handler ttHandler;
+    SHBE_Data shbeData;
+    SHBE_TenancyType ttHandler;
     Map<SHBE_ClaimID, String> cid2c;
     Map<String, SHBE_ClaimID> c2cid;
     Map<String, UKP_RecordID> p2pid;
@@ -1238,11 +1238,11 @@ public class DW_TenancyChangesUO extends DW_Object {
     public DW_TenancyChangesUO(DW_Environment env, boolean hoome)
             throws IOException, Exception, ClassNotFoundException {
         this(env);
-        this.shbeHandler = env.getSHBE_Handler();
-        this.ttHandler = env.getSHBE_TenancyType_Handler();
+        this.shbeData = env.getShbeData();
+        this.ttHandler = env.getShbeTenancyType();
         //this.p2pid = tPostcodeToPostcodeIDLookup;
-        this.cid2c = shbeHandler.getCid2c();
-        this.c2cid = shbeHandler.getC2cid();
+        this.cid2c = shbeData.getCid2c();
+        this.c2cid = shbeData.getC2cid();
         initString();
     }
 
@@ -1315,10 +1315,10 @@ public class DW_TenancyChangesUO extends DW_Object {
         tNotMonthlyUOIte = NotMonthlyUO.iterator();
         while (tNotMonthlyUOIte.hasNext()) {
             i = tNotMonthlyUOIte.next();
-            year = shbeHandler.getYear(SHBEFilenames[i]);
-            month = shbeHandler.getMonthNumber(SHBEFilenames[i]);
-            yM3 = shbeHandler.getYM3(SHBEFilenames[i]);
-            SHBE_Records = shbeHandler.getRecords(yM3, env.HOOME);
+            year = shbeData.getYear(SHBEFilenames[i]);
+            month = shbeData.getMonthNumber(SHBEFilenames[i]);
+            yM3 = shbeData.getYM3(SHBEFilenames[i]);
+            SHBE_Records = shbeData.getRecords(yM3, env.HOOME);
             records = SHBE_Records.getRecords(env.HOOME);
             ite = ClaimIDs.iterator();
             while (ite.hasNext()) {
@@ -1382,13 +1382,13 @@ public class DW_TenancyChangesUO extends DW_Object {
                     key = ClaimRef + s_ + sCEG;
                     aS = r.get(key);
                     //j = dRecord.getClaimantsEthnicGroup();
-                    j = shbeHandler.getEthnicityGroup(d);
+                    j = shbeData.getEthnicityGroup(d);
                     aS += s3 + j;
                     r.put(key, aS);
                     // Household Size
                     key = ClaimRef + s_ + sHS;
                     aS = r.get(key);
-                    j = (int) shbeHandler.getHouseholdSize(d);
+                    j = (int) shbeData.getHouseholdSize(d);
                     aS += s3 + j;
                     r.put(key, aS);
                     // NonDependents
@@ -1460,7 +1460,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                     // ClaimantsAge
                     key = ClaimRef + s_ + sCA;
                     aS = r.get(key);
-                    bS = shbeHandler.getClaimantsAge(year, month, d);
+                    bS = shbeData.getClaimantsAge(year, month, d);
                     aS += s3 + bS;
                     r.put(key, aS);
                     // Partners Date Of Birth
@@ -1472,7 +1472,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                     // PartnersAge
                     key = ClaimRef + s_ + sPA;
                     aS = r.get(key);
-                    bS = shbeHandler.getPartnersAge(year, month, d);
+                    bS = shbeData.getPartnersAge(year, month, d);
                     aS += s3 + bS;
                     r.put(key, aS);
                     // ClaimantsGender
@@ -1490,7 +1490,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                     // Disability
                     key = ClaimRef + s_ + sDisability;
                     aS = r.get(key);
-                    b = shbeHandler.getDisability(d);
+                    b = shbeData.getDisability(d);
                     if (b == true) {
                         aS += s3 + sDisability;
                     } else {
@@ -1951,7 +1951,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         EndUOThatWereAlsoStartUOClaimRefs.addAll(EndUOClaimIDs);
         EndUOThatWereAlsoStartUOClaimRefs.retainAll(StartUOClaimIDs);
 
-        TreeMap<String, ArrayList<Integer>> includes = shbeHandler.getIncludes();
+        TreeMap<String, ArrayList<Integer>> includes = shbeData.getIncludes();
         ArrayList<Integer> MonthlyUO;
         MonthlyUO = includes.get(SHBE_Strings.s_IncludeMonthlySinceApril2013);
         ArrayList<Integer> All = includes.get(SHBE_Strings.s_IncludeAll);
@@ -1987,16 +1987,16 @@ public class DW_TenancyChangesUO extends DW_Object {
             j = iteX.next();
             if (YM3Start == null) {
                 SHBEFilename1 = SHBEFilenames[j];
-                YM3Start = shbeHandler.getYM3(SHBEFilename1);
+                YM3Start = shbeData.getYM3(SHBEFilename1);
             }
         }
         SHBEFilename1 = SHBEFilenames[j];
-        YM31 = shbeHandler.getYM3(SHBEFilename1);
-        year1 = shbeHandler.getYear(SHBEFilename1);
-        month1 = shbeHandler.getMonthNumber(SHBEFilename1);
+        YM31 = shbeData.getYM3(SHBEFilename1);
+        year1 = shbeData.getYear(SHBEFilename1);
+        month1 = shbeData.getMonthNumber(SHBEFilename1);
         CouncilUOSet1 = CouncilUOSets.get(YM31);
         RSLUOSet1 = RSLUOSets.get(YM31);
-        shbeRecs1 = shbeHandler.getRecords(YM31, env.HOOME);
+        shbeRecs1 = shbeData.getRecords(YM31, env.HOOME);
         Map<SHBE_ClaimID, SHBE_Record> recs1 = shbeRecs1.getRecords(env.HOOME);
         HashMap<SHBE_ClaimID, DW_UO_Record> CouncilUOSetMap1;
         CouncilUOSetMap1 = CouncilUOSet1.getMap();
@@ -2150,11 +2150,11 @@ public class DW_TenancyChangesUO extends DW_Object {
                 Math_BigDecimal.roundIfNecessary(BigDecimal.valueOf(p), 3, RoundingMode.HALF_UP));
 
 //        TreeMap<String, ArrayList<Integer>> includes;
-//        includes = shbeHandler.getIncludes();
+//        includes = shbeData.getIncludes();
 //        ArrayList<Integer> MonthlyUO;
-//        MonthlyUO = includes.get(shbeHandler.sIncludeMonthlySinceApril2013);
+//        MonthlyUO = includes.get(shbeData.sIncludeMonthlySinceApril2013);
 //        ArrayList<Integer> All;
-//        All = includes.get(shbeHandler.sIncludeAll);
+//        All = includes.get(shbeData.sIncludeAll);
 //        ArrayList<Integer> NotMonthlyUO;
 //        NotMonthlyUO = new ArrayList<Integer>();
 //        NotMonthlyUO.addAll(All);
@@ -2994,7 +2994,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             Iterator<Integer> ite2 = NotMonthlyUO.iterator();
             while (ite2.hasNext()) {
                 i = ite2.next();
-                UKP_YM3 YM3 = shbeHandler.getYM3(SHBEFilenames[i]);
+                UKP_YM3 YM3 = shbeData.getYM3(SHBEFilenames[i]);
                 header += YM3 + DW_Strings.special_commaSpace;
             }
         }
@@ -3023,13 +3023,13 @@ public class DW_TenancyChangesUO extends DW_Object {
         while (!initFirst) {
             i = includeIte.next();
             SHBEFilename1 = SHBEFilenames[i];
-            YM31 = shbeHandler.getYM3(SHBEFilename1);
-            year1 = shbeHandler.getYear(SHBEFilename1);
-            month1 = shbeHandler.getMonthNumber(SHBEFilename1);
+            YM31 = shbeData.getYM3(SHBEFilename1);
+            year1 = shbeData.getYear(SHBEFilename1);
+            month1 = shbeData.getMonthNumber(SHBEFilename1);
             CouncilUOSet1 = CouncilUOSets.get(YM31);
             if (CouncilUOSet1 != null) {
                 RSLUOSet1 = RSLUOSets.get(YM31);
-                shbeRecs1 = shbeHandler.getRecords(YM31, env.HOOME);
+                shbeRecs1 = shbeData.getRecords(YM31, env.HOOME);
                 initFirst = true;
                 //arrearsDiffs.put(YM3, 0.0d);
                 //arrearsDiffCounts.put(YM3, 0.0d);
@@ -3401,10 +3401,10 @@ public class DW_TenancyChangesUO extends DW_Object {
 
             i = includeIte.next();
             SHBEFilename1 = SHBEFilenames[i];
-            YM31 = shbeHandler.getYM3(SHBEFilename1);
-            year1 = shbeHandler.getYear(SHBEFilename1);
-            month1 = shbeHandler.getMonthNumber(SHBEFilename1);
-            shbeRecs1 = shbeHandler.getRecords(YM31, env.HOOME);
+            YM31 = shbeData.getYM3(SHBEFilename1);
+            year1 = shbeData.getYear(SHBEFilename1);
+            month1 = shbeData.getMonthNumber(SHBEFilename1);
+            shbeRecs1 = shbeData.getRecords(YM31, env.HOOME);
             //cRecords = Records0;
             recs1 = shbeRecs1.getRecords(env.HOOME);
             CouncilUOSet1 = CouncilUOSets.get(YM31);
@@ -3870,7 +3870,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             ClaimID = iteS.next();
             SHBE_Record rec = recs1.get(ClaimID);
             if (rec != null) {
-                totalHouseholdSize += shbeHandler.getHouseholdSize(rec);
+                totalHouseholdSize += shbeData.getHouseholdSize(rec);
                 d += 1.0d;
             }
         }
@@ -3890,7 +3890,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             ClaimID = iteS.next();
             SHBE_Record rec = recs1.get(ClaimID);
             if (rec != null) {
-                totalHouseholdSize += shbeHandler.getHouseholdSize(rec);
+                totalHouseholdSize += shbeData.getHouseholdSize(rec);
                 d += 1.0d;
             }
         }
@@ -5009,12 +5009,12 @@ public class DW_TenancyChangesUO extends DW_Object {
             SHBC1 = DRecord1.getStatusOfHBClaimAtExtractDate();
             RTHBCC1 = DRecord1.getReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective();
             CEG1 = DRecord1.getClaimantsEthnicGroup();
-            HS1 = shbeHandler.getHouseholdSize(DRecord1);
+            HS1 = shbeData.getHouseholdSize(DRecord1);
             ND1 = DRecord1.getNumberOfNonDependents();
             CD1 = DRecord1.getNumberOfChildDependents();
             CDoB1 = DRecord1.getClaimantsDateOfBirth();
             PDoB1 = DRecord1.getPartnersDateOfBirth();
-            if (shbeHandler.getDisability(DRecord1)) {
+            if (shbeData.getDisability(DRecord1)) {
                 D1 = sDisability;
             } else {
                 D1 = s;
@@ -5043,8 +5043,8 @@ public class DW_TenancyChangesUO extends DW_Object {
             } else {
                 DC1 = s;
             }
-            CA1 = shbeHandler.getClaimantsAge(year1, month1, DRecord1);
-            PA1 = shbeHandler.getPartnersAge(year1, month1, DRecord1);
+            CA1 = shbeData.getClaimantsAge(year1, month1, DRecord1);
+            PA1 = shbeData.getPartnersAge(year1, month1, DRecord1);
             CG1 = DRecord1.getClaimantsGender();
             PG1 = DRecord1.getPartnersGender();
             PDD1 = DRecord1.getPartnersDateOfDeath();
@@ -5085,15 +5085,15 @@ public class DW_TenancyChangesUO extends DW_Object {
             SHBC0 = DRecord0.getStatusOfHBClaimAtExtractDate();
             RTHBCC0 = DRecord0.getReasonsThatHBClaimWasClosedWithdrawnDecidedUnsuccessfulDefective();
             //bCEG = bSHBE_D_Record.getClaimantsEthnicGroup();
-            CEG0 = shbeHandler.getEthnicityGroup(DRecord0);
-            HS0 = shbeHandler.getHouseholdSize(DRecord0);
+            CEG0 = shbeData.getEthnicityGroup(DRecord0);
+            HS0 = shbeData.getHouseholdSize(DRecord0);
             ND0 = DRecord0.getNumberOfNonDependents();
             CD0 = DRecord0.getNumberOfChildDependents();
             PDD0 = DRecord0.getPartnersDateOfDeath();
             CDoB0 = DRecord0.getClaimantsDateOfBirth();
             PDoB0 = DRecord0.getPartnersDateOfBirth();
-            CA0 = shbeHandler.getClaimantsAge(year0, month0, DRecord0);
-            PA0 = shbeHandler.getPartnersAge(year0, month0, DRecord0);
+            CA0 = shbeData.getClaimantsAge(year0, month0, DRecord0);
+            PA0 = shbeData.getPartnersAge(year0, month0, DRecord0);
         }
 //        if (cRecord == null) {
 //            cTT = ttHandler.iMinus999;
@@ -5446,7 +5446,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                     DW_UO_Record rec = CouncilUOSet1.getMap().get(ClaimID);
                     int bedrooms = rec.getBedroomsInProperty();
                     int householdSizeSHBE;
-                    householdSizeSHBE = shbeHandler.getHouseholdSizeExcludingPartnersint(DRecord1);
+                    householdSizeSHBE = shbeData.getHouseholdSizeExcludingPartnersint(DRecord1);
                     result[5] = householdSizeSHBE;
                     if (householdSizeSHBE >= bedrooms) {
                         result[3] = true;
@@ -5483,7 +5483,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                     DW_UO_Record rec = RSLUOSet1.getMap().get(ClaimID);
                     int bedrooms = rec.getBedroomsInProperty();
                     int householdSizeSHBE;
-                    householdSizeSHBE = shbeHandler.getHouseholdSizeExcludingPartnersint(DRecord1);
+                    householdSizeSHBE = shbeData.getHouseholdSizeExcludingPartnersint(DRecord1);
                     result[5] = householdSizeSHBE;
                     if (householdSizeSHBE >= bedrooms) {
                         result[3] = true;
@@ -6691,7 +6691,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         int i;
         i = includeIte.next();
         filename1 = SHBEFilenames[i];
-        yM31 = shbeHandler.getYM3(filename1);
+        yM31 = shbeData.getYM3(filename1);
         councilUnderOccupiedSet1 = councilUnderOccupiedSets.get(yM31);
         if (councilUnderOccupiedSet1 != null) {
             RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
@@ -6737,7 +6737,7 @@ public class DW_TenancyChangesUO extends DW_Object {
             i = includeIte.next();
         }
         filename1 = SHBEFilenames[i];
-        yM31 = shbeHandler.getYM3(filename1);
+        yM31 = shbeData.getYM3(filename1);
         councilUnderOccupiedSet1 = CouncilUnderOccupiedSets.get(yM31);
         if (councilUnderOccupiedSet1 != null) {
             RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
@@ -6768,7 +6768,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         while (includeIte.hasNext()) {
             i = includeIte.next();
             filename1 = SHBEFilenames[i];
-            yM31 = shbeHandler.getYM3(filename1);
+            yM31 = shbeData.getYM3(filename1);
             CouncilUnderOccupiedSet1 = CouncilUnderOccupiedSets.get(yM31);
             if (CouncilUnderOccupiedSet1 != null) {
                 RSLUnderOccupiedSet1 = RSLUnderOccupiedSets.get(yM31);
@@ -7033,7 +7033,7 @@ public class DW_TenancyChangesUO extends DW_Object {
                 averageHouseholdSizeRSLUO = totalHouseholdSizeRSLUO / (double) UORSLCount;
 
                 String YM3;
-                YM3 = shbeHandler.getYM3FromYearMonthNumber(date);
+                YM3 = shbeData.getYM3FromYearMonthNumber(date);
 
                 System.out.println("YM3 " + YM3);
 
@@ -8298,7 +8298,7 @@ public class DW_TenancyChangesUO extends DW_Object {
         ClaimantPersonID = ClaimIDToClaimantPersonIDLookup.get(ClaimID);
         ClaimantPersonIDs.add(ClaimantPersonID);
         if (d.getPartnerFlag() == 1) {
-            PartnersPersonIDs.add(shbeHandler.getPartnerPersonID(d));
+            PartnersPersonIDs.add(shbeData.getPartnerPersonID(d));
         }
         if (SRecords != null) {
             int index = 0;
@@ -8324,14 +8324,14 @@ public class DW_TenancyChangesUO extends DW_Object {
                     max = Math.max(m, numberOfChildDependents);
                     MaxNumberOfDependentsInClaimWhenUO.put(ClaimID, max);
                     String DoB = SRecord.getSubRecordDateOfBirth();
-                    int age = Integer.valueOf(shbeHandler.getAge(year, month, DoB));
+                    int age = Integer.valueOf(shbeData.getAge(year, month, DoB));
                     if (age < 10) {
-                        DependentChildrenUnder10.add(shbeHandler.getDependentPersonID(SRecord, index));
+                        DependentChildrenUnder10.add(shbeData.getDependentPersonID(SRecord, index));
                     } else {
-                        DependentChildrenOver10.add(shbeHandler.getDependentPersonID(SRecord, index));
+                        DependentChildrenOver10.add(shbeData.getDependentPersonID(SRecord, index));
                     }
                 } else {
-                    NonDependentPersonIDs.add(shbeHandler.getNonDependentPersonID(SRecord));
+                    NonDependentPersonIDs.add(shbeData.getNonDependentPersonID(SRecord));
                 }
                 index++;
             }

@@ -26,7 +26,7 @@ import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Handler;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_Records;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_D_Record;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_Record;
-import uk.ac.leeds.ccg.data.shbe.data.SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_TenancyType;
 import uk.ac.leeds.ccg.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Strings;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Data;
@@ -44,8 +44,8 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
     /**
      * For convenience.
      */
-    protected DW_UO_Handler UO_Handler;
-    protected SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
+    protected DW_UO_Handler uoHandler;
+    protected SHBE_TenancyType shbeTT;
 
 //    /**
 //     * For convenience.
@@ -82,16 +82,16 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
 
     public DW_ProcessorLCCAggregate(DW_Environment env) throws IOException, Exception {
         super(env);
-        UO_Handler = env.getUO_Handler();
-        SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
-        shbeHandler = env.getSHBE_Handler();
-        cid2c = shbeHandler.getCid2c();
-        UO_Data = env.getUO_Data();
+        uoHandler = env.getUoHandler();
+        shbeTT = env.getShbeTenancyType();
+        shbeData = env.getShbeData();
+        cid2c = shbeData.getCid2c();
+        uoData = env.getUoData();
     }
 
     @Override
     public void run() throws Exception, Error {
-        shbeFilenames = shbeHandler.getFilenames();
+        shbeFilenames = shbeData.getFilenames();
         // Declaration
         ArrayList<String> PTs;
         ArrayList<Integer> levels;
@@ -128,7 +128,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         levels.add(UKP_Data.TYPE_StatisticalWard);
 
         // Initialise includes
-        includes = shbeHandler.getIncludes();
+        includes = shbeData.getIncludes();
 //            includes.remove(DW_Strings.sIncludeAll);
 //            includes.remove(DW_Strings.sIncludeYearly);
 //            includes.remove(DW_Strings.sInclude6Monthly);
@@ -167,13 +167,13 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         TTs = new HashMap<>();
         boolean doUO;
         doUO = true;
-        TTs.put(doUO, SHBE_TenancyType_Handler.getTenancyTypeAll(doUO));
+        TTs.put(doUO, shbeTT.getTenancyTypeAll(doUO));
         doUO = false;
-        TTs.put(doUO, SHBE_TenancyType_Handler.getTenancyTypeAll(doUO));
+        TTs.put(doUO, shbeTT.getTenancyTypeAll(doUO));
 
         // Initialise TTGroups, TTsGrouped, regulatedGroups and unregulatedGroups
         Object[] TTGs;
-        TTGs = SHBE_TenancyType_Handler.getTenancyTypeGroups();
+        TTGs = shbeTT.getTenancyTypeGroups();
         TTGroups = (HashMap<Boolean, TreeMap<String, ArrayList<String>>>) TTGs[0];
         TTsGrouped = (HashMap<Boolean, ArrayList<String>>) TTGs[1];
         regulatedGroups = (HashMap<Boolean, ArrayList<Integer>>) TTGs[2];
@@ -184,10 +184,10 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         if (doAggregation) {
             UKP_YM3 YM3;
 //            for (int i = 0; i < shbeFilenames.length; i++) {
-//                YM3 = shbeHandler.getYM3(shbeFilenames[i]);
+//                YM3 = shbeData.getYM3(shbeFilenames[i]);
             for (String SHBEFilename : shbeFilenames) {
-                YM3 = shbeHandler.getYM3(SHBEFilename);
-                aggregate(YM3, PTs, levels, getArrayListBoolean(), UO_Data,
+                YM3 = shbeData.getYM3(SHBEFilename);
+                aggregate(YM3, PTs, levels, getArrayListBoolean(), uoData,
                         shbeFilenames, claimantTypes, types, distances,
                         distanceTypes, TTs, TTGroups, TTsGrouped,
                         regulatedGroups, unregulatedGroups, includes);
@@ -385,13 +385,13 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             int startIndex) {
         String result = null;
         if (i > startIndex + 2) {
-            String lastMonthYear = shbeHandler.getYear(SHBEFilenames[i - 1]);
+            String lastMonthYear = shbeData.getYear(SHBEFilenames[i - 1]);
             int yearInt = Integer.parseInt(year);
             int lastMonthYearInt = Integer.parseInt(lastMonthYear);
             if (!(yearInt == lastMonthYearInt || yearInt == lastMonthYearInt + 1)) {
                 return null;
             }
-            String lastMonthMonth = shbeHandler.getMonth(SHBEFilenames[i - 1]);
+            String lastMonthMonth = shbeData.getMonth(SHBEFilenames[i - 1]);
             result = lastMonthYear + lastMonthMonth;
         }
 
@@ -406,8 +406,8 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             int startIndex) {
         String result = null;
         if (i > startIndex + 13) {
-            String lastYearYear = shbeHandler.getYear(SHBEFilenames[i - 12]);
-            String lastYearMonth = shbeHandler.getMonth(SHBEFilenames[i - 12]);
+            String lastYearYear = shbeData.getYear(SHBEFilenames[i - 12]);
+            String lastYearMonth = shbeData.getMonth(SHBEFilenames[i - 12]);
             int yearInt = Integer.parseInt(year);
             int lastYearYearInt = Integer.parseInt(lastYearYear);
             if (!(yearInt == lastYearYearInt + 1)) {
@@ -527,7 +527,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             r = m.get(key);
         } else {
             r = new HashMap<>();
-            SHBE_Records sr = shbeHandler.getRecords(ym3, env.HOOME);
+            SHBE_Records sr = shbeData.getRecords(ym3, env.HOOME);
             Map<SHBE_ClaimID, SHBE_Record> recs = sr.getRecords(env.HOOME);
             Iterator<SHBE_ClaimID> ite = recs.keySet().iterator();
             while (ite.hasNext()) {
@@ -556,7 +556,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
         if (m.containsKey(key)) {
             r = m.get(key);
         } else {
-            SHBE_Records recs = env.getSHBE_Handler().getRecords(ym3, env.HOOME);
+            SHBE_Records recs = env.getShbeData().getRecords(ym3, env.HOOME);
             r = recs.getCid2postcodeID(env.HOOME);
             m.put(key, r);
         }
@@ -669,8 +669,8 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             i = includeIte.next();
             // Load first data
             UKP_YM3 YM30;
-            YM30 = shbeHandler.getYM3(SHBEFilenames[i]);
-            SHBE_Records recs0 = env.getSHBE_Handler().getRecords(YM30, env.HOOME);
+            YM30 = shbeData.getYM3(SHBEFilenames[i]);
+            SHBE_Records recs0 = env.getShbeData().getRecords(YM30, env.HOOME);
             UKP_YM3 ym30v = recs0.getNearestYM3ForONSPDLookup();
             Map<SHBE_ClaimID, SHBE_Record> records0;
             TreeMap<String, TreeMap<String, TreeMap<Integer, TreeMap<String, TreeMap<String, Integer>>>>> claimantTypeTenureLevelTypeAreaCounts;
@@ -782,7 +782,7 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                             TreeMap<String, String> tLookupFromPostcodeToLevelCode;
                             tLookupFromPostcodeToLevelCode = lookupsFromPostcodeToLevelCode.get(level);
                             String claimantType;
-                            claimantType = shbeHandler.getClaimantType(DRecord0);
+                            claimantType = shbeData.getClaimantType(DRecord0);
                             Integer TTInt = DRecord0.getTenancyType();
                             if (postcode0 != null) {
                                 String areaCode;
@@ -905,10 +905,10 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
             while (includeIte.hasNext()) {
                 i = includeIte.next();
                 // Set Year and Month variables
-                UKP_YM3 YM31 = shbeHandler.getYM3(SHBEFilenames[i]);
+                UKP_YM3 YM31 = shbeData.getYM3(SHBEFilenames[i]);
                 // Load next data
                 SHBE_Records recs1;
-                recs1 = env.getSHBE_Handler().getRecords(YM31, env.HOOME);
+                recs1 = env.getShbeData().getRecords(YM31, env.HOOME);
                 HashMap<SHBE_ClaimID, String> ClaimIDToPostcodeIDLookup1;
                 ClaimIDToPostcodeIDLookup1 = null;//recs1.getClaimSHBE_ClaimIDToPostcodeLookup();
                 HashMap<SHBE_ClaimID, Integer> ClaimIDToTTLookup1;
@@ -917,8 +917,8 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                 ym31v = recs1.getNearestYM3ForONSPDLookup();
 //            String yearMonth = year + month;
 //            String lastMonth_yearMonth;
-//            String year = shbeHandler.getYear(shbeFilenames[i]);
-//            String month = shbeHandler.getMonth(shbeFilenames[i]);
+//            String year = shbeData.getYear(shbeFilenames[i]);
+//            String month = shbeData.getMonth(shbeFilenames[i]);
 //            String yearMonth = year + month;
 //            String lastMonth_yearMonth;
 //            lastMonth_yearMonth = getLastMonth_yearMonth(
@@ -1146,9 +1146,9 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                 unexpectedCounts = levelUnexpectedCounts.get(level);
                                 String CTBRef1;
                                 CTBRef1 = DRecord1.getCouncilTaxBenefitClaimReferenceNumber();
-                                SHBE_ClaimID claimID1 = shbeHandler.getC2cid().get(CTBRef1);
+                                SHBE_ClaimID claimID1 = shbeData.getC2cid().get(CTBRef1);
                                 SHBE_ClaimID claimantSHBE_ClaimID1 = null;
-                                String claimantType = shbeHandler.getClaimantType(DRecord1);
+                                String claimantType = shbeData.getClaimantType(DRecord1);
                                 boolean doAdd = true;
                                 // Check for UnderOccupied
                                 if (doUnderOccupied) {
@@ -1320,10 +1320,10 @@ public class DW_ProcessorLCCAggregate extends DW_ProcessorLCC {
                                                         }
                                                         double distance;
                                                         distance = Postcode_Handler.getDistanceBetweenPostcodes(
-                                                                env.getSHBE_Handler().getPid2point(ym30v).get(PostcodeID0),
-                                                                env.getSHBE_Handler().getPid2point(ym31v).get(PostcodeID1),
-                                                                env.getSHBE_Handler().getPid2point(ym31v).get(PostcodeID0),
-                                                                env.getSHBE_Handler().getPid2point(ym30v).get(PostcodeID1),
+                                                                env.getShbeData().getPid2point(ym30v).get(PostcodeID0),
+                                                                env.getShbeData().getPid2point(ym31v).get(PostcodeID1),
+                                                                env.getShbeData().getPid2point(ym31v).get(PostcodeID0),
+                                                                env.getShbeData().getPid2point(ym30v).get(PostcodeID1),
                                                                 ym30v, ym31v, PostcodeID0, PostcodeID1);
                                                         Iterator<Double> ite3;
                                                         ite3 = distances.iterator();

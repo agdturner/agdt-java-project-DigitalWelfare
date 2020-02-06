@@ -28,7 +28,7 @@ import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.projects.dw.visualisation.mapping.DW_Shapefile;
 import uk.ac.leeds.ccg.projects.dw.data.generated.DW_Table;
-import uk.ac.leeds.ccg.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Data;
 import uk.ac.leeds.ccg.data.ukp.data.UKP_Data;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Strings;
 import uk.ac.leeds.ccg.projects.dw.visualisation.mapping.DW_StyleParameters;
@@ -47,11 +47,11 @@ public class DW_LineMapsLCC extends DW_Maps {
 
     protected DW_StyleParameters styleParameters;
 
-    protected Geotools_Style Style;
+    protected Geotools_Style style;
 
     public DW_LineMapsLCC(DW_Environment de) throws IOException {
         super(de);
-        Style = geotools.getStyle();
+        style = geotools.getStyle();
     }
 
     /**
@@ -575,8 +575,8 @@ public class DW_LineMapsLCC extends DW_Maps {
     protected TreeMap<String, ArrayList<UKP_YM3>> getYM3s(
             ArrayList<Integer> includes) throws IOException, Exception {
         TreeMap<String, ArrayList<UKP_YM3>> r = new TreeMap<>();
-        SHBE_Handler h = env.getSHBE_Handler();
-        String[] tSHBEFilenamesAll = h.getFilenames();
+        SHBE_Data shbeData = dwEnv.getShbeData();
+        String[] tSHBEFilenamesAll = shbeData.getFilenames();
         ArrayList<UKP_YM3> yMs;
         // All
         Iterator<Integer> includesIte = includes.iterator();
@@ -587,7 +587,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         int i;
         while (includesIte.hasNext()) {
             i = includesIte.next();
-            yM3 = h.getYM3(tSHBEFilenamesAll[i]);
+            yM3 = shbeData.getYM3(tSHBEFilenamesAll[i]);
             if (first) {
                 name = yM3.toString();
                 first = false;
@@ -600,12 +600,12 @@ public class DW_LineMapsLCC extends DW_Maps {
         // Individual
         includesIte = includes.iterator();
         i = includesIte.next();
-        UKP_YM3 yM30 = h.getYM3(tSHBEFilenamesAll[i]);
+        UKP_YM3 yM30 = shbeData.getYM3(tSHBEFilenamesAll[i]);
         while (includesIte.hasNext()) {
             i = includesIte.next();
             yMs = new ArrayList<>();
             UKP_YM3 yM31;
-            yM31 = h.getYM3(tSHBEFilenamesAll[i]);
+            yM31 = shbeData.getYM3(tSHBEFilenamesAll[i]);
             yMs.add(yM30);
             yMs.add(yM31);
 //            result.put(yM, yearMonths1);
@@ -619,7 +619,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             boolean doUnderOccupancy,
             boolean doCouncil) throws Exception, Error {
 
-        DW_Table table = new DW_Table(env);
+        DW_Table table = new DW_Table(dwEnv);
         String filename;
         //filename = "PostcodeChanges_Start_2008April_End_2008October.csv";
         Path dirIn = Paths.get(files.getOutputSHBETablesDir().toString(),
@@ -644,7 +644,7 @@ public class DW_LineMapsLCC extends DW_Maps {
 
         ArrayList<Integer> includes;
         //includes = SHBE_Handler.getSHBEFilenameIndexesExcept34();
-        includes = env.getSHBE_Handler().getSHBEFilenameIndexes();
+        includes = dwEnv.getShbeData().getSHBEFilenameIndexes();
 
         TreeMap<String, ArrayList<UKP_YM3>> yM3s;
         yM3s = getYM3s(includes);
@@ -723,8 +723,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         showMapsInJMapPane = false;
         imageWidth = 2000;
 
-        SHBE_Handler tDW_SHBE_Handler;
-        tDW_SHBE_Handler = env.getSHBE_Handler();
+        SHBE_Data shbeData = dwEnv.getShbeData();
 
         ArrayList<String> paymentTypes;
         paymentTypes = SHBE_Strings.getPaymentTypes();
@@ -736,7 +735,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         Iterator<String> paymentTypesIte;
 
         TreeMap<String, ArrayList<Integer>> includes;
-        includes = tDW_SHBE_Handler.getIncludes();
+        includes = shbeData.getIncludes();
 //        includes.remove("All");
 //        includes.remove("Yearly");
 //        includes.remove("6Monthly");
@@ -1310,7 +1309,7 @@ public class DW_LineMapsLCC extends DW_Maps {
         } else {
             DW_AreaCodesAndShapefiles tLSOACodesAndLeedsLSOAShapefile;
             tLSOACodesAndLeedsLSOAShapefile = new DW_AreaCodesAndShapefiles(
-                    env,
+                    dwEnv,
                     "LSOA",
                     targetPropertyNameLSOA,
                     getShapefileDataStoreFactory());
@@ -1325,7 +1324,7 @@ public class DW_LineMapsLCC extends DW_Maps {
     private void initStyleParameters() throws IOException {
         styleParameters = new DW_StyleParameters();
         styleParameters.setForegroundStyle(
-                env.getGeotools().getStyle().createDefaultPolygonStyle(
+                dwEnv.getGeotools().getStyle().createDefaultPolygonStyle(
                         Color.BLACK, //Color.GREEN,
                         Color.WHITE), 0);
         styleParameters.setMidgroundStyle(
@@ -1339,13 +1338,10 @@ public class DW_LineMapsLCC extends DW_Maps {
         if (type == 0) {
             styleParameters.setMidgroundStyle(
                     geotools.getStyle().createDefaultLineStyle(origin), 1);
-            styleParameters.setMidgroundStyle(
-                    Style.createDefaultLineStyle(destination), 2);
+            styleParameters.setMidgroundStyle(style.createDefaultLineStyle(destination), 2);
         } else {
-            styleParameters.setMidgroundStyle(
-                    Style.createDefaultLineStyle(origin), 2);
-            styleParameters.setMidgroundStyle(
-                    Style.createDefaultLineStyle(destination), 1);
+            styleParameters.setMidgroundStyle(style.createDefaultLineStyle(origin), 2);
+            styleParameters.setMidgroundStyle(style.createDefaultLineStyle(destination), 1);
 
         }
     }
@@ -1361,7 +1357,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             boolean doTenancyTypeAndPostcodeChange, boolean doUnderOccupancyData,
             boolean doCouncil, boolean doCheckedPreviousTenure,
             boolean doCheckedPreviousPostcode, boolean grouped) throws Exception {
-        DW_Table table = new DW_Table(env);
+        DW_Table table = new DW_Table(dwEnv);
         Path dirIn;
         Path dirOut;
         if (doTenancyTypeAndPostcodeChange) {
@@ -1486,21 +1482,21 @@ public class DW_LineMapsLCC extends DW_Maps {
                             yM31 = new UKP_YM3(lineSplit[2].trim());
                             String tenancyTypeChange;
                             UKP_YM3 yM30v;
-                            yM30v = ONSPD_Handler.getNearestYM3ForONSPDLookup(yM30);
+                            yM30v = ukpData.getNearestYM3ForONSPDLookup(yM30);
                             UKP_YM3 yM31v;
-                            yM31v = ONSPD_Handler.getNearestYM3ForONSPDLookup(yM31);
+                            yM31v = ukpData.getNearestYM3ForONSPDLookup(yM31);
                             tenancyTypeChange = lineSplit[3].trim();
                             if (tenancyTypeChanges.contains(tenancyTypeChange)) {
                                 if (yMs.contains(yM31)) {
                                     String postcode0 = lineSplit[4].trim();
                                     String postcode1 = lineSplit[5].trim();
                                     ONSPD_Point origin;
-                                    origin = ONSPD_Handler.getPointFromPostcode(
+                                    origin = ukpData.getPointFromPostcode(
                                             yM30v,
                                             UKP_Data.TYPE_UNIT,
                                             postcode0);
                                     ONSPD_Point destination;
-                                    destination = ONSPD_Handler.getPointFromPostcode(
+                                    destination = ukpData.getPointFromPostcode(
                                             yM31v,
                                             UKP_Data.TYPE_UNIT,
                                             postcode1);
@@ -1716,7 +1712,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             boolean doCheckedPreviousTenure,
             boolean doCheckedPreviousPostcode,
             boolean grouped) throws Exception {
-        DW_Table table = new DW_Table(env);
+        DW_Table table = new DW_Table(dwEnv);
         Path dirIn;
         Path dirInCouncil;
         Path dirInRSL;
@@ -1853,9 +1849,9 @@ public class DW_LineMapsLCC extends DW_Maps {
                         UKP_YM3 yM31;
                         yM31 = new UKP_YM3(lineSplit[2].trim());
                         UKP_YM3 yM30v;
-                        yM30v = ONSPD_Handler.getNearestYM3ForONSPDLookup(yM30);
+                        yM30v = ukpData.getNearestYM3ForONSPDLookup(yM30);
                         UKP_YM3 yM31v;
-                        yM31v = ONSPD_Handler.getNearestYM3ForONSPDLookup(yM31);
+                        yM31v = ukpData.getNearestYM3ForONSPDLookup(yM31);
                         String tenancyTypeChange;
                         tenancyTypeChange = lineSplit[3].trim();
 
@@ -1871,12 +1867,12 @@ public class DW_LineMapsLCC extends DW_Maps {
                                 String postcode0 = lineSplit[4].trim();
                                 String postcode1 = lineSplit[5].trim();
                                 ONSPD_Point origin;
-                                origin = ONSPD_Handler.getPointFromPostcode(
+                                origin = ukpData.getPointFromPostcode(
                                         yM30v,
                                         UKP_Data.TYPE_UNIT,
                                         postcode0);
                                 ONSPD_Point destination;
-                                destination = ONSPD_Handler.getPointFromPostcode(
+                                destination = ukpData.getPointFromPostcode(
                                         yM31v,
                                         UKP_Data.TYPE_UNIT,
                                         postcode1);
@@ -2072,7 +2068,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             boolean doCheckedPreviousTenure,
             boolean doCheckedPreviousPostcode,
             boolean grouped) throws Exception {
-        DW_Table table = new DW_Table(env);
+        DW_Table table = new DW_Table(dwEnv);
         Path dirIn;
         Path dirInCouncil;
         Path dirInRSL;
@@ -2236,9 +2232,9 @@ public class DW_LineMapsLCC extends DW_Maps {
                         UKP_YM3 yM31;
                         yM31 = new UKP_YM3(lineSplit[2].trim());
                         UKP_YM3 yM30v;
-                        yM30v = ONSPD_Handler.getNearestYM3ForONSPDLookup(yM30);
+                        yM30v = ukpData.getNearestYM3ForONSPDLookup(yM30);
                         UKP_YM3 yM31v;
-                        yM31v = ONSPD_Handler.getNearestYM3ForONSPDLookup(yM31);
+                        yM31v = ukpData.getNearestYM3ForONSPDLookup(yM31);
                         String tenancyTypeChange;
                         tenancyTypeChange = lineSplit[3].trim();
                         if (tenancyTypeChanges.contains(tenancyTypeChange)) {
@@ -2246,10 +2242,10 @@ public class DW_LineMapsLCC extends DW_Maps {
                                 String postcode0 = lineSplit[4].trim();
                                 String postcode1 = lineSplit[5].trim();
                                 ONSPD_Point origin;
-                                origin = ONSPD_Handler.getPointFromPostcode(
+                                origin = ukpData.getPointFromPostcode(
                                         yM30v, UKP_Data.TYPE_UNIT, postcode0);
                                 ONSPD_Point destination;
-                                destination = ONSPD_Handler.getPointFromPostcode(
+                                destination = ukpData.getPointFromPostcode(
                                         yM31v, UKP_Data.TYPE_UNIT, postcode1);
                                 TreeSetFeatureCollection tsfcS;
                                 tsfcS = tsfcSs.get(tenancyTypeChanges);
@@ -2449,7 +2445,7 @@ public class DW_LineMapsLCC extends DW_Maps {
             ArrayList<ArrayList<String>> allTenancyTypeGroups,
             boolean doUnderOccupancyData, boolean doCouncil, boolean doRSL,
             boolean doCheckedPreviousPostcode, boolean grouped) throws Exception {
-        DW_Table table = new DW_Table(env);
+        DW_Table table = new DW_Table(dwEnv);
         Path dirIn;
         Path dirInCouncil;
         Path dirInRSL;
@@ -2550,18 +2546,18 @@ public class DW_LineMapsLCC extends DW_Maps {
                         String[] lineSplit = line.split(",");
                         yM30 = new UKP_YM3(lineSplit[1].trim());
                         UKP_YM3 yM31 = new UKP_YM3(lineSplit[2].trim());
-                        UKP_YM3 yM30v = ONSPD_Handler.getNearestYM3ForONSPDLookup(yM30);
-                        UKP_YM3 yM31v = ONSPD_Handler.getNearestYM3ForONSPDLookup(yM31);
+                        UKP_YM3 yM30v = ukpData.getNearestYM3ForONSPDLookup(yM30);
+                        UKP_YM3 yM31v = ukpData.getNearestYM3ForONSPDLookup(yM31);
                         String tenancyTypeChange = lineSplit[3].trim();
                         if (tenancyTypeChanges.contains(tenancyTypeChange)) {
                             if (yM3s.contains(yM31)) {
                                 String postcode0 = lineSplit[4].trim();
                                 String postcode1 = lineSplit[5].trim();
                                 ONSPD_Point origin
-                                        = ONSPD_Handler.getPointFromPostcode(
+                                        = ukpData.getPointFromPostcode(
                                                 yM30v, UKP_Data.TYPE_UNIT, postcode0);
                                 ONSPD_Point destination
-                                        = ONSPD_Handler.getPointFromPostcode(
+                                        = ukpData.getPointFromPostcode(
                                                 yM31v, UKP_Data.TYPE_UNIT, postcode1);
                                 TreeSetFeatureCollection tsfcS
                                         = tsfcSs.get(tenancyTypeChanges);

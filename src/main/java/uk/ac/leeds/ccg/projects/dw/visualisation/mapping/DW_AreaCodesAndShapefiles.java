@@ -379,7 +379,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
     /**
      * @return getLevelDW_Shapefile().getFeatureCollection();
      */
-    public FeatureCollection getLevelFC() {
+    public FeatureCollection getLevelFC() throws IOException {
         return getLevelDW_Shapefile().getFeatureCollection();
     }
 
@@ -400,7 +400,7 @@ public class DW_AreaCodesAndShapefiles extends DW_Object {
     /**
      * @return getLeedsLADDW_Shapefile().getFeatureCollection();
      */
-    public FeatureCollection getLeedsLADFC() {
+    public FeatureCollection getLeedsLADFC() throws IOException {
         return getLeedsLADDW_Shapefile().getFeatureCollection();
     }
 

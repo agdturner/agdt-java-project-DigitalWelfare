@@ -64,7 +64,7 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
         String sName;
 
         // Initialisation
-        includes = shbeHandler.getIncludes();
+        includes = shbeData.getIncludes();
 //        includes.remove(DW_Strings.sIncludeAll);
 //        includes.remove(DW_Strings.sIncludeYearly);
 //        includes.remove(DW_Strings.sInclude6Monthly);
@@ -85,10 +85,10 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
         HB_CTB = DW_Strings.getHB_CTB();
         //forceNewSummaries = false;
         forceNewSummaries = true;
-        nTT = shbeHandler.getNumberOfTenancyTypes();
-        //nEG = shbeHandler.getNumberOfClaimantsEthnicGroups();
-        nEG = shbeHandler.getNumberOfClaimantsEthnicGroupsGrouped();
-        nPSI = shbeHandler.getOneOverMaxValueOfPassportStandardIndicator();
+        nTT = shbeData.getNumberOfTenancyTypes();
+        //nEG = shbeData.getNumberOfClaimantsEthnicGroups();
+        nEG = shbeData.getNumberOfClaimantsEthnicGroupsGrouped();
+        nPSI = shbeData.getOneOverMaxValueOfPassportStandardIndicator();
 
         // Processing loop
         Summary = new DW_Summary(env, nTT, nEG, nPSI, hoome);
@@ -113,7 +113,7 @@ public class DW_ProcessorLCCSummary extends DW_ProcessorLCC {
                 env.ge.log("<" + sName + ">", true);
                 SummaryTableUO = SummaryUO.getSummaryTable(Group, shbeFilenames,
                         include, forceNewSummaries, HB_CTB, PTs, nTT, nEG, nPSI,
-                        UO_Data, hoome);
+                        uoData, hoome);
                 SummaryUO.writeSummaryTables(SummaryTableUO, PTs, includeKey,
                         nTT, nEG, nPSI);
                 env.ge.log("</" + sName + ">", true);

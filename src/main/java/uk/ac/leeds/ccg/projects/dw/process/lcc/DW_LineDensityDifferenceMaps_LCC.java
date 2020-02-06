@@ -505,7 +505,7 @@ public class DW_LineDensityDifferenceMaps_LCC extends DW_DensityMapsAbstract {
                     + "difference is all shown in grida Path " + grida);
             return;
         }
-        Grids_Files gfiles = env.Grids_Env.files;
+        Grids_Files gfiles = env.gridsEnv.files;
         //Path dir = env.ge.io.createNewFile(gfiles.getGeneratedGridDoubleDir());
 
         Grids_GridDouble ga = (Grids_GridDouble) gf.create(new Generic_Path(grida));

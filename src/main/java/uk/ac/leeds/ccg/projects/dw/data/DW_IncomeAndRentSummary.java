@@ -14,7 +14,7 @@ import java.util.Set;
 import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
 import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_ClaimID;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_D_Record;
-import uk.ac.leeds.ccg.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Data;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_Record;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_Records;
 import uk.ac.leeds.ccg.generic.io.Generic_IO;
@@ -29,7 +29,9 @@ import uk.ac.leeds.ccg.projects.dw.io.DW_Files;
  * @author Andy Turner
  * @version 1.0.0
  */
-public class DW_IncomeAndRentSummary extends SHBE_Handler {
+public class DW_IncomeAndRentSummary extends SHBE_Data {
+
+    private static final long serialVersionUID = 1L;
 
     DW_Environment de;
     public DW_Files df;
@@ -37,7 +39,7 @@ public class DW_IncomeAndRentSummary extends SHBE_Handler {
 
     public DW_IncomeAndRentSummary(DW_Environment e, DW_Strings ds) 
             throws IOException, Exception {
-        super(e.SHBE_Env);
+        super(e.shbeEnv);
         this.de = e;
         this.df = e.files;
         this.ds = ds;

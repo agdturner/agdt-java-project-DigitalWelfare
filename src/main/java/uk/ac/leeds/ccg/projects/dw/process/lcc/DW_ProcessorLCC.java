@@ -15,7 +15,7 @@ import uk.ac.leeds.ccg.data.ukp.data.UKP_Data;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
 import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_ClaimID;
-import uk.ac.leeds.ccg.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Data;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_Records;
 import uk.ac.leeds.ccg.generic.io.Generic_Defaults;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Data;
@@ -31,17 +31,17 @@ import uk.ac.leeds.ccg.projects.dw.visualisation.charts.DW_LineGraph;
 public class DW_ProcessorLCC extends DW_Processor {
 
     // For convenience
-    protected transient SHBE_Handler shbeHandler;
-    protected transient DW_UO_Data UO_Data;
+    protected transient SHBE_Data shbeData;
+    protected transient DW_UO_Data uoData;
     protected transient String[] shbeFilenames;
     protected transient Map<SHBE_ClaimID, String> cid2c;
 
     public DW_ProcessorLCC(DW_Environment e) throws IOException, Exception {
         super(e);
-        shbeHandler = e.getSHBE_Handler();
-        UO_Data = e.getUO_Data();
-        shbeFilenames = shbeHandler.getFilenames();
-        cid2c = shbeHandler.getCid2c();
+        shbeData = e.getShbeData();
+        uoData = e.getUoData();
+        shbeFilenames = shbeData.getFilenames();
+        cid2c = shbeData.getCid2c();
     }
 
     /**
@@ -199,7 +199,7 @@ public class DW_ProcessorLCC extends DW_Processor {
             }
             int logID2 = env.ge.initLog(processName);
             // Process
-            Postcode_Handler = env.SHBE_Env.oe.getHandler();
+            Postcode_Handler = env.shbeEnv.oe.getHandler();
             Postcode_Handler.run(logID2);
             // Close logs
             env.ge.closeLog(logID2);
@@ -213,9 +213,9 @@ public class DW_ProcessorLCC extends DW_Processor {
             processName = "LoadAllSHBEFromSource";
             int logID2 = env.ge.initLog(processName);
             // Process
-            shbeHandler = new SHBE_Handler(env.SHBE_Env, logID2);
-            env.setSHBE_Handler(shbeHandler);
-            shbeHandler.run(logID2);
+            shbeData = new SHBE_Data(env.shbeEnv, logID2);
+            env.setShbeData(shbeData);
+            shbeData.run(logID2);
             // Close logs
             env.ge.closeLog(logID2);
         }
@@ -228,9 +228,9 @@ public class DW_ProcessorLCC extends DW_Processor {
             processName = "LoadNewSHBEFromSource";
             int logID2 = env.ge.initLog(processName);
             // Process
-            shbeHandler = new SHBE_Handler(env.SHBE_Env, logID2);
-            env.setSHBE_Handler(shbeHandler);
-            shbeHandler.runNew();
+            shbeData = new SHBE_Data(env.shbeEnv, logID2);
+            env.setShbeData(shbeData);
+            shbeData.runNew();
             // Close logs
             env.ge.closeLog(logID2);
         }
@@ -243,9 +243,9 @@ public class DW_ProcessorLCC extends DW_Processor {
             processName = "PostcodeCheck";
             int logID2 = env.ge.initLog(processName);
             // Process
-            shbeHandler = new SHBE_Handler(env.SHBE_Env, logID2);
-            env.setSHBE_Handler(shbeHandler);
-            shbeHandler.runPostcodeCheck();
+            shbeData = new SHBE_Data(env.shbeEnv, logID2);
+            env.setShbeData(shbeData);
+            shbeData.runPostcodeCheck();
             // Close logs
             env.ge.closeLog(logID2);
         }
@@ -258,9 +258,9 @@ public class DW_ProcessorLCC extends DW_Processor {
             processName = "PostcodeCheckLatest";
             int logID2 = env.ge.initLog(processName);
             // Process
-            shbeHandler = new SHBE_Handler(env.SHBE_Env);
-            env.setSHBE_Handler(shbeHandler);
-            shbeHandler.runPostcodeCheckLatest();
+            shbeData = new SHBE_Data(env.shbeEnv);
+            env.setShbeData(shbeData);
+            shbeData.runPostcodeCheckLatest();
             // Close logs
             env.ge.closeLog(logID2);
         }
@@ -275,16 +275,16 @@ public class DW_ProcessorLCC extends DW_Processor {
             processName = "LoadSHBE";
             int logID2 = env.ge.initLog(processName);
             // Process
-            Map<UKP_YM3, SHBE_Records> data = env.SHBE_Handler.getData();
-            shbeHandler = new SHBE_Handler(env.SHBE_Env);
-            env.setSHBE_Handler(shbeHandler);
-            shbeFilenames = shbeHandler.getFilenames();
+            Map<UKP_YM3, SHBE_Records> data = env.shbeData.getData();
+            shbeData = new SHBE_Data(env.shbeEnv);
+            env.setShbeData(shbeData);
+            shbeFilenames = shbeData.getFilenames();
             Path dir = env.files.getGeneratedSHBEDir();
             UKP_YM3 YM3;
             for (String SHBEFilename : shbeFilenames) {
-                YM3 = shbeHandler.getYM3(SHBEFilename);
+                YM3 = shbeData.getYM3(SHBEFilename);
                 try {
-                    SHBE_Records shbeRecords = new SHBE_Records(env.SHBE_Env, YM3);
+                    SHBE_Records shbeRecords = new SHBE_Records(env.shbeEnv, YM3);
                     env.checkAndMaybeFreeMemory();
                     data.put(YM3, shbeRecords);
                     env.ge.log("shbeRecords.getCidsHII().size() "
@@ -321,7 +321,7 @@ public class DW_ProcessorLCC extends DW_Processor {
             // Process
             boolean loadFromSource;
             loadFromSource = true;
-            UO_Data = env.getUO_Data(loadFromSource);
+            uoData = env.getUoData(loadFromSource);
             // Close logs
             env.ge.closeLog(logID2);
         }
@@ -333,7 +333,7 @@ public class DW_ProcessorLCC extends DW_Processor {
             // Process
             boolean loadFromSource;
             loadFromSource = false;
-            UO_Data = env.getUO_Data(loadFromSource);
+            uoData = env.getUoData(loadFromSource);
             // Close logs
             env.ge.closeLog(logID2);
         }
@@ -610,12 +610,12 @@ public class DW_ProcessorLCC extends DW_Processor {
     boolean doLineGraphAggregateData = true;
 
     /**
-     * Switch for generating Density Maps.
+     * Switch for generating Density maps.
      */
     boolean doDensityMaps = false;
 
     /**
-     * Switch for generating Line Density Maps.
+     * Switch for generating Line Density maps.
      */
     boolean doLineDensityMaps = false;
 

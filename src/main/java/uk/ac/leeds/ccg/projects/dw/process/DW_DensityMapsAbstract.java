@@ -63,7 +63,7 @@ public abstract class DW_DensityMapsAbstract extends DW_Object {
     public DW_DensityMapsAbstract(DW_Environment de) throws IOException {
         super(de);
         maps = de.getMaps();
-        ukpHandler = de.getONSPD_Handler();
+        ukpHandler = de.getUkpData();
     }
 
     // Add from postcodes

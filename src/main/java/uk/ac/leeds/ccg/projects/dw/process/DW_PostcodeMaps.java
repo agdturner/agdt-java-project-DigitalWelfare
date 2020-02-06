@@ -12,7 +12,6 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import org.geotools.data.collection.TreeSetFeatureCollection;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
-import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.map.MapContent;
@@ -24,13 +23,10 @@ import uk.ac.leeds.ccg.grids.d2.grid.d.Grids_GridFactoryDouble;
 import uk.ac.leeds.ccg.projects.dw.visualisation.mapping.DW_AreaCodesAndShapefiles;
 import uk.ac.leeds.ccg.grids.d2.Grids_Dimensions;
 import uk.ac.leeds.ccg.grids.core.Grids_Environment;
-import uk.ac.leeds.ccg.grids.d2.stats.Grids_StatsNotUpdatedDouble;
-import uk.ac.leeds.ccg.grids.io.Grids_Files;
 import uk.ac.leeds.ccg.grids.process.Grids_Processor;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.data.ukp.data.UKP_Data;
 import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
-import uk.ac.leeds.ccg.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.geotools.Geotools_Point;
 import uk.ac.leeds.ccg.projects.dw.visualisation.mapping.DW_Shapefile;
 
@@ -80,25 +76,25 @@ public class DW_PostcodeMaps extends DW_Maps {
         // Postcode Sectors
         Path lpsf = getLeedsPostcodeSectorShapefile();
         // Postcode Units
-        DW_Shapefile pup = getPostcodeUnitPoly_DW_Shapefile(env,
+        DW_Shapefile pup = getPostcodeUnitPoly_DW_Shapefile(dwEnv,
                 new ShapefileDataStoreFactory());
 
-        UKP_YM3 yM3 = ONSPD_Handler.getDefaultYM3();
+        UKP_YM3 yM3 = ukpData.getDefaultYM3();
 
         int pl;
         // Postcode Unit Centroids
-        pl = ONSPD_Handler.TYPE_UNIT;
+        pl = UKP_Data.TYPE_UNIT;
         String fn;
         fn = "LeedsPostcode" + pl + "PointShapefile.shp";
         Path pups = createPostcodePointShapefileIfItDoesNotExist(
                 yM3, pl, mapDirectory, fn, "LS");
         // Postcode Sector Centroids
-        pl = ONSPD_Handler.TYPE_SECTOR;
+        pl = UKP_Data.TYPE_SECTOR;
         fn = "LeedsPostcode" + pl + "PointShapefile.shp";
         Path psps = createPostcodePointShapefileIfItDoesNotExist(
                 yM3, pl, mapDirectory, fn, "LS");
         // Postcode District Centroids
-        pl = ONSPD_Handler.TYPE_DISTRICT;
+        pl = UKP_Data.TYPE_DISTRICT;
         fn = "LeedsPostcode" + pl + "PointShapefile.shp";
         Path pdps = createPostcodePointShapefileIfItDoesNotExist(
                 yM3, pl, mapDirectory, fn, "LS");
@@ -108,20 +104,20 @@ public class DW_PostcodeMaps extends DW_Maps {
         // OA
         level = "OA";
         targetPropertyName = "CODE";
-        acas = new DW_AreaCodesAndShapefiles(env, level, targetPropertyName, sdsf);
+        acas = new DW_AreaCodesAndShapefiles(dwEnv, level, targetPropertyName, sdsf);
         DW_Shapefile oas = acas.getLeedsLevelDW_Shapefile();
         DW_Shapefile lads = acas.getLeedsLADDW_Shapefile();
 
         // LSOA
         level = "LSOA";
         targetPropertyName = "LSOA11CD";
-        acas = new DW_AreaCodesAndShapefiles(env, level, targetPropertyName, sdsf);
+        acas = new DW_AreaCodesAndShapefiles(dwEnv, level, targetPropertyName, sdsf);
         DW_Shapefile lsoas = acas.getLeedsLevelDW_Shapefile();
 
         // MSOA
         level = "MSOA";
         targetPropertyName = "MSOA11CD";
-        acas = new DW_AreaCodesAndShapefiles(env, level, targetPropertyName, sdsf);
+        acas = new DW_AreaCodesAndShapefiles(dwEnv, level, targetPropertyName, sdsf);
         DW_Shapefile msoas = acas.getLeedsLevelDW_Shapefile();
 
        long nrows = 139;//277;//554;
@@ -141,7 +137,7 @@ public class DW_PostcodeMaps extends DW_Maps {
                 BigDecimal.valueOf(cellsize));
 
         String outname = "outname";
-        Grids_Environment ge = env.Grids_Env;
+        Grids_Environment ge = dwEnv.gridsEnv;
         Grids_Processor gp = ge.getProcessor();
 //        Grids_GridFactoryDouble gf = new Grids_GridFactoryDouble(ge,
 //                gp.GridChunkDoubleFactory,
@@ -150,7 +146,7 @@ public class DW_PostcodeMaps extends DW_Maps {
 //                new Grids_GridDoubleStatsNotUpdated(ge));
         Grids_GridDouble grid = toGrid(polyGrid, nrows, ncols, xllcorner,
                 yllcorner, cellsize, pup, gp.gridFactoryDouble);
-        MapContent mc = env.getGeotools().createMapContent(
+        MapContent mc = dwEnv.getGeotools().createMapContent(
                 new DW_Shapefile(lpsf),
                 oas,
                 null,//LSOA_Shapefile,
@@ -159,7 +155,7 @@ public class DW_PostcodeMaps extends DW_Maps {
                 null,//lineGrid,//null,//LAD_Shapefile,
                 new DW_Shapefile(pups),
                 new DW_Shapefile(psps));
-        env.getGeotools().outputToImage(mc, outname, lpsf, mapDirectory, 
+        dwEnv.getGeotools().outputToImage(mc, outname, lpsf, mapDirectory, 
                 imageWidth, showMapsInJMapPane);
     }
 
@@ -214,33 +210,29 @@ public class DW_PostcodeMaps extends DW_Maps {
     }
 
     /**
-     * @param yM3
-     * @return
-     * @throws java.io.IOException
+     * @param ym3 The year month.
+     * @return A List of Shapefiles.
+     * @throws java.io.IOException If encountered.
+     * @throws java.lang.ClassNotFoundException If encountered.
      */
     public ArrayList<DW_Shapefile> getPostcodePointDW_Shapefiles(
-            UKP_YM3 yM3) throws IOException, ClassNotFoundException {
-        ArrayList<DW_Shapefile> result;
-        result = new ArrayList<>();
-        Path dir;
-        dir = files.getGeneratedPostcodeDir();
-        ArrayList<Integer> postCodeLevels;
-        postCodeLevels = new ArrayList<>();
-        postCodeLevels.add(ONSPD_Handler.TYPE_UNIT);
-        postCodeLevels.add(ONSPD_Handler.TYPE_SECTOR);
-        postCodeLevels.add(ONSPD_Handler.TYPE_DISTRICT);
-        Iterator<Integer> ite;
-        ite = postCodeLevels.iterator();
+            UKP_YM3 ym3) throws IOException, ClassNotFoundException {
+        ArrayList<DW_Shapefile> r = new ArrayList<>();
+        Path dir = files.getGeneratedPostcodeDir();
+        ArrayList<Integer> postCodeLevels = new ArrayList<>();
+        postCodeLevels.add(UKP_Data.TYPE_UNIT);
+        postCodeLevels.add(UKP_Data.TYPE_SECTOR);
+        postCodeLevels.add(UKP_Data.TYPE_DISTRICT);
+        Iterator<Integer> ite = postCodeLevels.iterator();
         while (ite.hasNext()) {
             int pl = ite.next();
             // Create LS Postcode points
-            String sf_name;
-            sf_name = "LS_Postcodes" + pl + "CentroidsPoint.shp";
-            Path f = createPostcodePointShapefileIfItDoesNotExist(yM3, pl, dir,
+            String sf_name = "LS_Postcodes" + pl + "CentroidsPoint.shp";
+            Path f = createPostcodePointShapefileIfItDoesNotExist(ym3, pl, dir,
                     sf_name, "LS");
-            result.add(new DW_Shapefile(f));
+            r.add(new DW_Shapefile(f));
         }
-        return result;
+        return r;
     }
 
     /**
@@ -251,6 +243,7 @@ public class DW_PostcodeMaps extends DW_Maps {
      * @param target
      * @return
      * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
      */
     public Path createPostcodePointShapefileIfItDoesNotExist(UKP_YM3 yM3,
             int postcodeLevel, Path dir, String shapefileFilename,
@@ -265,9 +258,9 @@ public class DW_PostcodeMaps extends DW_Maps {
             UKP_YM3 yM3, int postcodeLevel, SimpleFeatureType sft,
             String target) throws IOException, ClassNotFoundException {
         TreeSetFeatureCollection r = new TreeSetFeatureCollection();
-        UKP_Data dph = env.getONSPD_Handler();
+        UKP_Data dph = dwEnv.getUkpData();
         TreeMap<String, ONSPD_Point> tONSPDlookup
-                = env.SHBE_Env.oe.getONSPDlookups().get(postcodeLevel).get(
+                = dwEnv.shbeEnv.oe.getONSPDlookups().get(postcodeLevel).get(
                 dph.getNearestYM3ForONSPDLookup(yM3));
         /*
          * GeometryFactory will be used to create the geometry attribute of each feature,

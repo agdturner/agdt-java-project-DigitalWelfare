@@ -2,7 +2,6 @@
 package uk.ac.leeds.ccg.projects.dw.data.uo;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.nio.file.Files;
@@ -16,7 +15,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
 import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_ClaimID;
-import uk.ac.leeds.ccg.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Data;
 import uk.ac.leeds.ccg.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
@@ -37,11 +36,12 @@ public class DW_UO_Handler extends DW_Object {
 
     private HashSet<String> RecordTypes;
 
-    public DW_UO_Handler(DW_Environment env) throws IOException, ClassNotFoundException, Exception {
+    public DW_UO_Handler(DW_Environment env) throws IOException, 
+            ClassNotFoundException, Exception {
         super(env);
-        SHBE_Handler h = env.getSHBE_Handler();
-        ClaimIDToClaimRefLookup = h.getCid2c();
-        ClaimRefToClaimIDLookup = h.getC2cid();
+        SHBE_Data d = env.getShbeData();
+        ClaimIDToClaimRefLookup = d.getCid2c();
+        ClaimRefToClaimIDLookup = d.getC2cid();
     }
 
     public HashSet<String> getRecordTypes() {
@@ -51,7 +51,7 @@ public class DW_UO_Handler extends DW_Object {
     /**
      * Loads and returns the data from the specified input file.
      *
-     * @param dir Directory data are loaded from.
+     * @param dir directory data are loaded from.
      * @param fn Name of file from which data are loaded.
      * @return The loaded data.
      */
@@ -127,9 +127,9 @@ public class DW_UO_Handler extends DW_Object {
             env.ge.log("Replacement Entries " + replacementEntriesCount);
             if (addedNewClaimIDs) {
                 Generic_IO.writeObject(ClaimIDToClaimRefLookup,
-                        env.getSHBE_Handler().getCid2cFile());
+                        env.getShbeData().getCid2cFile());
                 Generic_IO.writeObject(ClaimRefToClaimIDLookup,
-                        env.getSHBE_Handler().getC2cidFile());
+                        env.getShbeData().getC2cidFile());
             }
         } catch (IOException ex) {
             ex.printStackTrace(System.err);

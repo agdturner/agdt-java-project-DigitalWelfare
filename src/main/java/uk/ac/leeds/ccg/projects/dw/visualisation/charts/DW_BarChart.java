@@ -20,7 +20,7 @@ import uk.ac.leeds.ccg.generic.visualisation.Generic_Visualisation;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Strings;
 import uk.ac.leeds.ccg.projects.dw.data.generated.DW_Table;
-import uk.ac.leeds.ccg.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Data;
 import uk.ac.leeds.ccg.generic.io.Generic_IO;
 
 /**
@@ -84,7 +84,7 @@ public class DW_BarChart extends Chart_Bar {
         roundingMode = RoundingMode.HALF_UP;
         executorService = Executors.newSingleThreadExecutor();
 
-        String[] shbeFilenames = env.getSHBE_Handler().getFilenames();
+        String[] shbeFilenames = env.getShbeData().getFilenames();
         ArrayList<String> claimantTypes = DW_Strings.getHB_CTB();
         ArrayList<String> levels = new ArrayList<>();
         levels.add("OA");
@@ -198,12 +198,12 @@ public class DW_BarChart extends Chart_Bar {
         Iterator<String> distanceTypesIte;
         Iterator<Double> distancesIte;
 
-        SHBE_Handler shbeHandler = env.getSHBE_Handler();
+        SHBE_Data shbeData = env.getShbeData();
 
         for (int i = startIndex + 1; i < SHBEFilenames.length; i++) {
             String aSHBEFilename = SHBEFilenames[i];
-            String month = shbeHandler.getMonth(aSHBEFilename);
-            String year = shbeHandler.getYear(aSHBEFilename);
+            String month = shbeData.getMonth(aSHBEFilename);
+            String year = shbeData.getYear(aSHBEFilename);
 
             levelsIte = levels.iterator();
             while (levelsIte.hasNext()) {

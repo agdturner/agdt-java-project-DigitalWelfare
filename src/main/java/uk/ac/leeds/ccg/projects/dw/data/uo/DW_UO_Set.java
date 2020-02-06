@@ -66,7 +66,7 @@ public class DW_UO_Set extends DW_Object implements Serializable {
             loadDummy = (DW_UO_Set) Generic_IO.readObject(fOut);
             Map = loadDummy.Map;
         } else {
-            Map = this.env.getUO_Handler().loadInputData(dirIn, filename);
+            Map = this.env.getUoHandler().loadInputData(dirIn, filename);
             Generic_IO.writeObject(this, fOut);
         }
         this.env.ge.log("</" + methodName + ">", true);

@@ -32,7 +32,7 @@ public abstract class DW_Processor extends DW_Object {
 
     public DW_Processor(DW_Environment e) {
         super(e);
-        this.Postcode_Handler = e.getONSPD_Handler();
+        this.Postcode_Handler = e.getUkpData();
     }
 
     public ArrayList<Boolean> getArrayListBoolean() {
@@ -93,7 +93,7 @@ public abstract class DW_Processor extends DW_Object {
         Path outfile = Paths.get(dir.toString(), outputFilename);
         if (!Files.exists(outfile)) {
             Files.createDirectories(dir);
-            Path infile = env.SHBE_Env.oe.files.getInputONSPDFile(YM3Nearest);
+            Path infile = env.shbeEnv.oe.files.getInputONSPDFile(YM3Nearest);
             r = initLookupFromPostcodeToCensusCodes(infile, outfile, level,
                     CensusYear, YM3Nearest);
         } else {

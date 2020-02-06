@@ -36,8 +36,7 @@ public class DW_ProcessorLCCTenancyChangesUO extends DW_ProcessorLCC {
          * Create data about the Tenancy Type changes of UnderOccupied Claims
          */
         Object[] table;
-        ArrayList<Integer> include;
-        include = shbeHandler.getIncludeMonthlyUO();
+        ArrayList<Integer> include = shbeData.getIncludeMonthlyUO();
         DW_TenancyChangesUO UOTTC = new DW_TenancyChangesUO(
                 env,
                 handleOutOfMemoryError);
@@ -47,14 +46,14 @@ public class DW_ProcessorLCCTenancyChangesUO extends DW_ProcessorLCC {
         String endMonth;
         String endYear;
         index = include.get(0);
-        startMonth = shbeHandler.getMonth(
+        startMonth = shbeData.getMonth(
                 shbeFilenames[index]);
-        startYear = shbeHandler.getYear(
+        startYear = shbeData.getYear(
                 shbeFilenames[index]);
         index = include.get(include.size() - 1);
-        endMonth = shbeHandler.getMonth(
+        endMonth = shbeData.getMonth(
                 shbeFilenames[index]);
-        endYear = shbeHandler.getYear(
+        endYear = shbeData.getYear(
                 shbeFilenames[index]);
         iteB = bArray.iterator();
         while (iteB.hasNext()) {
@@ -62,7 +61,7 @@ public class DW_ProcessorLCCTenancyChangesUO extends DW_ProcessorLCC {
             includePreUnderOccupancyValues = iteB.next();
             env.ge.log("<includePreUnderOccupancyValues " 
                     + includePreUnderOccupancyValues + ">", true);
-            table = UOTTC.getTable(UO_Data, shbeFilenames, include,
+            table = UOTTC.getTable(uoData, shbeFilenames, include,
                     includePreUnderOccupancyValues);
             UOTTC.writeTenancyChangeTables(table,
                     includePreUnderOccupancyValues, startMonth, startYear, 

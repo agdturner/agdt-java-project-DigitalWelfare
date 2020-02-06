@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Data;
 import uk.ac.leeds.ccg.geotools.Geotools_StyleParameters;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.io.DW_Files;
@@ -193,7 +193,7 @@ public class DW_ChoroplethMapsLCC extends DW_ChoroplethMapsAbstract {
 //                "Choropleth");
 //
 //        TreeMap<String, ArrayList<Integer>> includes;
-//        includes = env.getDW_SHBE_Handler().getIncludes();
+//        includes = env.getDW_SHBE_Data().getIncludes();
 ////        includes.remove("All");
 ////        includes.remove("Yearly");
 ////        includes.remove("6Monthly");

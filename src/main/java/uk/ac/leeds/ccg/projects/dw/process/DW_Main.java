@@ -39,7 +39,7 @@ public class DW_Main extends DW_Processor {
                 DW_Environment env = new DW_Environment(de);
                 DW_Main p;
                 p = new DW_Main(env);
-//                p.env.SHBE_Env = new SHBE_Environment(p.files.getDataDir(), 
+//                p.env.shbeEnv = new SHBE_Environment(p.files.getDataDir(), 
 //                SHBE_Environment.DEBUG_Level_NORMAL);
 //                p.env.ONSPD_Env = new ONSPD_Environment(p.files.getDataDir());
                 p.run();

@@ -13,7 +13,7 @@ import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Object;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_Records;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_D_Record;
-import uk.ac.leeds.ccg.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Data;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_Record;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Data;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Record;
@@ -29,15 +29,15 @@ public final class DW_RentArrearsUO extends DW_Object {
      * For convenience
      */
     // For convenience.
-    public transient SHBE_Handler SHBE_Handler;
+    public transient SHBE_Data SHBE_Handler;
     public transient DW_UO_Data UO_Data;
 
     public HashMap<SHBE_ClaimID, DW_Claim> ClaimData;
 
     public DW_RentArrearsUO(DW_Environment env) throws IOException, Exception {
         super(env);
-        this.SHBE_Handler = env.getSHBE_Handler();
-        this.UO_Data = env.getUO_Data();
+        this.SHBE_Handler = env.getShbeData();
+        this.UO_Data = env.getUoData();
         initClaimData();
     }
 

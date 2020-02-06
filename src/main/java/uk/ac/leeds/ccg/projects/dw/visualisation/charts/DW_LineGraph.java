@@ -28,8 +28,8 @@ import uk.ac.leeds.ccg.generic.visualisation.Generic_Visualisation;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Strings;
 import uk.ac.leeds.ccg.projects.dw.data.generated.DW_Table;
-import uk.ac.leeds.ccg.data.shbe.data.SHBE_Handler;
-import uk.ac.leeds.ccg.data.shbe.data.SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Data;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_TenancyType;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Data;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Handler;
 import uk.ac.leeds.ccg.projects.dw.io.DW_Files;
@@ -42,7 +42,7 @@ public class DW_LineGraph extends Chart_Line {
 
     protected final transient DW_Environment env;
     protected final transient DW_Files files;
-    protected final transient SHBE_Handler shbeHandler;
+    protected final transient SHBE_Data shbeData;
     protected final transient DW_UO_Handler uoHandler;
     protected final transient DW_UO_Data uoData;
 
@@ -55,9 +55,9 @@ public class DW_LineGraph extends Chart_Line {
         super(de.ge);
         this.env = de;
         this.files = de.files;
-        this.shbeHandler = de.getSHBE_Handler();
-        this.uoData = de.getUO_Data();
-        this.uoHandler = de.getUO_Handler();
+        this.shbeData = de.getShbeData();
+        this.uoData = de.getUoData();
+        this.uoHandler = de.getUoHandler();
     }
 
     public DW_LineGraph(DW_Environment de, ExecutorService es, Path file,
@@ -72,9 +72,9 @@ public class DW_LineGraph extends Chart_Line {
                 decimalPlacePrecisionForDisplay, rm);
         this.env = de;
         this.files = de.files;
-        this.shbeHandler = de.getSHBE_Handler();
-        this.uoData = de.getUO_Data();
-        this.uoHandler = de.getUO_Handler();
+        this.shbeData = de.getShbeData();
+        this.uoData = de.getUoData();
+        this.uoHandler = de.getUoHandler();
     }
 
     HashSet<Future> futures;
@@ -107,11 +107,11 @@ public class DW_LineGraph extends Chart_Line {
 //        mc = new MathContext(decimalPlacePrecisionForCalculations, roundingMode);
         numberOfYAxisTicks = 10;
         executorService = Executors.newSingleThreadExecutor();
-        SHBEFilenames = shbeHandler.getFilenames();
+        SHBEFilenames = shbeData.getFilenames();
 //        ArrayList<String> claimantTypes;
 //        claimantTypes = DW_Strings.getHB_CTB();
 
-        includes = shbeHandler.getIncludes();
+        includes = shbeData.getIncludes();
         includes.remove(SHBE_Strings.s_IncludeAll);
         includes.remove(SHBE_Strings.s_IncludeYearly);
         includes.remove(SHBE_Strings.s_Include6Monthly);
@@ -134,7 +134,7 @@ public class DW_LineGraph extends Chart_Line {
 //        types.add("Multiple");
 //        types.add("");
         PTs = SHBE_Strings.getPaymentTypes();
-//        PTs.remove(shbeHandler.sPaymentTypeAll);
+//        PTs.remove(shbeData.sPaymentTypeAll);
         PTs.remove(SHBE_Strings.s_PaymentTypeIn);
         PTs.remove(SHBE_Strings.s_PaymentTypeSuspended);
         PTs.remove(SHBE_Strings.s_PaymentTypeOther);
@@ -231,7 +231,7 @@ public class DW_LineGraph extends Chart_Line {
                         while (includeIte.hasNext()) {
                             int i = includeIte.next();
                             UKP_YM3 YM3;
-                            YM3 = shbeHandler.getYM3(SHBEFilenames[i]);
+                            YM3 = shbeData.getYM3(SHBEFilenames[i]);
                             Path f = Paths.get(dirIn1.toString(), YM3 + ".csv");
                             // readCSV
                             ArrayList<String> lines = table.readCSV(f);
@@ -272,7 +272,7 @@ public class DW_LineGraph extends Chart_Line {
                                 getRoundingMode());
                         //
                         Object[] TreeMapDateLabelSHBEFilename;
-                        TreeMapDateLabelSHBEFilename = shbeHandler.getTreeMapDateLabelSHBEFilenamesSingle(
+                        TreeMapDateLabelSHBEFilename = shbeData.getTreeMapDateLabelSHBEFilenamesSingle(
                                 SHBEFilenames, include);
                         TreeMap<BigDecimal, UKP_YM3> xAxisLabels;
                         xAxisLabels = (TreeMap<BigDecimal, UKP_YM3>) TreeMapDateLabelSHBEFilename[0];
@@ -930,7 +930,7 @@ public class DW_LineGraph extends Chart_Line {
 //            ArrayList<Integer> include;
 //            include = includes.get(includeKey);
         Object[] treeMapDateLabelSHBEFilename;
-        treeMapDateLabelSHBEFilename = shbeHandler.getTreeMapDateLabelSHBEFilenames(
+        treeMapDateLabelSHBEFilename = shbeData.getTreeMapDateLabelSHBEFilenames(
                 SHBEFilenames, include);
         TreeMap<BigDecimal, String> xAxisLabels;
         xAxisLabels = (TreeMap<BigDecimal, String>) treeMapDateLabelSHBEFilename[0];
@@ -955,7 +955,7 @@ public class DW_LineGraph extends Chart_Line {
                 if (include.contains(i - 1) && (i - 1) >= 0) {
                     String aSHBEFilename0;
                     aSHBEFilename0 = SHBEFilenames[i - 1];
-                    YM30 = shbeHandler.getYM3(aSHBEFilename0);
+                    YM30 = shbeData.getYM3(aSHBEFilename0);
                     yM30 = YM30.toString();
                     doneFirst = true;
                 }
@@ -964,7 +964,7 @@ public class DW_LineGraph extends Chart_Line {
                 String aSHBEFilename1;
                 aSHBEFilename1 = SHBEFilenames[i];
                 UKP_YM3 YM31;
-                YM31 = shbeHandler.getYM3(aSHBEFilename1);
+                YM31 = shbeData.getYM3(aSHBEFilename1);
                 String yM31;
                 yM31 = YM31.toString();
                 String filename;
@@ -2245,21 +2245,15 @@ public class DW_LineGraph extends Chart_Line {
         labels = new ArrayList<>();
 //        labels.addAll(maps.keySet()); // This does not work as maps is gc resulting in labels becoming null for some reason.
         // Declare nonZero2
-        SHBE_TenancyType_Handler DW_SHBE_TenancyType_Handler;
-        DW_SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
-        TreeMap<String, Boolean> nonZero2;
-        nonZero2 = new TreeMap<>();
-        Iterator<String> iteS;
-        iteS = maps.keySet().iterator();
+        SHBE_TenancyType shbeTT = env.getShbeTenancyType();
+        TreeMap<String, Boolean> nonZero2 = new TreeMap<>();
+        Iterator<String> iteS = maps.keySet().iterator();
         while (iteS.hasNext()) {
-            String label;
-            label = iteS.next();
-            String[] tenancyTypes;
-            tenancyTypes = label.split(" - ");
-            String newLabel;
-            newLabel = DW_SHBE_TenancyType_Handler.getTenancyTypeName(tenancyTypes[0]);
+            String label = iteS.next();
+            String[] tenancyTypes = label.split(" - ");
+            String newLabel = shbeTT.getTenancyTypeName(tenancyTypes[0]);
             newLabel += " TO ";
-            newLabel += DW_SHBE_TenancyType_Handler.getTenancyTypeName(tenancyTypes[1]);
+            newLabel += shbeTT.getTenancyTypeName(tenancyTypes[1]);
             labels.add(newLabel);
             nonZero2.put(newLabel, nonZero.get(label));
         }
@@ -2363,9 +2357,9 @@ public class DW_LineGraph extends Chart_Line {
 //            //tenancyTypes = label.split(" - ");
 //            tenancyTypes = label.split(" - ");
 //            String newLabel;
-//            newLabel = shbeHandler.getTenancyTypeName(Integer.valueOf(tenancyTypes[0]));
+//            newLabel = shbeData.getTenancyTypeName(Integer.valueOf(tenancyTypes[0]));
 //            newLabel += " TO ";
-//            newLabel += shbeHandler.getTenancyTypeName(Integer.valueOf(tenancyTypes[1]));
+//            newLabel += shbeData.getTenancyTypeName(Integer.valueOf(tenancyTypes[1]));
 //            labels.add(newLabel);
 //            nonZero2.put(newLabel, nonZero.get(label));
 //        }

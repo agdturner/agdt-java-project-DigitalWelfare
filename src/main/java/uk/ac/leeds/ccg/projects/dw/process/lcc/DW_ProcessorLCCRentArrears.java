@@ -46,8 +46,8 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
             Generic_IO.writeObject(raUO, f);
         } else if (Files.exists(f)) {
             raUO = (DW_RentArrearsUO) Generic_IO.readObject(f);
-            raUO.SHBE_Handler = env.getSHBE_Handler();
-            raUO.UO_Data = env.getUO_Data();
+            raUO.SHBE_Handler = env.getShbeData();
+            raUO.UO_Data = env.getUoData();
 // The following code was an attempt to automatically detect if a reload was 
 // necessary and simplify things a bit, but I didn't quite get it to work. The
 // idea was to count the number of files and compare this with the size of the 
@@ -63,7 +63,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
             Generic_IO.writeObject(raUO, f);
         }
 
-        Map<UKP_YM3, SHBE_Records> allSHBE = shbeHandler.getData();
+        Map<UKP_YM3, SHBE_Records> allSHBE = shbeData.getData();
 
         DecimalFormat df = new DecimalFormat("0.00");
 
@@ -256,8 +256,8 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
         AllRANonZeroCount = 0;
 
         ArrayList<Integer> include;
-        //include = env.getSHBE_Handler().getIncludeMonthlyUO();
-        include = env.getSHBE_Handler().getIncludeAll();
+        //include = env.getShbeData().getIncludeMonthlyUO();
+        include = env.getShbeData().getIncludeAll();
         int i0 = include.iterator().next();
 
         String line;
@@ -394,9 +394,9 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                 ClaimID = ite2.next();
 
 //            for (int j = 0; j < 17; j++) {
-//                YM3 = shbeHandler.getYM3(shbeFilenames[j]);
+//                YM3 = shbeData.getYM3(shbeFilenames[j]);
 //                env.ge.log("YM3 " + YM3, true);
-//                SHBE_Records = shbeHandler.getRecords(YM3);
+//                SHBE_Records = shbeData.getRecords(YM3);
 //                HashMap<SHBE_ClaimID, SHBE_Record> Records;
 //                Records = SHBE_Records.getRecords(env.HOOME);
 //                if (Records.keySet().contains(ClaimID)) {
@@ -448,7 +448,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                         }
                         IndexOfLastSHBE = i;
 //                } else {
-//                    System.out.println("" + ClaimID + " not in SHBE " + shbeHandler.getYM3(shbeFilenames[i]));
+//                    System.out.println("" + ClaimID + " not in SHBE " + shbeData.getYM3(shbeFilenames[i]));
                     }
                     if (Suspended != null) {
                         if (Suspended) {
@@ -578,8 +578,8 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                         + ", " + ClaimRef;
                 // SHBE
                 if (IndexOfFirstSHBE != null) {
-                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfFirstSHBE])
-                            + ", " + shbeHandler.getYM3(shbeFilenames[IndexOfLastSHBE]);
+                    line += ", " + shbeData.getYM3(shbeFilenames[IndexOfFirstSHBE])
+                            + ", " + shbeData.getYM3(shbeFilenames[IndexOfLastSHBE]);
                 } else {
                     /**
                      * This only happens if someone is in the UO data, but is
@@ -620,8 +620,8 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     line += ", " + df.format(0);
                 }
                 if (IndexOfFirstBT != null) {
-                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfFirstBT]);
-                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfLastBT]);
+                    line += ", " + shbeData.getYM3(shbeFilenames[IndexOfFirstBT]);
+                    line += ", " + shbeData.getYM3(shbeFilenames[IndexOfLastBT]);
                 } else {
                     line += ", null";
                     line += ", null";
@@ -635,8 +635,8 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     line += ", " + df.format(0);
                 }
                 if (IndexOfFirstBT14 != null) {
-                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfFirstBT14]);
-                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfLastBT14]);
+                    line += ", " + shbeData.getYM3(shbeFilenames[IndexOfFirstBT14]);
+                    line += ", " + shbeData.getYM3(shbeFilenames[IndexOfLastBT14]);
                 } else {
                     line += ", null";
                     line += ", null";
@@ -650,8 +650,8 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     line += ", " + df.format(0);
                 }
                 if (IndexOfFirstBT25 != null) {
-                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfFirstBT25]);
-                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfLastBT25]);
+                    line += ", " + shbeData.getYM3(shbeFilenames[IndexOfFirstBT25]);
+                    line += ", " + shbeData.getYM3(shbeFilenames[IndexOfLastBT25]);
                 } else {
                     line += ", null";
                     line += ", null";
@@ -666,8 +666,8 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     line += ", " + df.format(0);
                 }
                 if (IndexOfFirstDHP != null) {
-                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfFirstDHP]);
-                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfLastDHP]);
+                    line += ", " + shbeData.getYM3(shbeFilenames[IndexOfFirstDHP]);
+                    line += ", " + shbeData.getYM3(shbeFilenames[IndexOfLastDHP]);
                 } else {
                     line += ", null";
                     line += ", null";
@@ -675,8 +675,8 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                 // Rent Arrears
                 line += ", " + StartRentArrears;
                 if (IndexOfFirstNonZeroArrears != null) {
-                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfFirstBT]);
-                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfFirstNonZeroArrears]);
+                    line += ", " + shbeData.getYM3(shbeFilenames[IndexOfFirstBT]);
+                    line += ", " + shbeData.getYM3(shbeFilenames[IndexOfFirstNonZeroArrears]);
                 } else {
                     line += ", null";
                     line += ", null";
@@ -691,13 +691,13 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
 //                }
                 line += ", " + MaxRentArrears;
                 if (IndexOfMaxRentArrears != null) {
-                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfMaxRentArrears]);
+                    line += ", " + shbeData.getYM3(shbeFilenames[IndexOfMaxRentArrears]);
                 } else {
                     line += ", null";
                 }
                 line += ", " + EndRentArrears;
                 if (IndexOfLastNonZeroArrears != null) {
-                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfLastNonZeroArrears]);
+                    line += ", " + shbeData.getYM3(shbeFilenames[IndexOfLastNonZeroArrears]);
                 } else {
                     line += ", null";
                 }
@@ -724,13 +724,13 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                 }
                 line += ", " + RADMax;
                 if (IndexOfMaximumRAD != null) {
-                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfMaximumRAD]);
+                    line += ", " + shbeData.getYM3(shbeFilenames[IndexOfMaximumRAD]);
                 } else {
                     line += ", null";
                 }
                 line += ", " + RADMin;
                 if (IndexOfMinimumRAD != null) {
-                    line += ", " + shbeHandler.getYM3(shbeFilenames[IndexOfMinimumRAD]);
+                    line += ", " + shbeData.getYM3(shbeFilenames[IndexOfMinimumRAD]);
                 } else {
                     line += ", null";
                 }
@@ -765,11 +765,11 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     line += ", " + df.format(0);
                 }
                 if (IndexOfFirstBT != null) {
-                    YM3 = shbeHandler.getYM3(shbeFilenames[IndexOfFirstBT]);
+                    YM3 = shbeData.getYM3(shbeFilenames[IndexOfFirstBT]);
                     //System.out.println("IndexOfFirstBT " + IndexOfFirstBT);
                     //System.out.println("YM3 " + YM3);
                     //SHBE_Records = AllSHBE.get(YM3);
-                    SHBE_Records = shbeHandler.getRecords(YM3, env.HOOME);
+                    SHBE_Records = shbeData.getRecords(YM3, env.HOOME);
                     if (SHBE_Records == null) {
                         env.ge.log("AllSHBE.get(YM3) is null!");
                     }
@@ -781,7 +781,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     Record = recs.get(ClaimID);
                     if (Record != null) {
                         DRecord = Record.getDRecord();
-                        if (shbeHandler.getDisability(DRecord)) {
+                        if (shbeData.getDisability(DRecord)) {
                             line += ", 1";
                         } else {
                             line += ", 0";
@@ -1000,7 +1000,7 @@ public class DW_ProcessorLCCRentArrears extends DW_ProcessorLCC {
                     }
                 }
                 counter++;
-                line = shbeHandler.getYM3(shbeFilenames[i]).toString();
+                line = shbeData.getYM3(shbeFilenames[i]).toString();
                 line += ", " + df.format(BTTotal);
                 line += ", " + BTCount;
                 if (BTCount > 0) {

@@ -94,7 +94,7 @@ public class DW_Report extends DW_HTMLPage {
         distanceTypes.add("OutDistanceChurn"); // A count of all claimants that have moved out from this area.
 
         // Run for consecutive monthly data
-        includes = env.getSHBE_Handler().getIncludes();
+        includes = env.getShbeData().getIncludes();
         includes.remove("All");
 //        includes.remove("Yearly");
 //        includes.remove("6Monthly");

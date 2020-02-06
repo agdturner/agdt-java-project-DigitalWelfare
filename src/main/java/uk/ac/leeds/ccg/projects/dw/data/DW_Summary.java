@@ -25,9 +25,9 @@ import uk.ac.leeds.ccg.data.shbe.core.SHBE_Strings;
 import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_PersonID;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_Records;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_D_Record;
-import uk.ac.leeds.ccg.data.shbe.data.SHBE_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_Data;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_Record;
-import uk.ac.leeds.ccg.data.shbe.data.SHBE_TenancyType_Handler;
+import uk.ac.leeds.ccg.data.shbe.data.SHBE_TenancyType;
 import uk.ac.leeds.ccg.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Strings;
 
@@ -40,9 +40,9 @@ public class DW_Summary extends DW_Object {
 
     // For convenience.
     protected final DW_Strings ds;
-    protected SHBE_Handler SHBE_Handler;
-    protected UKP_Data Postcode_Handler;
-    protected SHBE_TenancyType_Handler SHBE_TenancyType_Handler;
+    protected SHBE_Data shbeData;
+    protected UKP_Data ukpData;
+    protected SHBE_TenancyType shbeTT;
 
     protected final int decimalPlacePrecisionForAverage = 3;
     protected final int decimalPlacePrecisionForPercentage = 3;
@@ -808,9 +808,9 @@ public class DW_Summary extends DW_Object {
 
     public DW_Summary(DW_Environment env) throws IOException, Exception {
         super(env);
-        this.SHBE_Handler = env.getSHBE_Handler();
-        this.Postcode_Handler = env.getONSPD_Handler();
-        this.SHBE_TenancyType_Handler = env.getSHBE_TenancyType_Handler();
+        this.shbeData = env.getShbeData();
+        this.ukpData = env.getUkpData();
+        this.shbeTT = env.getShbeTenancyType();
         ds = new DW_Strings();
     }
 
@@ -965,7 +965,7 @@ public class DW_Summary extends DW_Object {
         sTotalCount_CTBEthnicGroupClaimant = new String[nEG];
         sPercentageOfCTB_CTBEthnicGroupClaimant = new String[nEG];
         for (int i = 1; i < nEG; i++) {
-            String EGN = SHBE_Handler.getEthnicityGroupName(i);
+            String EGN = shbeData.getEthnicityGroupName(i);
             for (int j = 1; j < nTT; j++) {
                 sTotalCount_AllEthnicGroupClaimantTT[i][j] = "TotalCount_All_ClaimantEthnicGroup_" + EGN + "__ClaimantTT" + j;
                 sPercentageOfEthnicGroup_EthnicGroupClaimantTT[i][j] = "PercentageOfEthnicGroup_" + EGN + "___ClaimantEthnicGroup_" + EGN + "__ClaimantTT" + j;
@@ -4181,21 +4181,21 @@ public class DW_Summary extends DW_Object {
             SHBE_Record r1, SHBE_D_Record dr1) {
         boolean isHBClaim1 = false;
         boolean isCTBOnlyClaim1 = false;
-        int tt1 = SHBE_TenancyType_Handler.iMinus999;
+        int tt1 = shbeTT.iMinus999;
         if (dr1 != null) {
             //doSingleTimeCount(Record1, D_Record1);
-            isHBClaim1 = SHBE_Handler.isHBClaim(dr1);
-            isCTBOnlyClaim1 = SHBE_Handler.isCTBOnlyClaim(dr1);
+            isHBClaim1 = shbeData.isHBClaim(dr1);
+            isCTBOnlyClaim1 = shbeData.isCTBOnlyClaim(dr1);
             tt1 = dr1.getTenancyType();
         }
 //        AllCount1 = HBCount1 + CTBCount1;
         boolean isHBClaim0 = false;
         boolean isCTBOnlyClaim0 = false;
         int tt0;
-        tt0 = SHBE_TenancyType_Handler.iMinus999;
+        tt0 = shbeTT.iMinus999;
         if (dr0 != null) {
-            isHBClaim0 = SHBE_Handler.isHBClaim(dr0);
-            isCTBOnlyClaim0 = SHBE_Handler.isCTBOnlyClaim(dr0);
+            isHBClaim0 = shbeData.isHBClaim(dr0);
+            isCTBOnlyClaim0 = shbeData.isCTBOnlyClaim(dr0);
             tt0 = dr0.getTenancyType();
         }
         if (isHBClaim1 || dr1 == null) {
@@ -4309,7 +4309,7 @@ public class DW_Summary extends DW_Object {
         int WeeklyAdditionalDiscretionaryPayment;
         int WeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiability;
         //ClaimantsEthnicGroup0 = D_Record.getClaimantsEthnicGroup();
-        EG = SHBE_Handler.getEthnicityGroup(D_Record);
+        EG = shbeData.getEthnicityGroup(D_Record);
         // All unfiltered counts
         TT = D_Record.getTenancyType();
         TotalCount_TTClaimant1[TT]++;
@@ -4342,7 +4342,7 @@ public class DW_Summary extends DW_Object {
         TotalCount_AllPSI[PSI]++;
         TotalCount_AllPSITT[PSI][TT]++;
         // Household size
-        HouseholdSize = SHBE_Handler.getHouseholdSize(D_Record);
+        HouseholdSize = shbeData.getHouseholdSize(D_Record);
         AllTotalHouseholdSize += HouseholdSize;
         // Entitlements
         WeeklyHousingBenefitEntitlement = D_Record.getWeeklyHousingBenefitEntitlement();
@@ -4397,7 +4397,7 @@ public class DW_Summary extends DW_Object {
             AllTotalWeeklyAdditionalDiscretionaryPaymentForCouncilTaxLiabilityZeroCount++;
         }
         // HBClaim only counts
-        if (SHBE_Handler.isHBClaim(D_Record)) {
+        if (shbeData.isHBClaim(D_Record)) {
             TotalCount_HBPSI[PSI]++;
             TotalCount_HBPSITT[PSI][TT]++;
             //if (HBRef.equalsIgnoreCase(CTBRef)) {
@@ -4484,7 +4484,7 @@ public class DW_Summary extends DW_Object {
                     Record.isClaimPostcodeFMappable());
         }
         // CTB Claim only counts
-        if (SHBE_Handler.isCTBOnlyClaim(D_Record)) {
+        if (shbeData.isCTBOnlyClaim(D_Record)) {
             TotalCount_CTBPSI[PSI]++;
             TotalCount_CTBPSITT[PSI][TT]++;
             CTBTotalHouseholdSize += HouseholdSize;
@@ -4616,12 +4616,12 @@ public class DW_Summary extends DW_Object {
             }
         }
         if (TT0.compareTo(TT1) != 0) {
-            if (!(TT0 == SHBE_TenancyType_Handler.iMinus999
-                    || TT1 == SHBE_TenancyType_Handler.iMinus999)) {
+            if (!(TT0 == shbeTT.iMinus999
+                    || TT1 == shbeTT.iMinus999)) {
                 TotalCount_HBTTChangeClaimant++;
                 //TotalCount_HBTTChangeClaimantIgnoreMinus999++;
             }
-            if (TT0 == SHBE_TenancyType_Handler.iMinus999) {
+            if (TT0 == shbeTT.iMinus999) {
                 if (TT1 == 1 || TT1 == 4) {
                     TotalCount_Minus999TTToSocialTTs++;
                 }
@@ -4638,7 +4638,7 @@ public class DW_Summary extends DW_Object {
                     TotalCount_HBTTsToMinus999TT++;
                 }
             }
-            if (TT1 == SHBE_TenancyType_Handler.iMinus999) {
+            if (TT1 == shbeTT.iMinus999) {
                 if (TT0 == 1 || TT0 == 4) {
                     TotalCount_SocialTTsToMinus999TT++;
                 }
@@ -4830,17 +4830,17 @@ public class DW_Summary extends DW_Object {
             }
         }
         if (TT0.compareTo(TT1) != 0) {
-            if (!(TT0 == SHBE_TenancyType_Handler.iMinus999
-                    || TT1 == SHBE_TenancyType_Handler.iMinus999)) {
+            if (!(TT0 == shbeTT.iMinus999
+                    || TT1 == shbeTT.iMinus999)) {
                 TotalCount_CTBTTChangeClaimant++;
                 //TotalCount_CTBTTChangeClaimantIgnoreMinus999++;
             }
-            if (TT1 == SHBE_TenancyType_Handler.iMinus999) {
+            if (TT1 == shbeTT.iMinus999) {
                 if (TT0 == 5 || TT0 == 7) {
                     TotalCount_CTBTTsToMinus999TT++;
                 }
             }
-            if (TT0 == SHBE_TenancyType_Handler.iMinus999) {
+            if (TT0 == shbeTT.iMinus999) {
                 TotalCount_Minus999TTToCTBTTs++;
             }
             if ((TT0 == 1
@@ -4969,7 +4969,7 @@ public class DW_Summary extends DW_Object {
         while (includeIte.hasNext()) {
             i = includeIte.next();
             summary = new HashMap<>();
-            key = SHBE_Handler.getYearMonthNumber(shbeFilenames[i]);
+            key = shbeData.getYearMonthNumber(shbeFilenames[i]);
             r.put(key, summary);
         }
 
@@ -4977,11 +4977,11 @@ public class DW_Summary extends DW_Object {
         includeIte = include.iterator();
         i = includeIte.next();
         filename1 = shbeFilenames[i];
-        //key = SHBE_Handler.getYearMonthNumber(filename1);
-        YM31 = SHBE_Handler.getYM3(filename1);
+        //key = shbeData.getYearMonthNumber(filename1);
+        YM31 = shbeData.getYM3(filename1);
         env.ge.log("Load " + YM31, true);
 
-        shbeRecords1 = SHBE_Handler.getRecords(YM31, env.HOOME);
+        shbeRecords1 = shbeData.getRecords(YM31, env.HOOME);
 
         cidsWithStatusOfHBAtExtractDateInPayment1 = shbeRecords1.getCidsHII(env.HOOME);
         cidsWithStatusOfHBAtExtractDateSuspended1 = shbeRecords1.getCidsHIS(env.HOOME);
@@ -5011,11 +5011,11 @@ public class DW_Summary extends DW_Object {
         while (includeIte.hasNext()) {
             i = includeIte.next();
             filename1 = shbeFilenames[i];
-            //key = SHBE_Handler.getYearMonthNumber(filename1);
-            YM31 = SHBE_Handler.getYM3(filename1);
+            //key = shbeData.getYearMonthNumber(filename1);
+            YM31 = shbeData.getYM3(filename1);
             // Load next data
             env.ge.log("Load " + YM31, true);
-            shbeRecords1 = SHBE_Handler.getRecords(YM31, env.HOOME);
+            shbeRecords1 = shbeData.getRecords(YM31, env.HOOME);
             cidsWithStatusOfHBAtExtractDateInPayment1 = shbeRecords1.getCidsHII(env.HOOME);
             cidsWithStatusOfHBAtExtractDateSuspended1 = shbeRecords1.getCidsHIS(env.HOOME);
             cidsWithStatusOfHBAtExtractDateOther1 = shbeRecords1.getCidsHIO(env.HOOME);
@@ -5086,7 +5086,7 @@ public class DW_Summary extends DW_Object {
         Set<SHBE_ClaimID> claimIDsOfNewSHBEClaims;
 
         // Initialise variables
-        key = SHBE_Handler.getYearMonthNumber(filename);
+        key = shbeData.getYearMonthNumber(filename);
         summary = summaries.get(key);
         loadSummary = shbeRecords.getLoadSummary(env.HOOME);
         DW_IncomeAndRentSummary tIncomeAndRentSummary
@@ -5107,15 +5107,15 @@ public class DW_Summary extends DW_Object {
                 Integer.toString(claimIDsOfNewSHBEClaimsWhereClaimantWasPartnerBefore.size()));
         Set<SHBE_PersonID> set;
         // Add unique Partners
-        set = SHBE_Handler.getUniquePersonIDs0(
+        set = shbeData.getUniquePersonIDs0(
                 shbeRecords.getCid2ppid(env.HOOME));
         summary.put(SHBE_Strings.s_CountOfUniquePartners, "" + set.size());
         // Add unique Dependents
-        set = SHBE_Handler.getUniquePersonIDs(
+        set = shbeData.getUniquePersonIDs(
                 shbeRecords.getCid2dpids(env.HOOME));
         summary.put(SHBE_Strings.s_CountOfUniqueDependents, "" + set.size());
         // Add unique NonDependents
-        set = SHBE_Handler.getUniquePersonIDs(
+        set = shbeData.getUniquePersonIDs(
                 shbeRecords.getCid2ndpids(env.HOOME));
         summary.put(SHBE_Strings.s_CountOfUniqueNonDependents, "" + set.size());
         /**
@@ -5208,7 +5208,7 @@ public class DW_Summary extends DW_Object {
                 ClaimIDsWithStatusOfCTBAtExtractDateOther1);
 
         String key;
-        key = SHBE_Handler.getYearMonthNumber(filename1);
+        key = shbeData.getYearMonthNumber(filename1);
         Map<String, String> summary = summaries.get(key);
 
         addToSummaryCompare2Times(nTT, nEG, nPSI, summary);
@@ -5229,7 +5229,7 @@ public class DW_Summary extends DW_Object {
         doPartSummarySingleTime(sr1, r1, ym31, filename1, forceNewSummaries,
                 HB_CTB, PTs, nTT, nEG, nPSI, summaries);
         doCompare2TimesLoopOverSet(r0, r1);
-        String key = SHBE_Handler.getYearMonthNumber(filename1);
+        String key = shbeData.getYearMonthNumber(filename1);
         Map<String, String> summary = summaries.get(key);
         addToSummaryCompare2Times(nTT, nEG, nPSI, summary);
         // All
@@ -5508,7 +5508,7 @@ public class DW_Summary extends DW_Object {
             Set<SHBE_ClaimID> ClaimIDsOfNewSHBEClaims,
             Map<SHBE_ClaimID, SHBE_Record> Records) {
         Iterator<SHBE_ClaimID> ite = ClaimIDsOfNewSHBEClaims.iterator();
-        int nPSI = SHBE_Handler.getNumberOfPassportedStandardIndicators();
+        int nPSI = shbeData.getNumberOfPassportedStandardIndicators();
         int[] counts = new int[nPSI];
         while (ite.hasNext()) {
             SHBE_Record sr = Records.get(ite.next());
@@ -5604,7 +5604,7 @@ public class DW_Summary extends DW_Object {
             TreeMap<String, Map<String, String>> summaryTable,
             String includeKey, int nTT, int nEG) throws IOException {
         TreeMap<UKP_YM3, Path> ONSPDFiles;
-        ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
+        ONSPDFiles = env.shbeEnv.oe.files.getInputONSPDFiles();
         String name = "Compare2TimesPaymentTypes";
         // Write headers
         try (PrintWriter pw = getPrintWriter(name, sSummaryTables, summaryTable,
@@ -6059,7 +6059,7 @@ public class DW_Summary extends DW_Object {
     public void writeSummaryTableCompare2TimesTT(
             TreeMap<String, Map<String, String>> summaryTable,
             String includeKey, int nTT, int nEG) throws IOException {
-        TreeMap<UKP_YM3, Path> ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
+        TreeMap<UKP_YM3, Path> ONSPDFiles = env.shbeEnv.oe.files.getInputONSPDFiles();
         String name;
         name = "Compare2TimesTT";
         PrintWriter pw = getPrintWriter(name, sSummaryTables, summaryTable, includeKey, false);
@@ -6114,9 +6114,9 @@ public class DW_Summary extends DW_Object {
         String month0;
         String year0;
         if (filename0 != null) {
-            line += SHBE_Handler.getYearMonthNumber(filename0) + s;
-            month0 = SHBE_Handler.getMonth3(filename0);
-            year0 = SHBE_Handler.getYear(filename0);
+            line += shbeData.getYearMonthNumber(filename0) + s;
+            month0 = shbeData.getMonth3(filename0);
+            year0 = shbeData.getYear(filename0);
             line += month0 + " " + year0 + s;
         } else {
             month0 = "null";
@@ -6130,9 +6130,9 @@ public class DW_Summary extends DW_Object {
         String month1;
         String year1;
         if (filename1 != null) {
-            line += SHBE_Handler.getYearMonthNumber(filename1) + s;
-            month1 = SHBE_Handler.getMonth3(filename1);
-            year1 = SHBE_Handler.getYear(filename1);
+            line += shbeData.getYearMonthNumber(filename1) + s;
+            month1 = shbeData.getMonth3(filename1);
+            year1 = shbeData.getYear(filename1);
             line += month1 + " " + year1 + s;
         } else {
             month1 = "null";
@@ -6143,14 +6143,14 @@ public class DW_Summary extends DW_Object {
         UKP_YM3 PostCodeLookupDate0 = null;
         String PostCodeLookupFile0Name = null;
         if (filename0 != null) {
-            PostCodeLookupDate0 = Postcode_Handler.getNearestYM3ForONSPDLookup(SHBE_Handler.getYM3(filename0));
+            PostCodeLookupDate0 = ukpData.getNearestYM3ForONSPDLookup(shbeData.getYM3(filename0));
             PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getFileName().toString();
         }
         line += PostCodeLookupDate0 + s + PostCodeLookupFile0Name + s;
         UKP_YM3 PostCodeLookupDate1 = null;
         String PostCodeLookupFile1Name = null;
         if (filename1 != null) {
-            PostCodeLookupDate1 = Postcode_Handler.getNearestYM3ForONSPDLookup(SHBE_Handler.getYM3(filename1));
+            PostCodeLookupDate1 = ukpData.getNearestYM3ForONSPDLookup(shbeData.getYM3(filename1));
             PostCodeLookupFile1Name = ONSPDFiles.get(PostCodeLookupDate1).getFileName().toString();
         }
         line += PostCodeLookupDate1 + s + PostCodeLookupFile1Name + s;
@@ -6178,7 +6178,7 @@ public class DW_Summary extends DW_Object {
             String includeKey, int nTT, int nEG
     ) throws IOException {
         TreeMap<UKP_YM3, Path> ONSPDFiles;
-        ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
+        ONSPDFiles = env.shbeEnv.oe.files.getInputONSPDFiles();
         String name = "Compare2TimesPostcode";
         PrintWriter pw = getPrintWriter(name, sSummaryTables, summaryTable, includeKey, false);
         // Write headers
@@ -6211,7 +6211,7 @@ public class DW_Summary extends DW_Object {
             TreeMap<String, Map<String, String>> summaryTable,
             String includeKey, int nTT, int nEG, int nPSI) throws IOException {
         TreeMap<UKP_YM3, Path> ONSPDFiles;
-        ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
+        ONSPDFiles = env.shbeEnv.oe.files.getInputONSPDFiles();
         String name;
         name = "SingleTimeGenericCounts";
         // Write headers
@@ -6368,7 +6368,7 @@ pw.println(line);
             String includeKey, int nTT, int nEG, int nPSI
     ) throws IOException {
         TreeMap<UKP_YM3, Path> ONSPDFiles;
-        ONSPDFiles = env.SHBE_Env.oe.files.getInputONSPDFiles();
+        ONSPDFiles = env.shbeEnv.oe.files.getInputONSPDFiles();
         String name;
         name = "SingleTimeHouseholdSizes";
         PrintWriter pw;
@@ -6673,7 +6673,7 @@ pw.println(line);
         UKP_YM3 PostCodeLookupDate0 = null;
         String PostCodeLookupFile0Name = null;
         if (filename != null) {
-            PostCodeLookupDate0 = Postcode_Handler.getNearestYM3ForONSPDLookup(SHBE_Handler.getYM3(filename));
+            PostCodeLookupDate0 = ukpData.getNearestYM3ForONSPDLookup(shbeData.getYM3(filename));
             PostCodeLookupFile0Name = ONSPDFiles.get(PostCodeLookupDate0).getFileName().toString();
         }
         String s = DW_Strings.symbol_comma;
