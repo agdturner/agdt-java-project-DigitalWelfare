@@ -18,7 +18,7 @@ import uk.ac.leeds.ccg.math.Math_BigDecimal;
 import uk.ac.leeds.ccg.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_Records;
-import uk.ac.leeds.ccg.data.shbe.data.SHBE_D_Record;
+import uk.ac.leeds.ccg.data.shbe.data.types.SHBE_D_Record;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_Record;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Strings;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Data;

@@ -29,7 +29,7 @@ import uk.ac.leeds.ccg.grids.io.Grids_Files;
 import uk.ac.leeds.ccg.grids.io.Grids_ImageExporter;
 import uk.ac.leeds.ccg.grids.process.Grids_ProcessorGWS;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_Records;
-import uk.ac.leeds.ccg.data.shbe.data.SHBE_D_Record;
+import uk.ac.leeds.ccg.data.shbe.data.types.SHBE_D_Record;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_Data;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_Record;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_TenancyType;

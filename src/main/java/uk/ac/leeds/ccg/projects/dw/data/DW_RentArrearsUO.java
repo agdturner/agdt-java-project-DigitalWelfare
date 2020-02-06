@@ -12,7 +12,7 @@ import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_ClaimID;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Environment;
 import uk.ac.leeds.ccg.projects.dw.core.DW_Object;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_Records;
-import uk.ac.leeds.ccg.data.shbe.data.SHBE_D_Record;
+import uk.ac.leeds.ccg.data.shbe.data.types.SHBE_D_Record;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_Data;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_Record;
 import uk.ac.leeds.ccg.projects.dw.data.uo.DW_UO_Data;

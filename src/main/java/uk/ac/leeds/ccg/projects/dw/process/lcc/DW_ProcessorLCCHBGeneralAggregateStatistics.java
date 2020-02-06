@@ -20,7 +20,7 @@ import uk.ac.leeds.ccg.data.ukp.util.UKP_YM3;
 import uk.ac.leeds.ccg.data.shbe.data.id.SHBE_ClaimID;
 import uk.ac.leeds.ccg.data.shbe.core.SHBE_Strings;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_Records;
-import uk.ac.leeds.ccg.data.shbe.data.SHBE_D_Record;
+import uk.ac.leeds.ccg.data.shbe.data.types.SHBE_D_Record;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_Record;
 import uk.ac.leeds.ccg.data.shbe.data.SHBE_TenancyType;
 import uk.ac.leeds.ccg.generic.io.Generic_IO;
