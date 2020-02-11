@@ -62,7 +62,7 @@ public class DW_Environment extends Generic_MemoryManager {
         shbeEnv = new SHBE_Environment(de);
         gridsEnv = new Grids_Environment(ge, new Generic_Path(
                 files.getGeneratedGridsDir()));
-        vectorEnv = new Vector_Environment(de.env);
+        vectorEnv = new Vector_Environment(gridsEnv);
         Path censusDir = null;
         censusEnv = new Census_Environment(de, censusDir);
     }

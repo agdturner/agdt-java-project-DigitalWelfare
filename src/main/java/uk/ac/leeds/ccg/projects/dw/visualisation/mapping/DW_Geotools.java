@@ -46,7 +46,7 @@ public class DW_Geotools extends Geotools_Environment {
 
     public DW_Environment Env;
 
-    public DW_Geotools(DW_Environment de) throws IOException {
+    public DW_Geotools(DW_Environment de) throws IOException, Exception {
         super(de.vectorEnv, de.ge.files.getDir());
         this.Env = de;
     }
